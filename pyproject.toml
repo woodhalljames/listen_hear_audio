@@ -183,4 +183,6 @@ dependencies = [
     "redis==7.0.1",
     "sentry-sdk==2.43.0",
     "whitenoise==6.11.0",
+    "weasyprint>=60.0",
+    "pillow>=10.0",
 ]

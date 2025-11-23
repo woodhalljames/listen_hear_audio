@@ -83,6 +83,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "listen_hear_audio.users",
+    "listen_hear_audio.products",
+    "listen_hear_audio.quotes",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -324,3 +326,5 @@ SOCIALACCOUNT_FORMS = {"signup": "listen_hear_audio.users.forms.UserSocialSignup
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+# a cart 
+"listen_hear_audio.quotes.context_processors.cart_context",

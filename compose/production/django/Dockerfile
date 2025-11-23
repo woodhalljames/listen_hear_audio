@@ -1,4 +1,3 @@
-
 # define an alias for the specific python version used in this file.
 FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim AS python-build-stage
 
@@ -13,7 +12,13 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   # dependencies for building Python packages
   build-essential \
   # psycopg dependencies
-  libpq-dev
+  libpq-dev \
+  # WeasyPrint dependencies
+  libpango-1.0-0 \
+  libpangocairo-1.0-0 \
+  libgdk-pixbuf2.0-0 \
+  libffi-dev \
+  shared-mime-info
 
 
 # Requirements are installed here to ensure they will be cached.
@@ -47,6 +52,12 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
   gettext \
   # entrypoint
   wait-for-it \
+  # WeasyPrint dependencies
+  libpango-1.0-0 \
+  libpangocairo-1.0-0 \
+  libgdk-pixbuf2.0-0 \
+  libffi-dev \
+  shared-mime-info \
   # cleaning up unused files
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -rf /var/lib/apt/lists/*

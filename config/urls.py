@@ -18,8 +18,9 @@ urlpatterns = [
     # User management
     path("users/", include("listen_hear_audio.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    # Your stuff: custom urls includes go here
-    # ...
+    # E-commerce apps
+    path("catalog/", include("listen_hear_audio.products.urls", namespace="products")),
+    path("quote/", include("listen_hear_audio.quotes.urls", namespace="quotes")),
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]
