@@ -1,0 +1,17 @@
+services:
+  docs:
+    image: listen_hear_audio_local_docs
+    container_name: listen_hear_audio_local_docs
+    build:
+      context: .
+      dockerfile: ./compose/local/docs/Dockerfile
+    env_file:
+      - ./.envs/.local/.django
+    volumes:
+      - /app/.venv
+      - ./docs:/docs:z
+      - ./config:/app/config:z
+      - ./listen_hear_audio:/app/listen_hear_audio:z
+    ports:
+      - '9000:9000'
+    command: /start-docs
