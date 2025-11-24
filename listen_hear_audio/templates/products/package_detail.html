@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ package.name }} - Listen Hear Audio{% endblock %}
+
+{% block content %}
+<div class="py-4">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'products:catalog' %}">Catalog</a></li>
+      <li class="breadcrumb-item">{{ package.category.property_type.name }}</li>
+      <li class="breadcrumb-item">{{ package.category.name }}</li>
+      {% if package.subcategory %}
+        <li class="breadcrumb-item">{{ package.subcategory.name }}</li>
+      {% endif %}
+      <li class="breadcrumb-item active" aria-current="page">{{ package.name }}</li>
+    </ol>
+  </nav>
+
+  <div class="row">
+    <!-- Product Image -->
+    <div class="col-lg-6 mb-4">
+      {% if package.image %}
+        <img src="{{ package.image.url }}" 
+             class="package-detail-image shadow" 
+             alt="{{ package.name }}">
+      {% else %}
+        <div class="package-detail-image bg-light d-flex align-items-center justify-content-center shadow">
+          <i class="bi bi-image text-muted" style="font-size: 5rem;"></i>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Product Details -->
+    <div class="col-lg-6">
+      <!-- Title and Badges -->
+      <div class="mb-3">
+        <h1 class="h2 mb-2">{{ package.name }}</h1>
+        
+        <div class="mb-3">
+          {% if package.is_featured %}
+            <span class="badge bg-warning text-dark me-2">
+              <i class="bi bi-star-fill"></i> Featured
+            </span>
+          {% endif %}
+          
+          <span class="badge bg-secondary">
+            {{ package.category.name }}
+          </span>
+          
+          {% if package.subcategory %}
+            <span class="badge bg-secondary">
+              {{ package.subcategory.name }}
+            </span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Short Description -->
+      {% if package.short_description %}
+        <p class="lead text-muted mb-4">{{ package.short_description }}</p>
+      {% endif %}
+
+      <!-- Price -->
+      <div class="mb-4">
+        <h3 class="text-primary mb-0">{{ package.get_price_display }}</h3>
+        {% if not package.is_custom %}
+          <small class="text-muted">Base price - final pricing after consultation</small>
+        {% endif %}
+      </div>
+
+      <!-- Add to Cart Form -->
+      <form method="post" 
+            action="{% url 'quotes:add_to_cart' package.id %}" 
+            class="add-to-cart-form mb-4">
+        {% csrf_token %}
+        
+        <div class="row g-3 mb-3">
+          <div class="col-auto">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" 
+                   class="form-control" 
+                   id="quantity" 
+                   name="quantity" 
+                   value="1" 
+                   min="1" 
+                   max="99"
+                   style="width: 80px;">
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label for="notes" class="form-label">Special Requirements (Optional)</label>
+          <textarea class="form-control" 
+                    id="notes" 
+                    name="notes" 
+                    rows="3" 
+                    placeholder="Any specific requirements or questions?"></textarea>
+        </div>
+        
+        <div class="d-grid gap-2 d-md-flex">
+          <button type="submit" class="btn btn-primary-custom btn-lg">
+            <i class="bi bi-cart-plus"></i> Add to Quote
+          </button>
+          <a href="{% url 'products:catalog' %}" class="btn btn-outline-custom btn-lg">
+            <i class="bi bi-arrow-left"></i> Back to Catalog
+          </a>
+        </div>
+      </form>
+
+      <!-- Full Description -->
+      {% if package.description %}
+        <div class="mb-4">
+          <h4>Description</h4>
+          <p>{{ package.description|linebreaks }}</p>
+        </div>
+      {% endif %}
+
+      <!-- Features -->
+      {% if package.get_features_list %}
+        <div class="mb-4">
+          <h4>Features & Inclusions</h4>
+          <ul class="feature-list">
+            {% for feature in package.get_features_list %}
+              <li>{{ feature }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <!-- Info Box -->
+      <div class="alert alert-info">
+        <h5 class="alert-heading">
+          <i class="bi bi-info-circle"></i> Need Help?
+        </h5>
+        <p class="mb-0">
+          Our team is here to help you choose the perfect package for your needs. 
+          Add this to your cart and we'll provide a detailed quote within 24-48 hours.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

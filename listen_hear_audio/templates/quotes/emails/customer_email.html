@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quote Request Confirmation</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #4a4a4a;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+    }
+    .email-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+    }
+    .header {
+      background-color: #0000FF;
+      color: #ffffff;
+      padding: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #FFFF00;
+    }
+    .content {
+      padding: 30px;
+    }
+    .content h2 {
+      color: #232323;
+      margin-top: 0;
+    }
+    .info-box {
+      background-color: #f8f9fa;
+      border-left: 4px solid #0000FF;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    .quote-number {
+      font-size: 24px;
+      color: #0000FF;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    .items-table th {
+      background-color: #f8f9fa;
+      padding: 12px;
+      text-align: left;
+      border-bottom: 2px solid #dee2e6;
+    }
+    .items-table td {
+      padding: 12px;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .total-row {
+      font-weight: bold;
+      background-color: #f8f9fa;
+    }
+    .next-steps {
+      background-color: #e7f3ff;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .next-steps ol {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    .next-steps li {
+      margin: 10px 0;
+    }
+    .footer {
+      background-color: #232323;
+      color: #ffffff;
+      padding: 30px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .footer a {
+      color: #FFFF00;
+      text-decoration: none;
+    }
+    .button {
+      display: inline-block;
+      padding: 12px 30px;
+      background-color: #0000FF;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🎧 Listen Hear Audio</h1>
+      <p style="margin: 10px 0 0 0;">Quote Request Confirmation</p>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <h2>Thank You, {{ quote_request.contact_person }}!</h2>
+      
+      <p>We've received your quote request and our team is already reviewing your selections. You'll hear from us within 24-48 hours with a detailed quote.</p>
+
+      <div class="quote-number">
+        Quote #{{ quote_request.quote_number }}
+      </div>
+
+      <!-- Quote Details -->
+      <div class="info-box">
+        <strong>Submitted:</strong> {{ quote_request.created_at|date:"F d, Y" }} at {{ quote_request.created_at|time:"g:i A" }}<br>
+        <strong>Contact Email:</strong> {{ quote_request.email }}<br>
+        <strong>Phone:</strong> {{ quote_request.phone }}<br>
+        <strong>Installation Address:</strong> {{ quote_request.address|linebreaks }}
+      </div>
+
+      {% if quote_request.notes %}
+      <div class="info-box">
+        <strong>Your Project Details:</strong><br>
+        {{ quote_request.notes|linebreaks }}
+      </div>
+      {% endif %}
+
+      <!-- Selected Packages -->
+      <h3>Selected Packages</h3>
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Package</th>
+            <th style="text-align: center;">Qty</th>
+            <th style="text-align: right;">Price</th>
+            <th style="text-align: right;">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in quote_request.items.all %}
+          <tr>
+            <td>
+              {{ item.package_name }}
+              {% if item.notes %}<br><small style="color: #6c757d;">Note: {{ item.notes }}</small>{% endif %}
+            </td>
+            <td style="text-align: center;">{{ item.quantity }}</td>
+            <td style="text-align: right;">
+              {% if item.price_snapshot %}
+                ${{ item.price_snapshot|floatformat:2 }}
+              {% else %}
+                Custom
+              {% endif %}
+            </td>
+            <td style="text-align: right;">
+              {% if item.price_snapshot %}
+                ${{ item.get_subtotal|floatformat:2 }}
+              {% else %}
+                TBD
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td colspan="3" style="text-align: right;">Estimated Total:</td>
+            <td style="text-align: right; color: #0000FF; font-size: 18px;">
+              ${{ quote_request.estimated_total|floatformat:2 }}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <p style="font-size: 14px; color: #6c757d;">
+        <em>Note: This is an estimate based on starting prices. Final pricing will be provided in your custom quote after consultation.</em>
+      </p>
+
+      <!-- Next Steps -->
+      <div class="next-steps">
+        <h3 style="margin-top: 0; color: #0000FF;">What Happens Next?</h3>
+        <ol>
+          <li><strong>Review:</strong> Our team reviews your selections and requirements</li>
+          <li><strong>Custom Quote:</strong> We prepare a detailed quote tailored to your needs</li>
+          <li><strong>Contact:</strong> You'll receive your quote via email within 24-48 hours</li>
+          <li><strong>Consultation:</strong> We'll schedule a call to discuss your project in detail</li>
+        </ol>
+      </div>
+
+      {{ config.customer_email_message|linebreaks }}
+
+      <div style="text-align: center;">
+        <p><strong>Questions? We're here to help!</strong></p>
+        <p>
+          Email: <a href="mailto:{{ config.business_email }}">info@listenhearaudio.com</a><br>
+          Website: www.listenhearsmarthomes.com
+        </p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p><strong>Listen Hear Audio</strong></p>
+      {% if config.business_address %}
+        <p>{{ config.business_address }}</p>
+      {% endif %}
+      <p>
+        <a href="{{ config.business_website }}">{{ config.business_website }}</a>
+      </p>
+      <p style="margin-top: 20px; font-size: 12px; color: #aaa;">
+        &copy; {% now "Y" %} Listen Hear Audio. All rights reserved.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

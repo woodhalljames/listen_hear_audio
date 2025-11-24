@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Quote Submitted - Listen Hear Audio{% endblock %}
+
+{% block content %}
+<div class="py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <!-- Success Message -->
+      <div class="text-center mb-5">
+        <div class="success-icon mb-4">
+          <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+        </div>
+        <h1 class="display-5 fw-bold mb-3">Quote Request Submitted!</h1>
+        <p class="lead text-muted">
+          Thank you for your interest in Listen Hear Audio. We've received your quote request.
+        </p>
+      </div>
+
+      <!-- Quote Details Card -->
+      <div class="card mb-4 shadow">
+        <div class="card-header bg-primary text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">
+              <i class="bi bi-file-earmark-text"></i> Quote Details
+            </h4>
+            <span class="badge bg-warning text-dark">Pending Review</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <h6 class="text-muted mb-2">Quote Number</h6>
+              <p class="h4 text-primary mb-0">{{ quote_request.quote_number }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-muted mb-2">Submitted</h6>
+              <p class="mb-0">{{ quote_request.created_at|date:"F d, Y" }} at {{ quote_request.created_at|time:"g:i A" }}</p>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- Contact Information -->
+          <h5 class="mb-3">
+            <i class="bi bi-person"></i> Contact Information
+          </h5>
+          <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+              <strong>Name:</strong><br>
+              {{ quote_request.contact_person }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Email:</strong><br>
+              <a href="mailto:{{ quote_request.email }}">{{ quote_request.email }}</a>
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Phone:</strong><br>
+              {{ quote_request.phone }}
+            </div>
+            {% if quote_request.website %}
+              <div class="col-md-6 mb-3">
+                <strong>Website:</strong><br>
+                <a href="{{ quote_request.website }}" target="_blank">{{ quote_request.website }}</a>
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Installation Address -->
+          <h5 class="mb-3">
+            <i class="bi bi-geo-alt"></i> Installation Address
+          </h5>
+          <p class="mb-4">{{ quote_request.address|linebreaks }}</p>
+
+          {% if quote_request.notes %}
+            <!-- Project Notes -->
+            <h5 class="mb-3">
+              <i class="bi bi-chat-left-text"></i> Project Details
+            </h5>
+            <div class="alert alert-light">
+              <p class="mb-0">{{ quote_request.notes|linebreaks }}</p>
+            </div>
+          {% endif %}
+
+          <!-- Selected Packages -->
+          <h5 class="mb-3">
+            <i class="bi bi-box-seam"></i> Selected Packages
+          </h5>
+          <div class="table-responsive">
+            <table class="table table-sm">
+              <thead class="table-light">
+                <tr>
+                  <th>Package</th>
+                  <th class="text-center">Qty</th>
+                  <th class="text-end">Price</th>
+                  <th class="text-end">Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in quote_request.items.all %}
+                  <tr>
+                    <td>
+                      <strong>{{ item.package_name }}</strong>
+                      {% if item.notes %}
+                        <br><small class="text-muted">Note: {{ item.notes }}</small>
+                      {% endif %}
+                    </td>
+                    <td class="text-center">{{ item.quantity }}</td>
+                    <td class="text-end">
+                      {% if item.price_snapshot %}
+                        ${{ item.price_snapshot|floatformat:2 }}
+                      {% else %}
+                        <span class="text-muted">Custom</span>
+                      {% endif %}
+                    </td>
+                    <td class="text-end">
+                      {% if item.price_snapshot %}
+                        <strong>${{ item.get_subtotal|floatformat:2 }}</strong>
+                      {% else %}
+                        <span class="text-muted">TBD</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot class="table-light">
+                <tr>
+                  <td colspan="3" class="text-end"><strong>Estimated Total:</strong></td>
+                  <td class="text-end">
+                    <strong class="text-primary h5 mb-0">${{ quote_request.estimated_total|floatformat:2 }}</strong>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- What's Next Section -->
+      <div class="card mb-4 border-info">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">
+            <i class="bi bi-clock-history"></i> What Happens Next?
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="d-flex">
+                <div class="me-3">
+                  <div class="step-number">1</div>
+                </div>
+                <div>
+                  <h6>Confirmation Email</h6>
+                  <p class="text-muted mb-0">
+                    You'll receive a confirmation email at <strong>{{ quote_request.email }}</strong> 
+                    with a copy of your quote request.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex">
+                <div class="me-3">
+                  <div class="step-number">2</div>
+                </div>
+                <div>
+                  <h6>Team Review</h6>
+                  <p class="text-muted mb-0">
+                    Our expert team will review your selections and requirements 
+                    to prepare a customized quote.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex">
+                <div class="me-3">
+                  <div class="step-number">3</div>
+                </div>
+                <div>
+                  <h6>Custom Quote</h6>
+                  <p class="text-muted mb-0">
+                    Within 24-48 hours, you'll receive a detailed quote via email 
+                    with pricing and recommendations.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex">
+                <div class="me-3">
+                  <div class="step-number">4</div>
+                </div>
+                <div>
+                  <h6>Consultation</h6>
+                  <p class="text-muted mb-0">
+                    We'll schedule a consultation to discuss your project in detail 
+                    and answer any questions.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="text-center">
+        <a href="{% url 'products:catalog' %}" class="btn btn-outline-custom btn-lg me-2">
+          <i class="bi bi-shop"></i> Browse More Products
+        </a>
+        <a href="{% url 'home' %}" class="btn btn-primary-custom btn-lg">
+          <i class="bi bi-house"></i> Return Home
+        </a>
+      </div>
+
+      <!-- Help Section -->
+      <div class="alert alert-light mt-4 text-center">
+        <h6>
+          <i class="bi bi-question-circle"></i> Questions?
+        </h6>
+        <p class="mb-0">
+          If you have any immediate questions, feel free to contact us at 
+          <a href="mailto:info@listenhearaudio.com">info@listenhearaudio.com</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

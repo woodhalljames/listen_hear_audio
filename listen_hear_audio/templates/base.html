@@ -1,4 +1,3 @@
-
 {% load static i18n %}<!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 <html lang="{{ LANGUAGE_CODE }}">
@@ -7,103 +6,134 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>
       {% block title %}
-      Listen Hear Audio
+      Listen Hear - Smart Home, Audio & Video Systems
     {% endblock title %}
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
-        content="Listen Hear Audio e-commerce site" />
+        content="Professional smart home audio and video installation services. Custom packages for residential, commercial, and industrial properties." />
   <meta name="author"
         content="Cactus Cat LLC" />
   <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
+  
   {% block css %}
-    <!-- Latest compiled and minified Bootstrap CSS -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"
           integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="
           crossorigin="anonymous"
           referrerpolicy="no-referrer" />
-<!-- Your stuff: Third-party CSS libraries go here -->
-<!-- This file stores project-specific CSS -->
-
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link href="{% static 'css/project.css' %}" rel="stylesheet" />
+  {% endblock css %}
   
-  <link href="{% static 'css/project.css' %}" rel="stylesheet" />
-
-
-{% endblock css %}
-<!-- Le javascript
-    ================================================== -->
-{# Placed at the top of the document so pages load faster with defer #}
-{% block javascript %}
-
-
-<!-- Bootstrap JS -->
-<script defer
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"
-        integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g=="
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer"></script>
-<!-- Your stuff: Third-party javascript libraries go here -->
-
-
-<!-- place project specific Javascript in this file -->
-
-  
-  <script defer src="{% static 'js/project.js' %}"></script>
-
-
-{% endblock javascript %}
+  {% block javascript %}
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script defer
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js"
+            integrity="sha512-i9cEfJwUwViEPFKdC1enz4ZRGBj8YQo6QByFTF92YXHi7waCqyexvRD75S5NVTsSiTv7rKWqG9Y5eFxmRsOn0A=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+    
+    <!-- Custom JS -->
+    <script defer src="{% static 'js/project.js' %}"></script>
+  {% endblock javascript %}
 </head>
+
 <body class="{% block bodyclass %}{% endblock bodyclass %}">
   {% block body %}
-  <div class="mb-1">
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-      <div class="container-fluid">
-        <button class="navbar-toggler navbar-toggler-right"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="{% url 'home' %}">Listen Hear Audio</a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'about' %}">About</a>
-            </li>
-            {% if request.user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link"
-                   href="{% url 'users:detail' request.user.pk %}">{% translate "My Profile" %}</a>
-              </li>
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
-              </li>
-            {% else %}
-              {% if ACCOUNT_ALLOW_REGISTRATION %}
-                <li class="nav-item">
-                  {# URL provided by django-allauth/account/urls.py #}
-                  <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
-                </li>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+        <img src="{% static 'images/listenhear.png' %}" alt="Listen Hear Smart Homes" class="navbar-logo me-2">
+        Listen Hear
+      </a>
+      
+      <button class="navbar-toggler" 
+              type="button" 
+              data-bs-toggle="collapse" 
+              data-bs-target="#navbarMain" 
+              aria-controls="navbarMain" 
+              aria-expanded="false" 
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarMain">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'products:catalog' %}">Catalog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'about' %}">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'quotes:cart' %}">
+              <i class="bi bi-cart3"></i> Cart
+              {% if cart_count > 0 %}
+                <span class="cart-badge">{{ cart_count }}</span>
               {% endif %}
+            </a>
+          </li>
+          
+          {% if request.user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" 
+                 href="#" 
+                 id="userDropdown" 
+                 role="button" 
+                 data-bs-toggle="dropdown" 
+                 aria-expanded="false">
+                <i class="bi bi-person-circle"></i> Account
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                <li>
+                  <a class="dropdown-item" href="{% url 'users:detail' request.user.pk %}">
+                    {% translate "My Profile" %}
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <a class="dropdown-item" href="{% url 'account_logout' %}">
+                    {% translate "Sign Out" %}
+                  </a>
+                </li>
+              </ul>
+            </li>
+          {% else %}
+            {% if ACCOUNT_ALLOW_REGISTRATION %}
               <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+                <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">
+                  {% translate "Sign Up" %}
+                </a>
               </li>
             {% endif %}
-          </ul>
-        </div>
+            <li class="nav-item">
+              <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">
+                {% translate "Sign In" %}
+              </a>
+            </li>
+          {% endif %}
+        </ul>
       </div>
-    </nav>
-  </div>
-  <div class="container">
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container my-4">
     {% if messages %}
       {% for message in messages %}
         <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
@@ -115,27 +145,71 @@
         </div>
       {% endfor %}
     {% endif %}
+    
     {% block main %}
       {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
       {% endblock content %}
     {% endblock main %}
-
   </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <!-- Column 1: Logo and Description -->
+        <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+          <div class="footer-logo d-flex align-items-center mb-3">
+            <img src="{% static 'images/listenhear.png' %}" alt="Listen Hear Smart Homes" class="footer-logo-image me-2">
+            Listen Hear
+          </div>
+          <p>Professional smart home audio and video installation services for residential, commercial, and industrial properties.</p>
+        </div>
+        
+        <!-- Column 2: Quick Links -->
+        <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+          <h5>Quick Links</h5>
+          <ul class="footer-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'products:catalog' %}">Browse Catalog</a></li>
+            <li><a href="{% url 'quotes:cart' %}">View Cart</a></li>
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            {% if request.user.is_authenticated %}
+              <li><a href="{% url 'users:detail' request.user.pk %}">My Profile</a></li>
+            {% else %}
+              <li><a href="{% url 'account_login' %}">Sign In</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        
+        <!-- Column 3: Newsletter -->
+        <div class="col-lg-4 col-md-12">
+          <h5>Stay Updated</h5>
+          <p>Subscribe to our newsletter for the latest products and promotions.</p>
+          <form class="newsletter-form">
+            <input type="email" 
+                   placeholder="Enter your email" 
+                   required 
+                   aria-label="Email address">
+            <button type="submit">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p class="mb-0">
+          &copy; {% now "Y" %} Listen Hear Smart Homes & Audio. All rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+  
   {% endblock body %}
-  <!-- /container -->
+  
   {% block modal %}
   {% endblock modal %}
+  
   {% block inline_javascript %}
-    {% comment %}
-    Script tags with only code, no src (defer by default). To run
-    with a "defer" so that you run inline code:
-    <script>
-      window.addEventListener('DOMContentLoaded', () => {
-        /* Run whatever you want */
-      });
-    </script>
-    {% endcomment %}
   {% endblock inline_javascript %}
 </body>
 </html>

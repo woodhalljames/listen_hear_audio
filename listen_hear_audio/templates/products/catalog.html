@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Product Packages - Listen Hear Audio{% endblock %}
+
+{% block content %}
+<div class="py-4">
+  <div class="row">
+    <!-- Sidebar Navigation -->
+    <div class="col-lg-3 mb-4">
+      <div class="catalog-sidebar">
+        <div class="sidebar-sticky">
+          <h5 class="sidebar-title">Browse By Type</h5>
+          <nav class="nav flex-column">
+            {% for property_type in property_types %}
+              <div class="property-nav-section">
+                <a class="nav-link catalog-nav-link property-nav-link" href="#property-{{ property_type.slug }}">
+                  {% if 'residential' in property_type.name|lower %}
+                    <i class="bi bi-house-door-fill"></i>
+                  {% elif 'commercial' in property_type.name|lower %}
+                    <i class="bi bi-building"></i>
+                  {% elif 'industrial' in property_type.name|lower %}
+                    <i class="bi bi-gear-wide-connected"></i>
+                  {% else %}
+                    <i class="bi bi-box"></i>
+                  {% endif %}
+                  <span>{{ property_type.name }}</span>
+                  <i class="bi bi-chevron-down ms-auto chevron-icon"></i>
+                </a>
+                
+                <!-- Categories under this property type -->
+                <div class="category-nav-list">
+                  {% for category in property_type.categories.all %}
+                    {% if category.is_active %}
+                      <a class="nav-link category-nav-link" href="#category-{{ category.slug }}">
+                        {{ category.name }}
+                      </a>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-lg-9">
+      <!-- Page Header -->
+      <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Product Packages</h1>
+        <p class="lead text-muted">Browse our comprehensive selection of smart home audio and video solutions</p>
+      </div>
+
+      {% for property_type in property_types %}
+        <!-- Property Type Section -->
+        <div class="category-section mb-5" id="property-{{ property_type.slug }}">
+          <div class="category-header">
+            <h2 class="category-title">
+              {% if 'residential' in property_type.name|lower %}
+                <i class="bi bi-house-door-fill text-primary"></i>
+              {% elif 'commercial' in property_type.name|lower %}
+                <i class="bi bi-building text-primary"></i>
+              {% elif 'industrial' in property_type.name|lower %}
+                <i class="bi bi-gear-wide-connected text-primary"></i>
+              {% else %}
+                <i class="bi bi-box text-primary"></i>
+              {% endif %}
+              {{ property_type.name }}
+            </h2>
+            
+            {% if property_type.description %}
+              <div class="property-type-description-card">
+                <div class="card border-primary">
+                  <div class="card-body">
+                    <p class="card-text mb-0">{{ property_type.description }}</p>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+
+          {% for category in property_type.categories.all %}
+            {% if category.is_active %}
+              <!-- Category Section -->
+              <div class="mb-5" id="category-{{ category.slug }}">
+                <h3 class="h4 mb-3 category-subtitle">
+                  {{ category.name }}
+                </h3>
+                
+                {% if category.description %}
+                  <div class="category-description-card mb-4">
+                    <div class="card bg-light border-0">
+                      <div class="card-body py-3">
+                        <p class="card-text text-muted mb-0">{{ category.description }}</p>
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if category.has_subcategories %}
+                  <!-- Display by Subcategories -->
+                  {% for subcategory in category.subcategories.all %}
+                    {% if subcategory.is_active %}
+                      <div class="mb-4">
+                        <h4 class="h5 mb-3 text-secondary">
+                          <i class="bi bi-tag-fill"></i> {{ subcategory.name }}
+                        </h4>
+                        
+                        {% if subcategory.description %}
+                          <div class="subcategory-description-card mb-3">
+                            <div class="alert alert-info py-2">
+                              <small>{{ subcategory.description }}</small>
+                            </div>
+                          </div>
+                        {% endif %}
+                        
+                        <div class="row g-4">
+                          {% for package in subcategory.packages.all %}
+                            {% if package.is_active %}
+                              <div class="col-lg-6 col-xl-4">
+                                {% include "products/partials/package_card.html" %}
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                {% else %}
+                  <!-- Display Packages Directly -->
+                  <div class="row g-4">
+                    {% for package in category.packages.all %}
+                      {% if package.is_active %}
+                        <div class="col-lg-6 col-xl-4">
+                          {% include "products/partials/package_card.html" %}
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% empty %}
+        <!-- No Products Message -->
+        <div class="text-center py-5">
+          <i class="bi bi-inbox display-1 text-muted"></i>
+          <h3 class="mt-3">No Products Available</h3>
+          <p class="text-muted">Please check back later for our product offerings.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block inline_javascript %}
+<script>
+  // Toggle category visibility in sidebar
+  document.addEventListener('DOMContentLoaded', function() {
+    const propertyLinks = document.querySelectorAll('.property-nav-link');
+    
+    propertyLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        const section = this.closest('.property-nav-section');
+        const categoryList = section.querySelector('.category-nav-list');
+        const chevron = this.querySelector('.chevron-icon');
+        
+        // Toggle category list
+        categoryList.classList.toggle('show');
+        chevron.classList.toggle('rotated');
+      });
+    });
+    
+    // Auto-expand the active section
+    const activeSection = document.querySelector('.category-section');
+    if (activeSection) {
+      const firstPropertySection = document.querySelector('.property-nav-section');
+      if (firstPropertySection) {
+        const categoryList = firstPropertySection.querySelector('.category-nav-list');
+        const chevron = firstPropertySection.querySelector('.chevron-icon');
+        categoryList.classList.add('show');
+        chevron.classList.add('rotated');
+      }
+    }
+  });
+</script>
+{% endblock %}

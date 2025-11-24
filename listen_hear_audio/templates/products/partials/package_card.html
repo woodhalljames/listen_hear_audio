@@ -1,0 +1,48 @@
+{% load static %}
+
+<div class="product-card h-100">
+  {% if package.image %}
+    <img src="{{ package.image.url }}" class="card-img-top" alt="{{ package.name }}">
+  {% else %}
+    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+      <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+    </div>
+  {% endif %}
+  
+  <div class="product-card-body">
+    <h5 class="product-card-title">{{ package.name }}</h5>
+    
+    {% if package.short_description %}
+      <p class="text-muted mb-3 small">{{ package.short_description }}</p>
+    {% endif %}
+    
+    {% if package.is_featured %}
+      <span class="badge bg-warning text-dark mb-2">
+        <i class="bi bi-star-fill"></i> Featured
+      </span>
+    {% endif %}
+    
+    <div class="mt-auto">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="product-price">{{ package.get_price_display }}</span>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="d-grid gap-2">
+        <form method="post" 
+              action="{% url 'quotes:add_to_cart' package.id %}" 
+              class="add-to-cart-form quick-add-form">
+          {% csrf_token %}
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="btn btn-primary-custom btn-sm w-100">
+            <i class="bi bi-cart-plus"></i> Add to Cart
+          </button>
+        </form>
+        <a href="{% url 'products:package_detail' package.slug %}" 
+           class="btn btn-outline-custom btn-sm w-100">
+          <i class="bi bi-info-circle"></i> View Details
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

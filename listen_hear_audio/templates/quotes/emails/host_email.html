@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Quote Request</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #4a4a4a;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+    }
+    .email-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background-color: #ffffff;
+    }
+    .header {
+      background-color: #232323;
+      color: #ffffff;
+      padding: 30px;
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #FFFF00;
+    }
+    .alert {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+    }
+    .content {
+      padding: 30px;
+    }
+    .content h2 {
+      color: #232323;
+      margin-top: 0;
+    }
+    .info-section {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .info-section h3 {
+      color: #0000FF;
+      margin-top: 0;
+      font-size: 18px;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .info-label {
+      font-weight: bold;
+      color: #6c757d;
+    }
+    .quote-number {
+      font-size: 28px;
+      color: #0000FF;
+      font-weight: bold;
+      text-align: center;
+      padding: 25px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 8px;
+      margin: 20px 0;
+      border: 2px solid #0000FF;
+    }
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    .items-table th {
+      background-color: #0000FF;
+      color: white;
+      padding: 12px;
+      text-align: left;
+    }
+    .items-table td {
+      padding: 12px;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .items-table tr:hover {
+      background-color: #f8f9fa;
+    }
+    .total-row {
+      font-weight: bold;
+      background-color: #e7f3ff;
+      font-size: 16px;
+    }
+    .action-button {
+      display: inline-block;
+      padding: 15px 30px;
+      background-color: #0000FF;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 4px;
+      margin: 20px 10px;
+      font-weight: bold;
+    }
+    .priority-high {
+      background-color: #dc3545;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .footer {
+      background-color: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🎧 Listen Hear Audio</h1>
+      <p style="margin: 10px 0 0 0;">New Quote Request Received</p>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <div class="alert">
+        <strong>⚠️ Action Required:</strong> A new quote request has been submitted and requires your attention.
+      </div>
+
+      <div class="quote-number">
+        Quote #{{ quote_request.quote_number }}
+        <div style="font-size: 14px; font-weight: normal; color: #6c757d; margin-top: 10px;">
+          Submitted: {{ quote_request.created_at|date:"F d, Y" }} at {{ quote_request.created_at|time:"g:i A" }}
+        </div>
+      </div>
+
+      <!-- Customer Information -->
+      <div class="info-section">
+        <h3>👤 Customer Information</h3>
+        <div class="info-grid">
+          <div class="info-label">Name:</div>
+          <div>{{ quote_request.contact_person }}</div>
+          
+          <div class="info-label">Email:</div>
+          <div><a href="mailto:{{ quote_request.email }}">{{ quote_request.email }}</a></div>
+          
+          <div class="info-label">Phone:</div>
+          <div><a href="tel:{{ quote_request.phone }}">{{ quote_request.phone }}</a></div>
+          
+          {% if quote_request.website %}
+          <div class="info-label">Website:</div>
+          <div><a href="{{ quote_request.website }}" target="_blank">{{ quote_request.website }}</a></div>
+          {% endif %}
+          
+          <div class="info-label">ZIP Code:</div>
+          <div>{{ quote_request.zip_code|default:"Not provided" }}</div>
+        </div>
+      </div>
+
+      <!-- Installation Address -->
+      <div class="info-section">
+        <h3>📍 Installation Address</h3>
+        <p style="white-space: pre-line; margin: 0;">{{ quote_request.address }}</p>
+      </div>
+
+      <!-- Project Details -->
+      {% if quote_request.notes %}
+      <div class="info-section">
+        <h3>📝 Project Details & Requirements</h3>
+        <p style="white-space: pre-line; margin: 0;">{{ quote_request.notes }}</p>
+      </div>
+      {% endif %}
+
+      <!-- Selected Packages -->
+      <div class="info-section">
+        <h3>📦 Selected Packages ({{ quote_request.get_total_items }} item{{ quote_request.get_total_items|pluralize }})</h3>
+        
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th>Package</th>
+              <th style="text-align: center; width: 80px;">Qty</th>
+              <th style="text-align: right; width: 120px;">Unit Price</th>
+              <th style="text-align: right; width: 120px;">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in quote_request.items.all %}
+            <tr>
+              <td>
+                <strong>{{ item.package_name }}</strong>
+                {% if item.package_description %}
+                  <br><small style="color: #6c757d;">{{ item.package_description }}</small>
+                {% endif %}
+                {% if item.notes %}
+                  <br><em style="color: #0000FF; font-size: 13px;">Customer Note: {{ item.notes }}</em>
+                {% endif %}
+              </td>
+              <td style="text-align: center;">{{ item.quantity }}</td>
+              <td style="text-align: right;">
+                {% if item.price_snapshot %}
+                  ${{ item.price_snapshot|floatformat:2 }}
+                {% else %}
+                  <span class="priority-high">CUSTOM</span>
+                {% endif %}
+              </td>
+              <td style="text-align: right;">
+                {% if item.price_snapshot %}
+                  <strong>${{ item.get_subtotal|floatformat:2 }}</strong>
+                {% else %}
+                  <span style="color: #ffc107;">TBD</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr class="total-row">
+              <td colspan="3" style="text-align: right;">Estimated Total:</td>
+              <td style="text-align: right; color: #0000FF; font-size: 18px;">
+                ${{ quote_request.estimated_total|floatformat:2 }}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="info-section" style="background-color: #e7f3ff;">
+        <h3>📊 Quote Summary</h3>
+        <div class="info-grid">
+          <div class="info-label">Total Items:</div>
+          <div>{{ quote_request.get_total_items }}</div>
+          
+          <div class="info-label">Estimated Value:</div>
+          <div style="color: #0000FF; font-weight: bold; font-size: 18px;">
+            ${{ quote_request.estimated_total|floatformat:2 }}
+          </div>
+          
+          <div class="info-label">Status:</div>
+          <div><span style="background-color: #ffc107; padding: 3px 8px; border-radius: 3px; color: #000;">{{ quote_request.get_status_display }}</span></div>
+          
+          <div class="info-label">Response Due:</div>
+          <div>Within 24-48 hours</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ request.scheme }}://{{ request.get_host }}/admin/quotes/quoterequest/{{ quote_request.id }}/change/" 
+           class="action-button">
+          View in Admin Panel
+        </a>
+        <a href="mailto:{{ quote_request.email }}?subject=RE: Quote Request {{ quote_request.quote_number }}" 
+           class="action-button" 
+           style="background-color: #28a745;">
+          Reply to Customer
+        </a>
+      </div>
+
+      <!-- Next Steps -->
+      <div class="alert" style="background-color: #d1ecf1; border-left-color: #0c5460;">
+        <strong>Next Steps:</strong>
+        <ol style="margin: 10px 0 0 0; padding-left: 20px;">
+          <li>Review the customer's selections and requirements</li>
+          <li>Prepare a detailed quote with customized pricing</li>
+          <li>Schedule a consultation call with the customer</li>
+          <li>Send the final quote within 24-48 hours</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>This is an automated notification from Listen Hear Audio</p>
+      <p style="font-size: 12px; color: #aaa;">
+        Quote Request ID: {{ quote_request.quote_number }} | 
+        Generated: {{ quote_request.created_at|date:"Y-m-d H:i:s" }}
+      </p>
+    </div>
+  </div>
+</body>
+</html>
