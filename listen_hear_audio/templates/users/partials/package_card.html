@@ -1,0 +1,127 @@
+{% load static %}
+
+<div class="card mb-3 package-card border-{{ status_color }}">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-8">
+        <h6 class="card-title mb-2">
+          {{ package.package_name }}
+          <span class="badge bg-{{ status_color }} ms-2">{{ package.get_status_display }}</span>
+        </h6>
+        
+        {% if package.package_description %}
+          <p class="text-muted small mb-2">{{ package.package_description|truncatewords:20 }}</p>
+        {% endif %}
+        
+        <div class="small text-muted mb-2">
+          <strong>Quantity:</strong> {{ package.quantity }}
+          {% if package.price_snapshot %}
+            | <strong>Price:</strong> ${{ package.price_snapshot|floatformat:2 }}
+          {% endif %}
+        </div>
+
+        <!-- Status-specific information -->
+        {% if package.status == 'pending' %}
+          <div class="alert alert-warning py-2 mb-2">
+            <small>
+              <i class="bi bi-exclamation-triangle"></i> 
+              <strong>Action Required:</strong> Request installation date
+            </small>
+          </div>
+        {% endif %}
+
+        {% if package.requested_install_date %}
+          <div class="mb-2">
+            <small>
+              <i class="bi bi-calendar-event"></i> 
+              <strong>Requested Date:</strong> {{ package.requested_install_date|date:"M d, Y" }}
+            </small>
+          </div>
+        {% endif %}
+
+        {% if package.confirmed_install_date %}
+          <div class="mb-2">
+            <small>
+              <i class="bi bi-calendar-check"></i> 
+              <strong>Confirmed Date:</strong> {{ package.confirmed_install_date|date:"M d, Y" }}
+            </small>
+          </div>
+        {% endif %}
+
+        {% if package.completion_date %}
+          <div class="mb-2">
+            <small>
+              <i class="bi bi-check-circle"></i> 
+              <strong>Completed:</strong> {{ package.completion_date|date:"M d, Y" }}
+            </small>
+          </div>
+        {% endif %}
+
+        <!-- Notes -->
+        {% if package.builder_notes %}
+          <div class="mb-2">
+            <small class="text-primary">
+              <i class="bi bi-chat-left-text"></i> 
+              <strong>Your Notes:</strong> {{ package.builder_notes }}
+            </small>
+          </div>
+        {% endif %}
+
+        {% if package.company_notes %}
+          <div class="mb-2">
+            <small class="text-info">
+              <i class="bi bi-building"></i> 
+              <strong>Company Notes:</strong> {{ package.company_notes }}
+            </small>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Actions Column -->
+      <div class="col-md-4 text-md-end">
+        {% if package.status == 'pending' %}
+          <button type="button" 
+                  class="btn btn-sm btn-primary-custom w-100"
+                  onclick="openRequestDateModal({{ package.id }}, '{{ package.package_name|escapejs }}')">
+            <i class="bi bi-calendar-plus"></i> Request Install Date
+          </button>
+        {% elif package.status == 'date_requested' %}
+          <div class="alert alert-warning py-2 mb-0">
+            <small>
+              <i class="bi bi-hourglass-split"></i> 
+              Awaiting company confirmation
+            </small>
+          </div>
+        {% elif package.status == 'scheduled' %}
+          <div class="alert alert-info py-2 mb-0">
+            <small>
+              <i class="bi bi-calendar-check"></i> 
+              Scheduled for<br>
+              <strong>{{ package.confirmed_install_date|date:"M d, Y" }}</strong>
+            </small>
+          </div>
+        {% elif package.status == 'in_progress' %}
+          <div class="alert alert-primary py-2 mb-0">
+            <small>
+              <i class="bi bi-tools"></i> 
+              Installation in progress
+            </small>
+          </div>
+        {% elif package.status == 'completed' %}
+          <div class="alert alert-success py-2 mb-0">
+            <small>
+              <i class="bi bi-check-circle-fill"></i> 
+              Installation complete
+            </small>
+          </div>
+        {% endif %}
+
+        {% if package.status != 'completed' and package.status != 'cancelled' %}
+          <small class="text-muted d-block mt-2">
+            Updated: {{ package.updated_at|date:"M d, g:i A" }}
+          </small>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

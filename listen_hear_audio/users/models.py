@@ -1,7 +1,7 @@
-
 from typing import ClassVar
 
 from django.contrib.auth.models import AbstractUser
+from django.db.models import BooleanField
 from django.db.models import CharField
 from django.db.models import EmailField
 from django.urls import reverse
@@ -23,6 +23,17 @@ class User(AbstractUser):
     last_name = None  # type: ignore[assignment]
     email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore[assignment]
+    
+    # Builder fields
+    is_builder = BooleanField(
+        default=False,
+        help_text="Designates whether this user is a builder/contractor with property management access."
+    )
+    company_name = CharField(
+        max_length=200,
+        blank=True,
+        help_text="Builder/contractor company name"
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -36,4 +47,6 @@ class User(AbstractUser):
             str: URL for user detail.
 
         """
+        if self.is_builder:
+            return reverse("users:builder_dashboard")
         return reverse("users:detail", kwargs={"pk": self.id})

@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Builder Dashboard - Listen Hear Audio{% endblock %}
+
+{% block content %}
+<div class="py-4">
+  <!-- Page Header -->
+  <div class="mb-4">
+    <h1 class="h2 fw-bold">
+      <i class="bi bi-tools"></i> Builder Dashboard
+    </h1>
+    <p class="text-muted">Welcome back, {{ request.user.name|default:request.user.email }}
+      {% if request.user.company_name %}
+        <span class="badge bg-secondary">{{ request.user.company_name }}</span>
+      {% endif %}
+    </p>
+  </div>
+
+  {% if properties %}
+    <!-- Properties Grid -->
+    <div class="row">
+      {% for property in properties %}
+        <div class="col-lg-6 col-xl-4 mb-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h5 class="card-title mb-0">
+                <i class="bi bi-building"></i> {{ property.name }}
+              </h5>
+            </div>
+            <div class="card-body">
+              <!-- Address -->
+              <div class="mb-3">
+                <small class="text-muted">
+                  <i class="bi bi-geo-alt"></i> {{ property.address|truncatewords:10 }}
+                </small>
+              </div>
+
+              <!-- Package Status Summary -->
+              {% with summary=property.get_package_status_summary %}
+              <div class="mb-3">
+                <h6 class="small text-muted mb-2">Package Status:</h6>
+                <div class="d-flex flex-wrap gap-2">
+                  {% if summary.pending > 0 %}
+                    <span class="badge bg-secondary">
+                      {{ summary.pending }} Pending
+                    </span>
+                  {% endif %}
+                  {% if summary.date_requested > 0 %}
+                    <span class="badge bg-warning text-dark">
+                      {{ summary.date_requested }} Date Requested
+                    </span>
+                  {% endif %}
+                  {% if summary.scheduled > 0 %}
+                    <span class="badge bg-info">
+                      {{ summary.scheduled }} Scheduled
+                    </span>
+                  {% endif %}
+                  {% if summary.in_progress > 0 %}
+                    <span class="badge bg-primary">
+                      {{ summary.in_progress }} In Progress
+                    </span>
+                  {% endif %}
+                  {% if summary.completed > 0 %}
+                    <span class="badge bg-success">
+                      {{ summary.completed }} Completed
+                    </span>
+                  {% endif %}
+                  {% if summary.total == 0 %}
+                    <span class="text-muted small">No packages</span>
+                  {% endif %}
+                </div>
+              </div>
+              {% endwith %}
+
+              <!-- Last Updated -->
+              <div class="mb-3">
+                <small class="text-muted">
+                  <i class="bi bi-clock"></i> Last updated: {{ property.updated_at|date:"M d, Y g:i A" }}
+                </small>
+              </div>
+
+              <!-- View Details Button -->
+              <div class="d-grid">
+                <a href="{% url 'users:builder_property_detail' property.pk %}" 
+                   class="btn btn-primary-custom">
+                  <i class="bi bi-arrow-right-circle"></i> View Details
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <!-- No Properties Message -->
+    <div class="text-center py-5">
+      <i class="bi bi-inbox display-1 text-muted"></i>
+      <h3 class="mt-4">No Properties Assigned</h3>
+      <p class="text-muted mb-4">
+        You don't have any properties assigned yet. Once Listen Hear Audio assigns you to a project,
+        it will appear here for you to manage.
+      </p>
+      <div class="alert alert-info d-inline-block">
+        <h6 class="mb-2">
+          <i class="bi bi-question-circle"></i> Need Help?
+        </h6>
+        <p class="mb-0">
+          Contact Listen Hear Audio at <a href="mailto:info@listenhearaudio.com">info@listenhearaudio.com</a>
+          or request a quote to get started.
+        </p>
+      </div>
+      <div class="mt-4">
+        <a href="{% url 'products:catalog' %}" class="btn btn-outline-custom">
+          <i class="bi bi-shop"></i> Browse Catalog
+        </a>
+        <a href="{% url 'quotes:cart' %}" class="btn btn-primary-custom">
+          <i class="bi bi-file-earmark-text"></i> Request Quote
+        </a>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+.card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+.badge {
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+}
+</style>
+{% endblock %}

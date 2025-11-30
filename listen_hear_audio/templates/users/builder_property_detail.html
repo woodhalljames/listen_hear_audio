@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ property.name }} - Builder Dashboard{% endblock %}
+
+{% block content %}
+<div class="py-4">
+  <!-- Back Button -->
+  <div class="mb-3">
+    <a href="{% url 'users:builder_dashboard' %}" class="btn btn-sm btn-outline-secondary">
+      <i class="bi bi-arrow-left"></i> Back to Dashboard
+    </a>
+  </div>
+
+  <!-- Property Header -->
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <h1 class="h3 mb-2">
+            <i class="bi bi-building"></i> {{ property.name }}
+          </h1>
+          <p class="text-muted mb-2">
+            <i class="bi bi-geo-alt"></i> {{ property.address }}
+          </p>
+          {% if property.property_type %}
+            <span class="badge bg-secondary">{{ property.property_type }}</span>
+          {% endif %}
+        </div>
+        <div class="col-md-4 text-md-end">
+          <small class="text-muted d-block">
+            <i class="bi bi-clock"></i> Last updated<br>
+            {{ property.updated_at|date:"M d, Y g:i A" }}
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Summary -->
+  <div class="row mb-4">
+    <div class="col-md-2">
+      <div class="card text-center">
+        <div class="card-body">
+          <h3 class="mb-0">{{ status_summary.total }}</h3>
+          <small class="text-muted">Total</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card text-center bg-light">
+        <div class="card-body">
+          <h3 class="mb-0 text-secondary">{{ status_summary.pending }}</h3>
+          <small class="text-muted">Pending</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card text-center bg-warning bg-opacity-10">
+        <div class="card-body">
+          <h3 class="mb-0 text-warning">{{ status_summary.date_requested }}</h3>
+          <small class="text-muted">Date Requested</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card text-center bg-info bg-opacity-10">
+        <div class="card-body">
+          <h3 class="mb-0 text-info">{{ status_summary.scheduled }}</h3>
+          <small class="text-muted">Scheduled</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card text-center bg-primary bg-opacity-10">
+        <div class="card-body">
+          <h3 class="mb-0 text-primary">{{ status_summary.in_progress }}</h3>
+          <small class="text-muted">In Progress</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card text-center bg-success bg-opacity-10">
+        <div class="card-body">
+          <h3 class="mb-0 text-success">{{ status_summary.completed }}</h3>
+          <small class="text-muted">Completed</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Packages Column -->
+    <div class="col-lg-8 mb-4">
+      <h4 class="mb-3">
+        <i class="bi bi-box-seam"></i> Packages
+      </h4>
+
+      <!-- Pending Packages -->
+      {% if packages_pending %}
+      <div class="mb-4">
+        <h5 class="text-muted mb-3">Pending - Action Required</h5>
+        {% for package in packages_pending %}
+          {% include 'users/partials/package_card.html' with package=package status_color='secondary' %}
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Date Requested Packages -->
+      {% if packages_date_requested %}
+      <div class="mb-4">
+        <h5 class="text-warning mb-3">Date Requested - Awaiting Confirmation</h5>
+        {% for package in packages_date_requested %}
+          {% include 'users/partials/package_card.html' with package=package status_color='warning' %}
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Scheduled Packages -->
+      {% if packages_scheduled %}
+      <div class="mb-4">
+        <h5 class="text-info mb-3">Scheduled</h5>
+        {% for package in packages_scheduled %}
+          {% include 'users/partials/package_card.html' with package=package status_color='info' %}
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- In Progress Packages -->
+      {% if packages_in_progress %}
+      <div class="mb-4">
+        <h5 class="text-primary mb-3">In Progress</h5>
+        {% for package in packages_in_progress %}
+          {% include 'users/partials/package_card.html' with package=package status_color='primary' %}
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <!-- Completed Packages -->
+      {% if packages_completed %}
+      <div class="mb-4">
+        <h5 class="text-success mb-3">Completed</h5>
+        {% for package in packages_completed %}
+          {% include 'users/partials/package_card.html' with package=package status_color='success' %}
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if not packages_pending and not packages_date_requested and not packages_scheduled and not packages_in_progress and not packages_completed %}
+        <div class="alert alert-info">
+          <i class="bi bi-info-circle"></i> No packages assigned to this property yet.
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Activity Timeline Column -->
+    <div class="col-lg-4">
+      <div class="card sticky-top" style="top: 20px;">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">
+            <i class="bi bi-clock-history"></i> Activity Timeline
+          </h5>
+        </div>
+        <div class="card-body" style="max-height: 600px; overflow-y: auto;">
+          {% if notes %}
+            {% for note in notes %}
+              <div class="mb-3 pb-3 border-bottom">
+                <div class="d-flex justify-content-between align-items-start mb-1">
+                  <span class="badge 
+                    {% if note.note_type == 'date_confirmation' %}bg-success
+                    {% elif note.note_type == 'date_request' %}bg-warning text-dark
+                    {% elif note.note_type == 'date_denial' %}bg-danger
+                    {% elif note.note_type == 'status_change' %}bg-primary
+                    {% else %}bg-secondary
+                    {% endif %}">
+                    {{ note.get_note_type_display }}
+                  </span>
+                  <small class="text-muted">{{ note.created_at|date:"M d, g:i A" }}</small>
+                </div>
+                <p class="mb-1 small">{{ note.message }}</p>
+                {% if note.created_by %}
+                  <small class="text-muted">
+                    <i class="bi bi-person"></i> {{ note.created_by.name|default:note.created_by.email }}
+                  </small>
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-muted mb-0">
+              <i class="bi bi-inbox"></i> No activity yet
+            </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Request Install Date Modal -->
+<div class="modal fade" id="requestDateModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Request Installation Date</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form method="post" id="requestDateForm">
+        {% csrf_token %}
+        <div class="modal-body">
+          <input type="hidden" name="package_id" id="modalPackageId">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Package: <span id="modalPackageName"></span></label>
+          </div>
+          <div class="mb-3">
+            <label for="requested_date" class="form-label">Preferred Install Date *</label>
+            <input type="date" 
+                   class="form-control" 
+                   id="requested_date" 
+                   name="requested_date" 
+                   required
+                   min="{{ today|date:'Y-m-d' }}">
+          </div>
+          <div class="mb-3">
+            <label for="builder_notes" class="form-label">Notes for Company (optional)</label>
+            <textarea class="form-control" 
+                      id="builder_notes" 
+                      name="builder_notes" 
+                      rows="3"
+                      placeholder="e.g., Please install after electrical work is completed"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary-custom">Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+// Request date modal
+let currentPackageId = null;
+
+function openRequestDateModal(packageId, packageName) {
+  currentPackageId = packageId;
+  document.getElementById('modalPackageId').value = packageId;
+  document.getElementById('modalPackageName').textContent = packageName;
+  
+  // Set form action
+  document.getElementById('requestDateForm').action = `/users/builder/package/${packageId}/request-date/`;
+  
+  const modal = new bootstrap.Modal(document.getElementById('requestDateModal'));
+  modal.show();
+}
+
+// Set minimum date to today
+document.addEventListener('DOMContentLoaded', function() {
+  const today = new Date().toISOString().split('T')[0];
+  const dateInput = document.getElementById('requested_date');
+  if (dateInput) {
+    dateInput.setAttribute('min', today);
+  }
+});
+</script>
+
+<style>
+.sticky-top {
+  z-index: 1020;
+}
+
+.package-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.package-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+</style>
+{% endblock %}
