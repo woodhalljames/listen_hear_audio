@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ property.name }} - Builder Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'builders:dashboard' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">{{ property.name }}</li>
+                </ol>
+            </nav>
+            <h1>{{ property.name }}</h1>
+            <p class="text-muted"><i class="bi bi-geo-alt"></i> {{ property.address }}</p>
+        </div>
+    </div>
+
+    <!-- Status Summary -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Project Status</h5>
+                    <div class="row text-center">
+                        <div class="col-6 col-md-2 mb-3 mb-md-0">
+                            <div class="h3 mb-0">{{ status_summary.total }}</div>
+                            <small class="text-muted">Total</small>
+                        </div>
+                        <div class="col-6 col-md-2 mb-3 mb-md-0">
+                            <div class="h3 mb-0 text-secondary">{{ status_summary.pending }}</div>
+                            <small class="text-muted">Pending</small>
+                        </div>
+                        <div class="col-6 col-md-2 mb-3 mb-md-0">
+                            <div class="h3 mb-0 text-warning">{{ status_summary.date_requested }}</div>
+                            <small class="text-muted">Requested</small>
+                        </div>
+                        <div class="col-6 col-md-2 mb-3 mb-md-0">
+                            <div class="h3 mb-0 text-info">{{ status_summary.scheduled }}</div>
+                            <small class="text-muted">Scheduled</small>
+                        </div>
+                        <div class="col-6 col-md-2 mb-3 mb-md-0">
+                            <div class="h3 mb-0 text-primary">{{ status_summary.in_progress }}</div>
+                            <small class="text-muted">In Progress</small>
+                        </div>
+                        <div class="col-6 col-md-2">
+                            <div class="h3 mb-0 text-success">{{ status_summary.completed }}</div>
+                            <small class="text-muted">Completed</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Packages -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="mb-3">Packages</h3>
+
+            <!-- Pending Packages -->
+            {% if packages_pending %}
+            <div class="card mb-3">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Pending</h5>
+                </div>
+                <div class="card-body">
+                    {% for package in packages_pending %}
+                    <div class="border-bottom pb-3 mb-3">
+                        <h6>{{ package.package_name }}</h6>
+                        <p class="text-muted small mb-2">{{ package.package_description|truncatewords:20 }}</p>
+                        <form method="post" action="{% url 'builders:request_install_date' package.pk %}" class="mt-3">
+                            {% csrf_token %}
+                            <div class="row align-items-end">
+                                <div class="col-md-4">
+                                    <label class="form-label small">Request Install Date</label>
+                                    <input type="date" name="requested_date" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small">Notes (Optional)</label>
+                                    <input type="text" name="builder_notes" class="form-control" placeholder="Add notes...">
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary btn-sm w-100">Request Date</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Date Requested Packages -->
+            {% if packages_date_requested %}
+            <div class="card mb-3">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0">Date Requested (Awaiting Confirmation)</h5>
+                </div>
+                <div class="card-body">
+                    {% for package in packages_date_requested %}
+                    <div class="border-bottom pb-3 mb-3">
+                        <h6>{{ package.package_name }}</h6>
+                        <p class="mb-1"><strong>Requested Date:</strong> {{ package.requested_install_date|date:"M d, Y" }}</p>
+                        {% if package.builder_notes %}
+                        <p class="mb-1"><strong>Your Notes:</strong> {{ package.builder_notes }}</p>
+                        {% endif %}
+                        {% if package.company_notes %}
+                        <div class="alert alert-info alert-sm mb-0 mt-2">
+                            <strong>Company Response:</strong> {{ package.company_notes }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Scheduled Packages -->
+            {% if packages_scheduled %}
+            <div class="card mb-3">
+                <div class="card-header bg-info">
+                    <h5 class="mb-0">Scheduled</h5>
+                </div>
+                <div class="card-body">
+                    {% for package in packages_scheduled %}
+                    <div class="border-bottom pb-3 mb-3">
+                        <h6>{{ package.package_name }}</h6>
+                        <p class="mb-1"><strong>Confirmed Install Date:</strong> {{ package.confirmed_install_date|date:"M d, Y" }}</p>
+                        {% if package.builder_notes %}
+                        <p class="mb-1"><strong>Notes:</strong> {{ package.builder_notes }}</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- In Progress Packages -->
+            {% if packages_in_progress %}
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">In Progress</h5>
+                </div>
+                <div class="card-body">
+                    {% for package in packages_in_progress %}
+                    <div class="border-bottom pb-3 mb-3">
+                        <h6>{{ package.package_name }}</h6>
+                        <p class="mb-1"><strong>Install Date:</strong> {{ package.confirmed_install_date|date:"M d, Y" }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Completed Packages -->
+            {% if packages_completed %}
+            <div class="card mb-3">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Completed</h5>
+                </div>
+                <div class="card-body">
+                    {% for package in packages_completed %}
+                    <div class="border-bottom pb-3 mb-3">
+                        <h6>{{ package.package_name }}</h6>
+                        <p class="mb-1"><strong>Completed:</strong> {{ package.completion_date|date:"M d, Y" }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Activity Timeline -->
+    {% if notes %}
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-3">Activity Timeline</h3>
+            <div class="card">
+                <div class="card-body">
+                    {% for note in notes %}
+                    <div class="d-flex mb-3 {% if not forloop.last %}border-bottom pb-3{% endif %}">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-circle-fill text-primary" style="font-size: 0.5rem;"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <strong class="text-primary">{{ note.get_note_type_display }}</strong>
+                                <small class="text-muted">{{ note.created_at|date:"M d, Y g:i A" }}</small>
+                            </div>
+                            <p class="mb-1">{{ note.message }}</p>
+                            {% if note.package %}
+                            <small class="text-muted">Package: {{ note.package.package_name }}</small>
+                            {% endif %}
+                            {% if note.created_by %}
+                            <br><small class="text-muted">By: {{ note.created_by.email }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -21,6 +21,8 @@ urlpatterns = [
     # E-commerce apps
     path("catalog/", include("listen_hear_audio.products.urls", namespace="products")),
     path("quote/", include("listen_hear_audio.quotes.urls", namespace="quotes")),
+    # Builders app
+    path("builders/", include("listen_hear_audio.builders.urls", namespace="builders")),
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]

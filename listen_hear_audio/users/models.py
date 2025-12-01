@@ -48,5 +48,5 @@ class User(AbstractUser):
 
         """
         if self.is_builder:
-            return reverse("users:builder_dashboard")
+            return reverse("builders:dashboard")
         return reverse("users:detail", kwargs={"pk": self.id})
