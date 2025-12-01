@@ -22,6 +22,7 @@ class UserAdmin(auth_admin.UserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
         (_("Personal info"), {"fields": ("name",)}),
+        (_("Builder info"), {"fields": ("is_builder", "company_name")}),
         (
             _("Permissions"),
             {
@@ -36,15 +37,16 @@ class UserAdmin(auth_admin.UserAdmin):
         ),
         (_("Important dates"), {"fields": ("last_login", "date_joined")}),
     )
-    list_display = ["email", "name", "is_superuser"]
-    search_fields = ["name"]
+    list_display = ["email", "name", "is_builder", "company_name", "is_superuser"]
+    list_filter = ["is_builder", "is_staff", "is_superuser", "is_active"]
+    search_fields = ["name", "email", "company_name"]
     ordering = ["id"]
     add_fieldsets = (
         (
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "password1", "password2"),
+                "fields": ("email", "password1", "password2", "is_builder", "company_name"),
             },
         ),
     )

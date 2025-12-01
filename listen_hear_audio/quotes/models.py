@@ -160,6 +160,8 @@ class QuoteRequestItem(models.Model):
 
     def get_subtotal(self):
         """Get subtotal for this item"""
+        if self.price_snapshot is None:
+            return 0
         return self.price_snapshot * self.quantity
 
 
