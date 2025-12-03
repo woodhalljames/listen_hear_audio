@@ -71,7 +71,10 @@
           <h5 class="mb-3">
             <i class="bi bi-geo-alt"></i> Installation Address
           </h5>
-          <p class="mb-4">{{ quote_request.address|linebreaks }}</p>
+          <p class="mb-4">
+            {% if quote_request.street %}{{ quote_request.street }}<br>{% endif %}
+            {{ quote_request.city }}{% if quote_request.state %}, {{ quote_request.state }}{% endif %} {{ quote_request.zip_code }}
+          </p>
 
           {% if quote_request.notes %}
             <!-- Project Notes -->
@@ -87,48 +90,79 @@
           <h5 class="mb-3">
             <i class="bi bi-box-seam"></i> Selected Packages
           </h5>
+
+          {% regroup quote_request.items.all by package.category.property_type as property_groups %}
+          {% for property_group in property_groups %}
+            <!-- Property Type Section -->
+            <div class="mb-4">
+              <h6 class="text-primary fw-bold border-bottom pb-2 mb-3">
+                <i class="bi bi-building"></i> {{ property_group.grouper.name }}
+              </h6>
+
+              {% regroup property_group.list by package.category as category_groups %}
+              {% for category_group in category_groups %}
+                <!-- Category Section -->
+                <div class="ms-3 mb-3">
+                  <div class="text-muted fw-semibold mb-2">{{ category_group.grouper.name }}</div>
+
+                  <div class="table-responsive">
+                    <table class="table table-sm">
+                      <thead class="table-light">
+                        <tr>
+                          <th>Package</th>
+                          <th class="text-center">Qty</th>
+                          <th class="text-end">Price</th>
+                          <th class="text-end">Subtotal</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for item in category_group.list %}
+                          <tr>
+                            <td>
+                              <strong>{{ item.package_name }}</strong>
+                              {% if item.notes %}
+                                <br><small class="text-muted">Note: {{ item.notes }}</small>
+                              {% endif %}
+                            </td>
+                            <td class="text-center">{{ item.quantity }}</td>
+                            <td class="text-end">
+                              {% if item.price_snapshot %}
+                                ${{ item.price_snapshot|floatformat:2 }}
+                              {% else %}
+                                <span class="text-muted">Custom</span>
+                              {% endif %}
+                            </td>
+                            <td class="text-end">
+                              {% if item.price_snapshot %}
+                                <strong>${{ item.get_subtotal|floatformat:2 }}</strong>
+                              {% else %}
+                                <span class="text-muted">TBD</span>
+                              {% endif %}
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          {% endfor %}
+
+          <!-- Total -->
           <div class="table-responsive">
-            <table class="table table-sm">
-              <thead class="table-light">
-                <tr>
-                  <th>Package</th>
-                  <th class="text-center">Qty</th>
-                  <th class="text-end">Price</th>
-                  <th class="text-end">Subtotal</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for item in quote_request.items.all %}
-                  <tr>
-                    <td>
-                      <strong>{{ item.package_name }}</strong>
-                      {% if item.notes %}
-                        <br><small class="text-muted">Note: {{ item.notes }}</small>
-                      {% endif %}
-                    </td>
-                    <td class="text-center">{{ item.quantity }}</td>
-                    <td class="text-end">
-                      {% if item.price_snapshot %}
-                        ${{ item.price_snapshot|floatformat:2 }}
-                      {% else %}
-                        <span class="text-muted">Custom</span>
-                      {% endif %}
-                    </td>
-                    <td class="text-end">
-                      {% if item.price_snapshot %}
-                        <strong>${{ item.get_subtotal|floatformat:2 }}</strong>
-                      {% else %}
-                        <span class="text-muted">TBD</span>
-                      {% endif %}
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
+            <table class="table table-sm mb-0">
               <tfoot class="table-light">
                 <tr>
                   <td colspan="3" class="text-end"><strong>Estimated Total:</strong></td>
                   <td class="text-end">
-                    <strong class="text-primary h5 mb-0">${{ quote_request.estimated_total|floatformat:2 }}</strong>
+                    <strong class="text-primary h5 mb-0">
+                      {% if quote_request.estimated_total > 0 %}
+                        ${{ quote_request.estimated_total|floatformat:2 }}
+                      {% else %}
+                        <span class="text-muted" style="font-size: 0.9rem;">Final price after consult</span>
+                      {% endif %}
+                    </strong>
                   </td>
                 </tr>
               </tfoot>
@@ -169,7 +203,7 @@
                   <h6>Team Review</h6>
                   <p class="text-muted mb-0">
                     Our expert team will review your selections and requirements 
-                    to prepare a customized quote.
+                    to prepare for your new smart home or audio install.
                   </p>
                 </div>
               </div>
@@ -182,8 +216,8 @@
                 <div>
                   <h6>Custom Quote</h6>
                   <p class="text-muted mb-0">
-                    Within 24-48 hours, you'll receive a detailed quote via email 
-                    with pricing and recommendations.
+                    Within 2-3 business days, you'll receive call or email to get more specific details
+                    with pricing, goals, and recommendations.
                   </p>
                 </div>
               </div>
@@ -196,7 +230,7 @@
                 <div>
                   <h6>Consultation</h6>
                   <p class="text-muted mb-0">
-                    We'll schedule a consultation to discuss your project in detail 
+                    We'll schedule a full consultation to discuss your project in detail 
                     and answer any questions.
                   </p>
                 </div>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Property Assigned</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%);
+            color: #ffffff;
+            padding: 25px;
+            border-radius: 8px 8px 0 0;
+            margin: -30px -30px 30px -30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .property-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .info-label {
+            font-weight: 600;
+            min-width: 120px;
+            color: #495057;
+        }
+        .info-value {
+            color: #212529;
+        }
+        .packages-section {
+            margin: 20px 0;
+        }
+        .package-item {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        .package-name {
+            font-weight: 600;
+            color: #1a2332;
+            margin-bottom: 5px;
+        }
+        .package-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
+            color: #1a2332;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>🏠 New Property Assigned</h1>
+            <p style="margin: 10px 0 0 0; font-size: 16px;">You've been added to a new property</p>
+        </div>
+
+        <p>Hello,</p>
+        <p>You have been assigned to manage a new property. Please review the details below:</p>
+
+        <div class="property-info">
+            <div class="info-row">
+                <span class="info-label">Property Name:</span>
+                <span class="info-value"><strong>{{ property.name }}</strong></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Address:</span>
+                <span class="info-value">{{ property.address }}</span>
+            </div>
+            {% if property.property_type %}
+            <div class="info-row">
+                <span class="info-label">Property Type:</span>
+                <span class="info-value">{{ property.property_type }}</span>
+            </div>
+            {% endif %}
+            <div class="info-row">
+                <span class="info-label">Created:</span>
+                <span class="info-value">{{ property.created_at|date:"F d, Y" }}</span>
+            </div>
+        </div>
+
+        {% if property.packages.exists %}
+        <div class="packages-section">
+            <h3 style="color: #1a2332; margin-bottom: 15px;">Assigned Packages ({{ property.packages.count }})</h3>
+            {% for package in property.packages.all %}
+            <div class="package-item">
+                <div class="package-name">{{ package.package_name }}</div>
+                {% if package.package_description %}
+                <p style="margin: 5px 0; color: #6c757d; font-size: 14px;">{{ package.package_description|truncatewords:20 }}</p>
+                {% endif %}
+                <span class="package-status status-{{ package.status }}">{{ package.get_status_display }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{ config.website }}/builders/property/{{ property.id }}/" class="cta-button">View Property Details</a>
+        </div>
+
+        <div style="background-color: #e7f3ff; padding: 15px; border-left: 4px solid #0066cc; border-radius: 4px; margin: 20px 0;">
+            <strong>Next Steps:</strong>
+            <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+                <li>Review the assigned packages</li>
+                <li>Request installation dates as needed</li>
+                <li>Add notes or updates to keep everyone informed</li>
+            </ul>
+        </div>
+
+        <p>If you have any questions, please contact us at {{ config.email }}.</p>
+
+        <div class="footer">
+            <p><strong>{{ config.business_name }}</strong></p>
+            <p>{{ config.email }} | {{ config.phone }}</p>
+        </div>
+    </div>
+</body>
+</html>

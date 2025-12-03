@@ -1,7 +1,8 @@
 from allauth.account.forms import SignupForm
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from django.contrib.auth import forms as admin_forms
-from django.forms import EmailField
+from django import forms
+from django.forms import EmailField, BooleanField, CharField
 from django.utils.translation import gettext_lazy as _
 
 from .models import User
@@ -34,6 +35,37 @@ class UserSignupForm(SignupForm):
     Default fields will be added automatically.
     Check UserSocialSignupForm for accounts created from social.
     """
+
+    is_builder = BooleanField(
+        label=_("I am a Builder/Contractor/Designer"),
+        required=False,
+        help_text=_("Check this box if you are registering as a builder.")
+    )
+
+    company_name = CharField(
+        max_length=255,
+        label=_("Company Name/Website"),
+        required=False,
+        help_text=_("Required if you are a builder/contractor/designer.")
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        is_builder = cleaned_data.get('is_builder', False)
+        company_name = cleaned_data.get('company_name', '')
+
+        # Require company name if user is a builder
+        if is_builder and not company_name:
+            self.add_error('company_name', _('Company name is required for builders/contractors/designers.'))
+
+        return cleaned_data
+
+    def save(self, request):
+        user = super().save(request)
+        user.is_builder = self.cleaned_data.get('is_builder', False)
+        user.company_name = self.cleaned_data.get('company_name', '')
+        user.save()
+        return user
 
 
 class UserSocialSignupForm(SocialSignupForm):

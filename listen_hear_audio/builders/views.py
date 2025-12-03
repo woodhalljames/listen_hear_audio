@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from datetime import datetime
 
 from .models import Property, PurchasedPackage, PropertyNote
+from .tasks import send_date_request_email
 
 
 class BuilderRequiredMixin(UserPassesTestMixin):
@@ -107,9 +108,8 @@ def request_install_date(request, package_id):
         created_by=request.user
     )
 
-    # Send email notification to company (you can implement this in tasks.py)
-    # from listen_hear_audio.builders.tasks import notify_company_date_request
-    # notify_company_date_request.delay(package.id)
+    # Send email notification to company
+    send_date_request_email.delay(package.id)
 
     messages.success(request, f'Installation date requested for {package.package_name}')
 

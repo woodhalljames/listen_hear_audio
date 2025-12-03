@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation Date Confirmed</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            color: #ffffff;
+            padding: 25px;
+            border-radius: 8px 8px 0 0;
+            margin: -30px -30px 30px -30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .success-badge {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 8px 16px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .confirmed-date {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #10b981;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .confirmed-date .date {
+            font-size: 28px;
+            font-weight: 700;
+            color: #065f46;
+            margin: 10px 0;
+        }
+        .package-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .info-label {
+            font-weight: 600;
+            min-width: 150px;
+            color: #495057;
+        }
+        .info-value {
+            color: #212529;
+        }
+        .notes-section {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
+            color: #1a2332;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .calendar-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>✅ Installation Date Confirmed</h1>
+            <p style="margin: 10px 0 0 0; font-size: 16px;">Your installation has been scheduled</p>
+        </div>
+
+        <div class="success-badge">
+            ✓ CONFIRMED
+        </div>
+
+        <p>Great news! The installation date has been confirmed for your package.</p>
+
+        <div class="confirmed-date">
+            <div class="calendar-icon">📅</div>
+            <div style="color: #065f46; font-weight: 600; font-size: 14px; text-transform: uppercase;">Confirmed Installation Date</div>
+            <div class="date">{{ package.confirmed_install_date|date:"F d, Y" }}</div>
+        </div>
+
+        <div class="package-info">
+            <h3 style="color: #1a2332; margin-top: 0;">Installation Details</h3>
+            <div class="info-row">
+                <span class="info-label">Package:</span>
+                <span class="info-value"><strong>{{ package.package_name }}</strong></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Property:</span>
+                <span class="info-value">{{ property.name }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Address:</span>
+                <span class="info-value">{{ property.address }}</span>
+            </div>
+            {% if property.property_type %}
+            <div class="info-row">
+                <span class="info-label">Property Type:</span>
+                <span class="info-value">{{ property.property_type }}</span>
+            </div>
+            {% endif %}
+            <div class="info-row">
+                <span class="info-label">Quantity:</span>
+                <span class="info-value">{{ package.quantity }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Status:</span>
+                <span class="info-value"><strong style="color: #16a34a;">{{ package.get_status_display }}</strong></span>
+            </div>
+        </div>
+
+        {% if package.company_notes %}
+        <div class="notes-section">
+            <h4 style="margin-top: 0; color: #1a2332;">Company Notes:</h4>
+            <p style="margin: 0; color: #495057;">{{ package.company_notes }}</p>
+        </div>
+        {% endif %}
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{ config.website }}/builders/property/{{ property.id }}/" class="cta-button">View Property Details</a>
+        </div>
+
+        <div style="background-color: #e7f3ff; padding: 15px; border-left: 4px solid #0066cc; border-radius: 4px; margin: 20px 0;">
+            <strong>📋 Preparation Checklist:</strong>
+            <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+                <li>Ensure site is ready for installation</li>
+                <li>Confirm access to property on scheduled date</li>
+                <li>Review package requirements and specifications</li>
+                <li>Contact us if you need to reschedule</li>
+            </ul>
+        </div>
+
+        <p>If you have any questions or need to make changes, please contact us immediately at {{ config.email }} or {{ config.phone }}.</p>
+
+        <div class="footer">
+            <p><strong>{{ config.business_name }}</strong></p>
+            <p>{{ config.email }} | {{ config.phone }}</p>
+        </div>
+    </div>
+</body>
+</html>

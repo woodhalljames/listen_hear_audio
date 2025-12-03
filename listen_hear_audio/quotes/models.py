@@ -68,6 +68,8 @@ class CartItem(models.Model):
 
     def get_subtotal(self):
         """Get subtotal for this item"""
+        if self.package.is_custom:
+            return 0  # Custom packages don't have a price until quoted
         return self.package.starting_price * self.quantity
 
 
@@ -96,8 +98,10 @@ class QuoteRequest(models.Model):
     contact_person = models.CharField(max_length=200)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
-    address = models.TextField(help_text="Full installation address")
-    zip_code = models.CharField(max_length=10, blank=True)
+    street = models.CharField(max_length=300, blank=True, help_text="Street address")
+    city = models.CharField(max_length=100, help_text="City")
+    state = models.CharField(max_length=2, blank=True, help_text="State (2-letter abbreviation)")
+    zip_code = models.CharField(max_length=10)
     website = models.URLField(blank=True)
     notes = models.TextField(blank=True, help_text="Customer notes and special requests")
     
@@ -105,7 +109,33 @@ class QuoteRequest(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     estimated_total = models.DecimalField(max_digits=10, decimal_places=2)
     pdf_path = models.FileField(upload_to='quotes/', blank=True, null=True)
-    
+
+    # Admin finalization
+    admin_notes = models.TextField(
+        blank=True,
+        help_text="Internal notes for admin team (not visible to customer)"
+    )
+    final_total = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        help_text="Final quoted price (overrides estimated total when set)"
+    )
+    finalized_at = models.DateTimeField(
+        blank=True,
+        null=True,
+        help_text="When the quote was finalized and sent to customer"
+    )
+    finalized_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='finalized_quotes',
+        help_text="Admin user who finalized this quote"
+    )
+
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -131,6 +161,19 @@ class QuoteRequest(models.Model):
         """Get total number of items"""
         return sum(item.quantity for item in self.items.all())
 
+    def get_effective_total(self):
+        """Get the final total if set, otherwise estimated total"""
+        return self.final_total if self.final_total is not None else self.estimated_total
+
+    def is_finalized(self):
+        """Check if quote has been finalized"""
+        return self.finalized_at is not None
+
+    def recalculate_estimated_total(self):
+        """Recalculate estimated total from items"""
+        self.estimated_total = sum(item.get_subtotal() for item in self.items.all())
+        return self.estimated_total
+
 
 class QuoteRequestItem(models.Model):
     """Items in a quote request - snapshot of package at time of quote"""
@@ -145,7 +188,13 @@ class QuoteRequestItem(models.Model):
     # Snapshot of package details at time of quote
     package_name = models.CharField(max_length=200)
     package_description = models.TextField(blank=True)
-    price_snapshot = models.DecimalField(max_digits=10, decimal_places=2)
+    price_snapshot = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        help_text="Price per unit (leave blank for custom pricing)"
+    )
     
     quantity = models.PositiveIntegerField(default=1)
     notes = models.TextField(blank=True)

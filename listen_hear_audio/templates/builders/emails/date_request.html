@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation Date Requested</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: #ffffff;
+            padding: 25px;
+            border-radius: 8px 8px 0 0;
+            margin: -30px -30px 30px -30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .alert-badge {
+            background-color: #fef2f2;
+            color: #991b1b;
+            padding: 8px 16px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .request-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .info-label {
+            font-weight: 600;
+            min-width: 150px;
+            color: #495057;
+        }
+        .info-value {
+            color: #212529;
+        }
+        .requested-date {
+            background-color: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .requested-date .date {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a2332;
+            margin: 10px 0;
+        }
+        .notes-section {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
+            color: #1a2332;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 10px;
+            text-align: center;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>📅 Installation Date Requested</h1>
+            <p style="margin: 10px 0 0 0; font-size: 16px;">Action Required</p>
+        </div>
+
+        <div class="alert-badge">
+            🔔 NEW REQUEST
+        </div>
+
+        <p>A builder has requested an installation date for a package. Please review and confirm or suggest an alternative date.</p>
+
+        <div class="requested-date">
+            <div style="color: #6c757d; font-weight: 600; font-size: 14px; text-transform: uppercase;">Requested Installation Date</div>
+            <div class="date">{{ package.requested_install_date|date:"F d, Y" }}</div>
+        </div>
+
+        <div class="request-info">
+            <h3 style="color: #1a2332; margin-top: 0;">Package Details</h3>
+            <div class="info-row">
+                <span class="info-label">Package:</span>
+                <span class="info-value"><strong>{{ package.package_name }}</strong></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Property:</span>
+                <span class="info-value">{{ property.name }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Address:</span>
+                <span class="info-value">{{ property.address }}</span>
+            </div>
+            {% if property.property_type %}
+            <div class="info-row">
+                <span class="info-label">Property Type:</span>
+                <span class="info-value">{{ property.property_type }}</span>
+            </div>
+            {% endif %}
+            <div class="info-row">
+                <span class="info-label">Quantity:</span>
+                <span class="info-value">{{ package.quantity }}</span>
+            </div>
+            {% if package.price_snapshot %}
+            <div class="info-row">
+                <span class="info-label">Price:</span>
+                <span class="info-value">${{ package.get_subtotal|floatformat:2 }}</span>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if package.builder_notes %}
+        <div class="notes-section">
+            <h4 style="margin-top: 0; color: #1a2332;">Builder Notes:</h4>
+            <p style="margin: 0; color: #495057;">{{ package.builder_notes }}</p>
+        </div>
+        {% endif %}
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{ config.website }}/admin/builders/purchasedpackage/{{ package.id }}/change/" class="cta-button">Confirm Date</a>
+            <a href="{{ config.website }}/builders/property/{{ property.id }}/" class="cta-button" style="background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);">View Property</a>
+        </div>
+
+        <div style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; border-radius: 4px; margin: 20px 0;">
+            <strong>⚠️ Action Required:</strong>
+            <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+                <li>Review your schedule for the requested date</li>
+                <li>Confirm the date in the admin panel or suggest an alternative</li>
+                <li>Add any company notes for the builder</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p><strong>{{ config.business_name }}</strong></p>
+            <p>{{ config.email }} | {{ config.phone }}</p>
+        </div>
+    </div>
+</body>
+</html>

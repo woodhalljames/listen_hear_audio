@@ -36,19 +36,42 @@ class CheckoutForm(forms.Form):
         })
     )
     
-    address = forms.CharField(
-        label='Installation Address',
-        widget=forms.Textarea(attrs={
+    street = forms.CharField(
+        label='Street Address (Optional)',
+        required=False,
+        widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'rows': 3,
-            'placeholder': 'Street Address\nCity, State ZIP'
+            'placeholder': '123 Main Street'
         })
     )
-    
+
+    city = forms.CharField(
+        max_length=100,
+        label='City',
+        required=True,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'City'
+        })
+    )
+
+    state = forms.CharField(
+        max_length=2,
+        label='State (Optional)',
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'PA',
+            'maxlength': '2',
+            'style': 'text-transform: uppercase;'
+        }),
+        help_text='2-letter state abbreviation'
+    )
+
     zip_code = forms.CharField(
         max_length=10,
-        required=False,
         label='ZIP Code',
+        required=True,
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'placeholder': '12345'
@@ -81,3 +104,8 @@ class CheckoutForm(forms.Form):
         # Remove common formatting characters
         phone = phone.replace('(', '').replace(')', '').replace('-', '').replace(' ', '').replace('+', '')
         return phone
+
+    def clean_state(self):
+        """Convert state to uppercase"""
+        state = self.cleaned_data.get('state', '')
+        return state.upper()

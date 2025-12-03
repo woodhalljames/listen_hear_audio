@@ -82,8 +82,12 @@ def get_cart_context(cart):
     items = cart.items.select_related(
         'package__category__property_type',
         'package__subcategory'
+    ).order_by(
+        'package__category__property_type__name',
+        'package__category__name',
+        'package__name'
     ).all()
-    
+
     return {
         'cart': cart,
         'cart_items': items,

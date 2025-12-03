@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Property, PurchasedPackage, PropertyNote
+from .tasks import send_property_creation_email, send_date_confirmation_email
 
 
 class PurchasedPackageInline(admin.TabularInline):
@@ -69,6 +70,15 @@ class PropertyAdmin(admin.ModelAdmin):
             return format_html('<a href="{}" target="_blank">{}</a>', url, obj.quote_request.quote_number)
         return "-"
     quote_link.short_description = 'Original Quote'
+
+    def save_model(self, request, obj, form, change):
+        """Trigger email notification when property is created"""
+        is_new = not change
+        super().save_model(request, obj, form, change)
+
+        # If this is a new property and it has builders assigned, send notification
+        if is_new and obj.builders.exists():
+            send_property_creation_email.delay(obj.id)
 
 
 @admin.register(PurchasedPackage)
@@ -141,9 +151,13 @@ class PurchasedPackageAdmin(admin.ModelAdmin):
                 message=f"Installation date confirmed for {package.confirmed_install_date}",
                 created_by=request.user
             )
+
+            # Send email notification to all parties
+            send_date_confirmation_email.delay(package.id)
+
             updated += 1
 
-        self.message_user(request, f'{updated} installation date(s) confirmed.')
+        self.message_user(request, f'{updated} installation date(s) confirmed. Email notifications sent.')
     confirm_requested_dates.short_description = 'Confirm requested installation dates'
 
     def mark_in_progress(self, request, queryset):
@@ -204,6 +218,10 @@ class PurchasedPackageAdmin(admin.ModelAdmin):
                 # Update status to scheduled if not already
                 if obj.status == 'date_requested':
                     obj.status = 'scheduled'
+
+                # Send email notification to all parties
+                send_date_confirmation_email.delay(obj.id)
+
         super().save_model(request, obj, form, change)
 
 

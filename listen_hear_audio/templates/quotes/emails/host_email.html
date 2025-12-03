@@ -171,7 +171,10 @@
       <!-- Installation Address -->
       <div class="info-section">
         <h3>📍 Installation Address</h3>
-        <p style="white-space: pre-line; margin: 0;">{{ quote_request.address }}</p>
+        <p style="margin: 0;">
+          {% if quote_request.street %}{{ quote_request.street }}<br>{% endif %}
+          {{ quote_request.city }}{% if quote_request.state %}, {{ quote_request.state }}{% endif %} {{ quote_request.zip_code }}
+        </p>
       </div>
 
       <!-- Project Details -->
@@ -258,12 +261,12 @@
 
       <!-- Action Buttons -->
       <div style="text-align: center; margin: 30px 0;">
-        <a href="{{ request.scheme }}://{{ request.get_host }}/admin/quotes/quoterequest/{{ quote_request.id }}/change/" 
+        <a href="{{ site_url }}/admin/quotes/quoterequest/{{ quote_request.id }}/change/"
            class="action-button">
           View in Admin Panel
         </a>
-        <a href="mailto:{{ quote_request.email }}?subject=RE: Quote Request {{ quote_request.quote_number }}" 
-           class="action-button" 
+        <a href="mailto:{{ quote_request.email }}?subject=RE: Quote Request {{ quote_request.quote_number }}"
+           class="action-button"
            style="background-color: #28a745;">
           Reply to Customer
         </a>

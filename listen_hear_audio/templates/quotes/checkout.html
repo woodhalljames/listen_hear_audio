@@ -84,37 +84,56 @@
 
             <!-- Address -->
             <div class="mb-3">
-              <label for="{{ form.address.id_for_label }}" class="form-label">
-                <i class="bi bi-geo-alt"></i> Installation Address <span class="text-danger">*</span>
+              <label for="{{ form.street.id_for_label }}" class="form-label">
+                <i class="bi bi-geo-alt"></i> Street Address (Optional)
               </label>
-              {{ form.address }}
-              {% if form.address.errors %}
-                <div class="text-danger small">{{ form.address.errors }}</div>
+              {{ form.street }}
+              {% if form.street.errors %}
+                <div class="text-danger small">{{ form.street.errors }}</div>
               {% endif %}
-              <small class="form-text text-muted">Include street address, city, state, and ZIP</small>
             </div>
 
-            <!-- ZIP Code and Website Row -->
+            <!-- City, State, ZIP Row -->
             <div class="row">
-              <div class="col-md-6 mb-3">
+              <div class="col-md-5 mb-3">
+                <label for="{{ form.city.id_for_label }}" class="form-label">
+                  <i class="bi bi-building"></i> City <span class="text-danger">*</span>
+                </label>
+                {{ form.city }}
+                {% if form.city.errors %}
+                  <div class="text-danger small">{{ form.city.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="{{ form.state.id_for_label }}" class="form-label">
+                  <i class="bi bi-map"></i> State
+                </label>
+                {{ form.state }}
+                {% if form.state.errors %}
+                  <div class="text-danger small">{{ form.state.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-4 mb-3">
                 <label for="{{ form.zip_code.id_for_label }}" class="form-label">
-                  <i class="bi bi-mailbox"></i> ZIP Code
+                  <i class="bi bi-mailbox"></i> ZIP Code <span class="text-danger">*</span>
                 </label>
                 {{ form.zip_code }}
                 {% if form.zip_code.errors %}
                   <div class="text-danger small">{{ form.zip_code.errors }}</div>
                 {% endif %}
               </div>
-              <div class="col-md-6 mb-3">
-                <label for="{{ form.website.id_for_label }}" class="form-label">
-                  <i class="bi bi-globe"></i> Website (Optional)
-                </label>
-                {{ form.website }}
-                {% if form.website.errors %}
-                  <div class="text-danger small">{{ form.website.errors }}</div>
-                {% endif %}
-                <small class="form-text text-muted">For builders/contractors</small>
-              </div>
+            </div>
+
+            <!-- Website -->
+            <div class="mb-3">
+              <label for="{{ form.website.id_for_label }}" class="form-label">
+                <i class="bi bi-globe"></i> Website (Optional)
+              </label>
+              {{ form.website }}
+              {% if form.website.errors %}
+                <div class="text-danger small">{{ form.website.errors }}</div>
+              {% endif %}
+              <small class="form-text text-muted">For builders/contractors</small>
             </div>
 
             <!-- Notes -->
@@ -135,8 +154,8 @@
             <div class="alert alert-light border">
               <small>
                 <i class="bi bi-shield-check"></i>
-                <strong>Privacy:</strong> Your information is secure and will only be used to prepare your quote.
-                We'll never share your details with third parties.
+                <strong>Legal:</strong> All pricing provided is an estimate only and is subject to change based on final design, site conditions, and product availability.
+                Your information is secure and will only be used to prepare your quote. We never share details with third parties.
               </small>
             </div>
 
@@ -161,21 +180,42 @@
           <h5 class="mb-0">Order Summary</h5>
         </div>
         <div class="card-body">
-          <!-- Items List -->
+          <!-- Items List Grouped by Property Type and Category -->
           <div class="mb-3">
-            {% for item in cart_items %}
-              <div class="d-flex justify-content-between mb-2">
-                <div>
-                  <div class="small">{{ item.package.name }}</div>
-                  <small class="text-muted">Qty: {{ item.quantity }}</small>
+            {% regroup cart_items by package.category.property_type as property_groups %}
+            {% for property_group in property_groups %}
+              <!-- Property Type Header -->
+              <div class="mb-3">
+                <div class="small fw-bold text-primary mb-2" style="border-bottom: 1px solid #dee2e6; padding-bottom: 4px;">
+                  <i class="bi bi-building"></i> {{ property_group.grouper.name }}
                 </div>
-                <div class="text-end">
-                  {% if item.package.is_custom %}
-                    <small class="text-muted">Custom</small>
-                  {% else %}
-                    <small>${{ item.get_subtotal|floatformat:2 }}</small>
-                  {% endif %}
-                </div>
+
+                {% regroup property_group.list by package.category as category_groups %}
+                {% for category_group in category_groups %}
+                  <!-- Category Header -->
+                  <div class="ms-2 mb-2">
+                    <div class="small text-muted fw-semibold">
+                      {{ category_group.grouper.name }}
+                    </div>
+
+                    <!-- Items in this category -->
+                    {% for item in category_group.list %}
+                      <div class="d-flex justify-content-between mb-2 ms-2">
+                        <div>
+                          <div class="small">{{ item.package.name }}</div>
+                          <small class="text-muted">Qty: {{ item.quantity }}</small>
+                        </div>
+                        <div class="text-end">
+                          {% if item.package.is_custom %}
+                            <small class="text-muted">Custom</small>
+                          {% else %}
+                            <small>${{ item.get_subtotal|floatformat:2 }}</small>
+                          {% endif %}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endfor %}
               </div>
             {% endfor %}
           </div>
@@ -188,13 +228,23 @@
           </div>
           <div class="d-flex justify-content-between mb-3">
             <span>Estimated Total:</span>
-            <strong class="text-primary h5 mb-0">${{ estimated_total|floatformat:2 }}</strong>
+            <strong class="text-primary h5 mb-0">
+              {% if estimated_total > 0 %}
+                ${{ estimated_total|floatformat:2 }}
+              {% else %}
+                <span class="text-muted" style="font-size: 0.9rem;">Final price after consult</span>
+              {% endif %}
+            </strong>
           </div>
-          
+
           <div class="alert alert-info mb-0">
             <small>
               <i class="bi bi-info-circle"></i>
-              Final pricing will be provided in your custom quote.
+              {% if estimated_total > 0 %}
+                Final pricing will be provided in your custom quote.
+              {% else %}
+                Custom package pricing will be provided after consultation.
+              {% endif %}
             </small>
           </div>
         </div>
@@ -208,9 +258,9 @@
           </h6>
           <ol class="small text-muted ps-3 mb-0">
             <li class="mb-2">We review your selections and requirements</li>
-            <li class="mb-2">Our team prepares a detailed quote</li>
-            <li class="mb-2">You'll receive an email within 24-48 hours</li>
-            <li>We schedule a consultation to discuss details</li>
+            <li class="mb-2">Our team contacts you, gathering more specifics</li>
+            <li class="mb-2">You'll receive a more detailed quote within 2-3 business days</li>
+            <li>You have the smartest home in the neighborhood</li>
           </ol>
         </div>
       </div>

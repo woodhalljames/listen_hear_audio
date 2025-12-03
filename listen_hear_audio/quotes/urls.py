@@ -11,4 +11,5 @@ urlpatterns = [
     path('checkout/', views.checkout_view, name='checkout'),
     path('confirmation/<str:quote_number>/', views.quote_confirmation_view, name='quote_confirmation'),
     path('quote/<str:quote_number>/', views.QuoteDetailView.as_view(), name='quote_detail'),
+    path('quote/<str:quote_number>/download/', views.download_quote_pdf, name='download_pdf'),
 ]

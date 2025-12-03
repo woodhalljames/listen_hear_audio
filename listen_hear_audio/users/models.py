@@ -6,6 +6,7 @@ from django.db.models import CharField
 from django.db.models import EmailField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from slugify import slugify
 
 from .managers import UserManager
 
@@ -33,6 +34,32 @@ class User(AbstractUser):
         max_length=200,
         blank=True,
         help_text="Builder/contractor company name"
+    )
+
+    # Installation address fields (for business purposes)
+    street = CharField(
+        _("Street Address"),
+        max_length=300,
+        blank=True,
+        help_text="Street address for installations"
+    )
+    city = CharField(
+        _("City"),
+        max_length=100,
+        blank=True,
+        help_text="City"
+    )
+    state = CharField(
+        _("State"),
+        max_length=2,
+        blank=True,
+        help_text="State (2-letter abbreviation)"
+    )
+    zip_code = CharField(
+        _("ZIP Code"),
+        max_length=10,
+        blank=True,
+        help_text="ZIP code"
     )
 
     USERNAME_FIELD = "email"

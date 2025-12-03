@@ -118,18 +118,19 @@
     <div class="content">
       <h2>Thank You, {{ quote_request.contact_person }}!</h2>
       
-      <p>We've received your quote request and our team is already reviewing your selections. You'll hear from us within 24-48 hours with a detailed quote.</p>
+      <p>We've received your quote request and our team is already reviewing your selections. You'll hear from us within 2-3 business days for more details on your quote.</p>
 
       <div class="quote-number">
         Quote #{{ quote_request.quote_number }}
       </div>
-
       <!-- Quote Details -->
       <div class="info-box">
         <strong>Submitted:</strong> {{ quote_request.created_at|date:"F d, Y" }} at {{ quote_request.created_at|time:"g:i A" }}<br>
         <strong>Contact Email:</strong> {{ quote_request.email }}<br>
         <strong>Phone:</strong> {{ quote_request.phone }}<br>
-        <strong>Installation Address:</strong> {{ quote_request.address|linebreaks }}
+        <strong>Installation Address:</strong><br>
+        {% if quote_request.street %}{{ quote_request.street }}<br>{% endif %}
+        {{ quote_request.city }}{% if quote_request.state %}, {{ quote_request.state }}{% endif %} {{ quote_request.zip_code }}
       </div>
 
       {% if quote_request.notes %}
@@ -186,7 +187,7 @@
       </table>
 
       <p style="font-size: 14px; color: #6c757d;">
-        <em>Note: This is an estimate based on starting prices. Final pricing will be provided in your custom quote after consultation.</em>
+        <em>Note: This is an estimate used for estimating starting prices of our products and services. Final pricing will be provided in your custom quote after consultation.</em>
       </p>
 
       <!-- Next Steps -->
@@ -195,7 +196,7 @@
         <ol>
           <li><strong>Review:</strong> Our team reviews your selections and requirements</li>
           <li><strong>Custom Quote:</strong> We prepare a detailed quote tailored to your needs</li>
-          <li><strong>Contact:</strong> You'll receive your quote via email within 24-48 hours</li>
+          <li><strong>Contact:</strong> You'll receive your quote via email within hours</li>
           <li><strong>Consultation:</strong> We'll schedule a call to discuss your project in detail</li>
         </ol>
       </div>

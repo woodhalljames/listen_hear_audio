@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.decorators.http import require_POST
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse, Http404
 from django.urls import reverse
 from django.views.generic import DetailView
+from django.contrib.auth.decorators import login_required
 from .models import QuoteRequest, QuoteRequestItem
 from .cart import get_or_create_cart, add_to_cart, update_cart_item, remove_from_cart, get_cart_context
 from .forms import CheckoutForm
@@ -92,8 +93,10 @@ def checkout_view(request):
                 contact_person=form.cleaned_data['contact_person'],
                 email=form.cleaned_data['email'],
                 phone=form.cleaned_data['phone'],
-                address=form.cleaned_data['address'],
-                zip_code=form.cleaned_data.get('zip_code', ''),
+                street=form.cleaned_data.get('street', ''),
+                city=form.cleaned_data['city'],
+                state=form.cleaned_data.get('state', ''),
+                zip_code=form.cleaned_data['zip_code'],
                 website=form.cleaned_data.get('website', ''),
                 notes=form.cleaned_data.get('notes', ''),
                 estimated_total=cart.get_estimated_total()
@@ -113,11 +116,16 @@ def checkout_view(request):
             
             # Clear the cart
             cart.clear()
-            
-            # Generate PDF and send emails asynchronously
-            generate_quote_pdf.delay(quote_request.id)
-            send_quote_emails.delay(quote_request.id)
-            
+
+            # Chain tasks: generate PDF first, then send emails
+            # This prevents the 60-second delay from retries
+            from celery import chain
+            task_chain = chain(
+                generate_quote_pdf.si(quote_request.id),
+                send_quote_emails.si(quote_request.id)
+            )
+            task_chain.apply_async()
+
             # Redirect to confirmation
             return redirect('quotes:quote_confirmation', quote_number=quote_request.quote_number)
     else:
@@ -159,10 +167,32 @@ class QuoteDetailView(DetailView):
     context_object_name = 'quote_request'
     slug_field = 'quote_number'
     slug_url_kwarg = 'quote_number'
-    
+
     def get_queryset(self):
         """Users can only view their own quotes"""
         qs = super().get_queryset()
         if self.request.user.is_authenticated:
             return qs.filter(user=self.request.user)
         return qs.none()
+
+
+@login_required
+def download_quote_pdf(request, quote_number):
+    """Download PDF for a quote request"""
+    quote_request = get_object_or_404(QuoteRequest, quote_number=quote_number)
+
+    # Ensure user can only download their own quotes
+    if quote_request.user != request.user:
+        raise Http404("Quote not found")
+
+    # Check if PDF exists
+    if not quote_request.pdf_path:
+        messages.error(request, "PDF is not yet available. Please try again in a moment.")
+        return redirect('users:detail', pk=request.user.pk)
+
+    # Return PDF as download
+    return FileResponse(
+        quote_request.pdf_path.open('rb'),
+        as_attachment=True,
+        filename=f'quote_{quote_request.quote_number}.pdf'
+    )

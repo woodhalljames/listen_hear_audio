@@ -22,107 +22,126 @@
             <h5 class="mb-0">Selected Packages ({{ total_items }} item{{ total_items|pluralize }})</h5>
           </div>
           <div class="card-body p-0">
-            <div class="table-responsive">
-              <table class="table table-hover mb-0">
-                <thead class="table-light">
-                  <tr>
-                    <th scope="col">Package</th>
-                    <th scope="col" class="text-center">Quantity</th>
-                    <th scope="col" class="text-end">Price</th>
-                    <th scope="col" class="text-end">Subtotal</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for item in cart_items %}
-                    <tr>
-                      <td>
-                        <div class="d-flex align-items-center">
-                          {% if item.package.image %}
-                            <img src="{{ item.package.image.url }}" 
-                                 alt="{{ item.package.name }}" 
-                                 class="cart-item-image me-3">
-                          {% else %}
-                            <div class="cart-item-image-placeholder me-3">
-                              <i class="bi bi-image"></i>
-                            </div>
-                          {% endif %}
-                          <div>
-                            <h6 class="mb-1">
-                              <a href="{% url 'products:package_detail' item.package.slug %}" 
-                                 class="text-decoration-none text-dark">
-                                {{ item.package.name }}
-                              </a>
-                            </h6>
-                            <small class="text-muted">
-                              {{ item.package.category.name }}
-                              {% if item.package.subcategory %}
-                                › {{ item.package.subcategory.name }}
+            {% regroup cart_items by package.category.property_type as property_groups %}
+            {% for property_group in property_groups %}
+              <!-- Property Type Header -->
+              <div class="bg-primary text-white px-3 py-2 {% if not forloop.first %}mt-3{% endif %}">
+                <h6 class="mb-0">
+                  <i class="bi bi-building"></i> {{ property_group.grouper.name }}
+                </h6>
+              </div>
+
+              {% regroup property_group.list by package.category as category_groups %}
+              {% for category_group in category_groups %}
+                <!-- Category Subheader -->
+                <div class="bg-light px-3 py-2 border-bottom">
+                  <div class="text-muted fw-semibold">{{ category_group.grouper.name }}</div>
+                </div>
+
+                <!-- Items Table for this Category -->
+                <div class="table-responsive">
+                  <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th scope="col">Package</th>
+                        <th scope="col" class="text-center">Quantity</th>
+                        <th scope="col" class="text-end">Price</th>
+                        <th scope="col" class="text-end">Subtotal</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for item in category_group.list %}
+                        <tr>
+                          <td>
+                            <div class="d-flex align-items-center">
+                              {% if item.package.image %}
+                                <img src="{{ item.package.image.url }}"
+                                     alt="{{ item.package.name }}"
+                                     class="cart-item-image me-3">
+                              {% else %}
+                                <div class="cart-item-image-placeholder me-3">
+                                  <i class="bi bi-image"></i>
+                                </div>
                               {% endif %}
-                            </small>
-                            {% if item.notes %}
-                              <div class="mt-1">
-                                <small class="text-info">
-                                  <i class="bi bi-chat-left-text"></i> {{ item.notes }}
+                              <div>
+                                <h6 class="mb-1">
+                                  <a href="{% url 'products:package_detail' item.package.slug %}"
+                                     class="text-decoration-none text-dark">
+                                    {{ item.package.name }}
+                                  </a>
+                                </h6>
+                                <small class="text-muted">
+                                  {{ item.package.category.name }}
+                                  {% if item.package.subcategory %}
+                                    › {{ item.package.subcategory.name }}
+                                  {% endif %}
                                 </small>
+                                {% if item.notes %}
+                                  <div class="mt-1">
+                                    <small class="text-info">
+                                      <i class="bi bi-chat-left-text"></i> {{ item.notes }}
+                                    </small>
+                                  </div>
+                                {% endif %}
                               </div>
+                            </div>
+                          </td>
+                          <td class="text-center align-middle">
+                            <form method="post"
+                                  action="{% url 'quotes:update_cart' item.package.id %}"
+                                  class="d-inline">
+                              {% csrf_token %}
+                              <div class="input-group input-group-sm" style="width: 120px; margin: 0 auto;">
+                                <input type="number"
+                                       name="quantity"
+                                       value="{{ item.quantity }}"
+                                       min="1"
+                                       max="99"
+                                       class="form-control form-control-sm text-center"
+                                       onchange="this.form.submit()">
+                                <button type="submit" class="btn btn-outline-secondary btn-sm">
+                                  <i class="bi bi-arrow-clockwise"></i>
+                                </button>
+                              </div>
+                              <input type="hidden" name="notes" value="{{ item.notes }}">
+                            </form>
+                          </td>
+                          <td class="text-end align-middle">
+                            {% if item.package.is_custom %}
+                              <span class="text-muted">Custom</span>
+                            {% else %}
+                              ${{ item.package.starting_price|floatformat:2 }}
                             {% endif %}
-                          </div>
-                        </div>
-                      </td>
-                      <td class="text-center align-middle">
-                        <form method="post" 
-                              action="{% url 'quotes:update_cart' item.package.id %}" 
-                              class="d-inline">
-                          {% csrf_token %}
-                          <div class="input-group input-group-sm" style="width: 120px; margin: 0 auto;">
-                            <input type="number" 
-                                   name="quantity" 
-                                   value="{{ item.quantity }}" 
-                                   min="1" 
-                                   max="99" 
-                                   class="form-control form-control-sm text-center"
-                                   onchange="this.form.submit()">
-                            <button type="submit" class="btn btn-outline-secondary btn-sm">
-                              <i class="bi bi-arrow-clockwise"></i>
-                            </button>
-                          </div>
-                          <input type="hidden" name="notes" value="{{ item.notes }}">
-                        </form>
-                      </td>
-                      <td class="text-end align-middle">
-                        {% if item.package.is_custom %}
-                          <span class="text-muted">Custom</span>
-                        {% else %}
-                          ${{ item.package.starting_price|floatformat:2 }}
-                        {% endif %}
-                      </td>
-                      <td class="text-end align-middle">
-                        <strong class="text-primary">
-                          {% if item.package.is_custom %}
-                            TBD
-                          {% else %}
-                            ${{ item.get_subtotal|floatformat:2 }}
-                          {% endif %}
-                        </strong>
-                      </td>
-                      <td class="text-end align-middle">
-                        <form method="post" 
-                              action="{% url 'quotes:remove_from_cart' item.package.id %}" 
-                              class="d-inline"
-                              onsubmit="return confirm('Remove this item from cart?');">
-                          {% csrf_token %}
-                          <button type="submit" 
-                                  class="btn btn-sm btn-outline-danger">
-                            <i class="bi bi-trash"></i>
-                          </button>
-                        </form>
-                      </td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
+                          </td>
+                          <td class="text-end align-middle">
+                            <strong class="text-primary">
+                              {% if item.package.is_custom %}
+                                TBD
+                              {% else %}
+                                ${{ item.get_subtotal|floatformat:2 }}
+                              {% endif %}
+                            </strong>
+                          </td>
+                          <td class="text-end align-middle">
+                            <form method="post"
+                                  action="{% url 'quotes:remove_from_cart' item.package.id %}"
+                                  class="d-inline"
+                                  onsubmit="return confirm('Remove this item from cart?');">
+                              {% csrf_token %}
+                              <button type="submit"
+                                      class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                              </button>
+                            </form>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              {% endfor %}
+            {% endfor %}
           </div>
         </div>
 
@@ -147,13 +166,23 @@
             </div>
             <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
               <span>Estimated Total:</span>
-              <strong class="text-primary h5 mb-0">${{ estimated_total|floatformat:2 }}</strong>
+              <strong class="text-primary h5 mb-0">
+                {% if estimated_total > 0 %}
+                  ${{ estimated_total|floatformat:2 }}
+                {% else %}
+                  <span class="text-muted" style="font-size: 0.9rem;">Final price after consult</span>
+                {% endif %}
+              </strong>
             </div>
-            
+
             <div class="alert alert-info py-2 mb-3">
               <small>
                 <i class="bi bi-info-circle"></i>
-                This is an estimated total. Final pricing will be provided after consultation.
+                {% if estimated_total > 0 %}
+                  This is an estimated total. Final pricing will be provided after consultation.
+                {% else %}
+                  Custom package pricing will be provided after consultation.
+                {% endif %}
               </small>
             </div>
 

@@ -29,6 +29,8 @@ h1, h2, h3, h4, h5, h6 {
   background-color: var(--primary-blue) !important;
   padding: 1rem 0;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 1050; /* Ensure navbar is above sticky elements */
 }
 
 .navbar-custom .navbar-brand {
@@ -623,4 +625,19 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   font-weight: bold;
   font-size: 1.2rem;
+}
+
+/* Ensure sticky elements don't cover dropdown menus */
+.sticky-top {
+  z-index: 1020; /* Lower than navbar (1050) */
+}
+
+/* Ensure card headers with bg-primary have white text */
+.card-header.bg-primary {
+  color: white !important;
+}
+
+.card-header.bg-primary h4,
+.card-header.bg-primary h5 {
+  color: white !important;
 }

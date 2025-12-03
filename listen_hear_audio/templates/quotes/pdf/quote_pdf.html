@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Quote {{ quote_request.quote_number }}</title>
+  <style>
+    @page {
+      size: letter;
+      margin: 0.65in;
+    }
+
+    body {
+      font-family: 'Helvetica', 'Arial', sans-serif;
+      font-size: 10pt;
+      line-height: 1.4;
+      color: #2c3e50;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #0000FF;
+    }
+
+    .header-left {
+      flex: 1;
+    }
+
+    .header-logo {
+      max-height: 60px;
+      max-width: 150px;
+      margin-right: 15px;
+    }
+
+    .header h1 {
+      color: #0000FF;
+      font-size: 18pt;
+      margin: 0 0 5px 0;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .header .tagline {
+      color: #6c757d;
+      font-size: 9pt;
+      margin: 0;
+      font-style: italic;
+    }
+
+    .quote-title {
+      background-color: #0000FF;
+      color: white;
+      padding: 10px 15px;
+      text-align: center;
+      margin: 20px 0 15px 0;
+      font-size: 14pt;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .info-section {
+      margin: 15px 0;
+    }
+
+    .info-section h2 {
+      color: #0000FF;
+      font-size: 11pt;
+      border-bottom: 1px solid #0000FF;
+      padding-bottom: 4px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+      font-size: 9pt;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #495057;
+    }
+
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 9pt;
+    }
+
+    .items-table thead {
+      background-color: #0000FF;
+      color: white;
+    }
+
+    .items-table th {
+      padding: 8px 6px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 9pt;
+    }
+
+    .items-table td {
+      padding: 8px 6px;
+      border-bottom: 1px solid #dee2e6;
+      vertical-align: top;
+    }
+
+    .items-table tbody tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+
+    .item-name {
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 9pt;
+    }
+
+    .item-description {
+      color: #6c757d;
+      font-size: 8pt;
+      margin-top: 3px;
+      line-height: 1.3;
+    }
+
+    .item-notes {
+      color: #0000FF;
+      font-size: 8pt;
+      font-style: italic;
+      margin-top: 3px;
+    }
+
+    .total-row {
+      background-color: #e7f3ff !important;
+      font-weight: bold;
+      font-size: 10pt;
+    }
+
+    .total-row td {
+      padding: 10px 6px;
+      border-top: 2px solid #0000FF;
+      border-bottom: 2px solid #0000FF;
+    }
+
+    .total-amount {
+      color: #0000FF;
+      font-size: 13pt;
+      font-weight: bold;
+    }
+
+    .notes-section {
+      background-color: #f8f9fa;
+      padding: 10px;
+      margin: 12px 0;
+      border-left: 3px solid #ffc107;
+    }
+
+    .notes-section h3 {
+      margin: 0 0 6px 0;
+      color: #495057;
+      font-size: 10pt;
+      font-weight: 600;
+    }
+
+    .disclaimer {
+      background-color: #fff3cd;
+      border: 1px solid #ffc107;
+      padding: 10px;
+      margin: 15px 0 12px 0;
+      font-size: 8pt;
+      line-height: 1.3;
+    }
+
+    .disclaimer h3 {
+      margin: 0 0 6px 0;
+      color: #856404;
+      font-size: 9pt;
+      font-weight: 600;
+    }
+
+    .footer {
+      margin-top: 25px;
+      padding-top: 12px;
+      border-top: 1px solid #dee2e6;
+      text-align: center;
+      font-size: 8pt;
+      color: #6c757d;
+    }
+
+    .footer .contact-info {
+      margin: 5px 0;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1>{{ config.business_name|default:"LISTEN HEAR AUDIO" }}</h1>
+      <p class="tagline">Professional Smart Home Audio Solutions</p>
+    </div>
+    {% if config.business_logo %}
+      <img src="{{ config.business_logo.path }}" class="header-logo" alt="{{ config.business_name }}">
+    {% endif %}
+  </div>
+
+  <!-- Quote Title -->
+  <div class="quote-title">
+    {% if quote_request.is_finalized %}
+      FINAL QUOTE #{{ quote_request.quote_number }}
+    {% else %}
+      QUOTE ESTIMATE #{{ quote_request.quote_number }}
+    {% endif %}
+  </div>
+
+  <!-- Customer Information -->
+  <div class="info-section">
+    <h2>Customer Information</h2>
+    <div class="info-grid">
+      <div class="info-label">Contact Person:</div>
+      <div>{{ quote_request.contact_person }}</div>
+
+      <div class="info-label">Email:</div>
+      <div>{{ quote_request.email }}</div>
+
+      <div class="info-label">Phone:</div>
+      <div>{{ quote_request.phone }}</div>
+
+      <div class="info-label">Installation Address:</div>
+      <div>
+        {% if quote_request.street %}{{ quote_request.street }}<br>{% endif %}
+        {{ quote_request.city }}{% if quote_request.state %}, {{ quote_request.state }}{% endif %} {{ quote_request.zip_code }}
+      </div>
+
+      {% if quote_request.website %}
+      <div class="info-label">Website:</div>
+      <div>{{ quote_request.website }}</div>
+      {% endif %}
+
+      <div class="info-label">Date:</div>
+      <div>{{ quote_request.created_at|date:"F d, Y" }}</div>
+
+      {% if quote_request.is_finalized %}
+      <div class="info-label">Status:</div>
+      <div>Finalized Quote</div>
+      {% else %}
+      <div class="info-label">Status:</div>
+      <div>Estimate - Pending Review</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Project Details -->
+  {% if quote_request.notes %}
+  <div class="notes-section">
+    <h3>Project Details & Requirements</h3>
+    <p style="margin: 0; white-space: pre-line; font-size: 9pt; line-height: 1.4;">{{ quote_request.notes }}</p>
+  </div>
+  {% endif %}
+
+  <!-- Selected Packages -->
+  <div class="info-section">
+    <h2>Selected Packages</h2>
+
+    {% regroup quote_request.items.all by package.category.property_type as property_groups %}
+    {% for property_group in property_groups %}
+      <!-- Property Type Header -->
+      <h3 style="color: #0000FF; font-size: 10pt; margin-top: 15px; margin-bottom: 8px; border-bottom: 1px solid #0000FF; padding-bottom: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+        {{ property_group.grouper.name }}
+      </h3>
+
+      {% regroup property_group.list by package.category as category_groups %}
+      {% for category_group in category_groups %}
+        <!-- Category Header -->
+        <div style="margin-left: 10px; margin-bottom: 10px;">
+          <h4 style="color: #495057; font-size: 9pt; margin-bottom: 6px; font-weight: 600;">{{ category_group.grouper.name }}</h4>
+
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th style="width: 50%;">Package Description</th>
+                <th style="width: 10%; text-align: center;">Qty</th>
+                <th style="width: 20%; text-align: right;">Unit Price</th>
+                <th style="width: 20%; text-align: right;">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in category_group.list %}
+              <tr>
+                <td>
+                  <div class="item-name">{{ item.package_name }}</div>
+                  {% if item.package_description %}
+                    <div class="item-description">{{ item.package_description }}</div>
+                  {% endif %}
+                  {% if item.notes %}
+                    <div class="item-notes">Note: {{ item.notes }}</div>
+                  {% endif %}
+                </td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-right">
+                  {% if item.price_snapshot %}
+                    ${{ item.price_snapshot|floatformat:2 }}
+                  {% else %}
+                    Custom Quote
+                  {% endif %}
+                </td>
+                <td class="text-right">
+                  {% if item.price_snapshot %}
+                    ${{ item.get_subtotal|floatformat:2 }}
+                  {% else %}
+                    TBD
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endfor %}
+    {% endfor %}
+
+    <!-- Total -->
+    <table class="items-table" style="margin-top: 20px;">
+      <tfoot>
+        <tr class="total-row">
+          <td colspan="3" class="text-right">
+            <strong>
+              {% if quote_request.is_finalized %}
+                TOTAL PRICE:
+              {% else %}
+                ESTIMATED TOTAL:
+              {% endif %}
+            </strong>
+          </td>
+          <td class="text-right">
+            <span class="total-amount">
+              {% if quote_request.get_effective_total > 0 %}
+                ${{ quote_request.get_effective_total|floatformat:2 }}
+              {% else %}
+                Final price after consult
+              {% endif %}
+            </span>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <h3>Important Information</h3>
+    {% if quote_request.is_finalized %}
+    <p style="margin: 0; font-size: 8pt; line-height: 1.3;">
+      <strong>This is a final quote.</strong> Pricing is based on the specifications and packages listed. Any changes to the scope of work, site conditions, or custom requirements may affect the final price.
+    </p>
+    <p style="margin: 6px 0 0 0; font-size: 8pt; line-height: 1.3;">
+      All installations include professional-grade equipment, expert installation, system configuration, and customer training. Please review all details carefully and contact us with any questions.
+    </p>
+    {% else %}
+    <p style="margin: 0; font-size: 8pt; line-height: 1.3;">
+      <strong>This is an estimate only.</strong> {{ config.quote_disclaimer|default:"This estimate is based on the packages selected and starting prices shown. Final pricing will be determined after a site evaluation and consultation to ensure all project requirements are met. Prices are subject to change based on site conditions, custom requirements, and product availability." }}
+    </p>
+    <p style="margin: 6px 0 0 0; font-size: 8pt; line-height: 1.3;">
+      All installations include professional-grade equipment, expert installation, system configuration, and customer training. Additional costs may apply for custom work, or structural modifications.
+    </p>
+    {% endif %}
+  </div>
+
+  <!-- Next Steps -->
+  <div class="info-section">
+    <h2>Next Steps</h2>
+    {% if quote_request.is_finalized %}
+    <ol style="margin: 6px 0; padding-left: 20px; font-size: 9pt; line-height: 1.5;">
+      <li style="margin-bottom: 4px;">Review this quote carefully and ensure all specifications meet your requirements</li>
+      <li style="margin-bottom: 4px;">Contact us with any questions or requested changes</li>
+      <li style="margin-bottom: 4px;">To accept this quote, reply to our email or call us directly</li>
+      <li style="margin-bottom: 4px;">Upon acceptance, we'll schedule your installation and begin preparation</li>
+    </ol>
+    {% else %}
+    <ol style="margin: 6px 0; padding-left: 20px; font-size: 9pt; line-height: 1.5;">
+      <li style="margin-bottom: 4px;">Our team will review your requirements and selections</li>
+      <li style="margin-bottom: 4px;">We'll contact you within 24-48 hours to schedule a consultation</li>
+      <li style="margin-bottom: 4px;">After consultation and site evaluation, we'll provide a final detailed quote</li>
+      <li style="margin-bottom: 4px;">Upon acceptance, we'll schedule your installation</li>
+    </ol>
+    {% endif %}
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="contact-info">
+      <strong>{{ config.business_name|default:"Listen Hear Audio" }}</strong>
+    </div>
+    {% if config.business_address %}
+    <div class="contact-info">
+      {{ config.business_address }}
+    </div>
+    {% endif %}
+    <div class="contact-info">
+      {% if config.business_phone %}Phone: {{ config.business_phone }} | {% endif %}
+      Email: {{ config.business_email|default:"info@listenhearaudio.com" }}
+    </div>
+    {% if config.business_website %}
+    <div class="contact-info">
+      Web: {{ config.business_website }}
+    </div>
+    {% endif %}
+    <div style="margin-top: 15px; font-size: 8pt;">
+      <p>{% now "Y" %} Listen Hear Audio. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>
