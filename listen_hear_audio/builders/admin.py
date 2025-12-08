@@ -7,8 +7,8 @@ class PurchasedPackageInline(admin.TabularInline):
     """Inline admin for purchased packages"""
     model = PurchasedPackage
     extra = 0
-    fields = ('package_name', 'status', 'requested_install_date', 'confirmed_install_date', 'builder_notes', 'company_notes')
-    readonly_fields = ('package_name',)
+    fields = ('package_name', 'installation_phase_snapshot', 'status', 'requested_install_date', 'confirmed_install_date', 'builder_notes', 'company_notes')
+    readonly_fields = ('package_name', 'installation_phase_snapshot')
 
 
 class PropertyNoteInline(admin.TabularInline):
@@ -87,12 +87,12 @@ class PurchasedPackageAdmin(admin.ModelAdmin):
     list_display = ('package_name', 'property_link', 'status_badge', 'requested_install_date', 'confirmed_install_date', 'updated_at')
     list_filter = ('status', 'created_at', 'requested_install_date', 'confirmed_install_date')
     search_fields = ('package_name', 'property__name', 'property__address')
-    readonly_fields = ('created_at', 'updated_at', 'package_name', 'package_description', 'price_snapshot')
+    readonly_fields = ('created_at', 'updated_at', 'package_name', 'package_description', 'installation_phase_snapshot', 'price_snapshot')
     actions = ['confirm_requested_dates', 'mark_in_progress', 'mark_completed']
 
     fieldsets = (
         ('Package Information', {
-            'fields': ('property', 'package', 'package_name', 'package_description', 'price_snapshot', 'quantity')
+            'fields': ('property', 'package', 'package_name', 'package_description', 'installation_phase_snapshot', 'price_snapshot', 'quantity')
         }),
         ('Status & Dates', {
             'fields': ('status', 'requested_install_date', 'confirmed_install_date', 'completion_date'),

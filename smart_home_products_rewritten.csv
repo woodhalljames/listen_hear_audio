@@ -1,0 +1,67 @@
+category,type,item,labor_Phase_Name,Unit Price
+Pre-Wire Packages,Cat5e Wiring,Basic Cat5e Pre-Wire Package,Pre-Drywall,1299.0
+Pre-Wire Packages,Cat5e Wiring,Premium Cat5e Pre-Wire Package,Pre-Drywall,2199.0
+Pre-Wire Packages,Cat5e Wiring,Economy Cat5e Starter Package,Pre-Drywall,649.0
+Pre-Wire Packages,Cat6 Wiring,Standard Cat6 Pre-Wire Package,Pre-Drywall,1799.0
+Pre-Wire Packages,Cat6 Wiring,Luxury Cat6 Pre-Wire Package,Pre-Drywall,3499.0
+Pre-Wire Packages,Cat6 Wiring,Builder Grade Cat6 Package,Pre-Drywall,999.0
+Speaker Pre-Wire,Distributed Audio,Whole Home Audio Pre-Wire,Pre-Drywall,1599.0
+Speaker Pre-Wire,Distributed Audio,Premium Multi-Zone Audio Pre-Wire,Pre-Drywall,2799.0
+Speaker Pre-Wire,Distributed Audio,Basic Audio Pre-Wire Package,Pre-Drywall,799.0
+Security Pre-Wire,Camera Systems,8-Camera Security Pre-Wire,Pre-Drywall,1399.0
+Security Pre-Wire,Camera Systems,Premium 16-Camera Security Package,Pre-Drywall,2699.0
+Security Pre-Wire,Camera Systems,Basic 4-Camera Security Pre-Wire,Pre-Drywall,699.0
+Audio Systems,Multi-Room Audio,Sonos Whole Home Package,Post-Drywall,3499.0
+Audio Systems,Multi-Room Audio,Custom Distributed Audio System,Post-Drywall,5999.0
+Audio Systems,Multi-Room Audio,Budget Bluetooth Audio Package,Post-Drywall,1299.0
+Automation & Networking,Home Automation,Complete Smart Home Package,Post-Drywall,12999.0
+Automation & Networking,Home Automation,Smart Home Starter Package,Post-Drywall,2999.0
+Automation & Networking,Home Automation,DIY Smart Home Kit,Post-Drywall,1499.0
+Automation & Networking,Home Network,Residential Network Package,Post-Drywall,2499.0
+Automation & Networking,Home Network,Premium Home Office Network,Post-Drywall,4999.0
+Automation & Networking,Home Network,Basic Home WiFi Setup,Post-Drywall,599.0
+Lighting Control,Automated Lighting,Whole Home Lighting Control,Post-Drywall,8999.0
+Lighting Control,Automated Lighting,Kitchen and Living Area Lighting,Post-Drywall,2999.0
+Lighting Control,Automated Lighting,Outdoor Lighting Automation,Post-Drywall,1999.0
+Keypad Installation,Control Keypads,Lutron Keypad Installation Package,Trim & Finish,799.0
+Keypad Installation,Control Keypads,Control4 Keypad Package,Trim & Finish,1299.0
+Keypad Installation,Control Keypads,Basic Switch Installation,Trim & Finish,599.0
+System Programming,Automation Programming,Complete System Programming,Programming & Training,2999.0
+System Programming,Automation Programming,Basic System Setup,Programming & Training,999.0
+System Programming,Automation Programming,System Optimization,Programming & Training,799.0
+Structured Wiring,Cat6 Enterprise,Small Office Network Pre-Wire,Pre-Drywall,3999.0
+Structured Wiring,Cat6 Enterprise,Medium Business Network Pre-Wire,Pre-Drywall,9999.0
+Structured Wiring,Cat6 Enterprise,Retail Space Network Pre-Wire,Pre-Drywall,5499.0
+Structured Wiring,Fiber Optic,Fiber Backbone Installation,Pre-Drywall,7999.0
+Structured Wiring,Fiber Optic,Multi-Building Fiber Network,Pre-Drywall,24999.0
+Structured Wiring,Fiber Optic,Data Center Fiber Infrastructure,Pre-Drywall,12999.0
+Audio Systems,Commercial Audio,Retail Background Music System,Post-Drywall,4999.0
+Audio Systems,Commercial Audio,Office Conference Room Audio,Post-Drywall,12999.0
+Audio Systems,Commercial Audio,Restaurant/Bar Audio System,Post-Drywall,7999.0
+Building Automation,HVAC Control,Small Office HVAC Automation,Post-Drywall,2999.0
+Building Automation,HVAC Control,Enterprise Building Management,Post-Drywall,24999.0
+Building Automation,HVAC Control,Retail Climate Control,Post-Drywall,5999.0
+Network Infrastructure,Enterprise Network,Small Business Network Package,Post-Drywall,4999.0
+Network Infrastructure,Enterprise Network,Medium Business Network Solution,Post-Drywall,14999.0
+Network Infrastructure,Enterprise Network,Retail Network with POS,Post-Drywall,7999.0
+Access Control,Keypad Access,Multi-Door Access Control,Trim & Finish,8999.0
+Access Control,Keypad Access,Executive Office Access Control,Trim & Finish,12999.0
+Access Control,Keypad Access,Basic Door Access System,Trim & Finish,2999.0
+System Configuration,Building Systems,Complete Building System Setup,Programming & Training,7999.0
+System Configuration,Building Systems,Network System Configuration,Programming & Training,2999.0
+System Configuration,Building Systems,AV System Programming,Programming & Training,3999.0
+Industrial Wiring,Heavy Duty,Industrial Network Infrastructure,Pre-Drywall,14999.0
+Industrial Wiring,Heavy Duty,Factory Floor Network Pre-Wire,Pre-Drywall,19999.0
+Industrial Wiring,Heavy Duty,Warehouse Network Infrastructure,Pre-Drywall,9999.0
+Industrial Automation,Process Control,Basic PLC Network Setup,Post-Drywall,12999.0
+Industrial Automation,Process Control,Advanced SCADA Integration,Post-Drywall,49999.0
+Industrial Automation,Process Control,Machine Monitoring System,Post-Drywall,19999.0
+Industrial Network,Managed Switches,Industrial Ethernet Network,Post-Drywall,24999.0
+Industrial Network,Managed Switches,Warehouse WiFi System,Post-Drywall,14999.0
+Industrial Network,Managed Switches,Factory Floor Network,Post-Drywall,17999.0
+Industrial Controls,Control Panels,Machine Control Panel Upgrade,Trim & Finish,8999.0
+Industrial Controls,Control Panels,Process Control Panel System,Trim & Finish,34999.0
+Industrial Controls,Control Panels,Basic Motor Control Panel,Trim & Finish,4999.0
+Industrial Systems,PLC Programming,PLC Programming Service,Programming & Training,9999.0
+Industrial Systems,PLC Programming,Advanced Controls Programming,Programming & Training,29999.0
+Industrial Systems,PLC Programming,PLC Troubleshooting & Optimization,Programming & Training,4999.0

@@ -1,0 +1,341 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Smart Home Builder Showroom - Listen Hear{% endblock %}
+
+{% block content %}
+<!-- Welcome Modal -->
+<div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <h3 class="modal-title w-100 text-center" id="welcomeModalLabel">
+                    <i class="bi bi-house-heart"></i> Welcome to the Builder Showroom
+                </h3>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-5">
+                <h4 class="text-center mb-4">Why Smart Home Features Matter</h4>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-shield-check text-primary mb-3" style="font-size: 3rem;"></i>
+                        <h5 class="mb-3">Increase Home Value</h5>
+                        <p class="text-muted small">Smart home features add significant resale value and marketability to new construction.</p>
+                    </div>
+
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-piggy-bank text-primary mb-3" style="font-size: 3rem;"></i>
+                        <h5 class="mb-3">Mortgage-Friendly</h5>
+                        <p class="text-muted small">Roll smart home packages into your mortgage during construction for affordable monthly payments.</p>
+                    </div>
+
+                    <div class="col-md-4 text-center">
+                        <i class="bi bi-calendar-check text-primary mb-3" style="font-size: 3rem;"></i>
+                        <h5 class="mb-3">Done Right, Done Once</h5>
+                        <p class="text-muted small">Installing during construction is easier and more cost-effective than retrofitting later.</p>
+                    </div>
+                </div>
+
+                <div class="alert alert-info text-center mb-0">
+                    <i class="bi bi-info-circle"></i> This showroom walks you through 4 smart home categories, helping you explore solutions for networking, security, audio, and entertainment.
+                </div>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-primary btn-lg px-5" data-bs-dismiss="modal">
+                    <i class="bi bi-arrow-right-circle"></i> Continue to Showroom
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="showroom-container">
+    <!-- Hero Header -->
+    <div class="showroom-hero text-center py-5 mb-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-3" style="color: white;">Smart Home Builder Showroom</h1>
+            <p class="lead mb-4" style="color: white;">Walk through the smart home installation process with your clients</p>
+            <p class="mb-0" style="color: white;">
+                <i class="bi bi-info-circle"></i> This showroom experience guides you through each installation phase,
+                helping clients understand what's possible at each stage of home construction
+            </p>
+
+            {% if cart_count > 0 %}
+            <div class="mt-4">
+                <a href="{% url 'quotes:cart' %}" class="btn btn-light btn-lg">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    Finish Consultation ({{ cart_count }} package{{ cart_count|pluralize }})
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Smart Home Categories -->
+    <div class="container mb-5">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Smart Home Categories</h2>
+                <p class="text-center text-muted mb-5">
+                    Explore smart home solutions organized by category.
+                    Click through each section to discover packages and watch overview videos.
+                </p>
+
+                <!-- Section Pills Navigation -->
+                <ul class="nav nav-pills nav-fill mb-4" id="sectionTab" role="tablist">
+                    {% for section_key, section_data in sections_data.items %}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link {% if forloop.first %}active{% endif %}"
+                                id="{{ section_key }}-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#{{ section_key }}"
+                                type="button"
+                                role="tab">
+                            <i class="bi {{ section_data.icon }} d-block fs-3 mb-2"></i>
+                            <span class="d-block">{{ section_data.label }}</span>
+                        </button>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Section Content -->
+                <div class="tab-content" id="sectionTabContent">
+                    {% for section_key, section_data in sections_data.items %}
+                    <div class="tab-pane fade {% if forloop.first %}show active{% endif %}"
+                         id="{{ section_key }}"
+                         role="tabpanel">
+
+                        <!-- Section Header -->
+                        <div class="section-header card border-primary mb-4">
+                            <div class="card-body">
+                                <h3 class="card-title">
+                                    <i class="bi {{ section_data.icon }} text-primary"></i>
+                                    {{ section_data.label }}
+                                </h3>
+                                <p class="card-text text-muted">
+                                    {% if section_key == 'network_automation' %}
+                                        <strong>Network & Automation:</strong> Complete home networking infrastructure and smart home automation systems.
+                                        Control lighting, climate, security, and more from one unified system.
+                                    {% elif section_key == 'security' %}
+                                        <strong>Security:</strong> Advanced security systems including cameras, sensors, and access control.
+                                        Protect your home with professional-grade monitoring and deterrence.
+                                    {% elif section_key == 'audio' %}
+                                        <strong>Audio:</strong> Whole-home audio distribution and multi-room sound systems.
+                                        Enjoy your music throughout your home with seamless control.
+                                    {% elif section_key == 'entertainment' %}
+                                        <strong>Entertainment:</strong> Home theater, video distribution, and streaming solutions.
+                                        Create the ultimate entertainment experience in any room.
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Category Videos -->
+                        {% if section_data.categories_with_videos %}
+                        <div class="category-videos-section mb-4">
+                            <h4 class="mb-3">
+                                <i class="bi bi-play-circle-fill text-primary"></i>
+                                Category Overview Videos
+                            </h4>
+                            <div class="row">
+                                {% for category in section_data.categories_with_videos %}
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <div class="card-header bg-primary text-white">
+                                            <h5 class="mb-0">{{ category.name }}</h5>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <div class="ratio ratio-16x9">
+                                                <iframe
+                                                    src="https://www.youtube.com/embed/{{ category.get_youtube_embed_id }}"
+                                                    title="{{ category.name }} Overview Video"
+                                                    frameborder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                    allowfullscreen>
+                                                </iframe>
+                                            </div>
+                                        </div>
+                                        {% if category.description %}
+                                        <div class="card-footer text-muted small">
+                                            {{ category.description }}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Packages in this Section -->
+                        <div class="packages-section">
+                            <h4 class="mb-3">
+                                <i class="bi bi-box-seam text-primary"></i>
+                                Available Packages
+                            </h4>
+
+                            {% if section_data.packages %}
+                            <div class="row g-4">
+                                {% for package in section_data.packages %}
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="card package-card h-100 shadow-sm">
+                                        {% if package.image %}
+                                        <img src="{{ package.image.url }}" class="card-img-top" alt="{{ package.name }}">
+                                        {% else %}
+                                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                            <i class="bi bi-box-seam text-muted" style="font-size: 3rem;"></i>
+                                        </div>
+                                        {% endif %}
+
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ package.name }}</h5>
+
+                                            {% if package.short_description %}
+                                            <p class="card-text text-muted small">{{ package.short_description }}</p>
+                                            {% endif %}
+
+                                            <div class="mb-3">
+                                                <span class="badge bg-secondary">{{ package.category.name }}</span>
+                                                {% if package.subcategory %}
+                                                <span class="badge bg-light text-dark">{{ package.subcategory.name }}</span>
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="price">
+                                                    <strong class="text-primary">{{ package.get_price_display }}</strong>
+                                                </div>
+                                                <div>
+                                                    <a href="{% url 'products:package_detail' package.slug %}"
+                                                       class="btn btn-outline-primary btn-sm">
+                                                        <i class="bi bi-eye"></i> Details
+                                                    </a>
+                                                    <form method="post"
+                                                          action="{% url 'quotes:add_to_cart' package.id %}"
+                                                          class="d-inline">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-primary btn-sm">
+                                                            <i class="bi bi-cart-plus"></i> Add
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {% if package.is_featured %}
+                                        <div class="card-footer bg-warning text-dark">
+                                            <i class="bi bi-star-fill"></i> Featured Package
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle"></i> No packages currently available in this section.
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Summary Footer -->
+    {% if cart_count > 0 %}
+    <div class="position-fixed bottom-0 end-0 p-3 m-3" style="z-index: 1000;">
+        <div class="card shadow-lg border-success" style="min-width: 300px;">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="bi bi-cart-check-fill"></i>
+                    Consultation Cart
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-2">
+                    <strong>{{ cart_count }}</strong> package{{ cart_count|pluralize }} selected
+                </p>
+                <a href="{% url 'quotes:cart' %}" class="btn btn-success w-100 mb-2">
+                    <i class="bi bi-arrow-right-circle-fill"></i> Finalize Quote
+                </a>
+                <a href="{% url 'quotes:checkout' %}" class="btn btn-outline-success w-100">
+                    <i class="bi bi-check-circle"></i> Go to Checkout
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .showroom-hero {
+        border-radius: 0;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .nav-pills .nav-link {
+        color: #6c757d;
+        background-color: #f8f9fa;
+        margin: 0 5px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-pills .nav-link:hover {
+        background-color: #e9ecef;
+        transform: translateY(-2px);
+    }
+
+    .nav-pills .nav-link.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+    }
+
+    .package-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #dee2e6;
+    }
+
+    .package-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.15) !important;
+        border-color: #667eea;
+    }
+
+    .section-header {
+        background: linear-gradient(to right, #f8f9fa, #ffffff);
+    }
+
+    @media (max-width: 768px) {
+        .nav-pills .nav-link {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .nav-pills .nav-link i {
+            font-size: 1.5rem !important;
+        }
+    }
+</style>
+
+<script>
+    // Show welcome modal on page load (only if not previously dismissed in this session)
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if user has already seen the modal in this session
+        if (!sessionStorage.getItem('showroomWelcomeSeen')) {
+            const welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
+            welcomeModal.show();
+
+            // Mark as seen when modal is closed
+            document.getElementById('welcomeModal').addEventListener('hidden.bs.modal', function () {
+                sessionStorage.setItem('showroomWelcomeSeen', 'true');
+            });
+        }
+    });
+</script>
+{% endblock %}

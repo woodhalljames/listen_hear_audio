@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django import forms
-from .models import PropertyType, Category, SubCategory, Package
+from django.contrib import messages
+from .models import PropertyType, Category, SubCategory, Package, CSVImport
+from .csv_import import import_packages_from_csv
 
 @admin.register(PropertyType)
 class PropertyTypeAdmin(admin.ModelAdmin):
@@ -14,12 +16,31 @@ class PropertyTypeAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'property_type', 'display_order', 'is_active', 'has_subcategories', 'has_packages']
-    list_editable = ['display_order', 'is_active']
-    list_filter = ['property_type', 'is_active']
+    list_display = ['name', 'property_type', 'builder_section', 'show_in_catalog', 'display_order', 'is_active', 'has_video', 'has_subcategories', 'has_packages']
+    list_editable = ['display_order', 'is_active', 'show_in_catalog']
+    list_filter = ['property_type', 'builder_section', 'show_in_catalog', 'is_active']
     search_fields = ['name', 'description']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['property_type', 'display_order', 'name']
+
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('property_type', 'name', 'slug', 'description', 'details', 'image')
+        }),
+        ('Builder Showroom', {
+            'fields': ('builder_section', 'youtube_url'),
+            'description': 'Configure how this category appears in the builder showroom. Select a builder section and optionally add a YouTube video.'
+        }),
+        ('Visibility', {
+            'fields': ('show_in_catalog', 'display_order', 'is_active'),
+            'description': 'Control where this category is shown. Uncheck "Show in catalog" for builder-only items.'
+        }),
+    )
+
+    def has_video(self, obj):
+        return bool(obj.youtube_url)
+    has_video.boolean = True
+    has_video.short_description = 'Video'
     
     def has_subcategories(self, obj):
         return obj.has_subcategories()
@@ -37,10 +58,19 @@ class SubCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'category', 'display_order', 'is_active', 'package_count']
     list_editable = ['display_order', 'is_active']
     list_filter = ['category__property_type', 'category', 'is_active']
-    search_fields = ['name', 'description']
+    search_fields = ['name', 'description', 'details']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['category', 'display_order', 'name']
-    
+
+    fieldsets = (
+        ('Basic Information', {
+            'fields': ('category', 'name', 'slug', 'description', 'details', 'image')
+        }),
+        ('Display Settings', {
+            'fields': ('display_order', 'is_active')
+        }),
+    )
+
     def package_count(self, obj):
         return obj.packages.count()
     package_count.short_description = 'Packages'
@@ -88,16 +118,16 @@ class PackageAdminForm(forms.ModelForm):
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
     form = PackageAdminForm
-    list_display = ['name', 'category', 'subcategory', 'starting_price', 'is_custom', 'is_featured', 'is_active', 'display_order']
+    list_display = ['name', 'category', 'subcategory', 'installation_phase', 'starting_price', 'is_custom', 'is_featured', 'is_active', 'display_order']
     list_editable = ['display_order', 'is_active', 'is_featured']
-    list_filter = ['category__property_type', 'category', 'subcategory', 'is_custom', 'is_featured', 'is_active']
+    list_filter = ['installation_phase', 'category__property_type', 'category', 'subcategory', 'is_custom', 'is_featured', 'is_active']
     search_fields = ['name', 'description', 'short_description']
     prepopulated_fields = {'slug': ('name',)}
-    ordering = ['category', 'subcategory', 'display_order', 'name']
-    
+    ordering = ['installation_phase', 'category', 'subcategory', 'display_order', 'name']
+
     fieldsets = (
         ('Basic Information', {
-            'fields': ('category', 'subcategory', 'name', 'slug')
+            'fields': ('category', 'subcategory', 'installation_phase', 'name', 'slug')
         }),
         ('Descriptions', {
             'fields': ('short_description', 'description', 'features'),
@@ -110,3 +140,71 @@ class PackageAdmin(admin.ModelAdmin):
             'fields': ('image', 'display_order', 'is_featured', 'is_active')
         }),
     )
+
+
+@admin.register(CSVImport)
+class CSVImportAdmin(admin.ModelAdmin):
+    """Admin for CSV imports with upload history"""
+    list_display = ['uploaded_at', 'uploaded_by', 'packages_created', 'packages_updated', 'packages_skipped', 'property_types_detected', 'has_errors']
+    list_filter = ['uploaded_at']
+    readonly_fields = ['uploaded_by', 'uploaded_at', 'packages_created', 'packages_updated', 'packages_skipped', 'property_types_detected', 'error_log']
+
+    fieldsets = (
+        ('Upload CSV File', {
+            'fields': ('csv_file',),
+            'description': 'Upload a CSV file with columns: category, type, item, labor_Phase_Name, Unit Price. Property types are auto-detected from category names.'
+        }),
+        ('Import Results', {
+            'fields': ('uploaded_by', 'uploaded_at', 'packages_created', 'packages_updated', 'packages_skipped', 'property_types_detected', 'error_log'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def has_errors(self, obj):
+        return bool(obj.error_log)
+    has_errors.boolean = True
+    has_errors.short_description = 'Errors?'
+
+    def save_model(self, request, obj, form, change):
+        """Process CSV import when saved"""
+        # Set the user
+        if not obj.uploaded_by:
+            obj.uploaded_by = request.user
+
+        # Save first to get the file
+        super().save_model(request, obj, form, change)
+
+        # Process the CSV import
+        try:
+            stats = import_packages_from_csv(
+                obj.csv_file.path,
+                overwrite=False
+            )
+
+            # Update statistics
+            obj.packages_created = stats['created']
+            obj.packages_updated = stats['updated']
+            obj.packages_skipped = stats['skipped']
+
+            # Format property types detected
+            if stats.get('property_types'):
+                property_types_str = ', '.join([f"{ptype} ({count})" for ptype, count in stats['property_types'].items()])
+                obj.property_types_detected = property_types_str
+
+            obj.error_log = '\n'.join(stats['errors']) if stats['errors'] else ''
+            obj.save()
+
+            # Show success message
+            property_types_msg = f" Property types: {obj.property_types_detected}" if obj.property_types_detected else ""
+            messages.success(
+                request,
+                f"CSV import completed! Created: {stats['created']}, Updated: {stats['updated']}, Skipped: {stats['skipped']}.{property_types_msg}"
+            )
+
+            if stats['errors']:
+                messages.warning(request, f"{len(stats['errors'])} errors occurred. Check error log below.")
+
+        except Exception as e:
+            obj.error_log = f"Import failed: {str(e)}"
+            obj.save()
+            messages.error(request, f"CSV import failed: {str(e)}")

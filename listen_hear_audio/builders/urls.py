@@ -4,6 +4,9 @@ from . import views
 app_name = 'builders'
 
 urlpatterns = [
+    # Builder showroom - consultation experience
+    path('showroom/', views.builder_showroom, name='showroom'),
+
     # Builder dashboard
     path('dashboard/', views.BuilderDashboardView.as_view(), name='dashboard'),
 

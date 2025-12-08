@@ -30,12 +30,10 @@
                 
                 <!-- Categories under this property type -->
                 <div class="category-nav-list">
-                  {% for category in property_type.categories.all %}
-                    {% if category.is_active %}
-                      <a class="nav-link category-nav-link" href="#category-{{ category.slug }}">
-                        {{ category.name }}
-                      </a>
-                    {% endif %}
+                  {% for category in property_type.visible_categories %}
+                    <a class="nav-link category-nav-link" href="#category-{{ category.slug }}">
+                      {{ category.name }}
+                    </a>
                   {% endfor %}
                 </div>
               </div>
@@ -81,8 +79,7 @@
             {% endif %}
           </div>
 
-          {% for category in property_type.categories.all %}
-            {% if category.is_active %}
+          {% for category in property_type.visible_categories %}
               <!-- Category Section -->
               <div class="mb-5" id="category-{{ category.slug }}">
                 <h3 class="h4 mb-3 category-subtitle">
@@ -141,7 +138,6 @@
                   </div>
                 {% endif %}
               </div>
-            {% endif %}
           {% endfor %}
         </div>
       {% empty %}

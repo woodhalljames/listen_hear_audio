@@ -9,9 +9,10 @@ from .models import Cart, CartItem, QuoteRequest, QuoteRequestItem, SiteConfigur
 
 class CartItemInline(admin.TabularInline):
     model = CartItem
-    extra = 0
-    readonly_fields = ['package', 'quantity', 'notes', 'added_at']
-    can_delete = False
+    extra = 1
+    fields = ['package', 'quantity', 'notes', 'added_at']
+    readonly_fields = ['added_at']
+    autocomplete_fields = ['package']
 
 
 @admin.register(Cart)
@@ -34,8 +35,8 @@ class CartAdmin(admin.ModelAdmin):
 class QuoteRequestItemInline(admin.TabularInline):
     model = QuoteRequestItem
     extra = 1
-    readonly_fields = ['price_display', 'subtotal_display']
-    fields = ['package', 'package_name', 'package_description', 'quantity', 'price_snapshot', 'price_display', 'subtotal_display', 'notes']
+    readonly_fields = ['price_display', 'subtotal_display', 'installation_phase_snapshot']
+    fields = ['package', 'package_name', 'installation_phase_snapshot', 'package_description', 'quantity', 'price_snapshot', 'price_display', 'subtotal_display', 'notes']
     autocomplete_fields = ['package']
 
     def price_display(self, obj):
@@ -327,6 +328,7 @@ class QuoteRequestAdmin(admin.ModelAdmin):
                 package=item.package,
                 package_name=item.package_name,
                 package_description=item.package_description,
+                installation_phase_snapshot=item.installation_phase_snapshot,
                 price_snapshot=item.price_snapshot,
                 quantity=item.quantity,
                 status='pending'

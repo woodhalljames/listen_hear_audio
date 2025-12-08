@@ -109,6 +109,7 @@ def checkout_view(request):
                     package=cart_item.package,
                     package_name=cart_item.package.name,
                     package_description=cart_item.package.short_description,
+                    installation_phase_snapshot=cart_item.package.installation_phase,
                     price_snapshot=cart_item.package.starting_price,
                     quantity=cart_item.quantity,
                     notes=cart_item.notes

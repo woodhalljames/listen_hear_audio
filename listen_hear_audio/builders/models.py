@@ -81,6 +81,11 @@ class PurchasedPackage(models.Model):
     # Snapshot of package details
     package_name = models.CharField(max_length=200)
     package_description = models.TextField(blank=True)
+    installation_phase_snapshot = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="Installation phase at time of purchase"
+    )
     price_snapshot = models.DecimalField(
         max_digits=10,
         decimal_places=2,
@@ -115,6 +120,12 @@ class PurchasedPackage(models.Model):
         if self.price_snapshot:
             return self.price_snapshot * self.quantity
         return 0
+
+    def save(self, *args, **kwargs):
+        """Auto-populate installation_phase_snapshot from package if not set"""
+        if self.package and not self.installation_phase_snapshot:
+            self.installation_phase_snapshot = self.package.installation_phase
+        super().save(*args, **kwargs)
 
 
 class PropertyNote(models.Model):

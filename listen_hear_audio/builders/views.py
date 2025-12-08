@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.views.generic import ListView, DetailView
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
@@ -9,6 +9,7 @@ from datetime import datetime
 
 from .models import Property, PurchasedPackage, PropertyNote
 from .tasks import send_date_request_email
+from listen_hear_audio.products.models import Package, Category, PropertyType
 
 
 class BuilderRequiredMixin(UserPassesTestMixin):
@@ -55,6 +56,16 @@ class BuilderPropertyDetailView(BuilderRequiredMixin, DetailView):
         context['packages_scheduled'] = packages.filter(status='scheduled')
         context['packages_in_progress'] = packages.filter(status='in_progress')
         context['packages_completed'] = packages.filter(status='completed').order_by('-completion_date')
+
+        # Group packages by installation phase for display
+        from listen_hear_audio.products.models import Package
+        packages_by_phase = {}
+        for phase_value, phase_label in Package.INSTALLATION_PHASE_CHOICES:
+            packages_by_phase[phase_value] = {
+                'label': phase_label,
+                'packages': packages.filter(installation_phase_snapshot=phase_value)
+            }
+        context['packages_by_phase'] = packages_by_phase
 
         # Get activity timeline
         context['notes'] = property_obj.notes.select_related('created_by', 'package').all()[:20]
@@ -148,3 +159,95 @@ def update_package_notes(request, package_id):
         return JsonResponse({'success': True, 'message': 'Notes updated'})
 
     return redirect('builders:property_detail', pk=package.property.pk)
+
+
+def builder_showroom(request):
+    """
+    Builder showroom experience for walking clients through smart home packages.
+    Organizes categories and packages by builder sections (Network & Automation, Security, Audio, Entertainment).
+    If categories don't have builder_section set, they appear in an "Other" section.
+    """
+    from listen_hear_audio.quotes.cart import get_or_create_cart
+
+    # Get cart for cart count
+    cart = get_or_create_cart(request)
+
+    # Get categories grouped by builder section
+    sections_data = {}
+
+    for section_value, section_label in Category.BUILDER_SECTION_CHOICES:
+        # Get categories in this section
+        categories = Category.objects.filter(
+            builder_section=section_value,
+            is_active=True
+        ).prefetch_related('packages', 'subcategories__packages')
+
+        # Get all packages from categories in this section
+        packages = Package.objects.filter(
+            category__builder_section=section_value,
+            category__is_active=True,
+            is_active=True
+        ).select_related('category', 'subcategory').order_by('display_order', 'name')
+
+        # Get categories with videos for this section
+        categories_with_videos = categories.exclude(youtube_url='')
+
+        sections_data[section_value] = {
+            'label': section_label,
+            'categories': categories,
+            'packages': packages,
+            'categories_with_videos': categories_with_videos,
+            'icon': _get_section_icon(section_value)
+        }
+
+    # Add an "Other" section for categories without a builder_section
+    categories_no_section = Category.objects.filter(
+        builder_section='',
+        is_active=True
+    ).prefetch_related('packages', 'subcategories__packages')
+
+    packages_no_section = Package.objects.filter(
+        category__builder_section='',
+        category__is_active=True,
+        is_active=True
+    ).select_related('category', 'subcategory').order_by('display_order', 'name')
+
+    if categories_no_section.exists() or packages_no_section.exists():
+        categories_with_videos_no_section = categories_no_section.exclude(youtube_url='')
+
+        sections_data['other'] = {
+            'label': 'Other Products',
+            'categories': categories_no_section,
+            'packages': packages_no_section,
+            'categories_with_videos': categories_with_videos_no_section,
+            'icon': 'bi-box-seam'
+        }
+
+    context = {
+        'sections_data': sections_data,
+        'cart_count': cart.get_total_items(),
+    }
+
+    return render(request, 'builders/builder_showroom.html', context)
+
+
+def _get_section_icon(section):
+    """Get Bootstrap icon for builder section"""
+    icons = {
+        'network_automation': 'bi-router',
+        'security': 'bi-shield-check',
+        'audio': 'bi-speaker',
+        'entertainment': 'bi-play-circle',
+    }
+    return icons.get(section, 'bi-box')
+
+
+def _get_phase_icon(phase):
+    """Get Bootstrap icon for installation phase"""
+    icons = {
+        'framing': 'bi-grid-3x3-gap',
+        'rough_ins': 'bi-router',
+        'insulation_drywall': 'bi-layers',
+        'trim_finishes': 'bi-paint-bucket',
+    }
+    return icons.get(phase, 'bi-box')

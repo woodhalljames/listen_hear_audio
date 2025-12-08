@@ -61,6 +61,24 @@
         <div class="col-12">
             <h3 class="mb-3">Packages</h3>
 
+            <!-- View Toggle Tabs -->
+            <ul class="nav nav-tabs mb-3" id="packagesTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="by-status-tab" data-bs-toggle="tab" data-bs-target="#by-status" type="button" role="tab" aria-controls="by-status" aria-selected="true">
+                        <i class="bi bi-list-check"></i> By Status
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="by-phase-tab" data-bs-toggle="tab" data-bs-target="#by-phase" type="button" role="tab" aria-controls="by-phase" aria-selected="false">
+                        <i class="bi bi-diagram-3"></i> By Installation Phase
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="packagesTabContent">
+                <!-- By Status Tab -->
+                <div class="tab-pane fade show active" id="by-status" role="tabpanel" aria-labelledby="by-status-tab">
+
             <!-- Pending Packages -->
             {% if packages_pending %}
             <div class="card mb-3">
@@ -172,6 +190,98 @@
                 </div>
             </div>
             {% endif %}
+
+                </div>
+                <!-- End By Status Tab -->
+
+                <!-- By Installation Phase Tab -->
+                <div class="tab-pane fade" id="by-phase" role="tabpanel" aria-labelledby="by-phase-tab">
+                    {% for phase_key, phase_data in packages_by_phase.items %}
+                        {% if phase_data.packages %}
+                        <div class="card mb-3">
+                            <div class="card-header bg-dark text-white">
+                                <h5 class="mb-0">
+                                    {% if phase_key == 'framing' %}
+                                        <i class="bi bi-grid-3x3-gap"></i>
+                                    {% elif phase_key == 'rough_ins' %}
+                                        <i class="bi bi-router"></i>
+                                    {% elif phase_key == 'insulation_drywall' %}
+                                        <i class="bi bi-layers"></i>
+                                    {% elif phase_key == 'trim_finishes' %}
+                                        <i class="bi bi-paint-bucket"></i>
+                                    {% else %}
+                                        <i class="bi bi-box"></i>
+                                    {% endif %}
+                                    {{ phase_data.label }}
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                {% for package in phase_data.packages %}
+                                <div class="border-bottom pb-3 mb-3 {% if forloop.last %}border-0 mb-0 pb-0{% endif %}">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h6>{{ package.package_name }}</h6>
+                                            <p class="text-muted small mb-2">{{ package.package_description|truncatewords:20 }}</p>
+
+                                            <!-- Status Badge -->
+                                            <span class="badge
+                                                {% if package.status == 'pending' %}bg-secondary
+                                                {% elif package.status == 'date_requested' %}bg-warning
+                                                {% elif package.status == 'scheduled' %}bg-info
+                                                {% elif package.status == 'in_progress' %}bg-primary
+                                                {% elif package.status == 'completed' %}bg-success
+                                                {% else %}bg-secondary
+                                                {% endif %}
+                                            ">
+                                                {{ package.get_status_display }}
+                                            </span>
+
+                                            {% if package.confirmed_install_date %}
+                                                <small class="text-muted ms-2">
+                                                    <i class="bi bi-calendar-check"></i> {{ package.confirmed_install_date|date:"M d, Y" }}
+                                                </small>
+                                            {% elif package.requested_install_date %}
+                                                <small class="text-muted ms-2">
+                                                    <i class="bi bi-calendar"></i> Requested: {{ package.requested_install_date|date:"M d, Y" }}
+                                                </small>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Request Date Form for Pending Packages -->
+                                    {% if package.status == 'pending' %}
+                                    <form method="post" action="{% url 'builders:request_install_date' package.pk %}" class="mt-3">
+                                        {% csrf_token %}
+                                        <div class="row align-items-end">
+                                            <div class="col-md-4">
+                                                <label class="form-label small">Request Install Date</label>
+                                                <input type="date" name="requested_date" class="form-control form-control-sm" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label small">Notes (Optional)</label>
+                                                <input type="text" name="builder_notes" class="form-control form-control-sm" placeholder="Add notes...">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="submit" class="btn btn-primary btn-sm w-100">Request</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if not packages_by_phase %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> No packages assigned to this property yet.
+                    </div>
+                    {% endif %}
+                </div>
+                <!-- End By Installation Phase Tab -->
+            </div>
         </div>
     </div>
 

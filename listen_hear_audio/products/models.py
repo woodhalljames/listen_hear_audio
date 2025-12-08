@@ -2,6 +2,9 @@ from django.db import models
 from django.conf import settings
 from django.urls import reverse
 from django.utils.text import slugify
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class PropertyType(models.Model):
@@ -32,16 +35,50 @@ class PropertyType(models.Model):
 
 class Category(models.Model):
     """Second-level categorization (e.g., Networking, Media & Entertainment)"""
-    
+
+    # Builder section choices for showroom organization
+    NETWORK_AUTOMATION = 'network_automation'
+    SECURITY = 'security'
+    AUDIO = 'audio'
+    ENTERTAINMENT = 'entertainment'
+
+    BUILDER_SECTION_CHOICES = [
+        (NETWORK_AUTOMATION, 'Network & Automation'),
+        (SECURITY, 'Security'),
+        (AUDIO, 'Audio'),
+        (ENTERTAINMENT, 'Entertainment'),
+    ]
+
     property_type = models.ForeignKey(
-        PropertyType, 
-        on_delete=models.CASCADE, 
+        PropertyType,
+        on_delete=models.CASCADE,
         related_name='categories'
     )
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, blank=True)
-    description = models.TextField(blank=True)
+    description = models.TextField(
+        blank=True,
+        help_text="Brief description shown in catalog listings"
+    )
+    details = models.TextField(
+        blank=True,
+        help_text="Detailed information, specifications, benefits - shown on category detail pages"
+    )
     image = models.ImageField(upload_to='categories/', blank=True, null=True)
+    youtube_url = models.URLField(
+        blank=True,
+        help_text="YouTube video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID or https://youtu.be/VIDEO_ID)"
+    )
+    builder_section = models.CharField(
+        max_length=50,
+        choices=BUILDER_SECTION_CHOICES,
+        blank=True,
+        help_text="Section to display in builder showroom (e.g., Network & Automation, Security, etc.)"
+    )
+    show_in_catalog = models.BooleanField(
+        default=True,
+        help_text="Show this category in the regular catalog (uncheck for builder-only items)"
+    )
     display_order = models.PositiveIntegerField(default=0, help_text="Lower numbers appear first")
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -69,6 +106,24 @@ class Category(models.Model):
         """Check if this category has packages directly attached"""
         return self.packages.exists()
 
+    def get_youtube_embed_id(self):
+        """Extract YouTube video ID from URL for embedding"""
+        if not self.youtube_url:
+            return None
+
+        import re
+        # Handle various YouTube URL formats
+        patterns = [
+            r'(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)',
+            r'youtube\.com\/embed\/([^&\n?#]+)',
+        ]
+
+        for pattern in patterns:
+            match = re.search(pattern, self.youtube_url)
+            if match:
+                return match.group(1)
+        return None
+
 
 class SubCategory(models.Model):
     """Optional third-level categorization (e.g., Audio, TV & Display under Media & Entertainment)"""
@@ -80,7 +135,14 @@ class SubCategory(models.Model):
     )
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, blank=True)
-    description = models.TextField(blank=True)
+    description = models.TextField(
+        blank=True,
+        help_text="Brief description shown in catalog listings"
+    )
+    details = models.TextField(
+        blank=True,
+        help_text="Detailed information, specifications, benefits - shown on subcategory pages"
+    )
     image = models.ImageField(upload_to='subcategories/', blank=True, null=True)
     display_order = models.PositiveIntegerField(default=0, help_text="Lower numbers appear first")
     is_active = models.BooleanField(default=True)
@@ -104,19 +166,38 @@ class SubCategory(models.Model):
 
 class Package(models.Model):
     """The actual packages/products that customers add to their quote"""
-    
+
+    # Installation phase choices - aligned with construction workflow
+    FRAMING = 'framing'
+    ROUGH_INS = 'rough_ins'
+    INSULATION_DRYWALL = 'insulation_drywall'
+    TRIM_FINISHES = 'trim_finishes'
+
+    INSTALLATION_PHASE_CHOICES = [
+        (FRAMING, 'Framing'),
+        (ROUGH_INS, 'Rough-Ins'),
+        (INSULATION_DRYWALL, 'Insulation and Drywall'),
+        (TRIM_FINISHES, 'Trim and Finishes'),
+    ]
+
     category = models.ForeignKey(
-        Category, 
-        on_delete=models.CASCADE, 
+        Category,
+        on_delete=models.CASCADE,
         related_name='packages'
     )
     subcategory = models.ForeignKey(
-        SubCategory, 
-        on_delete=models.CASCADE, 
+        SubCategory,
+        on_delete=models.CASCADE,
         related_name='packages',
         blank=True,
         null=True,
         help_text="Optional - only needed if category uses subcategories"
+    )
+    installation_phase = models.CharField(
+        max_length=50,
+        choices=INSTALLATION_PHASE_CHOICES,
+        default=ROUGH_INS,
+        help_text="Construction phase when this package is installed"
     )
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, blank=True)
@@ -179,5 +260,32 @@ class Package(models.Model):
     def get_absolute_url(self):
         """Get URL for package detail view"""
         return reverse('products:package_detail', kwargs={'slug': self.slug})
+
+    def get_installation_phase_display_value(self):
+        """Get human-readable installation phase name"""
+        return dict(self.INSTALLATION_PHASE_CHOICES).get(self.installation_phase, '')
+
+
+class CSVImport(models.Model):
+    """Track CSV imports for audit trail"""
+
+    csv_file = models.FileField(upload_to='csv_imports/')
+    uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    # Import statistics
+    packages_created = models.IntegerField(default=0)
+    packages_updated = models.IntegerField(default=0)
+    packages_skipped = models.IntegerField(default=0)
+    property_types_detected = models.CharField(max_length=500, blank=True, help_text="Auto-detected property types")
+    error_log = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ['-uploaded_at']
+        verbose_name = 'CSV Import'
+        verbose_name_plural = 'CSV Imports'
+
+    def __str__(self):
+        return f"CSV Import {self.uploaded_at.strftime('%Y-%m-%d %H:%M')} - {self.packages_created} created"
 
 

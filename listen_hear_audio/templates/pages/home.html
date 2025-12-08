@@ -1,3 +1,187 @@
 {% extends "base.html" %}
+{% load static %}
 
+{% block title %}Listen Hear - Smart Home Audio & Video Systems{% endblock %}
 
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section text-white text-center py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <div class="container py-5">
+        <h1 class="display-2 fw-bold mb-4">Build Your Dream Smart Home</h1>
+        <p class="lead mb-5">Professional smart home audio and video installation for new home construction</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{% url 'builders:showroom' %}" class="btn btn-light btn-lg px-5">
+                <i class="bi bi-house-heart"></i> Start Building Your Smart Home
+            </a>
+            <a href="{% url 'products:catalog' %}" class="btn btn-outline-light btn-lg px-5">
+                <i class="bi bi-grid-3x3"></i> Browse Catalog
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Process Overview -->
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold mb-3">How It Works</h2>
+        <p class="lead text-muted">Four simple phases to your complete smart home</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm text-center">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-router text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="card-title">Phase 1: Prewire</h4>
+                    <p class="card-text text-muted">Wiring and networking installed behind drywall during construction</p>
+                    <span class="badge bg-primary">Must be done during build</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm text-center">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-lightbulb text-warning" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="card-title">Phase 2: Automation</h4>
+                    <p class="card-text text-muted">Smart lighting and automation controls during finish work</p>
+                    <span class="badge bg-warning">During trim & finish</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm text-center">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-speaker text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="card-title">Phase 3: Entertainment</h4>
+                    <p class="card-text text-muted">Audio and video systems installed during and after finish</p>
+                    <span class="badge bg-success">Finish & post-finish</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm text-center">
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <i class="bi bi-gear-wide-connected text-info" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="card-title">Phase 4: Programming</h4>
+                    <p class="card-text text-muted">Final customization and programming post-installation</p>
+                    <span class="badge bg-info">After construction</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="{% url 'builders:showroom' %}" class="btn btn-primary btn-lg px-5">
+            <i class="bi bi-arrow-right-circle"></i> Explore Our Showroom
+        </a>
+    </div>
+</div>
+
+<!-- Featured Packages -->
+<div class="bg-light py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Featured Packages</h2>
+            <p class="lead text-muted">Popular smart home solutions for new construction</p>
+        </div>
+
+        <div class="row g-4 mb-4">
+            {% for package in featured_packages %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    {% if package.image %}
+                    <img src="{{ package.image.url }}" class="card-img-top" alt="{{ package.name }}">
+                    {% else %}
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <i class="bi bi-box-seam text-white" style="font-size: 3rem;"></i>
+                    </div>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ package.name }}</h5>
+                        <p class="card-text text-muted">{{ package.short_description|truncatewords:15 }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong class="text-primary">{{ package.get_price_display }}</strong>
+                            <a href="{% url 'products:package_detail' package.slug %}" class="btn btn-outline-primary btn-sm">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">Check out our showroom for available packages</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Value Proposition Section -->
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold mb-3">Why Smart Home Features Matter</h2>
+        <p class="lead text-muted">Invest in your future with smart home technology</p>
+    </div>
+
+    <div class="row g-5 mb-5">
+        <div class="col-md-4 text-center">
+            <div class="p-4">
+                <i class="bi bi-shield-check text-primary mb-3" style="font-size: 4rem;"></i>
+                <h3 class="h4 mb-3">Increase Home Value</h3>
+                <p class="text-muted">Smart home features add significant resale value and marketability to new construction. Homes with integrated smart technology sell faster and for more money.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 text-center">
+            <div class="p-4">
+                <i class="bi bi-piggy-bank text-primary mb-3" style="font-size: 4rem;"></i>
+                <h3 class="h4 mb-3">Mortgage-Friendly</h3>
+                <p class="text-muted">Roll smart home packages into your mortgage during construction. This makes premium features affordable with low monthly payments instead of large upfront costs.</p>
+            </div>
+        </div>
+
+        <div class="col-md-4 text-center">
+            <div class="p-4">
+                <i class="bi bi-calendar-check text-primary mb-3" style="font-size: 4rem;"></i>
+                <h3 class="h4 mb-3">Done Right, Done Once</h3>
+                <p class="text-muted">Installing during construction is easier, cleaner, and more cost-effective than retrofitting later. Get it right the first time without tearing into finished walls.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a href="{% url 'builders:showroom' %}" class="btn btn-primary btn-lg px-5 py-3">
+            <i class="bi bi-house-heart"></i> Start Your Smart Home Journey
+        </a>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="bg-dark text-white py-5">
+    <div class="container text-center">
+        <h2 class="display-5 fw-bold mb-3">Ready to Build Your Smart Home?</h2>
+        <p class="lead mb-4">Visit our showroom or contact us to start planning your smart home installation</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{% url 'builders:showroom' %}" class="btn btn-light btn-lg px-5">
+                <i class="bi bi-house-heart"></i> Visit Showroom
+            </a>
+            <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg px-5">
+                <i class="bi bi-info-circle"></i> Learn More
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
