@@ -1,48 +1,58 @@
 {% load static %}
 
-<div class="product-card h-100">
-  {% if package.image %}
-    <img src="{{ package.image.url }}" class="card-img-top" alt="{{ package.name }}">
-  {% else %}
-    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-      <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
-    </div>
-  {% endif %}
-  
-  <div class="product-card-body">
-    <h5 class="product-card-title">{{ package.name }}</h5>
-    
-    {% if package.short_description %}
-      <p class="text-muted mb-3 small">{{ package.short_description }}</p>
+<div class="card product-card h-100 shadow-sm">
+  <!-- Image with Features Overlay -->
+  <div class="package-image-container position-relative">
+    {% if package.image %}
+      <img src="{{ package.image.url }}" class="card-img-top package-image" alt="{{ package.name }}">
+    {% else %}
+      <div class="card-img-top package-image bg-light d-flex align-items-center justify-content-center">
+        <i class="bi bi-box-seam text-muted" style="font-size: 3rem;"></i>
+      </div>
     {% endif %}
-    
+
+    <!-- Features Overlay -->
+    {% if package.get_features_list %}
+    <div class="features-overlay">
+      <div class="features-content p-3">
+        <h6 class="text-white mb-2" style="font-size: 0.9rem; font-weight: 600;">Key Features:</h6>
+        <ul class="mb-0 ps-3 text-white" style="font-size: 0.8rem; line-height: 1.4;">
+          {% for feature in package.get_features_list|slice:":5" %}
+          <li>{{ feature|truncatewords:8 }}</li>
+          {% endfor %}
+          {% if package.get_features_list|length > 5 %}
+          <li class="text-white-50">+ {{ package.get_features_list|length|add:"-5" }} more...</li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="card-body d-flex flex-column">
+    <h5 class="card-title">{{ package.name }}</h5>
+
+    {% if package.short_description %}
+      <p class="card-text text-muted mb-3 small">{{ package.short_description|truncatewords:25 }}</p>
+    {% endif %}
+
     {% if package.is_featured %}
       <span class="badge bg-warning text-dark mb-2">
         <i class="bi bi-star-fill"></i> Featured
       </span>
     {% endif %}
-    
+
     <div class="mt-auto">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <span class="product-price">{{ package.get_price_display }}</span>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <strong class="text-primary">{{ package.get_price_display }}</strong>
       </div>
-      
-      <!-- Action Buttons -->
-      <div class="d-grid gap-2">
-        <form method="post" 
-              action="{% url 'quotes:add_to_cart' package.id %}" 
-              class="add-to-cart-form quick-add-form">
-          {% csrf_token %}
-          <input type="hidden" name="quantity" value="1">
-          <button type="submit" class="btn btn-primary-custom btn-sm w-100">
-            <i class="bi bi-cart-plus"></i> Add to Cart
-          </button>
-        </form>
-        <a href="{% url 'products:package_detail' package.slug %}" 
-           class="btn btn-outline-custom btn-sm w-100">
-          <i class="bi bi-info-circle"></i> View Details
-        </a>
-      </div>
+
+      <button type="button"
+              class="btn btn-primary btn-sm w-100 add-to-cart-btn"
+              data-package-id="{{ package.id }}"
+              data-package-name="{{ package.name }}">
+        <i class="bi bi-cart-plus"></i> Add to Cart
+      </button>
     </div>
   </div>
 </div>

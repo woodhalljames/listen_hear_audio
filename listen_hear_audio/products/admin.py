@@ -27,9 +27,13 @@ class CategoryAdmin(admin.ModelAdmin):
         ('Basic Information', {
             'fields': ('property_type', 'name', 'slug', 'description', 'details', 'image')
         }),
+        ('Video Content', {
+            'fields': ('video', 'youtube_url'),
+            'description': 'Add a video to showcase this category. You can upload a video file directly or provide a YouTube URL. Uploaded videos take priority.'
+        }),
         ('Builder Showroom', {
-            'fields': ('builder_section', 'youtube_url'),
-            'description': 'Configure how this category appears in the builder showroom. Select a builder section and optionally add a YouTube video.'
+            'fields': ('builder_section',),
+            'description': 'Configure how this category appears in the builder showroom. Select a builder section.'
         }),
         ('Visibility', {
             'fields': ('show_in_catalog', 'display_order', 'is_active'),
@@ -38,7 +42,7 @@ class CategoryAdmin(admin.ModelAdmin):
     )
 
     def has_video(self, obj):
-        return bool(obj.youtube_url)
+        return obj.has_video()
     has_video.boolean = True
     has_video.short_description = 'Video'
     
@@ -78,7 +82,7 @@ class SubCategoryAdmin(admin.ModelAdmin):
 
 class PackageAdminForm(forms.ModelForm):
     """Custom form for Package admin with improved field displays"""
-    
+
     short_description = forms.CharField(
         widget=forms.Textarea(attrs={
             'rows': 3,
@@ -89,17 +93,7 @@ class PackageAdminForm(forms.ModelForm):
         required=False,
         help_text='Brief description shown on package card (max 300 characters)'
     )
-    
-    description = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'rows': 6,
-            'cols': 80,
-            'style': 'width: 100%;'
-        }),
-        required=False,
-        help_text='Full description shown on detail view'
-    )
-    
+
     features = forms.CharField(
         widget=forms.Textarea(attrs={
             'rows': 8,
@@ -109,7 +103,7 @@ class PackageAdminForm(forms.ModelForm):
         required=False,
         help_text='Enter features as bullet points, one per line'
     )
-    
+
     class Meta:
         model = Package
         fields = '__all__'
@@ -121,7 +115,7 @@ class PackageAdmin(admin.ModelAdmin):
     list_display = ['name', 'category', 'subcategory', 'installation_phase', 'starting_price', 'is_custom', 'is_featured', 'is_active', 'display_order']
     list_editable = ['display_order', 'is_active', 'is_featured']
     list_filter = ['installation_phase', 'category__property_type', 'category', 'subcategory', 'is_custom', 'is_featured', 'is_active']
-    search_fields = ['name', 'description', 'short_description']
+    search_fields = ['name', 'short_description', 'features']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['installation_phase', 'category', 'subcategory', 'display_order', 'name']
 
@@ -129,9 +123,9 @@ class PackageAdmin(admin.ModelAdmin):
         ('Basic Information', {
             'fields': ('category', 'subcategory', 'installation_phase', 'name', 'slug')
         }),
-        ('Descriptions', {
-            'fields': ('short_description', 'description', 'features'),
-            'description': 'Use short_description for card display, description for detail page, and features as a bullet list'
+        ('Content', {
+            'fields': ('short_description', 'features'),
+            'description': 'Short description appears on package cards. Features are displayed as bullet points.'
         }),
         ('Pricing & Options', {
             'fields': ('starting_price', 'is_custom')

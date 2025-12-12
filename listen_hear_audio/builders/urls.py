@@ -5,7 +5,10 @@ app_name = 'builders'
 
 urlpatterns = [
     # Builder showroom - consultation experience
-    path('showroom/', views.builder_showroom, name='showroom'),
+    path('showroom/', views.builder_showroom_intro, name='showroom'),
+    path('showroom/browse/', views.builder_showroom, name='showroom_browse'),
+    path('showroom/guided/', views.builder_showroom_guided, name='showroom_guided'),
+    path('showroom/guided/<int:step>/', views.builder_showroom_guided, name='showroom_guided_step'),
 
     # Builder dashboard
     path('dashboard/', views.BuilderDashboardView.as_view(), name='dashboard'),

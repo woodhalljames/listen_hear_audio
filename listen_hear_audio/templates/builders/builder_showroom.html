@@ -4,82 +4,26 @@
 {% block title %}Smart Home Builder Showroom - Listen Hear{% endblock %}
 
 {% block content %}
-<!-- Welcome Modal -->
-<div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-                <h3 class="modal-title w-100 text-center" id="welcomeModalLabel">
-                    <i class="bi bi-house-heart"></i> Welcome to the Builder Showroom
-                </h3>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-5">
-                <h4 class="text-center mb-4">Why Smart Home Features Matter</h4>
-
-                <div class="row g-4 mb-4">
-                    <div class="col-md-4 text-center">
-                        <i class="bi bi-shield-check text-primary mb-3" style="font-size: 3rem;"></i>
-                        <h5 class="mb-3">Increase Home Value</h5>
-                        <p class="text-muted small">Smart home features add significant resale value and marketability to new construction.</p>
-                    </div>
-
-                    <div class="col-md-4 text-center">
-                        <i class="bi bi-piggy-bank text-primary mb-3" style="font-size: 3rem;"></i>
-                        <h5 class="mb-3">Mortgage-Friendly</h5>
-                        <p class="text-muted small">Roll smart home packages into your mortgage during construction for affordable monthly payments.</p>
-                    </div>
-
-                    <div class="col-md-4 text-center">
-                        <i class="bi bi-calendar-check text-primary mb-3" style="font-size: 3rem;"></i>
-                        <h5 class="mb-3">Done Right, Done Once</h5>
-                        <p class="text-muted small">Installing during construction is easier and more cost-effective than retrofitting later.</p>
-                    </div>
-                </div>
-
-                <div class="alert alert-info text-center mb-0">
-                    <i class="bi bi-info-circle"></i> This showroom walks you through 4 smart home categories, helping you explore solutions for networking, security, audio, and entertainment.
-                </div>
-            </div>
-            <div class="modal-footer border-0 justify-content-center">
-                <button type="button" class="btn btn-primary btn-lg px-5" data-bs-dismiss="modal">
-                    <i class="bi bi-arrow-right-circle"></i> Continue to Showroom
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="showroom-container">
-    <!-- Hero Header -->
-    <div class="showroom-hero text-center py-5 mb-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+<div class="showroom-browse-container">
+    <!-- Hidden CSRF token for AJAX requests -->
+    {% csrf_token %}
+    <!-- Top Navigation -->
+    <div class="top-nav py-2 bg-light border-bottom">
         <div class="container">
-            <h1 class="display-3 fw-bold mb-3" style="color: white;">Smart Home Builder Showroom</h1>
-            <p class="lead mb-4" style="color: white;">Walk through the smart home installation process with your clients</p>
-            <p class="mb-0" style="color: white;">
-                <i class="bi bi-info-circle"></i> This showroom experience guides you through each installation phase,
-                helping clients understand what's possible at each stage of home construction
-            </p>
-
-            {% if cart_count > 0 %}
-            <div class="mt-4">
-                <a href="{% url 'quotes:cart' %}" class="btn btn-light btn-lg">
-                    <i class="bi bi-check-circle-fill text-success"></i>
-                    Finish Consultation ({{ cart_count }} package{{ cart_count|pluralize }})
-                </a>
-            </div>
-            {% endif %}
+            <a href="{% url 'builders:showroom' %}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Info
+            </a>
         </div>
     </div>
 
     <!-- Smart Home Categories -->
-    <div class="container mb-5">
+    <div class="container py-5">
         <div class="row">
             <div class="col-12">
-                <h2 class="text-center mb-4">Smart Home Categories</h2>
+                <h2 class="text-center mb-4">Smart Home Installation Journey</h2>
                 <p class="text-center text-muted mb-5">
-                    Explore smart home solutions organized by category.
-                    Click through each section to discover packages and watch overview videos.
+                    Follow the construction process from pre-wiring to final customization.<br>
+                    Each phase prepares your home for the next level of smart home integration.
                 </p>
 
                 <!-- Section Pills Navigation -->
@@ -106,7 +50,7 @@
                          id="{{ section_key }}"
                          role="tabpanel">
 
-                        <!-- Section Header -->
+                        <!-- Section Description -->
                         <div class="section-header card border-primary mb-4">
                             <div class="card-body">
                                 <h3 class="card-title">
@@ -114,130 +58,114 @@
                                     {{ section_data.label }}
                                 </h3>
                                 <p class="card-text text-muted">
-                                    {% if section_key == 'network_automation' %}
-                                        <strong>Network & Automation:</strong> Complete home networking infrastructure and smart home automation systems.
-                                        Control lighting, climate, security, and more from one unified system.
-                                    {% elif section_key == 'security' %}
-                                        <strong>Security:</strong> Advanced security systems including cameras, sensors, and access control.
-                                        Protect your home with professional-grade monitoring and deterrence.
-                                    {% elif section_key == 'audio' %}
-                                        <strong>Audio:</strong> Whole-home audio distribution and multi-room sound systems.
-                                        Enjoy your music throughout your home with seamless control.
-                                    {% elif section_key == 'entertainment' %}
-                                        <strong>Entertainment:</strong> Home theater, video distribution, and streaming solutions.
-                                        Create the ultimate entertainment experience in any room.
+                                    {% if section_key == 'pre_wire' %}
+                                        <strong>Pre-wire and Networking:</strong> The foundation of your smart home installed during framing and rough-in phases.
+                                        Includes structured wiring, network infrastructure, speaker wire, and cable runs that must be installed before drywall.
+                                        This critical first step enables all future smart home capabilities.
+                                    {% elif section_key == 'automations' %}
+                                        <strong>Automations:</strong> Smart control systems installed during trim and finish phases.
+                                        Lighting control, climate automation, security systems, and motorized shades that bring your pre-wired infrastructure to life.
+                                        These systems integrate with your pre-wire for seamless whole-home control.
+                                    {% elif section_key == 'entertainment_audio' %}
+                                        <strong>Entertainment & Audio:</strong> Audio and video systems that complete your smart home experience.
+                                        Whole-home audio, home theater, TVs, and streaming solutions that utilize your pre-wire and integrate with your automation systems.
+                                    {% elif section_key == 'custom_solutions' %}
+                                        <strong>Custom Solutions:</strong> Specialized and custom-designed smart home solutions.
+                                        Unique integrations, custom programming, and advanced features tailored to your specific needs and lifestyle.
+                                    {% elif section_key == 'other' %}
+                                        <strong>Other Products:</strong> Additional smart home products and solutions.
                                     {% endif %}
                                 </p>
                             </div>
                         </div>
 
-                        <!-- Category Videos -->
-                        {% if section_data.categories_with_videos %}
-                        <div class="category-videos-section mb-4">
-                            <h4 class="mb-3">
-                                <i class="bi bi-play-circle-fill text-primary"></i>
-                                Category Overview Videos
-                            </h4>
-                            <div class="row">
-                                {% for category in section_data.categories_with_videos %}
-                                <div class="col-md-6 mb-4">
-                                    <div class="card h-100">
-                                        <div class="card-header bg-primary text-white">
-                                            <h5 class="mb-0">{{ category.name }}</h5>
-                                        </div>
-                                        <div class="card-body p-0">
-                                            <div class="ratio ratio-16x9">
-                                                <iframe
-                                                    src="https://www.youtube.com/embed/{{ category.get_youtube_embed_id }}"
-                                                    title="{{ category.name }} Overview Video"
-                                                    frameborder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                    allowfullscreen>
-                                                </iframe>
-                                            </div>
-                                        </div>
+                        <!-- Categories in this Section -->
+                        {% for category in section_data.categories %}
+                        <div class="category-card card mb-4 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <div>
+                                        <h4 class="card-title mb-2">{{ category.name }}</h4>
                                         {% if category.description %}
-                                        <div class="card-footer text-muted small">
-                                            {{ category.description }}
-                                        </div>
+                                        <p class="text-muted mb-0">{{ category.description }}</p>
                                         {% endif %}
                                     </div>
+                                    <a href="{% url 'products:category_detail' category.slug %}"
+                                       class="btn btn-outline-primary btn-sm ms-3 flex-shrink-0"
+                                       target="_blank">
+                                        <i class="bi bi-info-circle"></i> Learn More
+                                    </a>
                                 </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        {% endif %}
 
-                        <!-- Packages in this Section -->
-                        <div class="packages-section">
-                            <h4 class="mb-3">
-                                <i class="bi bi-box-seam text-primary"></i>
-                                Available Packages
-                            </h4>
+                                <!-- Packages for this category -->
+                                {% with category_packages=category.packages.all %}
+                                {% if category_packages %}
+                                <div class="row g-3 mt-2">
+                                    {% for package in category_packages %}
+                                    {% if package.is_active %}
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="card package-card h-100 border">
+                                            <!-- Image with Features Overlay -->
+                                            <div class="package-image-container position-relative">
+                                                {% if package.image %}
+                                                <img src="{{ package.image.url }}" class="card-img-top package-image" alt="{{ package.name }}">
+                                                {% else %}
+                                                <div class="card-img-top package-image bg-light d-flex align-items-center justify-content-center">
+                                                    <i class="bi bi-box-seam text-muted" style="font-size: 2rem;"></i>
+                                                </div>
+                                                {% endif %}
 
-                            {% if section_data.packages %}
-                            <div class="row g-4">
-                                {% for package in section_data.packages %}
-                                <div class="col-lg-4 col-md-6">
-                                    <div class="card package-card h-100 shadow-sm">
-                                        {% if package.image %}
-                                        <img src="{{ package.image.url }}" class="card-img-top" alt="{{ package.name }}">
-                                        {% else %}
-                                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                                            <i class="bi bi-box-seam text-muted" style="font-size: 3rem;"></i>
-                                        </div>
-                                        {% endif %}
-
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ package.name }}</h5>
-
-                                            {% if package.short_description %}
-                                            <p class="card-text text-muted small">{{ package.short_description }}</p>
-                                            {% endif %}
-
-                                            <div class="mb-3">
-                                                <span class="badge bg-secondary">{{ package.category.name }}</span>
-                                                {% if package.subcategory %}
-                                                <span class="badge bg-light text-dark">{{ package.subcategory.name }}</span>
+                                                <!-- Features Overlay -->
+                                                {% if package.get_features_list %}
+                                                <div class="features-overlay">
+                                                    <div class="features-content p-2">
+                                                        <h6 class="text-white mb-2" style="font-size: 0.8rem; font-weight: 600;">Key Features:</h6>
+                                                        <ul class="mb-0 ps-3 text-white" style="font-size: 0.75rem; line-height: 1.3;">
+                                                            {% for feature in package.get_features_list|slice:":4" %}
+                                                            <li>{{ feature|truncatewords:6 }}</li>
+                                                            {% endfor %}
+                                                            {% if package.get_features_list|length > 4 %}
+                                                            <li class="text-white-50">+ {{ package.get_features_list|length|add:"-4" }} more...</li>
+                                                            {% endif %}
+                                                        </ul>
+                                                    </div>
+                                                </div>
                                                 {% endif %}
                                             </div>
 
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="price">
-                                                    <strong class="text-primary">{{ package.get_price_display }}</strong>
-                                                </div>
-                                                <div>
-                                                    <a href="{% url 'products:package_detail' package.slug %}"
-                                                       class="btn btn-outline-primary btn-sm">
-                                                        <i class="bi bi-eye"></i> Details
-                                                    </a>
-                                                    <form method="post"
-                                                          action="{% url 'quotes:add_to_cart' package.id %}"
-                                                          class="d-inline">
-                                                        {% csrf_token %}
-                                                        <button type="submit" class="btn btn-primary btn-sm">
-                                                            <i class="bi bi-cart-plus"></i> Add
-                                                        </button>
-                                                    </form>
+                                            <div class="card-body d-flex flex-column p-3">
+                                                <h6 class="card-title mb-2">{{ package.name }}</h6>
+
+                                                {% if package.short_description %}
+                                                <p class="card-text text-muted small mb-2" style="font-size: 0.85rem;">{{ package.short_description|truncatewords:20 }}</p>
+                                                {% endif %}
+
+                                                <div class="mt-auto">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <small class="text-primary fw-bold">{{ package.get_price_display }}</small>
+                                                    </div>
+
+                                                    <button type="button"
+                                                            class="btn btn-primary btn-sm w-100 add-to-cart-btn"
+                                                            data-package-id="{{ package.id }}"
+                                                            data-package-name="{{ package.name }}">
+                                                        <i class="bi bi-cart-plus"></i> Add to Cart
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        {% if package.is_featured %}
-                                        <div class="card-footer bg-warning text-dark">
-                                            <i class="bi bi-star-fill"></i> Featured Package
-                                        </div>
-                                        {% endif %}
                                     </div>
+                                    {% endif %}
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
+                                {% else %}
+                                <p class="text-muted small mb-0 mt-2">No packages currently available in this category.</p>
+                                {% endif %}
+                                {% endwith %}
                             </div>
-                            {% else %}
-                            <div class="alert alert-info">
-                                <i class="bi bi-info-circle"></i> No packages currently available in this section.
-                            </div>
-                            {% endif %}
                         </div>
+                        {% endfor %}
+
                     </div>
                     {% endfor %}
                 </div>
@@ -245,44 +173,37 @@
         </div>
     </div>
 
-    <!-- Cart Summary Footer -->
+    <!-- Floating Cart Badge -->
     {% if cart_count > 0 %}
     <div class="position-fixed bottom-0 end-0 p-3 m-3" style="z-index: 1000;">
-        <div class="card shadow-lg border-success" style="min-width: 300px;">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0">
-                    <i class="bi bi-cart-check-fill"></i>
-                    Consultation Cart
-                </h5>
-            </div>
-            <div class="card-body">
-                <p class="mb-2">
-                    <strong>{{ cart_count }}</strong> package{{ cart_count|pluralize }} selected
-                </p>
-                <a href="{% url 'quotes:cart' %}" class="btn btn-success w-100 mb-2">
-                    <i class="bi bi-arrow-right-circle-fill"></i> Finalize Quote
-                </a>
-                <a href="{% url 'quotes:checkout' %}" class="btn btn-outline-success w-100">
-                    <i class="bi bi-check-circle"></i> Go to Checkout
-                </a>
-            </div>
-        </div>
+        <a href="{% url 'quotes:cart' %}" class="btn btn-success btn-lg shadow-lg">
+            <i class="bi bi-cart-check-fill"></i>
+            <span class="badge bg-light text-dark ms-2">{{ cart_count }}</span>
+        </a>
     </div>
     {% endif %}
 </div>
 
 <style>
-    .showroom-hero {
-        border-radius: 0;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    .showroom-browse-container {
+        background-color: #f8f9fa;
+        min-height: 100vh;
+    }
+
+    .top-nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .nav-pills .nav-link {
         color: #6c757d;
-        background-color: #f8f9fa;
+        background-color: #ffffff;
         margin: 0 5px;
         border-radius: 10px;
         transition: all 0.3s ease;
+        border: 2px solid #e9ecef;
     }
 
     .nav-pills .nav-link:hover {
@@ -294,21 +215,100 @@
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
         box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
-    }
-
-    .package-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border: 1px solid #dee2e6;
-    }
-
-    .package-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0,0,0,0.15) !important;
-        border-color: #667eea;
+        border-color: transparent;
     }
 
     .section-header {
         background: linear-gradient(to right, #f8f9fa, #ffffff);
+    }
+
+    .category-card {
+        transition: all 0.3s ease;
+    }
+
+    .category-card:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    }
+
+    .package-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .package-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+        border-color: #667eea !important;
+    }
+
+    .package-card.in-cart {
+        border-color: #28a745 !important;
+        border-width: 2px !important;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15) !important;
+    }
+
+    .package-image-container {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .package-image {
+        height: 200px;
+        object-fit: cover;
+        width: 100%;
+        transition: transform 0.3s ease;
+    }
+
+    .package-card:hover .package-image {
+        transform: scale(1.05);
+    }
+
+    .features-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.85) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .package-card:hover .features-overlay {
+        opacity: 1;
+    }
+
+    .features-content {
+        width: 100%;
+        max-height: 100%;
+        overflow-y: auto;
+    }
+
+    .features-content ul {
+        list-style-type: disc;
+    }
+
+    .features-content li {
+        margin-bottom: 0.2rem;
+    }
+
+    .add-to-cart-btn.loading {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    .add-to-cart-btn.btn-success {
+        background-color: #28a745 !important;
+        border-color: #28a745 !important;
+        color: white !important;
+    }
+
+    .add-to-cart-btn.btn-danger {
+        background-color: #dc3545 !important;
+        border-color: #dc3545 !important;
+        color: white !important;
     }
 
     @media (max-width: 768px) {
@@ -324,17 +324,130 @@
 </style>
 
 <script>
-    // Show welcome modal on page load (only if not previously dismissed in this session)
     document.addEventListener('DOMContentLoaded', function() {
-        // Check if user has already seen the modal in this session
-        if (!sessionStorage.getItem('showroomWelcomeSeen')) {
-            const welcomeModal = new bootstrap.Modal(document.getElementById('welcomeModal'));
-            welcomeModal.show();
+        // Handle add to cart without redirect
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
 
-            // Mark as seen when modal is closed
-            document.getElementById('welcomeModal').addEventListener('hidden.bs.modal', function () {
-                sessionStorage.setItem('showroomWelcomeSeen', 'true');
+                const packageId = this.dataset.packageId;
+                const packageName = this.dataset.packageName;
+                const btn = this;
+                const originalHTML = btn.innerHTML;
+
+                // Show loading state
+                btn.classList.add('loading');
+                btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Adding...';
+
+                // Make AJAX request
+                fetch(`/quote/cart/add/${packageId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCSRFToken(),
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Mark package card as in cart
+                        const packageCard = btn.closest('.package-card');
+                        if (packageCard) {
+                            packageCard.classList.add('in-cart');
+                        }
+
+                        // Show success state and keep it
+                        btn.classList.remove('loading');
+                        btn.classList.add('btn-success');
+                        btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Cart';
+                        btn.disabled = false;
+
+                        // Update cart count
+                        updateCartCount(data.cart_count);
+
+                        // Allow adding more by clicking again
+                        btn.onclick = function() {
+                            // Re-trigger add to cart
+                            btn.dispatchEvent(new Event('click', { bubbles: true }));
+                        };
+                    } else {
+                        throw new Error(data.error || 'Failed to add to cart');
+                    }
+                })
+                .catch(error => {
+                    console.error('Cart Error:', error);
+                    btn.classList.remove('loading');
+                    btn.classList.add('btn-danger');
+                    btn.innerHTML = '<i class="bi bi-x-circle"></i> Error';
+
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        btn.classList.remove('btn-danger');
+                        btn.innerHTML = originalHTML;
+                    }, 2000);
+                });
             });
+        });
+
+        // Update cart count in UI
+        function updateCartCount(count) {
+            // Update floating badge
+            const floatingBadge = document.querySelector('.position-fixed .badge');
+            if (floatingBadge) {
+                floatingBadge.textContent = count;
+            }
+
+            // Show floating badge if not visible and count > 0
+            if (count > 0) {
+                let floatingCart = document.querySelector('.position-fixed.bottom-0.end-0');
+                if (!floatingCart) {
+                    floatingCart = document.createElement('div');
+                    floatingCart.className = 'position-fixed bottom-0 end-0 p-3 m-3';
+                    floatingCart.style.zIndex = '1000';
+                    floatingCart.innerHTML = `
+                        <a href="{% url 'quotes:cart' %}" class="btn btn-success btn-lg shadow-lg">
+                            <i class="bi bi-cart-check-fill"></i>
+                            <span class="badge bg-light text-dark ms-2">${count}</span>
+                        </a>
+                    `;
+                    document.body.appendChild(floatingCart);
+                }
+            }
+        }
+
+        // Helper function to get CSRF token
+        function getCSRFToken() {
+            // Try to get from DOM first (most reliable)
+            const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
+            if (tokenInput) {
+                return tokenInput.value;
+            }
+
+            // Fallback to cookie
+            return getCookie('csrftoken');
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
         }
     });
 </script>

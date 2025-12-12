@@ -110,14 +110,6 @@
         </div>
       </form>
 
-      <!-- Full Description -->
-      {% if package.description %}
-        <div class="mb-4">
-          <h4>Description</h4>
-          <p>{{ package.description|linebreaks }}</p>
-        </div>
-      {% endif %}
-
       <!-- Features -->
       {% if package.get_features_list %}
         <div class="mb-4">

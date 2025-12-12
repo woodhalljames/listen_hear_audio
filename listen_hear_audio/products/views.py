@@ -38,6 +38,25 @@ class CatalogView(ListView):
         return context
 
 
+class CategoryDetailView(DetailView):
+    """Detail view for a single category"""
+    model = Category
+    template_name = 'products/category_detail.html'
+    context_object_name = 'category'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
+
+    def get_queryset(self):
+        """Only show active categories"""
+        return Category.objects.filter(is_active=True).select_related('property_type')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add count of packages for this category
+        context['package_count'] = self.object.packages.filter(is_active=True).count()
+        return context
+
+
 class PackageDetailView(DetailView):
     """Detail view for a single package"""
     model = Package

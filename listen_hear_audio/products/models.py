@@ -36,17 +36,17 @@ class PropertyType(models.Model):
 class Category(models.Model):
     """Second-level categorization (e.g., Networking, Media & Entertainment)"""
 
-    # Builder section choices for showroom organization
-    NETWORK_AUTOMATION = 'network_automation'
-    SECURITY = 'security'
-    AUDIO = 'audio'
-    ENTERTAINMENT = 'entertainment'
+    # Builder section choices for showroom organization (organized by construction phase)
+    PRE_WIRE = 'pre_wire'
+    AUTOMATIONS = 'automations'
+    ENTERTAINMENT_AUDIO = 'entertainment_audio'
+    CUSTOM_SOLUTIONS = 'custom_solutions'
 
     BUILDER_SECTION_CHOICES = [
-        (NETWORK_AUTOMATION, 'Network & Automation'),
-        (SECURITY, 'Security'),
-        (AUDIO, 'Audio'),
-        (ENTERTAINMENT, 'Entertainment'),
+        (PRE_WIRE, 'Pre-wire and Networking'),
+        (AUTOMATIONS, 'Automations'),
+        (ENTERTAINMENT_AUDIO, 'Entertainment & Audio'),
+        (CUSTOM_SOLUTIONS, 'Custom Solutions'),
     ]
 
     property_type = models.ForeignKey(
@@ -65,6 +65,12 @@ class Category(models.Model):
         help_text="Detailed information, specifications, benefits - shown on category detail pages"
     )
     image = models.ImageField(upload_to='categories/', blank=True, null=True)
+    video = models.FileField(
+        upload_to='categories/videos/',
+        blank=True,
+        null=True,
+        help_text="Upload a video file directly (MP4, MOV, etc.). If both video and YouTube URL are provided, uploaded video takes priority."
+    )
     youtube_url = models.URLField(
         blank=True,
         help_text="YouTube video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID or https://youtu.be/VIDEO_ID)"
@@ -106,6 +112,10 @@ class Category(models.Model):
         """Check if this category has packages directly attached"""
         return self.packages.exists()
 
+    def has_video(self):
+        """Check if category has either an uploaded video or YouTube URL"""
+        return bool(self.video) or bool(self.youtube_url)
+
     def get_youtube_embed_id(self):
         """Extract YouTube video ID from URL for embedding"""
         if not self.youtube_url:
@@ -123,6 +133,11 @@ class Category(models.Model):
             if match:
                 return match.group(1)
         return None
+
+    def get_absolute_url(self):
+        """Get URL for category detail view"""
+        from django.urls import reverse
+        return reverse('products:category_detail', kwargs={'slug': self.slug})
 
 
 class SubCategory(models.Model):
@@ -202,13 +217,9 @@ class Package(models.Model):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, blank=True)
     short_description = models.CharField(
-        max_length=300, 
+        max_length=300,
         blank=True,
         help_text="Brief description shown on package card"
-    )
-    description = models.TextField(
-        blank=True,
-        help_text="Full description shown on detail view"
     )
     features = models.TextField(
         blank=True,

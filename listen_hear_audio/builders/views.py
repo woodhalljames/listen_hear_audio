@@ -161,11 +161,19 @@ def update_package_notes(request, package_id):
     return redirect('builders:property_detail', pk=package.property.pk)
 
 
+def builder_showroom_intro(request):
+    """
+    Landing page for builder showroom with benefits information.
+    Explains financial benefits, energy savings, state benefits, and ListenHear partnership.
+    """
+    return render(request, 'builders/builder_showroom_intro.html')
+
+
 def builder_showroom(request):
     """
     Builder showroom experience for walking clients through smart home packages.
     Organizes categories and packages by builder sections (Network & Automation, Security, Audio, Entertainment).
-    If categories don't have builder_section set, they appear in an "Other" section.
+    Shows the relationship between installation phases and how packages relate to each other.
     """
     from listen_hear_audio.quotes.cart import get_or_create_cart
 
@@ -180,7 +188,7 @@ def builder_showroom(request):
         categories = Category.objects.filter(
             builder_section=section_value,
             is_active=True
-        ).prefetch_related('packages', 'subcategories__packages')
+        ).prefetch_related('packages', 'subcategories__packages').order_by('display_order', 'name')
 
         # Get all packages from categories in this section
         packages = Package.objects.filter(
@@ -189,14 +197,10 @@ def builder_showroom(request):
             is_active=True
         ).select_related('category', 'subcategory').order_by('display_order', 'name')
 
-        # Get categories with videos for this section
-        categories_with_videos = categories.exclude(youtube_url='')
-
         sections_data[section_value] = {
             'label': section_label,
             'categories': categories,
             'packages': packages,
-            'categories_with_videos': categories_with_videos,
             'icon': _get_section_icon(section_value)
         }
 
@@ -204,7 +208,7 @@ def builder_showroom(request):
     categories_no_section = Category.objects.filter(
         builder_section='',
         is_active=True
-    ).prefetch_related('packages', 'subcategories__packages')
+    ).prefetch_related('packages', 'subcategories__packages').order_by('display_order', 'name')
 
     packages_no_section = Package.objects.filter(
         category__builder_section='',
@@ -213,13 +217,10 @@ def builder_showroom(request):
     ).select_related('category', 'subcategory').order_by('display_order', 'name')
 
     if categories_no_section.exists() or packages_no_section.exists():
-        categories_with_videos_no_section = categories_no_section.exclude(youtube_url='')
-
         sections_data['other'] = {
             'label': 'Other Products',
             'categories': categories_no_section,
             'packages': packages_no_section,
-            'categories_with_videos': categories_with_videos_no_section,
             'icon': 'bi-box-seam'
         }
 
@@ -234,10 +235,10 @@ def builder_showroom(request):
 def _get_section_icon(section):
     """Get Bootstrap icon for builder section"""
     icons = {
-        'network_automation': 'bi-router',
-        'security': 'bi-shield-check',
-        'audio': 'bi-speaker',
-        'entertainment': 'bi-play-circle',
+        'pre_wire': 'bi-bezier2',
+        'automations': 'bi-lightbulb',
+        'entertainment_audio': 'bi-speaker',
+        'custom_solutions': 'bi-puzzle',
     }
     return icons.get(section, 'bi-box')
 
@@ -251,3 +252,55 @@ def _get_phase_icon(phase):
         'trim_finishes': 'bi-paint-bucket',
     }
     return icons.get(phase, 'bi-box')
+
+
+def builder_showroom_guided(request, step=1):
+    """
+    Guided step-by-step showroom experience (Showroom 2).
+    Loads all sections on one page but hides/shows based on current step.
+    """
+    from listen_hear_audio.quotes.cart import get_or_create_cart
+
+    # Get cart for cart count
+    cart = get_or_create_cart(request)
+
+    # Define all sections in order
+    all_sections = []
+    for section_value, section_label in Category.BUILDER_SECTION_CHOICES:
+        categories = Category.objects.filter(
+            builder_section=section_value,
+            is_active=True
+        ).prefetch_related('packages', 'subcategories__packages').order_by('display_order', 'name')
+
+        packages = Package.objects.filter(
+            category__builder_section=section_value,
+            category__is_active=True,
+            is_active=True
+        ).select_related('category', 'subcategory').order_by('display_order', 'name')
+
+        if categories.exists() or packages.exists():
+            all_sections.append({
+                'key': section_value,
+                'label': section_label,
+                'categories': categories,
+                'packages': packages,
+                'icon': _get_section_icon(section_value)
+            })
+
+    total_steps = len(all_sections)
+
+    # Validate step
+    if step < 1 or step > total_steps:
+        messages.error(request, 'Invalid step')
+        return redirect('builders:showroom_guided', step=1)
+
+    context = {
+        'current_step': step,
+        'total_steps': total_steps,
+        'all_sections': all_sections,
+        'has_previous': step > 1,
+        'has_next': step < total_steps,
+        'cart_count': cart.get_total_items(),
+    }
+
+    return render(request, 'builders/builder_showroom_guided.html', context)

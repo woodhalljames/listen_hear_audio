@@ -4,6 +4,8 @@
 {% block title %}Product Packages - Listen Hear Audio{% endblock %}
 
 {% block content %}
+<!-- Hidden CSRF token for AJAX requests -->
+{% csrf_token %}
 <div class="py-4">
   <div class="row">
     <!-- Sidebar Navigation -->
@@ -159,19 +161,19 @@
   // Toggle category visibility in sidebar
   document.addEventListener('DOMContentLoaded', function() {
     const propertyLinks = document.querySelectorAll('.property-nav-link');
-    
+
     propertyLinks.forEach(link => {
       link.addEventListener('click', function(e) {
         const section = this.closest('.property-nav-section');
         const categoryList = section.querySelector('.category-nav-list');
         const chevron = this.querySelector('.chevron-icon');
-        
+
         // Toggle category list
         categoryList.classList.toggle('show');
         chevron.classList.toggle('rotated');
       });
     });
-    
+
     // Auto-expand the active section
     const activeSection = document.querySelector('.category-section');
     if (activeSection) {
@@ -183,6 +185,186 @@
         chevron.classList.add('rotated');
       }
     }
+
+    // Handle add to cart without redirect (AJAX)
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const packageId = this.dataset.packageId;
+        const packageName = this.dataset.packageName;
+        const btn = this;
+        const originalHTML = btn.innerHTML;
+
+        // Show loading state
+        btn.classList.add('loading');
+        btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Adding...';
+        btn.disabled = true;
+
+        // Make AJAX request
+        fetch(`/quote/cart/add/${packageId}/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': getCSRFToken(),
+            'X-Requested-With': 'XMLHttpRequest',
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          credentials: 'same-origin'
+        })
+        .then(response => {
+          console.log('Response status:', response.status);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+            // Mark package card as in cart
+            const packageCard = btn.closest('.product-card');
+            if (packageCard) {
+              packageCard.classList.add('in-cart');
+            }
+
+            // Show success state and keep it
+            btn.classList.remove('loading');
+            btn.classList.add('btn-success');
+            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Cart';
+            btn.disabled = false;
+
+            // Allow adding more by clicking again
+            btn.onclick = function() {
+              // Re-trigger add to cart
+              btn.dispatchEvent(new Event('click', { bubbles: true }));
+            };
+          } else {
+            throw new Error(data.error || 'Failed to add to cart');
+          }
+        })
+        .catch(error => {
+          console.error('Cart Error:', error);
+          btn.classList.remove('loading');
+          btn.classList.add('btn-danger');
+          btn.innerHTML = '<i class="bi bi-x-circle"></i> Error';
+
+          // Reset button after 2 seconds
+          setTimeout(() => {
+            btn.classList.remove('btn-danger');
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+          }, 2000);
+        });
+      });
+    });
+
+    // Helper function to get CSRF token
+    function getCSRFToken() {
+      // Try to get from DOM first (most reliable)
+      const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
+      if (tokenInput) {
+        return tokenInput.value;
+      }
+
+      // Fallback to cookie
+      return getCookie('csrftoken');
+    }
+
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
   });
 </script>
+
+<style>
+  .product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15) !important;
+  }
+
+  .product-card.in-cart {
+    border-color: #28a745 !important;
+    border-width: 2px !important;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15) !important;
+  }
+
+  .package-image-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .package-image {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+    transition: transform 0.3s ease;
+  }
+
+  .product-card:hover .package-image {
+    transform: scale(1.05);
+  }
+
+  .features-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.85) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-card:hover .features-overlay {
+    opacity: 1;
+  }
+
+  .features-content {
+    width: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+
+  .features-content ul {
+    list-style-type: disc;
+  }
+
+  .features-content li {
+    margin-bottom: 0.25rem;
+  }
+
+  .add-to-cart-btn.loading {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .add-to-cart-btn.btn-success {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: white !important;
+  }
+
+  .add-to-cart-btn.btn-danger {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    color: white !important;
+  }
+</style>
 {% endblock %}
