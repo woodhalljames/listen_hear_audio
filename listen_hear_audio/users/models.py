@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import BooleanField
 from django.db.models import CharField
 from django.db.models import EmailField
+from django.db.models import URLField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from slugify import slugify
@@ -24,7 +25,20 @@ class User(AbstractUser):
     last_name = None  # type: ignore[assignment]
     email = EmailField(_("email address"), unique=True)
     username = None  # type: ignore[assignment]
-    
+
+    # Contact Information
+    phone = CharField(
+        _("Phone Number"),
+        max_length=20,
+        blank=True,
+        help_text="Contact phone number"
+    )
+    website = URLField(
+        _("Website"),
+        blank=True,
+        help_text="Personal or business website"
+    )
+
     # Builder fields
     is_builder = BooleanField(
         default=False,
@@ -74,6 +88,4 @@ class User(AbstractUser):
             str: URL for user detail.
 
         """
-        if self.is_builder:
-            return reverse("builders:dashboard")
         return reverse("users:detail", kwargs={"pk": self.id})

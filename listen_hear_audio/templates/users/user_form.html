@@ -2,30 +2,73 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}
+{% block title %}Update My Information{% endblock title %}
 
-
-  {{ user.name }}
-
-
-{% endblock title %}
 {% block content %}
-  <h1>
-  
-  
-    {{ user.name }}
-  
-  
-</h1>
-<form class="form-horizontal"
-      method="post"
-      action="{% url 'users:update' %}">
-  {% csrf_token %}
-  {{ form|crispy }}
-  <div class="control-group">
-    <div class="controls">
-      <button type="submit" class="btn btn-primary">Update</button>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <!-- Header -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">
+            <i class="bi bi-person-circle me-2"></i>My Information
+          </h3>
+        </div>
+        <div class="card-body">
+          <form method="post" action="{% url 'users:update' %}">
+            {% csrf_token %}
+
+            <!-- Personal Information -->
+            <h5 class="border-bottom pb-2 mb-3">Personal Information</h5>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                {{ form.name|as_crispy_field }}
+              </div>
+              <div class="col-md-6 mb-3">
+                {{ form.phone|as_crispy_field }}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                {{ form.website|as_crispy_field }}
+              </div>
+              <div class="col-md-6 mb-3">
+                {{ form.company_name|as_crispy_field }}
+              </div>
+            </div>
+
+            <!-- Address Information -->
+            <h5 class="border-bottom pb-2 mb-3 mt-4">Address</h5>
+            <div class="mb-3">
+              {{ form.street|as_crispy_field }}
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                {{ form.city|as_crispy_field }}
+              </div>
+              <div class="col-md-3 mb-3">
+                {{ form.state|as_crispy_field }}
+              </div>
+              <div class="col-md-3 mb-3">
+                {{ form.zip_code|as_crispy_field }}
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex gap-2 justify-content-end mt-4">
+              <a href="{% url 'users:detail' user.pk %}" class="btn btn-secondary">
+                <i class="bi bi-x-circle me-1"></i>Cancel
+              </a>
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-circle me-1"></i>Update Information
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
-</form>
+</div>
 {% endblock content %}

@@ -53,7 +53,7 @@
   {% block body %}
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
-    <div class="container">
+    <div class="container-fluid">
       <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
         <img src="{% static 'images/listenhear.png' %}" alt="Listen Hear Smart Homes" class="navbar-logo me-2">
         Listen Hear
@@ -71,68 +71,119 @@
       
       <div class="collapse navbar-collapse" id="navbarMain">
         <ul class="navbar-nav ms-auto align-items-center">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'home' %}">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'products:catalog' %}">Catalog</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'builders:showroom' %}">
-              <i class="bi bi-house-heart"></i> Builder Showroom
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'about' %}">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'quotes:cart' %}">
-              <i class="bi bi-cart3"></i> Cart
-              {% if cart_count > 0 %}
-                <span class="cart-badge">{{ cart_count }}</span>
-              {% endif %}
-            </a>
-          </li>
-          
           {% if request.user.is_authenticated %}
             {% if request.user.is_builder %}
+              {# Simplified nav for builders #}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'builders:dashboard' %}">
-                  <i class="bi bi-tools"></i> Builder Dashboard
+                <a class="nav-link" href="{% url 'products:catalog' %}">Catalog</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'builders:showroom' %}">
+                  <i class="bi bi-house-heart"></i> Builder Showroom
                 </a>
               </li>
-            {% endif %}
-            {% if request.user.is_staff %}
               <li class="nav-item">
-                <a class="nav-link" href="/admin/">
-                  <i class="bi bi-gear"></i> Admin
+                <a class="nav-link" href="{% url 'quotes:cart' %}">
+                  <i class="bi bi-cart3"></i> Cart
+                  {% if cart_count > 0 %}
+                    <span class="cart-badge">{{ cart_count }}</span>
+                  {% endif %}
                 </a>
               </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                   href="#"
+                   id="userDropdown"
+                   role="button"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                  <i class="bi bi-person-circle"></i> Builder Account
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'users:detail' request.user.pk %}">
+                      {% translate "My Profile" %}
+                    </a>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'account_logout' %}">
+                      {% translate "Sign Out" %}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            {% else %}
+              {# Full nav for regular users #}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'products:catalog' %}">Catalog</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'blog:post_list' %}">Blog</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'careers:job_list' %}">Careers</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'quotes:cart' %}">
+                  <i class="bi bi-cart3"></i> Cart
+                  {% if cart_count > 0 %}
+                    <span class="cart-badge">{{ cart_count }}</span>
+                  {% endif %}
+                </a>
+              </li>
+              {% if request.user.is_staff %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'admin:index' %}">
+                    <i class="bi bi-gear"></i> Admin
+                  </a>
+                </li>
+              {% endif %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                   href="#"
+                   id="userDropdown"
+                   role="button"
+                   data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                  <i class="bi bi-person-circle"></i> Account
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                  <li>
+                    <a class="dropdown-item" href="{% url 'users:detail' request.user.pk %}">
+                      {% translate "My Profile" %}
+                    </a>
+                  </li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'account_logout' %}">
+                      {% translate "Sign Out" %}
+                    </a>
+                  </li>
+                </ul>
+              </li>
             {% endif %}
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle"
-                 href="#"
-                 id="userDropdown"
-                 role="button"
-                 data-bs-toggle="dropdown"
-                 aria-expanded="false">
-                <i class="bi bi-person-circle"></i> Account
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li>
-                  <a class="dropdown-item" href="{% url 'users:detail' request.user.pk %}">
-                    {% translate "My Profile" %}
-                  </a>
-                </li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                  <a class="dropdown-item" href="{% url 'account_logout' %}">
-                    {% translate "Sign Out" %}
-                  </a>
-                </li>
-              </ul>
-            </li>
           {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'products:catalog' %}">Catalog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'blog:post_list' %}">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'quotes:cart' %}">
+                <i class="bi bi-cart3"></i> Cart
+                {% if cart_count > 0 %}
+                  <span class="cart-badge">{{ cart_count }}</span>
+                {% endif %}
+              </a>
+            </li>
             {% if ACCOUNT_ALLOW_REGISTRATION %}
               <li class="nav-item">
                 <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">
@@ -173,41 +224,95 @@
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
         <!-- Column 1: Logo and Description -->
-        <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-          <div class="footer-logo d-flex align-items-center mb-3">
+        <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+          <a href="{% url 'home' %}" class="footer-logo d-flex align-items-center mb-3 text-decoration-none">
             <img src="{% static 'images/listenhear.png' %}" alt="Listen Hear Smart Homes" class="footer-logo-image me-2">
-            Listen Hear
-          </div>
+            <span class="footer-logo-text">Listen Hear</span>
+          </a>
           <p>Professional smart home audio and video installation services for residential, commercial, and industrial properties.</p>
+
+          <!-- Social Media Links -->
+          {% if business_info.facebook_url or business_info.instagram_url or business_info.twitter_url or business_info.linkedin_url %}
+            <div class="footer-social mt-3">
+              {% if business_info.facebook_url %}
+                <a href="{{ business_info.facebook_url }}" target="_blank" class="text-white me-3" aria-label="Facebook">
+                  <i class="bi bi-facebook" style="font-size: 1.25rem;"></i>
+                </a>
+              {% endif %}
+              {% if business_info.instagram_url %}
+                <a href="{{ business_info.instagram_url }}" target="_blank" class="text-white me-3" aria-label="Instagram">
+                  <i class="bi bi-instagram" style="font-size: 1.25rem;"></i>
+                </a>
+              {% endif %}
+              {% if business_info.twitter_url %}
+                <a href="{{ business_info.twitter_url }}" target="_blank" class="text-white me-3" aria-label="Twitter">
+                  <i class="bi bi-twitter" style="font-size: 1.25rem;"></i>
+                </a>
+              {% endif %}
+              {% if business_info.linkedin_url %}
+                <a href="{{ business_info.linkedin_url }}" target="_blank" class="text-white me-3" aria-label="LinkedIn">
+                  <i class="bi bi-linkedin" style="font-size: 1.25rem;"></i>
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
         </div>
-        
-        <!-- Column 2: Quick Links -->
-        <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
-          <h5>Quick Links</h5>
+
+        <!-- Column 2: Links (First Column) -->
+        <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+          <h5>Explore</h5>
           <ul class="footer-links">
-            <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'products:catalog' %}">Browse Catalog</a></li>
             <li><a href="{% url 'quotes:cart' %}">View Cart</a></li>
-            <li><a href="{% url 'about' %}">About Us</a></li>
-            {% if request.user.is_authenticated %}
-              <li><a href="{% url 'users:detail' request.user.pk %}">My Profile</a></li>
-            {% else %}
-              <li><a href="{% url 'account_login' %}">Sign In</a></li>
-            {% endif %}
+            <li><a href="{% url 'blog:post_list' %}">Blog</a></li>
           </ul>
         </div>
-        
-        <!-- Column 3: Newsletter -->
-        <div class="col-lg-4 col-md-12">
+
+        <!-- Column 3: Links (Second Column) -->
+        <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+          <h5>Company</h5>
+          <ul class="footer-links">
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li><a href="{% url 'careers:job_list' %}">Careers</a></li>
+            <li><a href="#">Legal</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Contact Info -->
+        <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+          <h5>Visit Us</h5>
+          {% if business_info.full_address %}
+            <p class="mb-2 small">
+              <i class="bi bi-geo-alt"></i>
+              <a href="{{ business_info.google_maps_url }}" target="_blank" class="text-white text-decoration-none">
+                {{ business_info.street_address }}<br>
+                {{ business_info.city }}, {{ business_info.state }} {{ business_info.zip_code }}
+              </a>
+            </p>
+          {% endif %}
+          {% if business_info.phone %}
+            <p class="mb-2 small">
+              <i class="bi bi-telephone"></i>
+              <a href="tel:{{ business_info.phone }}" class="text-white text-decoration-none">{{ business_info.phone }}</a>
+            </p>
+          {% endif %}
+          <p class="mb-1 small"><strong>Hours:</strong></p>
+          <p class="small mb-0">Mon-Fri: {{ business_info.monday_hours }}</p>
+          <p class="small mb-0">Sat-Sun: {{ business_info.saturday_hours }}</p>
+        </div>
+
+        <!-- Column 5: Newsletter -->
+        <div class="col-lg-3 col-md-12">
           <h5>Stay Updated</h5>
           <p>Subscribe to our newsletter for the latest products and promotions.</p>
           <form class="newsletter-form">
-            <input type="email" 
-                   placeholder="Enter your email" 
-                   required 
+            <input type="email"
+                   placeholder="Enter your email"
+                   required
                    aria-label="Email address">
             <button type="submit">Subscribe</button>
           </form>

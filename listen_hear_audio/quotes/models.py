@@ -122,6 +122,16 @@ class QuoteRequest(models.Model):
         null=True,
         help_text="Final quoted price (overrides estimated total when set)"
     )
+    email_recipients = models.TextField(
+        blank=True,
+        verbose_name="Email Recipients",
+        help_text="Email addresses to send finalized quote to (one per line or comma-separated). Defaults to customer email."
+    )
+    builder_email = models.EmailField(
+        blank=True,
+        verbose_name="Builder Email",
+        help_text="Email of the builder account to assign to the property created from this quote"
+    )
     finalized_at = models.DateTimeField(
         blank=True,
         null=True,
@@ -174,6 +184,19 @@ class QuoteRequest(models.Model):
         self.estimated_total = sum(item.get_subtotal() for item in self.items.all())
         return self.estimated_total
 
+    def get_email_recipients(self):
+        """Parse email_recipients field into list of email addresses. Defaults to quote email if empty."""
+        if not self.email_recipients:
+            # Default to the customer's email
+            return [self.email] if self.email else []
+
+        # Split by newlines or commas
+        import re
+        emails = re.split(r'[,\n]+', self.email_recipients)
+        # Clean up whitespace and filter empty strings
+        emails = [email.strip() for email in emails if email.strip()]
+        return emails
+
 
 class QuoteRequestItem(models.Model):
     """Items in a quote request - snapshot of package at time of quote"""
@@ -202,7 +225,11 @@ class QuoteRequestItem(models.Model):
     )
 
     quantity = models.PositiveIntegerField(default=1)
-    notes = models.TextField(blank=True)
+    notes = models.TextField(
+        blank=True,
+        verbose_name="Customer Notes",
+        help_text="Notes from the customer about this package (visible to customer in emails/PDFs)"
+    )
 
     class Meta:
         ordering = ['id']

@@ -35,25 +35,11 @@ class CartAdmin(admin.ModelAdmin):
 class QuoteRequestItemInline(admin.TabularInline):
     model = QuoteRequestItem
     extra = 1
-    readonly_fields = ['price_display', 'subtotal_display', 'installation_phase_snapshot']
-    fields = ['package', 'package_name', 'installation_phase_snapshot', 'package_description', 'quantity', 'price_snapshot', 'price_display', 'subtotal_display', 'notes']
+    readonly_fields = ['installation_phase_snapshot']
+    fields = ['package', 'package_name', 'installation_phase_snapshot', 'quantity', 'price_snapshot', 'notes']
     autocomplete_fields = ['package']
-
-    def price_display(self, obj):
-        if not obj.pk:  # New item
-            return '-'
-        if obj.price_snapshot is None:
-            return format_html('<span style="color: #999;">Custom</span>')
-        return f"${obj.price_snapshot:,.2f}"
-    price_display.short_description = 'Unit Price'
-
-    def subtotal_display(self, obj):
-        if not obj.pk:  # New item
-            return '-'
-        if obj.price_snapshot is None:
-            return format_html('<span style="color: #999;">Custom</span>')
-        return f"${obj.get_subtotal():,.2f}"
-    subtotal_display.short_description = 'Subtotal'
+    verbose_name = 'Package'
+    verbose_name_plural = 'Packages'
 
 
 @admin.register(QuoteRequest)
@@ -81,6 +67,7 @@ class QuoteRequestAdmin(admin.ModelAdmin):
         'finalized_at',
         'finalized_by',
         'pdf_link',
+        'finalize_link',
         'property_link'
     ]
     inlines = [QuoteRequestItemInline]
@@ -101,9 +88,8 @@ class QuoteRequestAdmin(admin.ModelAdmin):
             'description': 'Notes from the customer about their project requirements'
         }),
         ('Admin Finalization', {
-            'fields': ('admin_notes', 'final_total', 'finalized_at', 'finalized_by'),
-            'description': 'Use the "Finalize selected quotes" action to set finalized_at automatically',
-            'classes': ('collapse',)
+            'fields': ('admin_notes', 'final_total', 'email_recipients', 'builder_email', 'finalize_link', 'finalized_at', 'finalized_by'),
+            'description': 'Set final price, email recipients, and builder email above, then click the button below to finalize and send.',
         }),
         ('Timestamps', {
             'fields': ('created_at', 'updated_at'),
@@ -121,7 +107,7 @@ class QuoteRequestAdmin(admin.ModelAdmin):
     def final_total_display(self, obj):
         if obj.final_total is None:
             return format_html('<span style="color: #999;">-</span>')
-        return format_html('<strong style="color: #0a0;">${:,.2f}</strong>', obj.final_total)
+        return format_html('<strong style="color: #0a0;">${}</strong>', f'{float(obj.final_total):,.2f}')
     final_total_display.short_description = 'Final Quote'
     final_total_display.admin_order_field = 'final_total'
 
@@ -157,6 +143,25 @@ class QuoteRequestAdmin(admin.ModelAdmin):
 
         return format_html(' '.join(buttons))
     pdf_link.short_description = 'PDF Actions'
+
+    def finalize_link(self, obj):
+        if not obj.pk:
+            return "Save quote first"
+
+        finalize_url = reverse('admin:quotes_quoterequest_finalize', args=[obj.pk])
+
+        if obj.is_finalized():
+            button_text = '🔄 Re-Finalize & Send'
+            button_style = 'background-color: #f0ad4e; color: white;'
+        else:
+            button_text = '✓ Finalize & Send'
+            button_style = 'background-color: #5cb85c; color: white;'
+
+        return format_html(
+            '<a href="{}" class="button" style="margin-right: 5px; {}">{}</a>',
+            finalize_url, button_style, button_text
+        )
+    finalize_link.short_description = 'Finalize Quote'
 
     def property_link(self, obj):
         """Show link to property if quote has been converted"""
@@ -240,6 +245,11 @@ class QuoteRequestAdmin(admin.ModelAdmin):
                 self.admin_site.admin_view(self.generate_pdf_view),
                 name='quotes_quoterequest_generate_pdf',
             ),
+            path(
+                '<int:quote_id>/finalize/',
+                self.admin_site.admin_view(self.finalize_view),
+                name='quotes_quoterequest_finalize',
+            ),
         ]
         return custom_urls + urls
 
@@ -276,6 +286,125 @@ class QuoteRequestAdmin(admin.ModelAdmin):
             return redirect('admin:quotes_quoterequest_changelist')
         except Exception as e:
             self.message_user(request, f'Error generating PDF: {str(e)}', level=messages.ERROR)
+            return redirect('admin:quotes_quoterequest_change', quote_id)
+
+    def finalize_view(self, request, quote_id):
+        """Finalize quote and send emails"""
+        from django.utils import timezone
+        from celery import chain
+        from listen_hear_audio.quotes.tasks import generate_quote_pdf, send_quote_emails
+        from listen_hear_audio.builders.models import Property, PurchasedPackage
+
+        try:
+            quote_request = QuoteRequest.objects.get(id=quote_id)
+
+            # Pre-populate email_recipients if empty
+            if not quote_request.email_recipients:
+                quote_request.email_recipients = quote_request.email
+                quote_request.save()
+
+            # Set finalized timestamp and user
+            quote_request.finalized_at = timezone.now()
+            quote_request.finalized_by = request.user
+            quote_request.status = 'quoted'
+
+            # Recalculate estimated total if no final total is set
+            if quote_request.final_total is None:
+                quote_request.recalculate_estimated_total()
+
+            quote_request.save()
+
+            # Create property if not already created
+            if not quote_request.properties.exists():
+                # Build property name and address
+                property_name = f"{quote_request.contact_person} - {quote_request.quote_number}"
+                address_parts = []
+                if quote_request.street:
+                    address_parts.append(quote_request.street)
+                if quote_request.city:
+                    address_parts.append(quote_request.city)
+                if quote_request.state:
+                    address_parts.append(quote_request.state)
+                if quote_request.zip_code:
+                    address_parts.append(quote_request.zip_code)
+                full_address = ', '.join(address_parts)
+
+                # Create property
+                property_obj = Property.objects.create(
+                    name=property_name,
+                    address=full_address,
+                    property_type='',
+                    quote_request=quote_request
+                )
+
+                # Add builder from builder_email field if provided
+                if quote_request.builder_email:
+                    try:
+                        from listen_hear_audio.users.models import User
+                        builder_user = User.objects.get(email=quote_request.builder_email)
+                        if builder_user.is_builder:
+                            property_obj.builders.add(builder_user)
+                            self.message_user(
+                                request,
+                                f'Builder {builder_user.email} assigned to property.',
+                                level=messages.SUCCESS
+                            )
+                        else:
+                            self.message_user(
+                                request,
+                                f'Warning: User {quote_request.builder_email} is not a builder account.',
+                                level=messages.WARNING
+                            )
+                    except User.DoesNotExist:
+                        self.message_user(
+                            request,
+                            f'Warning: No user found with email {quote_request.builder_email}',
+                            level=messages.WARNING
+                        )
+                # Also add quote requester if they are a builder
+                elif quote_request.user and quote_request.user.is_builder:
+                    property_obj.builders.add(quote_request.user)
+
+                # Create purchased packages from quote items
+                for item in quote_request.items.all():
+                    PurchasedPackage.objects.create(
+                        property=property_obj,
+                        package=item.package,
+                        package_name=item.package_name,
+                        package_description=item.package_description,
+                        installation_phase_snapshot=item.installation_phase_snapshot,
+                        price_snapshot=item.price_snapshot,
+                        quantity=item.quantity,
+                        status='pending'
+                    )
+
+                self.message_user(
+                    request,
+                    f'Property "{property_name}" created successfully!',
+                    level=messages.SUCCESS
+                )
+
+            # Regenerate PDF and send email
+            task_chain = chain(
+                generate_quote_pdf.si(quote_request.id),
+                send_quote_emails.si(quote_request.id)
+            )
+            task_chain.apply_async()
+
+            recipients = quote_request.get_email_recipients()
+            self.message_user(
+                request,
+                f'Quote {quote_request.quote_number} finalized! PDF is being regenerated and emails will be sent to: {", ".join(recipients)}',
+                level=messages.SUCCESS
+            )
+
+            return redirect('admin:quotes_quoterequest_change', quote_id)
+
+        except QuoteRequest.DoesNotExist:
+            self.message_user(request, 'Quote request not found.', level=messages.ERROR)
+            return redirect('admin:quotes_quoterequest_changelist')
+        except Exception as e:
+            self.message_user(request, f'Error finalizing quote: {str(e)}', level=messages.ERROR)
             return redirect('admin:quotes_quoterequest_change', quote_id)
 
     def convert_to_property(self, request, queryset):

@@ -18,9 +18,9 @@
                     <i class="bi bi-arrow-left"></i> Previous
                 </a>
                 {% else %}
-                <button class="btn btn-outline-secondary" disabled>
-                    <i class="bi bi-arrow-left"></i> Previous
-                </button>
+                <a href="{% url 'builders:showroom' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to Info
+                </a>
                 {% endif %}
 
                 <!-- Progress Dots -->
@@ -98,7 +98,16 @@
                         {% for package in category_packages %}
                         {% if package.is_active %}
                         <div class="col-md-6 col-lg-4">
-                            <div class="card package-card h-100 border">
+                            <div class="card package-card h-100 border {% if package.id in cart_package_ids %}in-cart{% endif %}">
+                                <!-- In Cart Badge -->
+                                {% if package.id in cart_package_ids %}
+                                <div class="position-absolute top-0 end-0 m-2" style="z-index: 10;">
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle-fill"></i> In Cart
+                                    </span>
+                                </div>
+                                {% endif %}
+
                                 <!-- Image with Features Overlay -->
                                 <div class="package-image-container position-relative">
                                     {% if package.image %}
@@ -139,12 +148,20 @@
                                             <small class="text-primary fw-bold">{{ package.get_price_display }}</small>
                                         </div>
 
+                                        {% if package.id in cart_package_ids %}
+                                        <button type="button"
+                                                class="btn btn-success btn-sm w-100"
+                                                disabled>
+                                            <i class="bi bi-check-circle-fill"></i> Added to Cart
+                                        </button>
+                                        {% else %}
                                         <button type="button"
                                                 class="btn btn-primary btn-sm w-100 add-to-cart-btn"
                                                 data-package-id="{{ package.id }}"
                                                 data-package-name="{{ package.name }}">
                                             <i class="bi bi-cart-plus"></i> Add to Cart
                                         </button>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -221,7 +238,7 @@
     }
 
     .step-indicator.completed .step-dot {
-        background-color: #0d6efd;
+        background-color: #0000ff;
         color: white;
     }
 
@@ -237,7 +254,7 @@
     }
 
     .step-indicator.completed .step-line {
-        background: linear-gradient(90deg, #0d6efd 0%, #667eea 100%);
+        background: linear-gradient(90deg, #0000ff 0%, #667eea 100%);
     }
 
     .section-number-badge {
@@ -257,7 +274,7 @@
 
     .category-card {
         transition: all 0.3s ease;
-        border-left: 4px solid #0d6efd;
+        border-left: 4px solid #0000ff;
     }
 
     .category-card:hover {
@@ -279,6 +296,13 @@
         border-color: #28a745 !important;
         border-width: 2px !important;
         box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15) !important;
+        background-color: rgba(40, 167, 69, 0.02);
+    }
+
+    .package-card.in-cart:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3) !important;
+        border-color: #28a745 !important;
     }
 
     .package-image-container {
@@ -398,11 +422,19 @@
                         const packageCard = btn.closest('.package-card');
                         if (packageCard) {
                             packageCard.classList.add('in-cart');
+
+                            // Add "In Cart" badge to top right
+                            const badge = document.createElement('div');
+                            badge.className = 'position-absolute top-0 end-0 m-2';
+                            badge.style.zIndex = '10';
+                            badge.innerHTML = '<span class="badge bg-success"><i class="bi bi-check-circle-fill"></i> In Cart</span>';
+                            packageCard.insertBefore(badge, packageCard.firstChild);
                         }
 
-                        btn.classList.remove('loading');
+                        btn.classList.remove('loading', 'btn-primary');
                         btn.classList.add('btn-success');
-                        btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Cart';
+                        btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Added to Cart';
+                        btn.disabled = true;
 
                         updateCartCount(data.cart_count);
                     } else {

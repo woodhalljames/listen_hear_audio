@@ -1,11 +1,13 @@
 from celery import shared_task
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
 from django.core.files.base import ContentFile
 from weasyprint import HTML
 from .models import QuoteRequest, SiteConfiguration
+from email.mime.image import MIMEImage
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -62,13 +64,30 @@ def send_quote_emails(quote_request_id):
             'config': config,
         })
 
-        customer_email = EmailMessage(
+        # Get email recipients (defaults to quote email if not set)
+        recipients = quote_request.get_email_recipients()
+        logger.info(f'Sending customer email to: {recipients}')
+
+        customer_email = EmailMultiAlternatives(
             subject=customer_subject,
             body=customer_message,
             from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[quote_request.email],
+            to=recipients,
         )
-        customer_email.content_subtype = 'html'
+        customer_email.attach_alternative(customer_message, "text/html")
+
+        # Attach logo as inline image if available
+        if config.business_logo:
+            logger.info(f'Attaching logo to customer email for quote {quote_request.quote_number}')
+            try:
+                with config.business_logo.open('rb') as logo_file:
+                    logo_data = logo_file.read()
+                    logo_image = MIMEImage(logo_data)
+                    logo_image.add_header('Content-ID', '<logo>')
+                    logo_image.add_header('Content-Disposition', 'inline', filename='logo.png')
+                    customer_email.attach(logo_image)
+            except Exception as e:
+                logger.warning(f'Failed to attach logo to customer email: {str(e)}')
 
         # Attach PDF
         logger.info(f'Attaching PDF to customer email for quote {quote_request.quote_number}')
@@ -83,7 +102,7 @@ def send_quote_emails(quote_request_id):
             logger.warning(f'No PDF found for quote {quote_request.quote_number}')
 
         customer_email.send()
-        logger.info(f'Customer email sent successfully to {quote_request.email} for quote {quote_request.quote_number}')
+        logger.info(f'Customer email sent successfully to {", ".join(recipients)} for quote {quote_request.quote_number}')
         
         # Email to host(s)
         if config.notification_emails:
@@ -99,13 +118,26 @@ def send_quote_emails(quote_request_id):
                 'site_url': site_url,
             })
 
-            host_email = EmailMessage(
+            host_email = EmailMultiAlternatives(
                 subject=host_subject,
                 body=host_message,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 to=config.notification_emails,
             )
-            host_email.content_subtype = 'html'
+            host_email.attach_alternative(host_message, "text/html")
+
+            # Attach logo as inline image if available
+            if config.business_logo:
+                logger.info(f'Attaching logo to host email for quote {quote_request.quote_number}')
+                try:
+                    with config.business_logo.open('rb') as logo_file:
+                        logo_data = logo_file.read()
+                        logo_image = MIMEImage(logo_data)
+                        logo_image.add_header('Content-ID', '<logo>')
+                        logo_image.add_header('Content-Disposition', 'inline', filename='logo.png')
+                        host_email.attach(logo_image)
+                except Exception as e:
+                    logger.warning(f'Failed to attach logo to host email: {str(e)}')
 
             # Attach PDF
             logger.info(f'Attaching PDF to host email for quote {quote_request.quote_number}')

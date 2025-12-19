@@ -128,7 +128,10 @@
   <div class="email-container">
     <!-- Header -->
     <div class="header">
-      <h1>🎧 Listen Hear Audio</h1>
+      {% if config.business_logo %}
+        <img src="cid:logo" alt="Listen Hear" style="max-height: 80px; margin-bottom: 15px;">
+      {% endif %}
+      <h1>Listen Hear</h1>
       <p style="margin: 10px 0 0 0;">New Quote Request Received</p>
     </div>
 
@@ -192,30 +195,18 @@
         <table class="items-table">
           <thead>
             <tr>
-              <th>Package</th>
-              <th style="text-align: center; width: 80px;">Qty</th>
-              <th style="text-align: right; width: 120px;">Unit Price</th>
-              <th style="text-align: right; width: 120px;">Subtotal</th>
+              <th>Category & Package</th>
+              <th style="text-align: right; width: 150px;">Price</th>
             </tr>
           </thead>
           <tbody>
             {% for item in quote_request.items.all %}
             <tr>
               <td>
+                <strong style="color: #6c757d; font-size: 12px;">{{ item.package.category.name }}</strong><br>
                 <strong>{{ item.package_name }}</strong>
-                {% if item.package_description %}
-                  <br><small style="color: #6c757d;">{{ item.package_description }}</small>
-                {% endif %}
                 {% if item.notes %}
                   <br><em style="color: #0000FF; font-size: 13px;">Customer Note: {{ item.notes }}</em>
-                {% endif %}
-              </td>
-              <td style="text-align: center;">{{ item.quantity }}</td>
-              <td style="text-align: right;">
-                {% if item.price_snapshot %}
-                  ${{ item.price_snapshot|floatformat:2 }}
-                {% else %}
-                  <span class="priority-high">CUSTOM</span>
                 {% endif %}
               </td>
               <td style="text-align: right;">
@@ -230,7 +221,7 @@
           </tbody>
           <tfoot>
             <tr class="total-row">
-              <td colspan="3" style="text-align: right;">Estimated Total:</td>
+              <td style="text-align: right;">Estimated Total:</td>
               <td style="text-align: right; color: #0000FF; font-size: 18px;">
                 ${{ quote_request.estimated_total|floatformat:2 }}
               </td>
@@ -261,7 +252,7 @@
 
       <!-- Action Buttons -->
       <div style="text-align: center; margin: 30px 0;">
-        <a href="{{ site_url }}/admin/quotes/quoterequest/{{ quote_request.id }}/change/"
+        <a href="{{ site_url }}/shadycorvette/quotes/quoterequest/{{ quote_request.id }}/change/"
            class="action-button">
           View in Admin Panel
         </a>
@@ -286,9 +277,9 @@
 
     <!-- Footer -->
     <div class="footer">
-      <p>This is an automated notification from Listen Hear Audio</p>
+      <p>This is an automated notification from Listen Hear</p>
       <p style="font-size: 12px; color: #aaa;">
-        Quote Request ID: {{ quote_request.quote_number }} | 
+        Quote Request ID: {{ quote_request.quote_number }} |
         Generated: {{ quote_request.created_at|date:"Y-m-d H:i:s" }}
       </p>
     </div>

@@ -185,4 +185,6 @@ dependencies = [
     "whitenoise==6.11.0",
     "weasyprint>=60.0",
     "pillow>=10.0",
+    "django-taggit",
+    "django-summernote",
 ]

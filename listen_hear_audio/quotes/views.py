@@ -3,7 +3,6 @@ from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.http import JsonResponse, FileResponse, Http404
 from django.urls import reverse
-from django.views.generic import DetailView
 from django.contrib.auth.decorators import login_required
 from .models import QuoteRequest, QuoteRequestItem
 from .cart import get_or_create_cart, add_to_cart, update_cart_item, remove_from_cart, get_cart_context
@@ -99,7 +98,8 @@ def checkout_view(request):
                 zip_code=form.cleaned_data['zip_code'],
                 website=form.cleaned_data.get('website', ''),
                 notes=form.cleaned_data.get('notes', ''),
-                estimated_total=cart.get_estimated_total()
+                estimated_total=cart.get_estimated_total(),
+                email_recipients=form.cleaned_data['email']  # Pre-populate with customer email
             )
             
             # Copy cart items to quote request
@@ -159,22 +159,6 @@ def quote_confirmation_view(request, quote_number):
         'quote_request': quote_request,
     }
     return render(request, 'quotes/confirmation.html', context)
-
-
-class QuoteDetailView(DetailView):
-    """Detail view for a quote request"""
-    model = QuoteRequest
-    template_name = 'quotes/quote_detail.html'
-    context_object_name = 'quote_request'
-    slug_field = 'quote_number'
-    slug_url_kwarg = 'quote_number'
-
-    def get_queryset(self):
-        """Users can only view their own quotes"""
-        qs = super().get_queryset()
-        if self.request.user.is_authenticated:
-            return qs.filter(user=self.request.user)
-        return qs.none()
 
 
 @login_required

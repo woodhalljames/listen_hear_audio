@@ -3,118 +3,251 @@
 {% load static %}
 
 {% block title %}
-  User: {{ object.name|default:object.email }}
+  {% if object.is_builder %}Builder Dashboard{% else %}My Profile{% endif %} - {{ object.name|default:object.email }}
 {% endblock title %}
 
 {% block content %}
-  <div class="container mt-4">
+  <div class="container-fluid px-4 py-5">
     <!-- Profile Header -->
-    <div class="row mb-4">
+    <div class="row mb-5">
       <div class="col-12">
-        <h2 class="mb-3">
-          <i class="bi bi-person-circle me-2"></i>
-          {{ object.name|default:object.email }}
-        </h2>
-        {% if object.is_builder %}
-          <span class="badge bg-primary">Builder Account</span>
-        {% endif %}
+        <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #0000ff 0%, #667eea 100%);">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="rounded-circle bg-white d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                  <i class="bi bi-person-circle text-primary" style="font-size: 3rem;"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-4 text-white">
+                <h1 class="mb-2">
+                  {% if object.is_builder %}
+                    Builder Dashboard
+                  {% else %}
+                    My Profile
+                  {% endif %}
+                </h1>
+                <p class="mb-1 opacity-90">Welcome back, {{ object.name|default:object.email }}</p>
+                {% if object.is_builder %}
+                  <span class="badge bg-white text-primary">Builder Account</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     {% if object == request.user %}
-      <!-- Action buttons -->
-      <div class="row mb-4">
+      <!-- Quick Actions Card -->
+      <div class="row mb-5">
         <div class="col-12">
-          <div class="btn-group" role="group">
-            <a class="btn btn-primary" href="{% url 'users:update' %}">
-              <i class="bi bi-pencil-square me-1"></i>My Info
-            </a>
-            <a class="btn btn-primary" href="{% url 'account_email' %}">
-              <i class="bi bi-envelope me-1"></i>E-Mail
-            </a>
-            <a class="btn btn-primary" href="{% url 'mfa_index' %}">
-              <i class="bi bi-shield-lock me-1"></i>MFA
-            </a>
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom">
+              <h5 class="mb-0">
+                <i class="bi bi-lightning-charge me-2 text-primary"></i>Quick Actions
+              </h5>
+            </div>
+            <div class="card-body p-4">
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <a class="btn btn-outline-primary w-100 py-3 d-flex flex-column align-items-center" href="{% url 'users:update' %}">
+                    <i class="bi bi-pencil-square mb-2" style="font-size: 2rem;"></i>
+                    <span class="fw-semibold">Update My Info</span>
+                    <small class="text-muted">Edit profile details</small>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a class="btn btn-outline-primary w-100 py-3 d-flex flex-column align-items-center" href="{% url 'account_email' %}">
+                    <i class="bi bi-envelope mb-2" style="font-size: 2rem;"></i>
+                    <span class="fw-semibold">Manage Email</span>
+                    <small class="text-muted">Update email settings</small>
+                  </a>
+                </div>
+                <div class="col-md-4">
+                  <a class="btn btn-success w-100 py-3 d-flex flex-column align-items-center" href="{% url 'core:service_request' %}">
+                    <i class="bi bi-tools mb-2" style="font-size: 2rem;"></i>
+                    <span class="fw-semibold">Request Service</span>
+                    <small class="text-white opacity-75">Get help with your system</small>
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Quote History -->
-      <div class="row">
-        <div class="col-12">
-          <h3 class="mb-3">
-            <i class="bi bi-clock-history me-2"></i>Quote History
-          </h3>
+      <!-- Builder Properties (if builder) -->
+      {% if object.is_builder %}
+        <div class="row mb-5">
+          <div class="col-12">
+            <div class="card border-0 shadow-sm">
+              <div class="card-header bg-white border-bottom">
+                <h5 class="mb-0">
+                  <i class="bi bi-building me-2 text-primary"></i>My Properties
+                </h5>
+              </div>
+              <div class="card-body p-4">
+                {% if properties %}
+                  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    {% for property in properties %}
+                      <div class="col">
+                        <div class="card h-100 border shadow-sm hover-lift">
+                          <div class="card-body">
+                            <h5 class="card-title mb-3 text-primary">{{ property.name }}</h5>
+                            <p class="card-text text-muted mb-3">
+                              <i class="bi bi-geo-alt me-1"></i>{{ property.address|truncatewords:10 }}
+                            </p>
 
-          {% if object.quote_requests.all %}
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-              {% for quote in object.quote_requests.all %}
-                <div class="col">
-                  <div class="card h-100 shadow-sm {% if quote.is_finalized %}border-success{% endif %}">
-                    <div class="card-header {% if quote.is_finalized %}bg-success{% else %}bg-primary{% endif %} text-white">
-                      <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title mb-0">{{ quote.quote_number }}</h5>
-                        {% if quote.is_finalized %}
-                          <i class="bi bi-check-circle-fill"></i>
-                        {% endif %}
+                            {% with status_summary=property.get_package_status_summary %}
+                              <div class="mb-3 p-3 bg-light rounded">
+                                <small class="text-muted d-block mb-2">
+                                  <strong>Packages:</strong> {{ status_summary.total }} total
+                                </small>
+                                <div class="d-flex flex-wrap gap-1">
+                                  {% if status_summary.pending > 0 %}
+                                    <span class="badge bg-secondary">{{ status_summary.pending }} Pending</span>
+                                  {% endif %}
+                                  {% if status_summary.date_requested > 0 %}
+                                    <span class="badge bg-warning text-dark">{{ status_summary.date_requested }} Requested</span>
+                                  {% endif %}
+                                  {% if status_summary.scheduled > 0 %}
+                                    <span class="badge bg-info text-dark">{{ status_summary.scheduled }} Scheduled</span>
+                                  {% endif %}
+                                  {% if status_summary.in_progress > 0 %}
+                                    <span class="badge bg-primary">{{ status_summary.in_progress }} In Progress</span>
+                                  {% endif %}
+                                  {% if status_summary.completed > 0 %}
+                                    <span class="badge bg-success">{{ status_summary.completed }} Completed</span>
+                                  {% endif %}
+                                </div>
+                              </div>
+                            {% endwith %}
+
+                            <p class="card-text small text-muted mb-0">
+                              <i class="bi bi-clock me-1"></i>Updated {{ property.updated_at|date:"M d, Y" }}
+                            </p>
+                          </div>
+                          <div class="card-footer bg-white border-top">
+                            <a href="{% url 'builders:property_detail' property.pk %}" class="btn btn-primary w-100">
+                              View Details <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="card-body">
-                      <p class="card-text">
-                        <strong>Requested:</strong> {{ quote.created_at|date:"M d, Y" }}<br>
-                        {% if quote.is_finalized %}
-                          <strong>Finalized:</strong> {{ quote.finalized_at|date:"M d, Y" }}<br>
-                        {% endif %}
-                        <strong>Status:</strong>
-                        <span class="badge
-                          {% if quote.status == 'pending' %}bg-warning
-                          {% elif quote.status == 'quoted' %}bg-info
-                          {% elif quote.status == 'accepted' %}bg-success
-                          {% elif quote.status == 'completed' %}bg-success
-                          {% else %}bg-secondary{% endif %}">
-                          {{ quote.get_status_display }}
-                        </span>
-                        {% if quote.is_finalized %}
-                          <span class="badge bg-success">Finalized</span>
-                        {% endif %}
-                        <br>
-                        <strong>Items:</strong> {{ quote.get_total_items }}<br>
-                        {% if quote.is_finalized and quote.final_total %}
-                          <strong>Final Quote:</strong> <span class="text-success fw-bold">${{ quote.final_total|floatformat:2 }}</span>
-                        {% else %}
-                          <strong>Estimated Total:</strong> ${{ quote.estimated_total|floatformat:2 }}
-                        {% endif %}
-                      </p>
-                    </div>
-                    <div class="card-footer bg-transparent">
-                      <div class="d-grid gap-2">
-                        <a href="{% url 'quotes:quote_detail' quote.quote_number %}"
-                           class="btn btn-sm btn-outline-primary">
-                          <i class="bi bi-eye me-1"></i>View Details
-                        </a>
-                        {% if quote.pdf_path %}
-                          <a href="{% url 'quotes:download_pdf' quote.quote_number %}"
-                             class="btn btn-sm btn-success">
-                            <i class="bi bi-file-pdf me-1"></i>Download PDF
-                          </a>
-                        {% else %}
-                          <button class="btn btn-sm btn-secondary" disabled>
-                            <i class="bi bi-hourglass-split me-1"></i>PDF Generating...
-                          </button>
-                        {% endif %}
+                    {% endfor %}
+                  </div>
+                {% else %}
+                  <div class="alert alert-info border-0" role="alert">
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-info-circle me-3" style="font-size: 1.5rem;"></i>
+                      <div>
+                        <strong>No Properties Yet</strong>
+                        <p class="mb-0">You don't have any properties assigned. Contact Listen Hear if you believe this is an error.</p>
                       </div>
                     </div>
                   </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Quote History -->
+      <div class="row mb-5">
+        <div class="col-12">
+          <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom">
+              <h5 class="mb-0">
+                <i class="bi bi-clock-history me-2 text-primary"></i>Quote History
+              </h5>
+            </div>
+            <div class="card-body p-4">
+              {% if object.quote_requests.all %}
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                  {% for quote in object.quote_requests.all %}
+                    <div class="col">
+                      <div class="card h-100 border shadow-sm hover-lift {% if quote.is_finalized %}border-success border-2{% endif %}">
+                        <div class="card-header {% if quote.is_finalized %}bg-success{% else %}bg-primary{% endif %} text-white">
+                          <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0 fw-bold">{{ quote.quote_number }}</h6>
+                            {% if quote.is_finalized %}
+                              <i class="bi bi-check-circle-fill"></i>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <div class="card-body">
+                          <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                              <small class="text-muted">Requested:</small>
+                              <span class="small">{{ quote.created_at|date:"M d, Y" }}</span>
+                            </div>
+                            {% if quote.is_finalized %}
+                              <div class="d-flex justify-content-between align-items-center mb-2">
+                                <small class="text-muted">Finalized:</small>
+                                <span class="small">{{ quote.finalized_at|date:"M d, Y" }}</span>
+                              </div>
+                            {% endif %}
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                              <small class="text-muted">Items:</small>
+                              <span class="small">{{ quote.get_total_items }}</span>
+                            </div>
+                          </div>
+
+                          <div class="mb-3">
+                            <span class="badge
+                              {% if quote.status == 'pending' %}bg-warning
+                              {% elif quote.status == 'quoted' %}bg-info
+                              {% elif quote.status == 'accepted' %}bg-success
+                              {% elif quote.status == 'completed' %}bg-success
+                              {% else %}bg-secondary{% endif %} me-1">
+                              {{ quote.get_status_display }}
+                            </span>
+                            {% if quote.is_finalized %}
+                              <span class="badge bg-success">Finalized</span>
+                            {% endif %}
+                          </div>
+
+                          <div class="p-3 bg-light rounded text-center">
+                            {% if quote.is_finalized and quote.final_total %}
+                              <small class="text-muted d-block">Final Quote</small>
+                              <h4 class="text-success mb-0">${{ quote.final_total|floatformat:2 }}</h4>
+                            {% else %}
+                              <small class="text-muted d-block">Estimated Total</small>
+                              <h4 class="text-primary mb-0">${{ quote.estimated_total|floatformat:2 }}</h4>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                          {% if quote.pdf_path %}
+                            <a href="{% url 'quotes:download_pdf' quote.quote_number %}"
+                               class="btn btn-success w-100">
+                              <i class="bi bi-file-pdf me-1"></i>Download PDF
+                            </a>
+                          {% else %}
+                            <button class="btn btn-secondary w-100" disabled>
+                              <i class="bi bi-hourglass-split me-1"></i>Generating PDF...
+                            </button>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
                 </div>
-              {% endfor %}
+              {% else %}
+                <div class="alert alert-info border-0" role="alert">
+                  <div class="d-flex align-items-center">
+                    <i class="bi bi-info-circle me-3" style="font-size: 1.5rem;"></i>
+                    <div>
+                      <strong>No Quotes Yet</strong>
+                      <p class="mb-0">You haven't requested any quotes yet. <a href="{% url 'products:catalog' %}" class="alert-link">Browse our packages</a> to get started!</p>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
             </div>
-          {% else %}
-            <div class="alert alert-info" role="alert">
-              <i class="bi bi-info-circle me-2"></i>
-              You haven't requested any quotes yet.
-              <a href="{% url 'products:catalog' %}" class="alert-link">Browse our packages</a> to get started!
-            </div>
-          {% endif %}
+          </div>
         </div>
       </div>
     {% endif %}

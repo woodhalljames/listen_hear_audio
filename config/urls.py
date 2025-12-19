@@ -6,6 +6,13 @@ from django.urls import path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 
+from listen_hear_audio.core.views import ContactView
+
+# Customize admin site
+admin.site.site_header = "Listen Hear Administration"
+admin.site.site_title = "Listen Hear Admin"
+admin.site.index_title = "Welcome to Listen Hear Administration"
+
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     path(
@@ -13,16 +20,25 @@ urlpatterns = [
         TemplateView.as_view(template_name="pages/about.html"),
         name="about",
     ),
+    path("contact/", ContactView.as_view(), name="contact"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("users/", include("listen_hear_audio.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
+    # Core app (service requests, etc.)
+    path("", include("listen_hear_audio.core.urls", namespace="core")),
     # E-commerce apps
     path("catalog/", include("listen_hear_audio.products.urls", namespace="products")),
     path("quote/", include("listen_hear_audio.quotes.urls", namespace="quotes")),
     # Builders app
     path("builders/", include("listen_hear_audio.builders.urls", namespace="builders")),
+    # Blog app
+    path("blog/", include("listen_hear_audio.blog.urls", namespace="blog")),
+    # Careers app
+    path("careers/", include("listen_hear_audio.careers.urls", namespace="careers")),
+    # Summernote
+    path("summernote/", include("django_summernote.urls")),
     # Media files
     *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
 ]

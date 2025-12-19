@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Request Service - Listen Hear Smart Homes{% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+      <!-- Header -->
+      <div class="text-center mb-4">
+        <h2 class="display-5 fw-bold">Request Service</h2>
+        <p class="lead text-muted">Fill out the form below and we'll get back to you promptly</p>
+      </div>
+
+      <!-- Form Card -->
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <form method="post">
+            {% csrf_token %}
+
+            <!-- Contact Information -->
+            <h5 class="border-bottom pb-2 mb-3">
+              <i class="bi bi-person me-2 text-primary"></i>Contact Information
+            </h5>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                {{ form.name|as_crispy_field }}
+              </div>
+              <div class="col-md-4 mb-3">
+                {{ form.email|as_crispy_field }}
+              </div>
+              <div class="col-md-4 mb-3">
+                {{ form.phone|as_crispy_field }}
+              </div>
+            </div>
+
+            <!-- Service Address -->
+            <h5 class="border-bottom pb-2 mb-3 mt-4">
+              <i class="bi bi-geo-alt me-2 text-primary"></i>Service Address
+            </h5>
+            <div class="mb-3">
+              {{ form.street_address|as_crispy_field }}
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                {{ form.city|as_crispy_field }}
+              </div>
+              <div class="col-md-3 mb-3">
+                {{ form.state|as_crispy_field }}
+              </div>
+              <div class="col-md-3 mb-3">
+                {{ form.zip_code|as_crispy_field }}
+              </div>
+            </div>
+
+            <!-- Service Details -->
+            <h5 class="border-bottom pb-2 mb-3 mt-4">
+              <i class="bi bi-tools me-2 text-primary"></i>Service Details
+            </h5>
+            <div class="mb-3">
+              {{ form.service_type|as_crispy_field }}
+              <small class="form-text text-muted">e.g., New Installation, Repair, Consultation, System Upgrade</small>
+            </div>
+            <div class="mb-3">
+              {{ form.description|as_crispy_field }}
+            </div>
+
+            <!-- Scheduling Preferences -->
+            <h5 class="border-bottom pb-2 mb-3 mt-4">
+              <i class="bi bi-calendar-check me-2 text-primary"></i>Scheduling Preferences
+            </h5>
+            <div class="alert alert-info">
+              <i class="bi bi-info-circle me-2"></i>
+              These are your preferred dates and times. We'll contact you to confirm availability.
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                {{ form.preferred_date|as_crispy_field }}
+              </div>
+              <div class="col-md-6 mb-3">
+                {{ form.preferred_time|as_crispy_field }}
+                <small class="form-text text-muted">e.g., Morning (9AM-12PM), Afternoon (1PM-5PM), or specific time</small>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex gap-2 justify-content-end mt-4">
+              <a href="{% if request.user.is_authenticated %}{% url 'users:detail' request.user.pk %}{% else %}{% url 'home' %}{% endif %}" class="btn btn-secondary">
+                <i class="bi bi-x-circle me-1"></i>Cancel
+              </a>
+              <button type="submit" class="btn btn-success btn-lg">
+                <i class="bi bi-send me-1"></i>Submit Service Request
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Additional Info -->
+      <div class="card mt-4 border-primary">
+        <div class="card-body">
+          <h5 class="card-title text-primary">
+            <i class="bi bi-question-circle me-2"></i>What happens next?
+          </h5>
+          <ol class="mb-0">
+            <li>We'll review your service request</li>
+            <li>You'll receive a confirmation email</li>
+            <li>Our team will contact you within 1-2 business days</li>
+            <li>We'll schedule a convenient time for service</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

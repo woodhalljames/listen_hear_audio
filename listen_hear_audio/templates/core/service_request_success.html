@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Service Request Submitted - Listen Hear Smart Homes{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 text-center">
+      <!-- Success Icon -->
+      <div class="mb-4">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+      </div>
+
+      <!-- Success Message -->
+      <h2 class="display-4 fw-bold mb-3">Request Submitted!</h2>
+      <p class="lead text-muted mb-4">
+        Thank you for reaching out to Listen Hear Smart Homes. We've received your service request and will contact you soon.
+      </p>
+
+      <!-- What's Next Card -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-body text-start">
+          <h4 class="card-title mb-3">
+            <i class="bi bi-list-check me-2 text-primary"></i>What happens next?
+          </h4>
+          <div class="timeline">
+            <div class="d-flex mb-3">
+              <div class="me-3">
+                <div class="step-number">1</div>
+              </div>
+              <div>
+                <h6 class="mb-1">Confirmation Email</h6>
+                <p class="text-muted mb-0">You'll receive a confirmation email with your request details</p>
+              </div>
+            </div>
+            <div class="d-flex mb-3">
+              <div class="me-3">
+                <div class="step-number">2</div>
+              </div>
+              <div>
+                <h6 class="mb-1">Review & Assessment</h6>
+                <p class="text-muted mb-0">Our team will review your request and assess your needs</p>
+              </div>
+            </div>
+            <div class="d-flex mb-3">
+              <div class="me-3">
+                <div class="step-number">3</div>
+              </div>
+              <div>
+                <h6 class="mb-1">Personal Contact</h6>
+                <p class="text-muted mb-0">We'll reach out within 1-2 business days to discuss details</p>
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="me-3">
+                <div class="step-number">4</div>
+              </div>
+              <div>
+                <h6 class="mb-1">Schedule Service</h6>
+                <p class="text-muted mb-0">We'll find a convenient time for your service</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'users:detail' request.user.pk %}" class="btn btn-primary btn-lg">
+            <i class="bi bi-person-circle me-2"></i>Back to My Profile
+          </a>
+        {% endif %}
+        <a href="{% url 'home' %}" class="btn btn-outline-primary btn-lg">
+          <i class="bi bi-house-door me-2"></i>Return Home
+          </a>
+        <a href="{% url 'products:catalog' %}" class="btn btn-outline-primary btn-lg">
+          <i class="bi bi-grid-3x3 me-2"></i>Browse Catalog
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

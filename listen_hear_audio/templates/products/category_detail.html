@@ -58,6 +58,7 @@
                             title="{{ category.name }} Overview Video"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin"
                             allowfullscreen
                             class="rounded">
                         </iframe>
@@ -95,7 +96,7 @@
                             <a href="{% url 'products:catalog' %}#category-{{ category.slug }}" class="btn btn-primary btn-lg">
                                 <i class="bi bi-grid-3x3-gap"></i> View in Catalog
                             </a>
-                            <a href="{% url 'builders:showroom_browse' %}#category-{{ category.slug }}" class="btn btn-outline-primary btn-lg">
+                            <a href="{% url 'builders:showroom' %}" class="btn btn-outline-primary btn-lg">
                                 <i class="bi bi-house-door"></i> View in Builder Showroom
                             </a>
                         </div>

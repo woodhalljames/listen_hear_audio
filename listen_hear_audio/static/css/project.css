@@ -2,7 +2,7 @@
 
 /* Color Variables */
 :root {
-  --primary-blue: #0000FF;
+  --primary-blue: #0000ff;
   --primary-yellow: #FFFF00;
   --primary-dark: #232323;
   --text-grey: #4a4a4a;
@@ -11,6 +11,11 @@
 }
 
 /* Base Styles */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body {
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: var(--text-grey);
@@ -31,6 +36,11 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   position: relative;
   z-index: 1050; /* Ensure navbar is above sticky elements */
+}
+
+.navbar-custom .container-fluid {
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 .navbar-custom .navbar-brand {
@@ -105,6 +115,11 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 4rem;
 }
 
+.footer .container-fluid {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
 .footer h5 {
   color: var(--primary-yellow);
   font-weight: 600;
@@ -118,19 +133,36 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .footer a:hover {
-  color: var(--primary-yellow);
+  color: var(--primary-yellow) !important;
 }
 
 .footer-logo {
   font-size: 1.5rem;
   font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.footer-logo-text {
   color: var(--primary-yellow);
+  transition: color 0.3s ease;
+}
+
+.footer-logo:hover .footer-logo-text {
+  color: var(--white) !important;
 }
 
 .footer-logo-image {
   height: 35px;
   width: auto;
   object-fit: contain;
+}
+
+.footer-social a {
+  transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+  color: var(--primary-yellow) !important;
 }
 
 .footer-links {
@@ -483,33 +515,49 @@ h1, h2, h3, h4, h5, h6 {
     position: static;
     margin-bottom: 2rem;
   }
-  
+
   .category-title {
     font-size: 1.75rem;
   }
-  
+
   .category-title i {
     font-size: 2rem;
   }
 }
 
 @media (max-width: 768px) {
+  .navbar-custom .container-fluid,
+  .footer .container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .container, .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .row {
+    margin-left: -15px;
+    margin-right: -15px;
+  }
+
   .newsletter-form {
     flex-direction: column;
   }
-  
+
   .newsletter-form button {
     width: 100%;
   }
-  
+
   .product-card img {
     height: 150px;
   }
-  
+
   .catalog-nav-link {
     font-size: 0.9rem;
   }
-  
+
   .cart-item-image {
     width: 60px !important;
     height: 60px !important;
@@ -640,4 +688,28 @@ h1, h2, h3, h4, h5, h6 {
 .card-header.bg-primary h4,
 .card-header.bg-primary h5 {
   color: white !important;
+}
+
+/* Hover lift effect for cards */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Timeline styles for service request success page */
+.timeline .step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-blue);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
 }

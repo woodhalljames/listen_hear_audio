@@ -4,11 +4,10 @@ from . import views
 app_name = 'builders'
 
 urlpatterns = [
-    # Builder showroom - consultation experience
+    # Builder showroom - intro and guided experience
     path('showroom/', views.builder_showroom_intro, name='showroom'),
-    path('showroom/browse/', views.builder_showroom, name='showroom_browse'),
-    path('showroom/guided/', views.builder_showroom_guided, name='showroom_guided'),
-    path('showroom/guided/<int:step>/', views.builder_showroom_guided, name='showroom_guided_step'),
+    path('showroom/guided/', views.builder_showroom, name='showroom_guided'),
+    path('showroom/guided/<int:step>/', views.builder_showroom, name='showroom_guided_step'),
 
     # Builder dashboard
     path('dashboard/', views.BuilderDashboardView.as_view(), name='dashboard'),

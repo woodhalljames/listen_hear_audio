@@ -199,25 +199,20 @@
         <div class="container">
             <h2 class="display-3 fw-bold mb-4" style="color: white;">Ready to Explore Smart Home Packages?</h2>
             <p class="lead fs-4 mb-5" style="color: white;">
-                Browse our comprehensive catalog of smart home solutions organized by category.<br>
+                Let us guide you through our comprehensive catalog of smart home solutions.<br>
+                We'll walk you step-by-step through each category to help you find the perfect packages.
             </p>
 
-            <div class="row justify-content-center g-4">
-                <div class="col-md-5">
-                    <div class="showroom-option-card p-4 bg-white rounded shadow-lg">
-                        <h4 class="text-dark mb-3">Showroom 1</h4>
-                        <p class="text-muted mb-4">Browse all categories with tabs - jump around freely</p>
-                        <a href="{% url 'builders:showroom_browse' %}" class="btn btn-primary btn-lg w-100 py-3">
-                            <i class="bi bi-grid-3x3-gap-fill"></i> Enter Showroom 1
-                        </a>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="showroom-option-card p-4 bg-white rounded shadow-lg">
-                        <h4 class="text-dark mb-3">Showroom 2</h4>
-                        <p class="text-muted mb-4">Guided step-by-step journey through each section</p>
-                        <a href="{% url 'builders:showroom_guided' %}" class="btn btn-success btn-lg w-100 py-3">
-                            <i class="bi bi-list-ol"></i> Enter Showroom 2
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="showroom-option-card p-5 bg-white rounded shadow-lg">
+                        <div class="text-center mb-4">
+                            <i class="bi bi-list-ol text-primary" style="font-size: 4rem;"></i>
+                        </div>
+                        <h3 class="text-dark mb-3">Guided Showroom Experience</h3>
+                        <p class="text-muted mb-4">Step-by-step journey through each category with detailed information and easy cart management</p>
+                        <a href="{% url 'builders:showroom_guided' %}" class="btn btn-primary btn-lg w-100 py-3">
+                            <i class="bi bi-arrow-right-circle-fill"></i> Enter Showroom
                         </a>
                     </div>
                 </div>

@@ -79,13 +79,18 @@ THIRD_PARTY_APPS = [
     "allauth.mfa",
     "allauth.socialaccount",
     "django_celery_beat",
+    "taggit",
+    "django_summernote",
 ]
 
 LOCAL_APPS = [
     "listen_hear_audio.users",
+    "listen_hear_audio.core",
     "listen_hear_audio.products",
     "listen_hear_audio.quotes",
     "listen_hear_audio.builders",
+    "listen_hear_audio.blog",
+    "listen_hear_audio.careers",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -190,6 +195,8 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "listen_hear_audio.users.context_processors.allauth_settings",
+                "listen_hear_audio.core.context_processors.business_info",
+                "listen_hear_audio.quotes.context_processors.cart_context",
             ],
         },
     },
@@ -214,7 +221,7 @@ SESSION_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
 CSRF_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#x-frame-options
-X_FRAME_OPTIONS = "DENY"
+X_FRAME_OPTIONS = "SAMEORIGIN"  # Changed from DENY for Summernote compatibility
 
 # EMAIL
 # ------------------------------------------------------------------------------
@@ -229,7 +236,7 @@ EMAIL_TIMEOUT = 5
 # ADMIN
 # ------------------------------------------------------------------------------
 # Django Admin URL.
-ADMIN_URL = "admin/"
+ADMIN_URL = "shadycorvette/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
 ADMINS = [("""Cactus Cat LLC""", "jamesw@listenhearaudio.com")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
@@ -325,7 +332,26 @@ SOCIALACCOUNT_ADAPTER = "listen_hear_audio.users.adapters.SocialAccountAdapter"
 SOCIALACCOUNT_FORMS = {"signup": "listen_hear_audio.users.forms.UserSocialSignupForm"}
 
 
+# Summernote configuration
+# ------------------------------------------------------------------------------
+SUMMERNOTE_CONFIG = {
+    "summernote": {
+        "toolbar": [
+            ["style", ["style"]],
+            ["font", ["bold", "underline", "clear"]],
+            ["fontname", ["fontname"]],
+            ["color", ["color"]],
+            ["para", ["ul", "ol", "paragraph"]],
+            ["table", ["table"]],
+            ["insert", ["link", "picture", "video"]],
+            ["view", ["fullscreen", "codeview", "help"]],
+        ],
+        "width": "100%",
+        "height": "480",
+    },
+    "attachment_require_authentication": True,
+    "attachment_filesize_limit": 5 * 1024 * 1024,  # 5MB
+}
+
 # Your stuff...
 # ------------------------------------------------------------------------------
-# a cart 
-"listen_hear_audio.quotes.context_processors.cart_context",

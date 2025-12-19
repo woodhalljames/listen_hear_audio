@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ job.title }} - Careers - Listen Hear{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-10 mx-auto">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'careers:job_list' %}">Careers</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ job.title }}</li>
+      </ol>
+    </nav>
+
+    <div class="row">
+      <!-- Job Description Column -->
+      <div class="col-lg-7">
+        <article>
+          <h1 class="mb-2">{{ job.title }}</h1>
+          <p class="text-muted mb-4">
+            <i class="bi bi-calendar"></i> Posted {{ job.created_at|date:"F d, Y" }}
+          </p>
+
+          <div class="job-content">
+            {{ job.body|safe }}
+          </div>
+        </article>
+
+        <div class="mt-4">
+          <a href="{% url 'careers:job_list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Careers
+          </a>
+        </div>
+      </div>
+
+      <!-- Application Form Column -->
+      <div class="col-lg-5">
+        <div class="card shadow-sm sticky-top" style="top: 20px;">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Apply for this Position</h5>
+          </div>
+          <div class="card-body">
+            <form method="post" action="{% url 'careers:apply' job.slug %}" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <div class="mb-3">
+                <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }} *</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                  <div class="invalid-feedback d-block">{{ form.name.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }} *</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                  <div class="invalid-feedback d-block">{{ form.email.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                <label for="{{ form.phone.id_for_label }}" class="form-label">{{ form.phone.label }} *</label>
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                  <div class="invalid-feedback d-block">{{ form.phone.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                <label for="{{ form.cover_letter.id_for_label }}" class="form-label">{{ form.cover_letter.label }}</label>
+                {{ form.cover_letter }}
+                {% if form.cover_letter.errors %}
+                  <div class="invalid-feedback d-block">{{ form.cover_letter.errors }}</div>
+                {% endif %}
+              </div>
+
+              <div class="mb-3">
+                <label for="{{ form.resume.id_for_label }}" class="form-label">{{ form.resume.label }} *</label>
+                {{ form.resume }}
+                <small class="form-text text-muted d-block">PDF, DOC, or DOCX format</small>
+                {% if form.resume.errors %}
+                  <div class="invalid-feedback d-block">{{ form.resume.errors }}</div>
+                {% endif %}
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Submit Application</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

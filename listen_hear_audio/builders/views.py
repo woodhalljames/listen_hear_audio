@@ -169,69 +169,6 @@ def builder_showroom_intro(request):
     return render(request, 'builders/builder_showroom_intro.html')
 
 
-def builder_showroom(request):
-    """
-    Builder showroom experience for walking clients through smart home packages.
-    Organizes categories and packages by builder sections (Network & Automation, Security, Audio, Entertainment).
-    Shows the relationship between installation phases and how packages relate to each other.
-    """
-    from listen_hear_audio.quotes.cart import get_or_create_cart
-
-    # Get cart for cart count
-    cart = get_or_create_cart(request)
-
-    # Get categories grouped by builder section
-    sections_data = {}
-
-    for section_value, section_label in Category.BUILDER_SECTION_CHOICES:
-        # Get categories in this section
-        categories = Category.objects.filter(
-            builder_section=section_value,
-            is_active=True
-        ).prefetch_related('packages', 'subcategories__packages').order_by('display_order', 'name')
-
-        # Get all packages from categories in this section
-        packages = Package.objects.filter(
-            category__builder_section=section_value,
-            category__is_active=True,
-            is_active=True
-        ).select_related('category', 'subcategory').order_by('display_order', 'name')
-
-        sections_data[section_value] = {
-            'label': section_label,
-            'categories': categories,
-            'packages': packages,
-            'icon': _get_section_icon(section_value)
-        }
-
-    # Add an "Other" section for categories without a builder_section
-    categories_no_section = Category.objects.filter(
-        builder_section='',
-        is_active=True
-    ).prefetch_related('packages', 'subcategories__packages').order_by('display_order', 'name')
-
-    packages_no_section = Package.objects.filter(
-        category__builder_section='',
-        category__is_active=True,
-        is_active=True
-    ).select_related('category', 'subcategory').order_by('display_order', 'name')
-
-    if categories_no_section.exists() or packages_no_section.exists():
-        sections_data['other'] = {
-            'label': 'Other Products',
-            'categories': categories_no_section,
-            'packages': packages_no_section,
-            'icon': 'bi-box-seam'
-        }
-
-    context = {
-        'sections_data': sections_data,
-        'cart_count': cart.get_total_items(),
-    }
-
-    return render(request, 'builders/builder_showroom.html', context)
-
-
 def _get_section_icon(section):
     """Get Bootstrap icon for builder section"""
     icons = {
@@ -254,15 +191,18 @@ def _get_phase_icon(phase):
     return icons.get(phase, 'bi-box')
 
 
-def builder_showroom_guided(request, step=1):
+def builder_showroom(request, step=1):
     """
-    Guided step-by-step showroom experience (Showroom 2).
-    Loads all sections on one page but hides/shows based on current step.
+    Guided step-by-step builder showroom experience.
+    Walks builders and their clients through smart home packages by category.
     """
     from listen_hear_audio.quotes.cart import get_or_create_cart
 
     # Get cart for cart count
     cart = get_or_create_cart(request)
+
+    # Get list of package IDs that are in the cart
+    cart_package_ids = list(cart.items.values_list('package_id', flat=True))
 
     # Define all sections in order
     all_sections = []
@@ -292,7 +232,7 @@ def builder_showroom_guided(request, step=1):
     # Validate step
     if step < 1 or step > total_steps:
         messages.error(request, 'Invalid step')
-        return redirect('builders:showroom_guided', step=1)
+        return redirect('builders:showroom_guided')
 
     context = {
         'current_step': step,
@@ -301,6 +241,7 @@ def builder_showroom_guided(request, step=1):
         'has_previous': step > 1,
         'has_next': step < total_steps,
         'cart_count': cart.get_total_items(),
+        'cart_package_ids': cart_package_ids,
     }
 
     return render(request, 'builders/builder_showroom_guided.html', context)

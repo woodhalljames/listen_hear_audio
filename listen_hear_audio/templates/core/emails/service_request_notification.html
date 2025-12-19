@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>New Service Request</title>
+</head>
+<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2 style="color: #0000ff;">New Service Request</h2>
+
+        <p>A new service request has been submitted:</p>
+
+        <div style="background-color: #f8f9fa; padding: 15px; border-left: 4px solid #0000ff; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Contact Information</h3>
+            <p><strong>Name:</strong> {{ service_request.name }}</p>
+            <p><strong>Email:</strong> <a href="mailto:{{ service_request.email }}">{{ service_request.email }}</a></p>
+            <p><strong>Phone:</strong> <a href="tel:{{ service_request.phone }}">{{ service_request.phone }}</a></p>
+        </div>
+
+        <div style="background-color: #f8f9fa; padding: 15px; border-left: 4px solid #0000ff; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Service Address</h3>
+            <p>
+                {{ service_request.street_address }}<br>
+                {{ service_request.city }}, {{ service_request.state }} {{ service_request.zip_code }}
+            </p>
+        </div>
+
+        <div style="background-color: #f8f9fa; padding: 15px; border-left: 4px solid #0000ff; margin: 20px 0;">
+            <h3 style="margin-top: 0;">Service Details</h3>
+            <p><strong>Service Type:</strong> {{ service_request.service_type }}</p>
+            <p><strong>Description:</strong></p>
+            <p style="white-space: pre-wrap;">{{ service_request.description }}</p>
+
+            {% if service_request.preferred_date %}
+            <p><strong>Preferred Date:</strong> {{ service_request.preferred_date|date:"F j, Y" }}</p>
+            {% endif %}
+
+            {% if service_request.preferred_time %}
+            <p><strong>Preferred Time:</strong> {{ service_request.preferred_time }}</p>
+            {% endif %}
+        </div>
+
+        <p style="margin-top: 30px;">
+            <strong>Submitted:</strong> {{ service_request.created_at|date:"F j, Y g:i A" }}
+        </p>
+
+        <p style="margin-top: 30px; font-size: 12px; color: #666;">
+            This is an automated notification from Listen Hear.
+        </p>
+    </div>
+</body>
+</html>
