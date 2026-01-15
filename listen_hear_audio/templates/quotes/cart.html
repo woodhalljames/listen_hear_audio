@@ -25,8 +25,8 @@
             {% regroup cart_items by package.category.property_type as property_groups %}
             {% for property_group in property_groups %}
               <!-- Property Type Header -->
-              <div class="bg-primary text-white px-3 py-2 {% if not forloop.first %}mt-3{% endif %}">
-                <h6 class="mb-0">
+              <div class="px-3 py-2 {% if not forloop.first %}mt-3{% endif %}" style="background-color: #3333ff;">
+                <h6 class="mb-0" style="color: white;">
                   <i class="bi bi-building"></i> {{ property_group.grouper.name }}
                 </h6>
               </div>
@@ -115,7 +115,7 @@
                             {% endif %}
                           </td>
                           <td class="text-end align-middle">
-                            <strong class="text-primary">
+                            <strong style="color: #3333ff;">
                               {% if item.package.is_custom %}
                                 TBD
                               {% else %}
@@ -156,23 +156,77 @@
       <!-- Cart Summary -->
       <div class="col-lg-4">
         <div class="card sticky-top" style="top: 20px;">
-          <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Quote Summary</h5>
+          <div class="card-header" style="background-color: #3333ff; color: white;">
+            <h5 class="mb-0" style="color: white;">Quote Summary</h5>
           </div>
           <div class="card-body">
             <div class="d-flex justify-content-between mb-3">
               <span>Total Items:</span>
               <strong>{{ total_items }}</strong>
             </div>
-            <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
-              <span>Estimated Total:</span>
-              <strong class="text-primary h5 mb-0">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Subtotal:</span>
+              <strong>
                 {% if estimated_total > 0 %}
                   ${{ estimated_total|floatformat:2 }}
+                {% else %}
+                  <span class="text-muted">Custom pricing</span>
+                {% endif %}
+              </strong>
+            </div>
+
+            {% if applied_coupon %}
+            <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+              <span class="text-success">
+                <i class="bi bi-tag"></i> Discount ({{ applied_coupon.code }})
+              </span>
+              <strong class="text-success">-${{ discount_amount|floatformat:2 }}</strong>
+            </div>
+            {% else %}
+            <div class="mb-3 pb-3 border-bottom"></div>
+            {% endif %}
+
+            <div class="d-flex justify-content-between mb-3">
+              <span class="h6 mb-0">Total:</span>
+              <strong class="h5 mb-0" style="color: #3333ff;">
+                {% if estimated_total > 0 %}
+                  ${{ final_total|floatformat:2 }}
                 {% else %}
                   <span class="text-muted" style="font-size: 0.9rem;">Final price after consult</span>
                 {% endif %}
               </strong>
+            </div>
+
+            <!-- Coupon Code Section -->
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Have a coupon code?</label>
+              {% if applied_coupon %}
+                <div class="alert alert-success py-2 px-3 d-flex justify-content-between align-items-center mb-0">
+                  <span class="small">
+                    <i class="bi bi-check-circle"></i> <strong>{{ applied_coupon.code }}</strong> applied!
+                  </span>
+                  <form method="post" action="{% url 'quotes:remove_coupon' %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </form>
+                </div>
+              {% else %}
+                <form method="post" action="{% url 'quotes:apply_coupon' %}">
+                  {% csrf_token %}
+                  <div class="input-group input-group-sm">
+                    <input type="text"
+                           name="coupon_code"
+                           class="form-control"
+                           placeholder="Enter code"
+                           style="text-transform: uppercase;">
+                    <button type="submit" class="btn btn-outline-secondary">
+                      Apply
+                    </button>
+                  </div>
+                </form>
+              {% endif %}
             </div>
 
             <div class="alert alert-info py-2 mb-3">

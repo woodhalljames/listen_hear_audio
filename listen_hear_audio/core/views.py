@@ -38,7 +38,7 @@ class ServiceRequestView(CreateView):
         "preferred_date",
         "preferred_time",
     ]
-    success_url = reverse_lazy("service_request_success")
+    success_url = reverse_lazy("core:service_request_success")
 
     def get_initial(self):
         """Pre-fill form with user data if logged in."""

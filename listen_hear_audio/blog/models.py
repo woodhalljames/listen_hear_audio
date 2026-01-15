@@ -14,13 +14,18 @@ class BlogPost(models.Model):
         null=True,
         help_text="Main image for the blog post (recommended size: 1200x630px)"
     )
+    author_name = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Author name (e.g., 'John Smith' or 'Listen Hear Team')"
+    )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='blog_posts',
-        help_text="Author of this blog post"
+        help_text="Legacy: Leave blank and use author_name instead"
     )
     body = models.TextField()
     tags = TaggableManager()

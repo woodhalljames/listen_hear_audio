@@ -37,6 +37,8 @@ urlpatterns = [
     path("blog/", include("listen_hear_audio.blog.urls", namespace="blog")),
     # Careers app
     path("careers/", include("listen_hear_audio.careers.urls", namespace="careers")),
+    # Gallery app
+    path("gallery/", include("listen_hear_audio.gallery.urls", namespace="gallery")),
     # Summernote
     path("summernote/", include("django_summernote.urls")),
     # Media files

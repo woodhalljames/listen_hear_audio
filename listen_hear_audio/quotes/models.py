@@ -16,6 +16,14 @@ class Cart(models.Model):
         null=True,
         related_name='carts'
     )
+    coupon = models.ForeignKey(
+        'Coupon',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='carts',
+        help_text="Applied coupon code"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -37,9 +45,31 @@ class Cart(models.Model):
         """Get estimated total price"""
         return sum(item.get_subtotal() for item in self.items.all())
 
+    def get_discount_amount(self):
+        """Calculate discount amount if coupon is applied"""
+        if not self.coupon:
+            return 0
+
+        total = self.get_estimated_total()
+        is_valid, message = self.coupon.is_valid(total)
+
+        if not is_valid:
+            # Invalid coupon, clear it
+            self.coupon = None
+            self.save()
+            return 0
+
+        return self.coupon.calculate_discount(total)
+
+    def get_final_total(self):
+        """Get total after discount"""
+        return self.get_estimated_total() - self.get_discount_amount()
+
     def clear(self):
         """Remove all items from cart"""
         self.items.all().delete()
+        self.coupon = None
+        self.save()
 
 
 class CartItem(models.Model):
@@ -179,6 +209,16 @@ class QuoteRequest(models.Model):
         """Check if quote has been finalized"""
         return self.finalized_at is not None
 
+    def get_recipient_options(self):
+        """Get list of email options for finalization"""
+        emails = [self.email]  # Quote submitter email
+
+        if self.user and self.user.email:
+            emails.append(self.user.email)
+
+        # Return unique emails
+        return list(set(filter(None, emails)))
+
     def recalculate_estimated_total(self):
         """Recalculate estimated total from items"""
         self.estimated_total = sum(item.get_subtotal() for item in self.items.all())
@@ -299,3 +339,144 @@ class SiteConfiguration(models.Model):
         """Get or create the singleton configuration"""
         config, created = cls.objects.get_or_create(pk=1)
         return config
+
+
+class Coupon(models.Model):
+    """Discount coupon codes for quotes"""
+
+    DISCOUNT_TYPES = (
+        ('percentage', 'Percentage'),
+        ('fixed', 'Fixed Amount'),
+    )
+
+    code = models.CharField(
+        max_length=50,
+        unique=True,
+        help_text="Coupon code (case-insensitive)"
+    )
+    description = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Internal description of this coupon"
+    )
+    discount_type = models.CharField(
+        max_length=20,
+        choices=DISCOUNT_TYPES,
+        default='percentage'
+    )
+    discount_value = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        help_text="Percentage (e.g., 10 for 10%) or fixed amount (e.g., 100.00)"
+    )
+
+    # Validity
+    active = models.BooleanField(default=True)
+    valid_from = models.DateTimeField()
+    valid_until = models.DateTimeField()
+
+    # Usage limits
+    max_uses = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text="Maximum number of times this coupon can be used (leave blank for unlimited)"
+    )
+    current_uses = models.PositiveIntegerField(default=0)
+
+    # Order amount restrictions
+    min_order_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Minimum order amount required (e.g., 5000.00)"
+    )
+    max_order_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Maximum order amount allowed (e.g., 25000.00)"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Coupon'
+        verbose_name_plural = 'Coupons'
+
+    def __str__(self):
+        return f"{self.code} - {self.get_discount_display()}"
+
+    def clean(self):
+        """Validate coupon data"""
+        from django.core.exceptions import ValidationError
+
+        if self.discount_value is not None:
+            if self.discount_type == 'percentage' and self.discount_value > 100:
+                raise ValidationError({'discount_value': 'Percentage discount cannot exceed 100%'})
+
+            if self.discount_value < 0:
+                raise ValidationError({'discount_value': 'Discount value cannot be negative'})
+
+        if self.valid_from and self.valid_until:
+            if self.valid_until <= self.valid_from:
+                raise ValidationError({'valid_until': 'End date must be after start date'})
+
+        if self.min_order_amount and self.max_order_amount:
+            if self.min_order_amount > self.max_order_amount:
+                raise ValidationError({'max_order_amount': 'Maximum amount must be greater than minimum amount'})
+
+    def save(self, *args, **kwargs):
+        """Uppercase the code for consistency"""
+        self.code = self.code.upper()
+        super().save(*args, **kwargs)
+
+    def get_discount_display(self):
+        """Return human-readable discount"""
+        if self.discount_type == 'percentage':
+            return f"{self.discount_value}% off"
+        else:
+            return f"${self.discount_value} off"
+
+    def is_valid(self, order_total=None):
+        """Check if coupon is currently valid"""
+        from django.utils import timezone
+        now = timezone.now()
+
+        if not self.active:
+            return False, "This coupon is no longer active"
+
+        if now < self.valid_from:
+            return False, "This coupon is not yet valid"
+
+        if now > self.valid_until:
+            return False, "This coupon has expired"
+
+        if self.max_uses and self.current_uses >= self.max_uses:
+            return False, "This coupon has reached its usage limit"
+
+        # Check order amount restrictions if total is provided
+        if order_total is not None:
+            if self.min_order_amount and order_total < self.min_order_amount:
+                return False, f"Minimum order amount is ${self.min_order_amount}"
+
+            if self.max_order_amount and order_total > self.max_order_amount:
+                return False, f"Maximum order amount is ${self.max_order_amount}"
+
+        return True, "Valid"
+
+    def calculate_discount(self, total):
+        """Calculate discount amount for a given total"""
+        if self.discount_type == 'percentage':
+            return (total * self.discount_value) / 100
+        else:
+            # Fixed amount discount, but not more than the total
+            return min(self.discount_value, total)
+
+    def apply_to_quote(self):
+        """Increment usage counter"""
+        self.current_uses += 1
+        self.save()

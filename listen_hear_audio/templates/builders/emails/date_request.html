@@ -81,6 +81,13 @@
             color: #1a2332;
             margin: 10px 0;
         }
+        .packages-list {
+            background-color: #f0f9ff;
+            border: 1px solid #0284c7;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+        }
         .notes-section {
             background-color: #fff;
             border: 1px solid #dee2e6;
@@ -112,72 +119,60 @@
 <body>
     <div class="email-container">
         <div class="header">
-            <h1>📅 Installation Date Requested</h1>
+            <h1>Installation Date Requested</h1>
             <p style="margin: 10px 0 0 0; font-size: 16px;">Action Required</p>
         </div>
 
         <div class="alert-badge">
-            🔔 NEW REQUEST
+            NEW REQUEST
         </div>
 
-        <p>A builder has requested an installation date for a package. Please review and confirm or suggest an alternative date.</p>
+        <p>A builder has requested an installation date for the <strong>{{ phase.get_phase_display }}</strong> phase. Please review and confirm or suggest an alternative date.</p>
 
         <div class="requested-date">
-            <div style="color: #6c757d; font-weight: 600; font-size: 14px; text-transform: uppercase;">Requested Installation Date</div>
-            <div class="date">{{ package.requested_install_date|date:"F d, Y" }}</div>
+            <div style="color: #6c757d; font-weight: 600; font-size: 14px; text-transform: uppercase;">Requested Date</div>
+            <div class="date">{{ phase.requested_date|date:"F d, Y" }}</div>
+            {% if phase.alternate_dates %}
+            <div style="color: #6c757d; font-size: 14px; margin-top: 10px;">
+                Alternates: {{ phase.get_alternate_dates_display }}
+            </div>
+            {% endif %}
         </div>
 
         <div class="request-info">
-            <h3 style="color: #1a2332; margin-top: 0;">Package Details</h3>
-            <div class="info-row">
-                <span class="info-label">Package:</span>
-                <span class="info-value"><strong>{{ package.package_name }}</strong></span>
-            </div>
+            <h3 style="color: #1a2332; margin-top: 0;">Property Details</h3>
             <div class="info-row">
                 <span class="info-label">Property:</span>
-                <span class="info-value">{{ property.name }}</span>
+                <span class="info-value"><strong>{{ property.name }}</strong></span>
             </div>
             <div class="info-row">
                 <span class="info-label">Address:</span>
                 <span class="info-value">{{ property.address }}</span>
             </div>
-            {% if property.property_type %}
             <div class="info-row">
-                <span class="info-label">Property Type:</span>
-                <span class="info-value">{{ property.property_type }}</span>
+                <span class="info-label">Phase:</span>
+                <span class="info-value"><strong>{{ phase.get_phase_display }}</strong></span>
             </div>
-            {% endif %}
-            <div class="info-row">
-                <span class="info-label">Quantity:</span>
-                <span class="info-value">{{ package.quantity }}</span>
-            </div>
-            {% if package.price_snapshot %}
-            <div class="info-row">
-                <span class="info-label">Price:</span>
-                <span class="info-value">${{ package.get_subtotal|floatformat:2 }}</span>
-            </div>
-            {% endif %}
         </div>
 
-        {% if package.builder_notes %}
+        <div class="packages-list">
+            <h4 style="margin-top: 0; color: #0284c7;">Packages in this Phase:</h4>
+            <ul style="margin: 0; padding-left: 20px;">
+                {% for package in packages %}
+                <li>{{ package.category_snapshot }}: {{ package.package_name }} {% if package.quantity > 1 %}(x{{ package.quantity }}){% endif %}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        {% if phase.builder_notes %}
         <div class="notes-section">
             <h4 style="margin-top: 0; color: #1a2332;">Builder Notes:</h4>
-            <p style="margin: 0; color: #495057;">{{ package.builder_notes }}</p>
+            <p style="margin: 0; color: #495057;">{{ phase.builder_notes }}</p>
         </div>
         {% endif %}
 
         <div style="text-align: center; margin: 30px 0;">
-            <a href="{{ config.website }}/shadycorvette/builders/purchasedpackage/{{ package.id }}/change/" class="cta-button">Confirm Date</a>
-            <a href="{{ config.website }}/builders/property/{{ property.id }}/" class="cta-button" style="background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);">View Property</a>
-        </div>
-
-        <div style="background-color: #fff3cd; padding: 15px; border-left: 4px solid #ffc107; border-radius: 4px; margin: 20px 0;">
-            <strong>⚠️ Action Required:</strong>
-            <ul style="margin: 10px 0 0 0; padding-left: 20px;">
-                <li>Review your schedule for the requested date</li>
-                <li>Confirm the date in the admin panel or suggest an alternative</li>
-                <li>Add any company notes for the builder</li>
-            </ul>
+            <a href="{{ config.website }}/shadycorvette/builders/phaseinstallation/{{ phase.id }}/change/" class="cta-button">Confirm Date</a>
         </div>
 
         <div class="footer">

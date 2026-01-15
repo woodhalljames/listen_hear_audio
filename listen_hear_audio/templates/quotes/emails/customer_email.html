@@ -19,7 +19,7 @@
       background-color: #ffffff;
     }
     .header {
-      background-color: #0000FF;
+      background-color: #3333ff;
       color: #ffffff;
       padding: 30px;
       text-align: center;
@@ -38,13 +38,13 @@
     }
     .info-box {
       background-color: #f8f9fa;
-      border-left: 4px solid #0000FF;
+      border-left: 4px solid #3333ff;
       padding: 15px;
       margin: 20px 0;
     }
     .quote-number {
       font-size: 24px;
-      color: #0000FF;
+      color: #3333ff;
       font-weight: bold;
       text-align: center;
       padding: 20px;
@@ -98,7 +98,7 @@
     .button {
       display: inline-block;
       padding: 12px 30px;
-      background-color: #0000FF;
+      background-color: #3333ff;
       color: #ffffff;
       text-decoration: none;
       border-radius: 4px;
@@ -196,7 +196,7 @@
                 Estimated Total:
               {% endif %}
             </td>
-            <td style="text-align: right; color: #0000FF; font-size: 18px;">
+            <td style="text-align: right; color: #3333ff; font-size: 18px;">
               ${{ quote_request.get_effective_total|floatformat:2 }}
             </td>
           </tr>
@@ -215,7 +215,7 @@
 
       <!-- Next Steps -->
       <div class="next-steps">
-        <h3 style="margin-top: 0; color: #0000FF;">What Happens Next?</h3>
+        <h3 style="margin-top: 0; color: #3333ff;">What Happens Next?</h3>
         {% if quote_request.is_finalized %}
           <ol>
             <li><strong>Review the Quote:</strong> Carefully review the attached PDF and all pricing details</li>

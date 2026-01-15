@@ -91,6 +91,7 @@ LOCAL_APPS = [
     "listen_hear_audio.builders",
     "listen_hear_audio.blog",
     "listen_hear_audio.careers",
+    "listen_hear_audio.gallery",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

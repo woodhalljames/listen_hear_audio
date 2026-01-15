@@ -74,6 +74,53 @@ def remove_from_cart_view(request, package_id):
     return redirect('quotes:cart')
 
 
+@require_POST
+def apply_coupon_view(request):
+    """Apply a coupon code to the cart"""
+    from .models import Coupon
+
+    cart = get_or_create_cart(request)
+    coupon_code = request.POST.get('coupon_code', '').strip().upper()
+
+    if not coupon_code:
+        messages.error(request, 'Please enter a coupon code.')
+        return redirect('quotes:cart')
+
+    try:
+        coupon = Coupon.objects.get(code=coupon_code)
+
+        # Check if coupon is valid
+        total = cart.get_estimated_total()
+        is_valid, message = coupon.is_valid(total)
+
+        if is_valid:
+            cart.coupon = coupon
+            cart.save()
+            discount = cart.get_discount_amount()
+            messages.success(request, f'Coupon "{coupon_code}" applied! You save ${discount:.2f}')
+        else:
+            messages.error(request, f'Coupon "{coupon_code}" is not valid: {message}')
+
+    except Coupon.DoesNotExist:
+        messages.error(request, f'Coupon "{coupon_code}" not found.')
+
+    return redirect('quotes:cart')
+
+
+@require_POST
+def remove_coupon_view(request):
+    """Remove the applied coupon from the cart"""
+    cart = get_or_create_cart(request)
+
+    if cart.coupon:
+        coupon_code = cart.coupon.code
+        cart.coupon = None
+        cart.save()
+        messages.success(request, f'Coupon "{coupon_code}" removed.')
+
+    return redirect('quotes:cart')
+
+
 def checkout_view(request):
     """Checkout page"""
     cart = get_or_create_cart(request)

@@ -38,7 +38,11 @@ class ServiceRequest(models.Model):
         help_text="Type of service needed (e.g., Installation, Repair, Consultation)",
     )
     description = models.TextField(help_text="Detailed description of service needed")
-    preferred_date = models.DateField(null=True, blank=True)
+    preferred_date = models.DateField(
+        verbose_name="Preferred date(s)",
+        null=True,
+        blank=True,
+    )
     preferred_time = models.CharField(max_length=50, blank=True)
 
     # Status and Admin Response

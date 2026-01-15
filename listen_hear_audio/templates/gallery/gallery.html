@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Gallery - Listen Hear Audio{% endblock %}
+
+{% block bodyclass %}gallery-page{% endblock %}
+
+{% block extra_css %}
+<style>
+  body.gallery-page {
+    background-color: #232323 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .gallery-page .footer {
+    margin-top: 0 !important;
+  }
+  /* Remove navbar bottom margin */
+  .gallery-page nav.navbar {
+    margin-bottom: 0 !important;
+  }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="gallery-page-dark">
+  <!-- Page Header -->
+  <div class="text-center mb-4" style="padding-top: 2rem;">
+    <h1 class="h2 fw-bold text-white">Our Work</h1>
+  </div>
+
+  <!-- Tag Filter Buttons (No Title) -->
+  <div class="text-center mb-4">
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+      <button class="btn btn-sm btn-outline-secondary tag-filter active" data-tag="all">
+        All
+      </button>
+      {% for tag in all_tags %}
+        <button class="btn btn-sm btn-outline-secondary tag-filter" data-tag="{{ tag.slug }}">
+          {{ tag.name }}
+        </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- CSS Column Masonry Grid -->
+  <div class="gallery-masonry" id="gallery-grid">
+    {% include "gallery/_gallery_items.html" %}
+  </div>
+
+  <!-- Loading indicator -->
+  <div id="loading-indicator" class="text-center py-4" style="display: none;">
+    <div class="spinner-border text-light" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>
+{% endblock main %}
+
+{% block modal %}
+<!-- Custom Lightbox Overlay -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+  <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+  <span class="lightbox-prev" onclick="navigateLightbox(-1); event.stopPropagation();">&#10094;</span>
+  <span class="lightbox-next" onclick="navigateLightbox(1); event.stopPropagation();">&#10095;</span>
+  <div class="lightbox-content">
+    <img id="lightbox-image" src="" alt="">
+    <div id="lightbox-caption" class="lightbox-caption"></div>
+  </div>
+</div>
+{% endblock modal %}
+
+{% block inline_javascript %}
+<script>
+// Infinite scroll state
+let currentPage = 1;
+let isLoading = false;
+let hasNextPage = {{ page_obj.has_next|yesno:"true,false" }};
+let currentImageIndex = 0;
+
+// Build gallery images array from DOM
+function buildGalleryImagesArray() {
+  const images = [];
+  document.querySelectorAll('.gallery-image').forEach((img, index) => {
+    // Update data-index and onclick
+    img.setAttribute('data-index', index);
+    img.setAttribute('onclick', `openLightbox(${index})`);
+
+    // Get caption if exists
+    const captionEl = img.closest('.gallery-item').querySelector('.image-caption');
+
+    images.push({
+      url: img.src,
+      alt: img.alt,
+      caption: captionEl ? captionEl.textContent : ''
+    });
+  });
+  return images;
+}
+
+let galleryImages = buildGalleryImagesArray();
+
+// Infinite scroll - load more images
+function loadMoreImages() {
+  if (isLoading || !hasNextPage) return;
+
+  isLoading = true;
+  document.getElementById('loading-indicator').style.display = 'block';
+
+  const nextPage = currentPage + 1;
+  const url = `?page=${nextPage}`;
+
+  fetch(url, {
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.html) {
+      // Append new images to grid
+      const grid = document.getElementById('gallery-grid');
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = data.html;
+
+      while (tempDiv.firstChild) {
+        grid.appendChild(tempDiv.firstChild);
+      }
+
+      // Rebuild gallery images array with new images
+      galleryImages = buildGalleryImagesArray();
+
+      // Update state
+      currentPage = nextPage;
+      hasNextPage = data.has_next;
+
+      // Reattach filter listeners for new items
+      attachFilterListeners();
+    }
+
+    isLoading = false;
+    document.getElementById('loading-indicator').style.display = 'none';
+  })
+  .catch(error => {
+    console.error('Error loading more images:', error);
+    isLoading = false;
+    document.getElementById('loading-indicator').style.display = 'none';
+  });
+}
+
+// Detect scroll near bottom
+window.addEventListener('scroll', function() {
+  if (isLoading || !hasNextPage) return;
+
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+
+  // Load more when 500px from bottom
+  if (scrollTop + windowHeight >= documentHeight - 500) {
+    loadMoreImages();
+  }
+});
+
+// Tag filtering with fade animation
+function attachFilterListeners() {
+  const filterButtons = document.querySelectorAll('.tag-filter');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+
+  filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const selectedTag = this.dataset.tag;
+
+      // Update active button
+      filterButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+
+      // Filter items with fade effect
+      galleryItems.forEach(item => {
+        const itemTags = item.dataset.tags.trim().split(' ');
+
+        if (selectedTag === 'all' || itemTags.includes(selectedTag)) {
+          // Show item
+          item.style.opacity = '1';
+          item.style.display = 'block';
+        } else {
+          // Fade out and hide
+          item.style.opacity = '0';
+          setTimeout(() => {
+            if (item.style.opacity === '0') {
+              item.style.display = 'none';
+            }
+          }, 300);
+        }
+      });
+    });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  attachFilterListeners();
+});
+
+// Lightbox functions
+function openLightbox(index) {
+  currentImageIndex = index;
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImage = document.getElementById('lightbox-image');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+
+  lightboxImage.src = galleryImages[index].url;
+  lightboxImage.alt = galleryImages[index].alt;
+  lightboxCaption.textContent = galleryImages[index].caption || '';
+
+  lightbox.style.display = 'flex';
+  document.body.style.overflow = 'hidden'; // Prevent scrolling
+}
+
+function closeLightbox(event) {
+  if (event.target.id === 'lightbox' || event.target.className === 'lightbox-close') {
+    const lightbox = document.getElementById('lightbox');
+    lightbox.style.display = 'none';
+    document.body.style.overflow = 'auto'; // Restore scrolling
+  }
+}
+
+function navigateLightbox(direction) {
+  currentImageIndex += direction;
+
+  // Loop around
+  if (currentImageIndex < 0) {
+    currentImageIndex = galleryImages.length - 1;
+  } else if (currentImageIndex >= galleryImages.length) {
+    currentImageIndex = 0;
+  }
+
+  const lightboxImage = document.getElementById('lightbox-image');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+
+  lightboxImage.src = galleryImages[currentImageIndex].url;
+  lightboxImage.alt = galleryImages[currentImageIndex].alt;
+  lightboxCaption.textContent = galleryImages[currentImageIndex].caption || '';
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', function(event) {
+  const lightbox = document.getElementById('lightbox');
+  if (lightbox.style.display === 'flex') {
+    if (event.key === 'ArrowLeft') {
+      navigateLightbox(-1);
+    } else if (event.key === 'ArrowRight') {
+      navigateLightbox(1);
+    } else if (event.key === 'Escape') {
+      closeLightbox({target: {id: 'lightbox'}});
+    }
+  }
+});
+</script>
+{% endblock %}

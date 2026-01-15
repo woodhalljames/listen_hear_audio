@@ -93,4 +93,7 @@ def get_cart_context(cart):
         'cart_items': items,
         'total_items': cart.get_total_items(),
         'estimated_total': cart.get_estimated_total(),
+        'discount_amount': cart.get_discount_amount(),
+        'final_total': cart.get_final_total(),
+        'applied_coupon': cart.coupon,
     }

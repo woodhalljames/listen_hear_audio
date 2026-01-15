@@ -236,6 +236,10 @@ class Package(models.Model):
         default=False,
         help_text="Mark as true for custom/quote-only packages"
     )
+    catalog_only = models.BooleanField(
+        default=False,
+        help_text="If checked, package only shows in catalog - not in builder showroom"
+    )
     is_active = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

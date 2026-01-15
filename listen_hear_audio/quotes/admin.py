@@ -4,7 +4,7 @@ from django.urls import reverse, path
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.http import HttpResponse
-from .models import Cart, CartItem, QuoteRequest, QuoteRequestItem, SiteConfiguration
+from .models import Cart, CartItem, QuoteRequest, QuoteRequestItem, SiteConfiguration, Coupon
 
 
 class CartItemInline(admin.TabularInline):
@@ -88,8 +88,8 @@ class QuoteRequestAdmin(admin.ModelAdmin):
             'description': 'Notes from the customer about their project requirements'
         }),
         ('Admin Finalization', {
-            'fields': ('admin_notes', 'final_total', 'email_recipients', 'builder_email', 'finalize_link', 'finalized_at', 'finalized_by'),
-            'description': 'Set final price, email recipients, and builder email above, then click the button below to finalize and send.',
+            'fields': ('admin_notes', 'final_total', 'email_recipients', 'finalize_link', 'finalized_at', 'finalized_by'),
+            'description': 'Set final price and email recipients (one per line) above, then click the button below to finalize and send.',
         }),
         ('Timestamps', {
             'fields': ('created_at', 'updated_at'),
@@ -314,6 +314,12 @@ class QuoteRequestAdmin(admin.ModelAdmin):
 
             quote_request.save()
 
+            # Pre-populate email_recipients with all relevant emails if empty
+            if not quote_request.email_recipients:
+                recipient_options = quote_request.get_recipient_options()
+                quote_request.email_recipients = '\n'.join(recipient_options)
+                quote_request.save()
+
             # Create property if not already created
             if not quote_request.properties.exists():
                 # Build property name and address
@@ -337,33 +343,32 @@ class QuoteRequestAdmin(admin.ModelAdmin):
                     quote_request=quote_request
                 )
 
-                # Add builder from builder_email field if provided
-                if quote_request.builder_email:
-                    try:
-                        from listen_hear_audio.users.models import User
-                        builder_user = User.objects.get(email=quote_request.builder_email)
-                        if builder_user.is_builder:
-                            property_obj.builders.add(builder_user)
-                            self.message_user(
-                                request,
-                                f'Builder {builder_user.email} assigned to property.',
-                                level=messages.SUCCESS
-                            )
-                        else:
-                            self.message_user(
-                                request,
-                                f'Warning: User {quote_request.builder_email} is not a builder account.',
-                                level=messages.WARNING
-                            )
-                    except User.DoesNotExist:
-                        self.message_user(
-                            request,
-                            f'Warning: No user found with email {quote_request.builder_email}',
-                            level=messages.WARNING
-                        )
-                # Also add quote requester if they are a builder
-                elif quote_request.user and quote_request.user.is_builder:
+                # Track assigned builders for success message
+                assigned_builders = []
+
+                # Add quote requester if they are a builder
+                if quote_request.user and quote_request.user.is_builder:
                     property_obj.builders.add(quote_request.user)
+                    assigned_builders.append(quote_request.user.email)
+
+                # Check email_recipients for builder emails and auto-assign them
+                from listen_hear_audio.users.models import User
+                if quote_request.email_recipients:
+                    recipient_emails = quote_request.get_email_recipients()
+                    for email in recipient_emails:
+                        try:
+                            builder_user = User.objects.get(email=email, is_builder=True)
+                            if builder_user not in property_obj.builders.all():
+                                property_obj.builders.add(builder_user)
+                                assigned_builders.append(builder_user.email)
+                        except User.DoesNotExist:
+                            # Not a builder or doesn't exist, skip
+                            pass
+
+                # Send notification email to assigned builders
+                from listen_hear_audio.builders.tasks import send_property_creation_email
+                if property_obj.builders.exists():
+                    send_property_creation_email.delay(property_obj.id)
 
                 # Create purchased packages from quote items
                 for item in quote_request.items.all():
@@ -378,9 +383,15 @@ class QuoteRequestAdmin(admin.ModelAdmin):
                         status='pending'
                     )
 
+                # Build success message with builder assignments
+                if assigned_builders:
+                    builder_msg = f' Assigned to builders: {", ".join(assigned_builders)}.'
+                else:
+                    builder_msg = ' No builders assigned yet.'
+
                 self.message_user(
                     request,
-                    f'Property "{property_name}" created successfully!',
+                    f'Property "{property_name}" created successfully!{builder_msg}',
                     level=messages.SUCCESS
                 )
 
@@ -463,11 +474,43 @@ class QuoteRequestAdmin(admin.ModelAdmin):
                 status='pending'
             )
 
-        # Redirect to property admin to add builders
+        # Auto-assign builder if quote requester is a builder
+        assigned_builders = []
+        if quote.user and quote.user.is_builder:
+            property_obj.builders.add(quote.user)
+            assigned_builders.append(quote.user.email)
+
+        # Check email_recipients for builder emails and auto-assign them
+        from listen_hear_audio.users.models import User
+        if quote.email_recipients:
+            recipient_emails = quote.get_email_recipients()
+            for email in recipient_emails:
+                try:
+                    builder_user = User.objects.get(email=email, is_builder=True)
+                    if builder_user not in property_obj.builders.all():
+                        property_obj.builders.add(builder_user)
+                        assigned_builders.append(builder_user.email)
+                except User.DoesNotExist:
+                    # Not a builder or doesn't exist, skip
+                    pass
+
+        # Send notification email to assigned builders
+        from listen_hear_audio.builders.tasks import send_property_creation_email
+        if property_obj.builders.exists():
+            send_property_creation_email.delay(property_obj.id)
+
+        # Redirect to property admin
         url = reverse('admin:builders_property_change', args=[property_obj.pk])
+
+        # Build success message
+        if assigned_builders:
+            builder_msg = f' Assigned to builders: {", ".join(assigned_builders)}.'
+        else:
+            builder_msg = ' No builders assigned. You can add them in the property admin.'
+
         messages.success(
             request,
-            format_html('Property created successfully! <a href="{}">Click here to add builders and manage the property.</a>', url)
+            format_html('Property created successfully!{} <a href="{}">Click here to manage the property.</a>', builder_msg, url)
         )
 
         # Update quote status
@@ -519,3 +562,48 @@ class SiteConfigurationAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         # Prevent deletion of the configuration
         return False
+
+
+@admin.register(Coupon)
+class CouponAdmin(admin.ModelAdmin):
+    """Admin for Coupon model"""
+    list_display = ('code', 'discount_display', 'active', 'valid_from', 'valid_until', 'usage_display', 'created_at')
+    list_filter = ('active', 'discount_type', 'created_at')
+    search_fields = ('code', 'description')
+    readonly_fields = ('current_uses', 'created_at', 'updated_at')
+
+    fieldsets = (
+        ('Coupon Code', {
+            'fields': ('code', 'description', 'active')
+        }),
+        ('Discount', {
+            'fields': ('discount_type', 'discount_value')
+        }),
+        ('Validity Period', {
+            'fields': ('valid_from', 'valid_until')
+        }),
+        ('Order Amount Restrictions', {
+            'fields': ('min_order_amount', 'max_order_amount'),
+            'description': 'Optional: Set minimum and/or maximum order amounts for this coupon to apply (leave blank for no restrictions)'
+        }),
+        ('Usage Limits', {
+            'fields': ('max_uses', 'current_uses'),
+            'description': 'Leave max_uses blank for unlimited uses'
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+
+    def discount_display(self, obj):
+        """Display discount value"""
+        return obj.get_discount_display()
+    discount_display.short_description = 'Discount'
+
+    def usage_display(self, obj):
+        """Display usage stats"""
+        if obj.max_uses:
+            return f"{obj.current_uses} / {obj.max_uses}"
+        return f"{obj.current_uses} / ∞"
+    usage_display.short_description = 'Uses'

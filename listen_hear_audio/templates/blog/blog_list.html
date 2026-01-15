@@ -1,17 +1,24 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Blog - Listen Hear Smart Homes{% endblock %}
+{% block title %}Blog - Listen Hear!{% endblock %}
 
 {% block content %}
 <div class="row">
   <div class="col-12">
-    <h1 class="mb-4">Our Blog</h1>
+    <h1 class="mb-4" style="color: var(--primary-blue);">
+     Blog
+    </h1>
 
     {% if request.GET.tag %}
-      <p class="lead">Posts tagged with: <strong>{{ request.GET.tag }}</strong>
-        <a href="{% url 'blog:post_list' %}" class="btn btn-sm btn-outline-secondary ms-2">Clear Filter</a>
-      </p>
+      <div class="alert alert-info d-flex align-items-center justify-content-between">
+        <span>
+          <i class="bi bi-funnel-fill"></i> Showing posts tagged with: <strong>{{ request.GET.tag }}</strong>
+        </span>
+        <a href="{% url 'blog:post_list' %}" class="btn btn-sm btn-outline-secondary">
+          <i class="bi bi-x-circle"></i> Clear Filter
+        </a>
+      </div>
     {% endif %}
   </div>
 </div>
@@ -30,7 +37,10 @@
             <a href="{{ post.get_absolute_url }}" class="text-decoration-none">{{ post.title }}</a>
           </h3>
           <p class="text-muted small mb-3">
-            {% if post.author %}
+            {% if post.author_name %}
+              <i class="bi bi-person-circle"></i> {{ post.author_name }}
+              <span class="mx-2">•</span>
+            {% elif post.author %}
               <i class="bi bi-person-circle"></i> {{ post.author.name|default:post.author.username }}
               <span class="mx-2">•</span>
             {% endif %}
@@ -39,8 +49,9 @@
 
           {% if post.tags.all %}
             <div class="mb-3">
+              <i class="bi bi-tags"></i>
               {% for tag in post.tags.all %}
-                <a href="?tag={{ tag.name }}" class="badge bg-secondary text-decoration-none">{{ tag.name }}</a>
+                <a href="?tag={{ tag.name }}" class="badge text-decoration-none" style="background-color: var(--primary-blue);">{{ tag.name }}</a>
               {% endfor %}
             </div>
           {% endif %}
@@ -48,7 +59,9 @@
           <div class="card-text">
             {{ post.body|truncatewords_html:30|safe }}
           </div>
-          <a href="{{ post.get_absolute_url }}" class="btn btn-primary mt-3">Read More</a>
+          <a href="{{ post.get_absolute_url }}" class="btn mt-3" style="background-color: var(--primary-blue); color: white;">
+            Read More <i class="bi bi-arrow-right"></i>
+          </a>
         </div>
       </div>
     </div>

@@ -112,9 +112,9 @@ class PackageAdminForm(forms.ModelForm):
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
     form = PackageAdminForm
-    list_display = ['name', 'category', 'subcategory', 'installation_phase', 'starting_price', 'is_custom', 'is_featured', 'is_active', 'display_order']
-    list_editable = ['display_order', 'is_active', 'is_featured']
-    list_filter = ['installation_phase', 'category__property_type', 'category', 'subcategory', 'is_custom', 'is_featured', 'is_active']
+    list_display = ['name', 'category', 'subcategory', 'installation_phase', 'starting_price', 'is_custom', 'catalog_only', 'is_featured', 'is_active', 'display_order']
+    list_editable = ['display_order', 'is_active', 'is_featured', 'catalog_only']
+    list_filter = ['installation_phase', 'category__property_type', 'category', 'subcategory', 'is_custom', 'catalog_only', 'is_featured', 'is_active']
     search_fields = ['name', 'short_description', 'features']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['installation_phase', 'category', 'subcategory', 'display_order', 'name']
@@ -131,7 +131,8 @@ class PackageAdmin(admin.ModelAdmin):
             'fields': ('starting_price', 'is_custom')
         }),
         ('Display Settings', {
-            'fields': ('image', 'display_order', 'is_featured', 'is_active')
+            'fields': ('image', 'display_order', 'catalog_only', 'is_featured', 'is_active'),
+            'description': 'Catalog only packages will only show in the main catalog, not the builder showroom.'
         }),
     )
 

@@ -4,6 +4,24 @@
 
 {% block title %}Request Service - Listen Hear Smart Homes{% endblock title %}
 
+{% block extra_css %}
+<!-- Flatpickr Calendar -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+<style>
+  .flatpickr-calendar {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    border-radius: 8px;
+  }
+  .flatpickr-input {
+    background-color: white !important;
+  }
+  #date-picker-wrapper [data-toggle]:hover {
+    background: #0000cc !important;
+  }
+</style>
+{% endblock extra_css %}
+
 {% block content %}
 <div class="container mt-4">
   <div class="row justify-content-center">
@@ -77,7 +95,13 @@
             </div>
             <div class="row">
               <div class="col-md-6 mb-3">
-                {{ form.preferred_date|as_crispy_field }}
+                <label class="form-label">Preferred Date</label>
+                <div class="input-group flatpickr" id="date-picker-wrapper">
+                  <input type="text" name="preferred_date" id="id_preferred_date" class="form-control" placeholder="Select a date..." data-input>
+                  <button type="button" class="btn" data-toggle style="background: #3333ff; color: white; border-color: #3333ff;">
+                    <i class="bi bi-calendar3"></i>
+                  </button>
+                </div>
               </div>
               <div class="col-md-6 mb-3">
                 {{ form.preferred_time|as_crispy_field }}
@@ -106,9 +130,8 @@
           </h5>
           <ol class="mb-0">
             <li>We'll review your service request</li>
-            <li>You'll receive a confirmation email</li>
-            <li>Our team will contact you within 1-2 business days</li>
-            <li>We'll schedule a convenient time for service</li>
+            <li>You'll be contacted by our team within 2 business days</li>
+            <li>Visit at scheduled time and resolve your issue</li>
           </ol>
         </div>
       </div>
@@ -116,3 +139,29 @@
   </div>
 </div>
 {% endblock content %}
+
+{% block inline_javascript %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Find the wrapper element
+  const datePickerWrapper = document.querySelector('#date-picker-wrapper');
+
+  if (datePickerWrapper) {
+    // Initialize flatpickr with wrap mode
+    flatpickr(datePickerWrapper, {
+      dateFormat: "Y-m-d",
+      altInput: true,
+      altFormat: "F j, Y",
+      minDate: "today",
+      disableMobile: false,
+      animate: true,
+      wrap: true,
+      monthSelectorType: "dropdown",
+      prevArrow: '<i class="bi bi-chevron-left"></i>',
+      nextArrow: '<i class="bi bi-chevron-right"></i>'
+    });
+  }
+});
+</script>
+{% endblock inline_javascript %}

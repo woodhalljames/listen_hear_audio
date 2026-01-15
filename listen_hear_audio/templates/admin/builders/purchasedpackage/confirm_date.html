@@ -1,0 +1,292 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">Home</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">Builders</a>
+    &rsaquo; <a href="{% url 'admin:builders_property_change' package.property.pk %}">{{ package.property.name }}</a>
+    &rsaquo; Confirm Date
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <style>
+        .confirm-date-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .package-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .package-info h3 {
+            margin: 0 0 15px 0;
+            color: #212529;
+            font-size: 18px;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .info-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #6c757d;
+            margin-bottom: 3px;
+            font-weight: 600;
+        }
+        .info-value {
+            font-size: 14px;
+            color: #212529;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-date_requested {
+            background: #ffc107;
+            color: #212529;
+        }
+        .phase-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            color: white;
+        }
+        .phase-framing { background: #28a745; }
+        .phase-rough_ins { background: #17a2b8; }
+        .phase-insulation_drywall { background: #ffc107; color: #212529; }
+        .phase-trim_finishes { background: #fd7e14; }
+
+        .requested-dates {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+        }
+        .requested-dates h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #856404;
+        }
+        .requested-dates .date-primary {
+            font-size: 18px;
+            font-weight: 600;
+            color: #212529;
+        }
+        .requested-dates .date-alternates {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .builder-notes {
+            background: #e7f3ff;
+            border: 1px solid #b6d4fe;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+        }
+        .builder-notes h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            color: #084298;
+        }
+        .builder-notes p {
+            margin: 0;
+            font-size: 14px;
+            color: #212529;
+        }
+
+        .form-section {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 25px;
+        }
+        .form-section h3 {
+            margin: 0 0 20px 0;
+            font-size: 16px;
+            color: #212529;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 10px;
+        }
+        .form-row {
+            margin-bottom: 20px;
+        }
+        .form-row label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #212529;
+        }
+        .form-row input[type="date"],
+        .form-row textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-row input[type="date"]:focus,
+        .form-row textarea:focus {
+            border-color: #86b7fe;
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .form-row .helptext {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+        .form-row.inline {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+        }
+        .form-actions .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+        }
+        .btn-primary {
+            background: #0d6efd;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #0b5ed7;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #5c636a;
+        }
+    </style>
+
+    <div class="confirm-date-container">
+        <div class="package-info">
+            <h3>{{ package.package_name }}</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Property</span>
+                    <span class="info-value">{{ package.property.name }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Category</span>
+                    <span class="info-value">{{ package.category_snapshot|default:"-" }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Phase</span>
+                    <span class="info-value">
+                        <span class="phase-badge phase-{{ package.installation_phase_snapshot }}">
+                            {% if package.installation_phase_snapshot == 'framing' %}Framing
+                            {% elif package.installation_phase_snapshot == 'rough_ins' %}Rough-Ins
+                            {% elif package.installation_phase_snapshot == 'insulation_drywall' %}Insulation/Drywall
+                            {% elif package.installation_phase_snapshot == 'trim_finishes' %}Trim/Finishes
+                            {% else %}{{ package.installation_phase_snapshot|default:"N/A" }}
+                            {% endif %}
+                        </span>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Status</span>
+                    <span class="info-value">
+                        <span class="status-badge status-{{ package.status }}">{{ package.get_status_display }}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="requested-dates">
+            <h4>Requested Date</h4>
+            <div class="date-primary">
+                {% if package.requested_install_date %}
+                    {{ package.requested_install_date|date:"F j, Y" }}
+                {% else %}
+                    No date requested
+                {% endif %}
+            </div>
+            {% if package.alternate_install_dates %}
+            <div class="date-alternates">
+                <strong>Alternates:</strong> {{ package.get_alternate_dates_display }}
+            </div>
+            {% endif %}
+        </div>
+
+        {% if package.builder_notes %}
+        <div class="builder-notes">
+            <h4>Builder Notes</h4>
+            <p>{{ package.builder_notes }}</p>
+        </div>
+        {% endif %}
+
+        <div class="form-section">
+            <h3>Confirm Installation Date</h3>
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-row inline">
+                    <div>
+                        <label for="id_confirmed_start_date">{{ form.confirmed_start_date.label }}</label>
+                        {{ form.confirmed_start_date }}
+                        {% if form.confirmed_start_date.errors %}
+                        <div class="errorlist">{{ form.confirmed_start_date.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <label for="id_confirmed_end_date">{{ form.confirmed_end_date.label }}</label>
+                        {{ form.confirmed_end_date }}
+                        <div class="helptext">{{ form.confirmed_end_date.help_text }}</div>
+                        {% if form.confirmed_end_date.errors %}
+                        <div class="errorlist">{{ form.confirmed_end_date.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label for="id_company_notes">{{ form.company_notes.label }}</label>
+                    {{ form.company_notes }}
+                    {% if form.company_notes.errors %}
+                    <div class="errorlist">{{ form.company_notes.errors }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Confirm Date & Send Notification</button>
+                    <a href="{% url 'admin:builders_property_change' package.property.pk %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

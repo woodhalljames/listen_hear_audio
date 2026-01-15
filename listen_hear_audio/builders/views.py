@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from datetime import datetime
 
-from .models import Property, PurchasedPackage, PropertyNote
+from .models import Property, PhaseInstallation, PurchasedPackage, PropertyNote
 from .tasks import send_date_request_email
 from listen_hear_audio.products.models import Package, Category, PropertyType
 
@@ -17,19 +17,6 @@ class BuilderRequiredMixin(UserPassesTestMixin):
 
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.is_builder
-
-
-class BuilderDashboardView(BuilderRequiredMixin, ListView):
-    """Builder dashboard showing all assigned properties"""
-    model = Property
-    template_name = 'builders/builder_dashboard.html'
-    context_object_name = 'properties'
-
-    def get_queryset(self):
-        """Get properties assigned to this builder"""
-        return Property.objects.filter(
-            builders=self.request.user
-        ).prefetch_related('packages', 'builders').order_by('-updated_at')
 
 
 class BuilderPropertyDetailView(BuilderRequiredMixin, DetailView):
@@ -42,130 +29,135 @@ class BuilderPropertyDetailView(BuilderRequiredMixin, DetailView):
         """Only show properties assigned to this builder"""
         return Property.objects.filter(
             builders=self.request.user
-        ).prefetch_related('packages', 'notes', 'builders')
+        ).prefetch_related('packages', 'phase_installations', 'notes', 'builders')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Get packages grouped by status
         property_obj = self.object
         packages = property_obj.packages.all()
 
-        context['packages_pending'] = packages.filter(status='pending')
-        context['packages_date_requested'] = packages.filter(status='date_requested')
-        context['packages_scheduled'] = packages.filter(status='scheduled')
-        context['packages_in_progress'] = packages.filter(status='in_progress')
-        context['packages_completed'] = packages.filter(status='completed').order_by('-completion_date')
+        # Build phases data with packages grouped
+        phases_data = []
+        phase_order = ['framing', 'rough_ins', 'insulation_drywall', 'trim_finishes']
+        phase_labels = {
+            'framing': 'Framing',
+            'rough_ins': 'Rough-Ins',
+            'insulation_drywall': 'Insulation & Drywall',
+            'trim_finishes': 'Trim & Finishes',
+        }
 
-        # Group packages by installation phase for display
-        from listen_hear_audio.products.models import Package
-        packages_by_phase = {}
-        for phase_value, phase_label in Package.INSTALLATION_PHASE_CHOICES:
-            packages_by_phase[phase_value] = {
-                'label': phase_label,
-                'packages': packages.filter(installation_phase_snapshot=phase_value)
-            }
-        context['packages_by_phase'] = packages_by_phase
+        for phase_key in phase_order:
+            phase_packages = packages.filter(installation_phase_snapshot=phase_key)
+            if phase_packages.exists():
+                # Get or create phase installation record
+                phase_install, created = PhaseInstallation.objects.get_or_create(
+                    property=property_obj,
+                    phase=phase_key,
+                    defaults={'status': 'pending'}
+                )
+
+                phases_data.append({
+                    'key': phase_key,
+                    'label': phase_labels.get(phase_key, phase_key),
+                    'packages': phase_packages,
+                    'installation': phase_install,
+                    'icon': _get_phase_icon(phase_key),
+                })
+
+        context['phases'] = phases_data
 
         # Get activity timeline
-        context['notes'] = property_obj.notes.select_related('created_by', 'package').all()[:20]
+        context['notes'] = property_obj.notes.select_related('created_by', 'phase_installation').all()[:20]
 
-        # Get status summary
-        context['status_summary'] = property_obj.get_package_status_summary()
+        # Get phase summary
+        context['phase_summary'] = property_obj.get_phase_summary()
 
         return context
 
 
 @login_required
 @require_POST
-def request_install_date(request, package_id):
-    """Builder requests installation date for a package"""
+def request_phase_install(request, property_id, phase):
+    """Builder requests installation date for a phase"""
 
-    # Ensure user is a builder
     if not request.user.is_builder:
-        return JsonResponse({'success': False, 'error': 'Not authorized'}, status=403)
+        messages.error(request, 'Not authorized')
+        return redirect('home')
 
-    package = get_object_or_404(PurchasedPackage, pk=package_id)
+    property_obj = get_object_or_404(Property, pk=property_id)
 
-    # Verify builder has access to this property
-    if not package.property.builders.filter(pk=request.user.pk).exists():
-        return JsonResponse({'success': False, 'error': 'Not authorized'}, status=403)
+    # Verify builder has access
+    if not property_obj.builders.filter(pk=request.user.pk).exists():
+        messages.error(request, 'Not authorized')
+        return redirect('home')
+
+    # Get or create phase installation
+    phase_install, created = PhaseInstallation.objects.get_or_create(
+        property=property_obj,
+        phase=phase,
+        defaults={'status': 'pending'}
+    )
+
+    # Only allow requesting if pending
+    if phase_install.status != 'pending':
+        messages.warning(request, 'Date already requested for this phase')
+        return redirect('builders:property_detail', pk=property_id)
 
     # Get form data
-    requested_date = request.POST.get('requested_date')
+    preferred_dates = request.POST.getlist('preferred_dates')
     builder_notes = request.POST.get('builder_notes', '')
 
-    if not requested_date:
-        return JsonResponse({'success': False, 'error': 'Date is required'}, status=400)
+    if not preferred_dates or not any(preferred_dates):
+        messages.error(request, 'Please provide at least one date')
+        return redirect('builders:property_detail', pk=property_id)
 
-    # Parse date
-    try:
-        install_date = datetime.strptime(requested_date, '%Y-%m-%d').date()
-    except ValueError:
-        return JsonResponse({'success': False, 'error': 'Invalid date format'}, status=400)
+    # Parse dates
+    valid_dates = []
+    for date_str in preferred_dates:
+        if date_str:
+            try:
+                parsed_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+                valid_dates.append(parsed_date)
+            except ValueError:
+                pass
 
-    # Update package
-    package.requested_install_date = install_date
-    package.builder_notes = builder_notes
-    package.status = 'date_requested'
-    package.save()
+    if not valid_dates:
+        messages.error(request, 'Please provide a valid date')
+        return redirect('builders:property_detail', pk=property_id)
+
+    # Update phase installation
+    primary_date = valid_dates[0]
+    alternate_dates = [d.strftime('%Y-%m-%d') for d in valid_dates[1:]] if len(valid_dates) > 1 else []
+
+    phase_install.requested_date = primary_date
+    phase_install.alternate_dates = alternate_dates
+    phase_install.builder_notes = builder_notes
+    phase_install.status = 'requested'
+    phase_install.save()
 
     # Create activity note
+    dates_msg = primary_date.strftime('%m/%d/%Y')
+    if alternate_dates:
+        dates_msg += f" (alternates: {', '.join([datetime.strptime(d, '%Y-%m-%d').strftime('%m/%d/%Y') for d in alternate_dates])})"
+
     PropertyNote.objects.create(
-        property=package.property,
-        package=package,
+        property=property_obj,
+        phase_installation=phase_install,
         note_type='date_request',
-        message=f"Installation date requested for {install_date}. Notes: {builder_notes}" if builder_notes else f"Installation date requested for {install_date}",
+        message=f"{phase_install.get_phase_display()} requested for {dates_msg}",
         created_by=request.user
     )
 
-    # Send email notification to company
-    send_date_request_email.delay(package.id)
+    # Send email to admin
+    send_date_request_email.delay(phase_install.id)
 
-    messages.success(request, f'Installation date requested for {package.package_name}')
-
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return JsonResponse({
-            'success': True,
-            'message': 'Date request submitted',
-            'package_id': package.id,
-            'status': package.get_status_display()
-        })
-
-    return redirect('builders:property_detail', pk=package.property.pk)
-
-
-@login_required
-@require_POST
-def update_package_notes(request, package_id):
-    """Update builder notes on a package"""
-
-    if not request.user.is_builder:
-        return JsonResponse({'success': False, 'error': 'Not authorized'}, status=403)
-
-    package = get_object_or_404(PurchasedPackage, pk=package_id)
-
-    # Verify builder has access
-    if not package.property.builders.filter(pk=request.user.pk).exists():
-        return JsonResponse({'success': False, 'error': 'Not authorized'}, status=403)
-
-    builder_notes = request.POST.get('builder_notes', '')
-    package.builder_notes = builder_notes
-    package.save()
-
-    messages.success(request, 'Notes updated')
-
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return JsonResponse({'success': True, 'message': 'Notes updated'})
-
-    return redirect('builders:property_detail', pk=package.property.pk)
+    messages.success(request, f'Install date requested for {phase_install.get_phase_display()}')
+    return redirect('builders:property_detail', pk=property_id)
 
 
 def builder_showroom_intro(request):
-    """
-    Landing page for builder showroom with benefits information.
-    Explains financial benefits, energy savings, state benefits, and ListenHear partnership.
-    """
+    """Landing page for builder showroom"""
     return render(request, 'builders/builder_showroom_intro.html')
 
 
@@ -192,19 +184,12 @@ def _get_phase_icon(phase):
 
 
 def builder_showroom(request, step=1):
-    """
-    Guided step-by-step builder showroom experience.
-    Walks builders and their clients through smart home packages by category.
-    """
+    """Guided step-by-step builder showroom experience."""
     from listen_hear_audio.quotes.cart import get_or_create_cart
 
-    # Get cart for cart count
     cart = get_or_create_cart(request)
-
-    # Get list of package IDs that are in the cart
     cart_package_ids = list(cart.items.values_list('package_id', flat=True))
 
-    # Define all sections in order
     all_sections = []
     for section_value, section_label in Category.BUILDER_SECTION_CHOICES:
         categories = Category.objects.filter(
@@ -215,7 +200,8 @@ def builder_showroom(request, step=1):
         packages = Package.objects.filter(
             category__builder_section=section_value,
             category__is_active=True,
-            is_active=True
+            is_active=True,
+            catalog_only=False
         ).select_related('category', 'subcategory').order_by('display_order', 'name')
 
         if categories.exists() or packages.exists():
@@ -229,7 +215,6 @@ def builder_showroom(request, step=1):
 
     total_steps = len(all_sections)
 
-    # Validate step
     if step < 1 or step > total_steps:
         messages.error(request, 'Invalid step')
         return redirect('builders:showroom_guided')
