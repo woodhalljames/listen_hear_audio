@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict E07cSYIrfXmpKwGRyRDwpNS3k4axsko1MvIe3OGdJhwXXc5b2ExGPIZBvuRXfqJ
+\restrict eIygc0ANYW9PXlMGIi5LeGHZ3FkjPuWgjXqKF7PVhvB0OvIbF8V7cEdJ6zrh0c1
 
 -- Dumped from database version 17.7 (Debian 17.7-3.pgdg13+1)
 -- Dumped by pg_dump version 17.7 (Debian 17.7-3.pgdg13+1)
@@ -1886,7 +1886,7 @@ COPY public.builders_purchasedpackage (id, package_name, package_description, pr
 3	Bronze	Bronze Surveillance	5995.00	1	2025-12-31 17:05:54.55169+00	2026-01-14 23:48:22.507398+00	142	2	rough_ins	
 4	Bronze	Bronze Audio Distribution	8995.00	1	2025-12-31 17:05:54.556672+00	2026-01-14 23:48:22.514256+00	139	2	rough_ins	
 6	Gold	Descript Home Theater	31699.00	1	2025-12-31 17:05:54.566659+00	2026-01-14 23:48:22.517097+00	150	2	rough_ins	
-5	Silver	Experience perfect sound and movie theatre visions at home.	14995.00	1	2025-12-31 17:05:54.56143+00	2026-01-15 00:10:04.051562+00	146	2	insulation_drywall	
+5	Silver	Experience perfect sound and movie theatre visions at home.	14995.00	1	2025-12-31 17:05:54.56143+00	2026-01-15 00:10:04.051562+00	\N	2	insulation_drywall	
 \.
 
 
@@ -2197,6 +2197,313 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 254	2026-01-15 19:31:18.903002+00	4	Quote QR-20260115-A7F1 - Bob Builder	2	[{"changed": {"name": "Quote Request Item", "object": "1x Silver", "fields": ["Price snapshot"]}}, {"changed": {"name": "Quote Request Item", "object": "1x Silver", "fields": ["Price snapshot", "Customer Notes"]}}]	26	1
 255	2026-01-15 19:34:24.540185+00	2	Jim - QR-20251216-713B - 123 Main, Freeport, PA, 12414	2	[{"changed": {"name": "Phase Installation", "object": "Jim - QR-20251216-713B - Rough-Ins", "fields": ["Builder notes", "Confirmed date", "Estimated end date"]}}]	29	1
 256	2026-01-15 19:48:54.121876+00	2	Jim - QR-20251216-713B - 123 Main, Freeport, PA, 12414	2	[{"changed": {"name": "Phase Installation", "object": "Jim - QR-20251216-713B - Rough-Ins", "fields": ["Status"]}}]	29	1
+257	2026-01-20 14:26:43.722397+00	151	Home Theater - Samsung TV	3		23	1
+258	2026-01-20 14:28:06.552079+00	148	Home Theater - Bronze	2	[{"changed": {"fields": ["Installation phase"]}}]	23	1
+259	2026-01-20 14:34:58.526089+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Details"]}}]	21	1
+260	2026-01-20 14:36:36.592795+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Youtube url"]}}]	21	1
+261	2026-01-20 14:37:11.96759+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Details"]}}]	21	1
+262	2026-01-20 14:37:48.839566+00	133	Pre-wire & Networking - Bronze	2	[{"changed": {"fields": ["short_description", "features"]}}]	23	1
+263	2026-01-20 14:39:09.163461+00	133	Pre-wire & Networking - Bronze	2	[{"changed": {"fields": ["short_description", "features"]}}]	23	1
+264	2026-01-20 14:39:49.554268+00	133	Pre-wire & Networking - Bronze	2	[]	23	1
+265	2026-01-20 14:43:22.813943+00	133	Pre-wire & Networking - Bronze	2	[{"changed": {"fields": ["features"]}}]	23	1
+266	2026-01-20 14:44:37.715979+00	133	Pre-wire & Networking - Essential Connectivity	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+267	2026-01-20 14:47:42.767332+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Description"]}}]	21	1
+268	2026-01-20 14:48:17.387337+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Details"]}}]	21	1
+269	2026-01-20 14:50:22.065054+00	133	Pre-wire & Networking - Essential Connectivity	2	[]	23	1
+270	2026-01-20 14:51:30.41169+00	134	Pre-wire & Networking - Smart Home Ready	2	[{"changed": {"fields": ["Name", "Slug", "short_description", "features"]}}]	23	1
+271	2026-01-20 14:51:51.85421+00	133	Pre-wire & Networking - Essential Connectivity	2	[{"changed": {"fields": ["short_description"]}}]	23	1
+272	2026-01-20 14:56:03.409711+00	135	Pre-wire & Networking - Future-Proof	2	[{"changed": {"fields": ["Name", "Slug", "short_description"]}}]	23	1
+273	2026-01-20 14:56:43.177745+00	135	Pre-wire & Networking - Future-Proof	2	[{"changed": {"fields": ["features"]}}]	23	1
+274	2026-01-20 14:58:43.006105+00	134	Pre-wire & Networking - Smart Home Ready	2	[{"changed": {"fields": ["short_description"]}}]	23	1
+275	2026-01-20 14:59:05.070768+00	133	Pre-wire & Networking - Essential Connectivity	2	[{"changed": {"fields": ["short_description"]}}]	23	1
+276	2026-01-20 15:01:49.355491+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Description"]}}]	21	1
+277	2026-01-20 15:09:10.325981+00	31	Residential - Automations	2	[{"changed": {"fields": ["Description"]}}]	21	1
+278	2026-01-20 15:10:32.777425+00	31	Residential - Automations	2	[{"changed": {"fields": ["Details", "Image"]}}]	21	1
+279	2026-01-20 15:11:31.760055+00	31	Residential - Lighting	2	[{"changed": {"fields": ["Name", "Slug"]}}]	21	1
+280	2026-01-20 15:11:56.161816+00	31	Residential - Lighting	2	[{"changed": {"fields": ["Description"]}}]	21	1
+281	2026-01-20 15:13:01.795085+00	31	Residential - Lighting	2	[{"changed": {"fields": ["Description"]}}]	21	1
+282	2026-01-20 15:14:26.070054+00	136	Lighting - Essential Lighting	2	[{"changed": {"fields": ["Name", "Slug", "short_description", "features"]}}]	23	1
+283	2026-01-20 15:15:52.285383+00	137	Lighting - Whole-Home Lighting	2	[{"changed": {"fields": ["Name", "Slug", "short_description", "features"]}}]	23	1
+284	2026-01-20 15:17:45.347939+00	133	Pre-wire & Networking - Essential Connectivity	2	[]	23	1
+285	2026-01-20 15:24:35.171533+00	138	Lighting - Architectural lighting experiences	2	[{"changed": {"fields": ["Name", "Slug", "short_description", "features"]}}]	23	1
+286	2026-01-20 15:24:52.368383+00	138	Lighting - Architectural Lighting	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+287	2026-01-20 15:25:29.736239+00	138	Lighting - Architectural Lighting	2	[{"changed": {"fields": ["Is custom"]}}]	23	1
+288	2026-01-20 15:27:40.186596+00	138	Lighting - Architectural Lighting	2	[]	23	1
+289	2026-01-20 15:28:01.705699+00	138	Lighting - Architectural Lighting	2	[{"changed": {"fields": ["Is custom"]}}]	23	1
+290	2026-01-20 15:28:30.399946+00	137	Lighting - Whole-Home Lighting	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+291	2026-01-20 15:32:30.103262+00	142	Surveillance - Bronze	2	[]	23	1
+292	2026-01-20 15:33:41.766557+00	28	Residential - Surveillance & Security	2	[{"changed": {"fields": ["Name", "Slug", "Description", "Details"]}}]	21	1
+293	2026-01-20 15:35:06.758199+00	142	Surveillance & Security - Essential Surveillance	2	[{"changed": {"fields": ["Installation phase", "Name", "Slug", "short_description", "features"]}}]	23	1
+294	2026-01-20 15:36:12.410787+00	143	Surveillance & Security - Connected Security	2	[{"changed": {"fields": ["Installation phase", "Name", "Slug", "short_description", "features"]}}]	23	1
+295	2026-01-20 15:37:43.772427+00	144	Surveillance & Security - Intelligent Protection	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+296	2026-01-20 15:38:01.973122+00	144	Surveillance & Security - Intelligent Protection	2	[{"changed": {"fields": ["short_description", "features"]}}]	23	1
+297	2026-01-20 15:38:15.795238+00	144	Surveillance & Security - Intelligent Protection	2	[{"changed": {"fields": ["Image"]}}]	23	1
+298	2026-01-20 15:38:35.97198+00	144	Surveillance & Security - Intelligent Protection	2	[]	23	1
+299	2026-01-20 15:39:57.859475+00	32	Residential - Motorized Blinds & Shades	1	[{"added": {}}]	21	1
+300	2026-01-20 15:42:22.932321+00	152	Motorized Blinds & Shades - Essential Shades	1	[{"added": {}}]	23	1
+301	2026-01-20 15:42:52.03504+00	32	Residential - Motorized Blinds & Shades	2	[{"changed": {"fields": ["Builder section"]}}]	21	1
+302	2026-01-20 15:43:05.5299+00	32	Residential - Motorized Blinds & Shades	2	[{"changed": {"fields": ["Display order"]}}]	21	1
+303	2026-01-20 15:43:17.972475+00	32	Residential - Motorized Blinds & Shades	2	[{"changed": {"fields": ["Display order"]}}]	21	1
+304	2026-01-20 15:43:33.058812+00	28	Residential - Surveillance & Security	2	[{"changed": {"fields": ["Display order"]}}]	21	1
+305	2026-01-20 15:45:02.335193+00	152	Motorized Blinds & Shades - Essential Shades	2	[{"changed": {"fields": ["Image"]}}]	23	1
+306	2026-01-20 15:46:24.124555+00	32	Residential - Motorized Blinds & Shades	2	[{"changed": {"fields": ["Description"]}}]	21	1
+307	2026-01-20 15:47:35.966582+00	153	Motorized Blinds & Shades - Automated Shades	1	[{"added": {}}]	23	1
+308	2026-01-20 15:48:07.161028+00	153	Motorized Blinds & Shades - Automated Shades	2	[]	23	1
+309	2026-01-20 15:48:24.858631+00	153	Motorized Blinds & Shades - Automated Shades	2	[{"changed": {"fields": ["Image"]}}]	23	1
+310	2026-01-20 15:54:14.459998+00	154	Motorized Blinds & Shades - Whole-Home Shades	1	[{"added": {}}]	23	1
+311	2026-01-20 15:54:35.459854+00	154	Motorized Blinds & Shades - Whole-Home Shades	2	[{"changed": {"fields": ["Display order"]}}]	23	1
+312	2026-01-20 15:57:26.825178+00	33	Residential - Climate & Thermostat	1	[{"added": {}}]	21	1
+313	2026-01-20 16:00:01.250264+00	155	Climate & Thermostat - Essential Climate Control	1	[{"added": {}}]	23	1
+314	2026-01-20 16:03:09.071792+00	156	Climate & Thermostat - Zoned Climate Control	1	[{"added": {}}]	23	1
+315	2026-01-20 16:03:46.944427+00	33	Residential - Climate Control	2	[{"changed": {"fields": ["Name", "Slug"]}}]	21	1
+316	2026-01-20 16:04:51.113278+00	157	Climate Control - Advanced Climate Control	1	[{"added": {}}]	23	1
+317	2026-01-20 16:06:08.943783+00	158	Climate Control - Advanced Climate Control	1	[{"added": {}}]	23	1
+318	2026-01-20 16:06:32.221584+00	158	Climate Control - Advanced Climate Control	3		23	1
+319	2026-01-20 16:07:07.904708+00	157	Climate Control - Advanced Climate Control	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+320	2026-01-20 16:08:32.666245+00	28	Residential - Surveillance	2	[{"changed": {"fields": ["Name", "Slug"]}}]	21	1
+321	2026-01-20 16:16:28.492698+00	34	Residential - Security & Access Control	1	[{"added": {}}]	21	1
+322	2026-01-20 16:17:39.374343+00	159	Security & Access Control - Essential Security	1	[{"added": {}}]	23	1
+323	2026-01-20 16:18:03.688639+00	34	Residential - Security & Access Control	2	[{"changed": {"fields": ["Builder section"]}}]	21	1
+324	2026-01-20 16:18:46.230775+00	34	Residential - Security & Access Control	2	[{"changed": {"fields": ["Display order"]}}]	21	1
+325	2026-01-20 16:18:46.232958+00	31	Residential - Lighting	2	[{"changed": {"fields": ["Display order"]}}]	21	1
+326	2026-01-20 16:18:46.234809+00	28	Residential - Surveillance	2	[{"changed": {"fields": ["Display order"]}}]	21	1
+327	2026-01-20 16:18:46.236781+00	32	Residential - Motorized Blinds & Shades	2	[{"changed": {"fields": ["Display order"]}}]	21	1
+328	2026-01-20 16:19:14.103173+00	34	Residential - Security & Access Control	2	[{"changed": {"fields": ["Description"]}}]	21	1
+329	2026-01-20 16:21:14.121187+00	160	Security & Access Control - Connected Access	1	[{"added": {}}]	23	1
+330	2026-01-20 16:21:37.640175+00	159	Security & Access Control - Essential Security	2	[{"changed": {"fields": ["Installation phase"]}}]	23	1
+331	2026-01-20 16:21:53.654332+00	160	Security & Access Control - Connected Access	2	[{"changed": {"fields": ["Display order"]}}]	23	1
+332	2026-01-20 16:24:01.089163+00	161	Security & Access Control - Intelligent Protection	1	[{"added": {}}]	23	1
+333	2026-01-20 16:24:24.853468+00	161	Security & Access Control - Intelligent Protection	2	[{"changed": {"fields": ["Image", "Display order"]}}]	23	1
+334	2026-01-20 16:24:51.623844+00	161	Security & Access Control - Intelligent Protection	2	[{"changed": {"fields": ["Image"]}}]	23	1
+335	2026-01-20 16:25:01.719497+00	161	Security & Access Control - Intelligent Protection	2	[{"changed": {"fields": ["Image"]}}]	23	1
+336	2026-01-20 16:27:44.516449+00	27	Residential - Home Audio	2	[{"changed": {"fields": ["Name", "Slug"]}}]	21	1
+337	2026-01-20 16:28:33.07796+00	27	Residential - Home Audio	2	[{"changed": {"fields": ["Description"]}}]	21	1
+338	2026-01-20 16:30:17.134822+00	139	Home Audio - Essential Audio	2	[{"changed": {"fields": ["Installation phase", "Name", "Slug", "short_description", "features", "Starting price", "Image"]}}]	23	1
+339	2026-01-20 16:31:05.411614+00	140	Home Audio - Silver	2	[{"changed": {"fields": ["Installation phase"]}}]	23	1
+340	2026-01-20 16:31:15.257541+00	139	Home Audio - Essential Audio	2	[{"changed": {"fields": ["Installation phase"]}}]	23	1
+341	2026-01-20 16:32:06.628177+00	140	Home Audio - Multi-Room Audio	2	[{"changed": {"fields": ["Name", "Slug", "short_description", "features"]}}]	23	1
+342	2026-01-20 16:33:11.306083+00	141	Home Audio - Whole-Home Audio	2	[{"changed": {"fields": ["Name", "Slug", "short_description", "features", "Starting price"]}}]	23	1
+343	2026-01-20 16:35:39.606209+00	141	Home Audio - Whole-Home Audio	2	[{"changed": {"fields": ["Installation phase"]}}]	23	1
+344	2026-01-20 16:38:01.825267+00	35	Residential - Home Entertainment	1	[{"added": {}}]	21	1
+345	2026-01-20 16:38:15.425026+00	35	Residential - Home Entertainment	2	[{"changed": {"fields": ["Builder section"]}}]	21	1
+346	2026-01-20 16:39:08.65467+00	145	Home Entertainment - Essential Media	2	[{"changed": {"fields": ["Category", "Name", "Slug", "short_description", "features"]}}]	23	1
+347	2026-01-20 16:41:34.458434+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Description"]}}]	21	1
+348	2026-01-20 16:49:14.206121+00	142	Surveillance - Essential Surveillance	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+349	2026-01-20 17:06:25.857411+00	31	Residential - Central Lighting	2	[{"changed": {"fields": ["Name", "Slug"]}}]	21	1
+350	2026-01-20 17:08:22.412501+00	35	Residential - Home Entertainment	2	[{"changed": {"fields": ["Description"]}}]	21	1
+351	2026-01-20 17:08:28.610861+00	145	Home Entertainment - Essential Media	2	[{"changed": {"fields": ["Installation phase"]}}]	23	1
+352	2026-01-20 17:09:12.517323+00	145	Home Entertainment - Essential Media	2	[]	23	1
+353	2026-01-20 17:10:36.452266+00	162	Home Entertainment - Smart Entertainment	1	[{"added": {}}]	23	1
+354	2026-01-20 17:11:56.357065+00	163	Home Entertainment - Premium Entertainment	1	[{"added": {}}]	23	1
+355	2026-01-20 17:12:20.511421+00	162	Home Entertainment - Smart Media	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+356	2026-01-20 17:12:44.554035+00	163	Home Entertainment - Premium Media	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+357	2026-01-20 17:12:44.746558+00	163	Home Entertainment - Premium Media	2	[]	23	1
+358	2026-01-20 17:15:26.717561+00	146	Great Room - Silver	3		23	1
+359	2026-01-20 17:15:26.717593+00	147	Great Room - Gold	3		23	1
+360	2026-01-20 17:15:45.53828+00	29	Residential - Great Room	3		21	1
+361	2026-01-20 17:20:39.174071+00	30	Residential - Home Theater	2	[{"changed": {"fields": ["Description"]}}]	21	1
+362	2026-01-20 17:22:21.51851+00	164	Home Theater - Home Theater	1	[{"added": {}}]	23	1
+363	2026-01-20 17:23:02.963116+00	164	Home Theater - Essential Theater	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+364	2026-01-20 17:23:36.941694+00	164	Home Theater - Essential Theater	2	[{"changed": {"fields": ["features"]}}]	23	1
+365	2026-01-20 17:23:54.084598+00	148	Home Theater - Bronze	3		23	1
+366	2026-01-20 17:25:30.150015+00	149	Home Theater - Performance Theater	2	[{"changed": {"fields": ["Name", "Slug", "short_description", "features", "Image"]}}]	23	1
+367	2026-01-20 17:27:14.579927+00	150	Home Theater - Ultimate Theater	2	[{"changed": {"fields": ["Name", "Slug", "short_description", "features"]}}]	23	1
+368	2026-01-20 17:27:59.434902+00	150	Home Theater - Luxury Theater	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+369	2026-01-20 17:31:53.614252+00	36	Residential - Simulation & Sports Rooms	1	[{"added": {}}]	21	1
+370	2026-01-20 17:34:11.067787+00	165	Simulation & Sports Rooms - Golf Simulator Room	1	[{"added": {}}]	23	1
+371	2026-01-20 17:34:34.38519+00	165	Simulation & Sports Rooms - Golf Simulator Room	2	[{"changed": {"fields": ["Image"]}}]	23	1
+372	2026-01-20 17:37:49.922072+00	166	Simulation & Sports Rooms - Racing Simulator	1	[{"added": {}}]	23	1
+373	2026-01-20 17:39:58.793691+00	167	Simulation & Sports Rooms - Tactical Shooting Simulator	1	[{"added": {}}]	23	1
+374	2026-01-20 17:42:41.051529+00	150	Home Theater - Luxury Theater	2	[{"changed": {"fields": ["Image"]}}]	23	1
+375	2026-01-20 17:46:21.866553+00	37	Residential - Creative Media Rooms	1	[{"added": {}}]	21	1
+376	2026-01-20 17:49:21.283918+00	168	Creative Media Rooms - Podcast Room	1	[{"added": {}}]	23	1
+377	2026-01-20 17:49:54.800817+00	168	Creative Media Rooms - Podcast	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+378	2026-01-20 17:51:21.772914+00	169	Creative Media Rooms - Recording Studio	1	[{"added": {}}]	23	1
+379	2026-01-20 17:52:53.588257+00	170	Creative Media Rooms - Content Creation	1	[{"added": {}}]	23	1
+380	2026-01-20 17:53:05.965462+00	168	Creative Media Rooms - Podcast	2	[{"changed": {"fields": ["Image"]}}]	23	1
+381	2026-01-20 17:56:05.51037+00	38	Residential - Accent Lighting	1	[{"added": {}}]	21	1
+382	2026-01-20 17:59:56.824544+00	171	Accent Lighting - Key Lighting	1	[{"added": {}}]	23	1
+383	2026-01-20 18:02:25.36122+00	171	Accent Lighting - Key Lighting	2	[]	23	1
+384	2026-01-20 18:04:20.136281+00	172	Accent Lighting - Whole-Home Accents	1	[{"added": {}}]	23	1
+385	2026-01-20 18:05:34.378599+00	172	Accent Lighting - Whole-Home Accents	2	[]	23	1
+386	2026-01-20 18:06:53.619803+00	172	Accent Lighting - Extended Accents	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+387	2026-01-20 18:07:10.951775+00	172	Accent Lighting - Extended Accents	2	[{"changed": {"fields": ["Display order"]}}]	23	1
+388	2026-01-20 18:08:54.255486+00	173	Accent Lighting - Property-Wide Illumination	1	[{"added": {}}]	23	1
+389	2026-01-20 18:13:34.176679+00	36	Residential - Simulation & Sport Rooms	2	[{"changed": {"fields": ["Name", "Slug"]}}]	21	1
+390	2026-01-20 19:08:17.796487+00	172	Accent Lighting - Extended Accents	2	[]	23	1
+391	2026-01-21 14:02:37.386155+00	139	Home Audio - Essential Audio	2	[{"changed": {"fields": ["features", "Starting price"]}}]	23	1
+392	2026-01-21 14:03:03.291221+00	139	Home Audio - Essential Audio	2	[{"changed": {"fields": ["features", "Starting price"]}}]	23	1
+393	2026-01-21 14:04:24.75043+00	140	Home Audio - Multi-Room Audio	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+394	2026-01-21 14:04:55.741656+00	141	Home Audio - Whole-Home Audio	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+395	2026-01-21 14:10:07.650417+00	149	Home Theater - Performance Theater	2	[{"changed": {"fields": ["Image"]}}]	23	1
+396	2026-01-21 14:10:40.41178+00	164	Home Theater - Essential Theater	2	[{"changed": {"fields": ["Image"]}}]	23	1
+397	2026-01-21 14:12:02.678745+00	149	Home Theater - Performance Theater	2	[{"changed": {"fields": ["Image"]}}]	23	1
+398	2026-01-21 14:12:19.168575+00	164	Home Theater - Essential Theater	2	[{"changed": {"fields": ["Image"]}}]	23	1
+399	2026-01-21 14:12:45.356618+00	149	Home Theater - Performance Theater	2	[{"changed": {"fields": ["Image"]}}]	23	1
+400	2026-01-21 14:13:21.914253+00	149	Home Theater - Performance Theater	2	[{"changed": {"fields": ["Image"]}}]	23	1
+401	2026-01-21 14:13:38.318331+00	150	Home Theater - Luxury Theater	2	[{"changed": {"fields": ["Image"]}}]	23	1
+402	2026-01-21 14:14:09.593605+00	150	Home Theater - Luxury Theater	2	[{"changed": {"fields": ["Image"]}}]	23	1
+403	2026-01-21 14:15:53.353688+00	150	Home Theater - Luxury Theater	2	[{"changed": {"fields": ["features"]}}]	23	1
+404	2026-01-21 14:16:28.872144+00	133	Pre-wire & Networking - Essential Connectivity	2	[]	23	1
+405	2026-01-21 14:17:45.869378+00	133	Pre-wire & Networking - Essential Connectivity	2	[{"changed": {"fields": ["short_description"]}}]	23	1
+406	2026-01-21 14:19:44.919705+00	134	Pre-wire & Networking - Smart Home Ready	2	[{"changed": {"fields": ["Image"]}}]	23	1
+407	2026-01-21 14:20:01.075228+00	134	Pre-wire & Networking - Smart Home Ready	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+408	2026-01-21 14:20:48.523255+00	134	Pre-wire & Networking - Smart Home Ready	2	[{"changed": {"fields": ["Slug"]}}]	23	1
+409	2026-01-21 14:21:05.566509+00	134	Pre-wire & Networking - Smart Home Ready	2	[{"changed": {"fields": ["Image"]}}]	23	1
+410	2026-01-21 14:22:32.126292+00	135	Pre-wire & Networking - Future-Proof	2	[{"changed": {"fields": ["Image"]}}]	23	1
+411	2026-01-21 14:23:15.493349+00	133	Pre-wire & Networking - Essential Connectivity	2	[{"changed": {"fields": ["Image"]}}]	23	1
+412	2026-01-21 14:23:51.631959+00	133	Pre-wire & Networking - Essential Connectivity	2	[]	23	1
+413	2026-01-21 14:24:03.403398+00	134	Pre-wire & Networking - Smart Home Ready	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+414	2026-01-21 14:24:24.02487+00	134	Pre-wire & Networking - Smart Home Ready	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+415	2026-01-21 14:24:40.186641+00	133	Pre-wire & Networking - Essential Connectivity	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+416	2026-01-21 14:25:02.017002+00	134	Pre-wire & Networking - Smart Home Ready	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+417	2026-01-21 14:25:27.630759+00	135	Pre-wire & Networking - Future-Proof	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+418	2026-01-21 14:27:42.394941+00	142	Surveillance - Essential Surveillance	2	[{"changed": {"fields": ["Image"]}}]	23	1
+419	2026-01-21 14:28:01.752471+00	142	Surveillance - Essential Surveillance	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+420	2026-01-21 14:28:24.610748+00	144	Surveillance - Intelligent Protection	2	[{"changed": {"fields": ["Image"]}}]	23	1
+421	2026-01-21 14:28:54.006765+00	143	Surveillance - Connected Security	2	[{"changed": {"fields": ["Image"]}}]	23	1
+422	2026-01-21 14:29:27.069876+00	143	Surveillance - Connected Security	2	[{"changed": {"fields": ["Image"]}}]	23	1
+423	2026-01-21 14:30:31.948244+00	143	Surveillance - Connected Security	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+424	2026-01-21 14:31:13.070216+00	144	Surveillance - Intelligent Protection	2	[]	23	1
+425	2026-01-21 14:31:51.675618+00	142	Surveillance - Essential Surveillance	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+426	2026-01-21 14:32:24.885182+00	143	Surveillance - Connected Security	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+427	2026-01-21 14:32:41.084708+00	144	Surveillance - Intelligent Protection	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+428	2026-01-21 14:37:14.05366+00	159	Security & Access Control - Essential Security	2	[{"changed": {"fields": ["Image"]}}]	23	1
+429	2026-01-21 14:37:50.061302+00	160	Security & Access Control - Connected Access	2	[{"changed": {"fields": ["Image"]}}]	23	1
+430	2026-01-21 14:38:19.772722+00	161	Security & Access Control - Intelligent Protection	2	[{"changed": {"fields": ["Image"]}}]	23	1
+431	2026-01-21 14:38:54.333233+00	161	Security & Access Control - Intelligent Protection	2	[{"changed": {"fields": ["Image"]}}]	23	1
+432	2026-01-21 14:41:36.665062+00	161	Security & Access Control - Intelligent Protection	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+433	2026-01-21 14:41:49.66284+00	159	Security & Access Control - Essential Security	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+434	2026-01-21 14:42:14.065152+00	160	Security & Access Control - Connected Access	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+435	2026-01-21 14:47:12.299238+00	136	Central Lighting - Essential Lighting	2	[{"changed": {"fields": ["Image"]}}]	23	1
+436	2026-01-21 14:47:33.131789+00	138	Central Lighting - Architectural Lighting	2	[{"changed": {"fields": ["Image"]}}]	23	1
+437	2026-01-21 14:47:58.714568+00	137	Central Lighting - Whole-Home Lighting	2	[{"changed": {"fields": ["Image"]}}]	23	1
+438	2026-01-21 14:53:07.354122+00	155	Climate Control - Essential Climate Control	2	[{"changed": {"fields": ["Image"]}}]	23	1
+439	2026-01-21 14:53:36.063849+00	156	Climate Control - Zoned Climate Control	2	[{"changed": {"fields": ["Image"]}}]	23	1
+440	2026-01-21 14:53:57.419854+00	157	Climate Control - Advanced Climate Control	2	[{"changed": {"fields": ["Image"]}}]	23	1
+441	2026-01-21 14:57:25.427466+00	152	Motorized Blinds & Shades - Essential Shades	2	[{"changed": {"fields": ["Image"]}}]	23	1
+442	2026-01-21 14:57:39.21266+00	153	Motorized Blinds & Shades - Automated Shades	2	[{"changed": {"fields": ["Image"]}}]	23	1
+443	2026-01-21 14:57:59.266164+00	154	Motorized Blinds & Shades - Whole-Home Shades	2	[{"changed": {"fields": ["Image"]}}]	23	1
+444	2026-01-21 14:59:58.814593+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Description"]}}]	21	1
+445	2026-01-21 15:01:04.109462+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Description"]}}]	21	1
+446	2026-01-21 15:02:55.648374+00	133	Pre-wire & Networking - Essential Connectivity	2	[{"changed": {"fields": ["short_description"]}}]	23	1
+447	2026-01-21 15:03:33.221516+00	134	Pre-wire & Networking - Smart Home Ready	2	[]	23	1
+448	2026-01-21 15:04:06.801018+00	134	Pre-wire & Networking - Smart Home Ready	2	[{"changed": {"fields": ["short_description"]}}]	23	1
+449	2026-01-21 15:04:44.021017+00	135	Pre-wire & Networking - Future-Proof	2	[{"changed": {"fields": ["short_description"]}}]	23	1
+450	2026-01-21 15:11:32.116861+00	145	Home Entertainment - Essential Media	2	[{"changed": {"fields": ["Image"]}}]	23	1
+451	2026-01-21 15:11:56.935673+00	162	Home Entertainment - Smart Media	2	[{"changed": {"fields": ["Image"]}}]	23	1
+452	2026-01-21 15:13:01.367642+00	162	Home Entertainment - Smart Media	2	[{"changed": {"fields": ["features"]}}]	23	1
+453	2026-01-21 15:13:24.695303+00	163	Home Entertainment - Premium Media	2	[{"changed": {"fields": ["Image"]}}]	23	1
+454	2026-01-21 15:14:55.116489+00	139	Home Audio - Essential Audio	2	[{"changed": {"fields": ["Image"]}}]	23	1
+455	2026-01-21 15:16:35.617696+00	140	Home Audio - Multi-Room Audio	2	[{"changed": {"fields": ["Image"]}}]	23	1
+456	2026-01-21 15:16:50.055394+00	141	Home Audio - Whole-Home Audio	2	[{"changed": {"fields": ["Image"]}}]	23	1
+457	2026-01-21 15:17:57.869197+00	141	Home Audio - Whole-Home Audio	2	[{"changed": {"fields": ["Image"]}}]	23	1
+458	2026-01-21 15:18:27.429025+00	140	Home Audio - Multi-Room Audio	2	[{"changed": {"fields": ["Image"]}}]	23	1
+459	2026-01-21 15:19:18.174575+00	141	Home Audio - Whole-Home Audio	2	[{"changed": {"fields": ["Image"]}}]	23	1
+460	2026-01-21 15:20:42.87586+00	27	Residential - Home Audio	2	[{"changed": {"fields": ["Description"]}}]	21	1
+461	2026-01-21 15:20:50.310145+00	27	Residential - Home Audio	2	[]	21	1
+462	2026-01-21 15:21:20.484943+00	27	Residential - Home Audio	2	[{"changed": {"fields": ["Description", "Details"]}}]	21	1
+463	2026-01-21 15:22:59.449781+00	164	Home Theater - Essential Theater	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+464	2026-01-21 15:23:34.079396+00	164	Home Theater - Essential Theater	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+465	2026-01-21 15:24:13.446047+00	149	Home Theater - Performance Theater	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+466	2026-01-21 15:24:30.18912+00	150	Home Theater - Luxury Theater	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+467	2026-01-21 15:28:03.316649+00	173	Accent Lighting - Property-Wide Illumination	2	[{"changed": {"fields": ["Image"]}}]	23	1
+468	2026-01-21 15:28:22.017145+00	172	Accent Lighting - Extended Accents	2	[{"changed": {"fields": ["Image"]}}]	23	1
+469	2026-01-21 15:29:15.833821+00	37	Residential - Creative Media Rooms	2	[{"changed": {"fields": ["Description"]}}]	21	1
+470	2026-01-21 15:29:38.206325+00	37	Residential - Creative Media Rooms	2	[{"changed": {"fields": ["Description"]}}]	21	1
+471	2026-01-21 15:30:37.955637+00	168	Creative Media Rooms - Podcast	2	[{"changed": {"fields": ["Image"]}}]	23	1
+472	2026-01-21 15:31:39.722479+00	169	Creative Media Rooms - Recording Studio	2	[{"changed": {"fields": ["Image"]}}]	23	1
+473	2026-01-21 15:32:56.671991+00	165	Simulation & Sport Rooms - Golf Simulator Room	2	[{"changed": {"fields": ["Image"]}}]	23	1
+474	2026-01-21 15:33:24.232882+00	167	Simulation & Sport Rooms - Tactical Shooting Simulator	2	[{"changed": {"fields": ["Display order"]}}]	23	1
+475	2026-01-21 15:34:54.328161+00	154	Motorized Blinds & Shades - Whole-Home Shades	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+476	2026-01-21 15:36:34.627887+00	172	Accent Lighting - Extended Accents	2	[{"changed": {"fields": ["Is custom"]}}]	23	1
+477	2026-01-21 15:38:56.158734+00	26	Residential - Pre-wire & Networking	2	[]	21	1
+478	2026-01-21 15:39:34.671444+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Description"]}}]	21	1
+479	2026-01-21 15:40:39.454398+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Description"]}}]	21	1
+480	2026-01-21 15:40:59.944224+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Description"]}}]	21	1
+481	2026-01-21 15:47:25.804772+00	31	Residential - Central Lighting	2	[{"changed": {"fields": ["Description"]}}]	21	1
+482	2026-01-21 15:57:23.333567+00	171	Accent Lighting - Key Lighting	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+483	2026-01-21 15:57:47.350275+00	172	Accent Lighting - Extended Accents	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+484	2026-01-21 15:58:12.967307+00	173	Accent Lighting - Property-Wide Illumination	2	[{"changed": {"fields": ["Starting price", "Is custom"]}}]	23	1
+485	2026-01-21 15:58:39.368325+00	150	Home Theater - Luxury Theater	2	[{"changed": {"fields": ["Is custom"]}}]	23	1
+486	2026-01-21 16:04:44.104776+00	134	Pre-wire & Networking - Smart Home Ready	2	[{"changed": {"fields": ["Image"]}}]	23	1
+487	2026-01-21 16:05:21.126505+00	134	Pre-wire & Networking - Smart Home Ready	2	[{"changed": {"fields": ["Image"]}}]	23	1
+488	2026-01-21 16:05:43.566332+00	133	Pre-wire & Networking - Essential Connectivity	2	[{"changed": {"fields": ["Image"]}}]	23	1
+489	2026-01-21 16:15:43.275447+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Description"]}}]	21	1
+490	2026-01-21 16:18:58.74284+00	26	Residential - Pre-wire & Networking	2	[]	21	1
+491	2026-01-21 16:40:57.601998+00	142	Surveillance - Essential Surveillance	2	[{"changed": {"fields": ["features"]}}]	23	1
+492	2026-01-21 16:41:19.087863+00	143	Surveillance - Connected Security	2	[{"changed": {"fields": ["features"]}}]	23	1
+493	2026-01-21 16:41:29.232308+00	144	Surveillance - Intelligent Protection	2	[{"changed": {"fields": ["Is custom"]}}]	23	1
+494	2026-01-21 16:43:16.101574+00	144	Surveillance - Intelligent Protection	2	[{"changed": {"fields": ["features"]}}]	23	1
+495	2026-01-21 16:43:52.848874+00	144	Surveillance - Intelligent Protection	2	[{"changed": {"fields": ["Starting price", "Is custom"]}}]	23	1
+496	2026-01-21 16:46:02.836214+00	31	Residential - Automated Lighting	2	[{"changed": {"fields": ["Name", "Slug"]}}]	21	1
+497	2026-01-21 16:49:00.191148+00	138	Automated Lighting - Whole-Home Lighting	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+498	2026-01-21 16:49:20.742217+00	137	Automated Lighting - Premium Lighting	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+499	2026-01-21 16:50:59.686098+00	138	Automated Lighting - Whole-Home Lighting	2	[]	23	1
+500	2026-01-21 16:51:53.636915+00	136	Automated Lighting - Essential Lighting	2	[{"changed": {"fields": ["features"]}}]	23	1
+501	2026-01-21 16:52:40.197046+00	136	Automated Lighting - Essential Lighting	2	[{"changed": {"fields": ["features"]}}]	23	1
+502	2026-01-21 16:53:23.427207+00	137	Automated Lighting - Premium Lighting	2	[{"changed": {"fields": ["features"]}}]	23	1
+503	2026-01-21 16:54:58.787187+00	138	Automated Lighting - Whole-Home Lighting	2	[{"changed": {"fields": ["features"]}}]	23	1
+504	2026-01-21 16:55:41.371416+00	138	Automated Lighting - Whole-Home Lighting	2	[{"changed": {"fields": ["features"]}}]	23	1
+505	2026-01-21 16:56:04.430953+00	138	Automated Lighting - Whole-Home Lighting	2	[{"changed": {"fields": ["features"]}}]	23	1
+506	2026-01-21 16:58:08.235909+00	155	Climate Control - Essential Climate Control	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+507	2026-01-21 16:58:24.074946+00	157	Climate Control - Advanced Climate Control	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+508	2026-01-21 16:58:53.048699+00	156	Climate Control - Zoned Climate Control	2	[{"changed": {"fields": ["Starting price"]}}]	23	1
+509	2026-01-21 16:59:23.630567+00	155	Climate Control - Essential Climate Control	2	[{"changed": {"fields": ["features"]}}]	23	1
+510	2026-01-21 17:00:01.256023+00	156	Climate Control - Zoned Climate Control	2	[{"changed": {"fields": ["features"]}}]	23	1
+511	2026-01-21 17:00:29.348004+00	157	Climate Control - Advanced Climate Control	2	[{"changed": {"fields": ["features"]}}]	23	1
+512	2026-01-21 17:00:58.360589+00	144	Surveillance - Whole-Home Protection	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+513	2026-01-21 17:01:20.861586+00	161	Security & Access Control - Whole-Home Protection	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+514	2026-01-21 17:01:53.255919+00	143	Surveillance - Premium Security	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+515	2026-01-21 17:02:10.625459+00	160	Security & Access Control - Premium Access	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+516	2026-01-21 17:02:42.477356+00	157	Climate Control - Whole-Home Climate Control	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+517	2026-01-21 17:03:13.146058+00	157	Climate Control - Whole-Home Climate Control	2	[{"changed": {"fields": ["features"]}}]	23	1
+518	2026-01-21 17:04:03.982653+00	156	Climate Control - Premium Climate Control	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+519	2026-01-21 17:04:33.732679+00	153	Motorized Blinds & Shades - Premium Shades	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+520	2026-01-21 17:05:16.315999+00	155	Climate Control - Essential Climate Control	2	[{"changed": {"fields": ["features"]}}]	23	1
+521	2026-01-21 17:06:26.464241+00	156	Climate Control - Premium Climate Control	2	[{"changed": {"fields": ["Image"]}}]	23	1
+522	2026-01-21 17:08:07.957279+00	152	Motorized Blinds & Shades - Essential Shades	2	[{"changed": {"fields": ["features"]}}]	23	1
+523	2026-01-21 17:08:29.3478+00	153	Motorized Blinds & Shades - Premium Shades	2	[{"changed": {"fields": ["features"]}}]	23	1
+524	2026-01-21 17:09:00.558963+00	153	Motorized Blinds & Shades - Premium Shades	2	[]	23	1
+525	2026-01-21 17:10:29.105438+00	145	Home Entertainment - Essential Media	2	[{"changed": {"fields": ["short_description"]}}]	23	1
+526	2026-01-21 17:11:28.847084+00	145	Home Entertainment - Essential Media	2	[{"changed": {"fields": ["features"]}}]	23	1
+527	2026-01-21 17:12:02.46467+00	145	Home Entertainment - Essential Media	2	[{"changed": {"fields": ["features"]}}]	23	1
+528	2026-01-21 17:12:42.955735+00	163	Home Entertainment - Whole-Home Media	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+529	2026-01-21 17:13:06.384098+00	162	Home Entertainment - Premium Media	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+530	2026-01-21 17:14:04.946117+00	162	Home Entertainment - Premium Media	2	[{"changed": {"fields": ["features"]}}]	23	1
+531	2026-01-21 17:14:50.381991+00	163	Home Entertainment - Whole-Home Media	2	[{"changed": {"fields": ["short_description"]}}]	23	1
+532	2026-01-21 17:15:36.708023+00	163	Home Entertainment - Whole-Home Media	2	[{"changed": {"fields": ["short_description", "features"]}}]	23	1
+533	2026-01-21 17:16:02.927986+00	162	Home Entertainment - Premium Media	2	[{"changed": {"fields": ["Image"]}}]	23	1
+534	2026-01-21 17:16:33.604658+00	145	Home Entertainment - Essential Media	2	[{"changed": {"fields": ["Image"]}}]	23	1
+535	2026-01-21 17:17:34.595371+00	145	Home Entertainment - Essential Media	2	[{"changed": {"fields": ["Image"]}}]	23	1
+536	2026-01-21 17:19:17.88986+00	163	Home Entertainment - Whole-Home Media	2	[{"changed": {"fields": ["features"]}}]	23	1
+537	2026-01-21 17:20:05.250023+00	163	Home Entertainment - Whole-Home Media	2	[{"changed": {"fields": ["features"]}}]	23	1
+538	2026-01-21 17:21:00.976208+00	140	Home Audio - Premium Audio	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+539	2026-01-21 17:22:48.409882+00	139	Home Audio - Essential Audio	2	[{"changed": {"fields": ["features"]}}]	23	1
+540	2026-01-21 17:23:22.971636+00	140	Home Audio - Premium Audio	2	[{"changed": {"fields": ["features"]}}]	23	1
+541	2026-01-21 17:23:38.690493+00	141	Home Audio - Whole-Home Audio	2	[]	23	1
+542	2026-01-21 17:24:45.864047+00	140	Home Audio - Premium Audio	2	[{"changed": {"fields": ["features"]}}]	23	1
+543	2026-01-21 17:25:29.477368+00	172	Accent Lighting - Premium Accents	2	[{"changed": {"fields": ["Name"]}}]	23	1
+544	2026-01-21 17:27:04.045873+00	171	Accent Lighting - Key Lighting	2	[]	23	1
+545	2026-01-21 17:27:31.481398+00	173	Accent Lighting - Whole-Home Illumination	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+546	2026-01-21 17:28:09.275312+00	171	Accent Lighting - Key Accent Lighting	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+547	2026-01-21 17:29:05.280282+00	171	Accent Lighting - Key Accent Lighting	2	[{"changed": {"fields": ["features"]}}]	23	1
+548	2026-01-21 17:30:30.06935+00	171	Accent Lighting - Key Accent Lighting	2	[{"changed": {"fields": ["Image"]}}]	23	1
+549	2026-01-21 17:32:37.569975+00	172	Accent Lighting - Premium Accent Lights	2	[{"changed": {"fields": ["Name", "Slug", "Image"]}}]	23	1
+550	2026-01-21 17:41:58.897462+00	170	Creative Media Rooms - Content Creation	2	[{"changed": {"fields": ["features"]}}]	23	1
+551	2026-01-21 17:44:43.434256+00	167	Simulation & Sport Rooms - Dedicated Golf Simulator	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+552	2026-01-21 17:45:14.157605+00	166	Simulation & Sport Rooms - Racing Simulator	2	[{"changed": {"fields": ["Display order"]}}]	23	1
+553	2026-01-21 17:45:14.161369+00	167	Simulation & Sport Rooms - Dedicated Golf Simulator	2	[{"changed": {"fields": ["Display order"]}}]	23	1
+554	2026-01-21 17:46:00.70663+00	165	Simulation & Sport Rooms - Golf Simulator	2	[{"changed": {"fields": ["Name", "Slug", "Starting price", "Image"]}}]	23	1
+555	2026-01-21 17:46:20.323643+00	167	Simulation & Sport Rooms - Dedicated Golf Simulator	2	[{"changed": {"fields": ["Image"]}}]	23	1
+556	2026-01-21 17:46:41.990624+00	167	Simulation & Sport Rooms - Premium Golf Simulator	2	[{"changed": {"fields": ["Name", "Slug"]}}]	23	1
+557	2026-01-21 17:47:32.277756+00	150	Home Theater - Luxury Theater	2	[{"changed": {"fields": ["features"]}}]	23	1
+558	2026-01-21 17:47:50.38348+00	164	Home Theater - Essential Theater	2	[{"changed": {"fields": ["features"]}}]	23	1
+559	2026-01-21 17:48:04.743692+00	149	Home Theater - Performance Theater	2	[{"changed": {"fields": ["features"]}}]	23	1
+560	2026-01-21 17:48:59.689731+00	150	Home Theater - Luxury Theater	2	[{"changed": {"fields": ["features"]}}]	23	1
+561	2026-01-21 17:49:33.586073+00	150	Home Theater - Luxury Theater	2	[{"changed": {"fields": ["features"]}}]	23	1
+562	2026-01-21 17:49:46.88841+00	149	Home Theater - Performance Theater	2	[{"changed": {"fields": ["features"]}}]	23	1
+563	2026-01-21 17:50:52.763676+00	150	Home Theater - Luxury Theater	2	[{"changed": {"fields": ["features"]}}]	23	1
 \.
 
 
@@ -2230,7 +2537,7 @@ COPY public.django_celery_beat_intervalschedule (id, every, period) FROM stdin;
 --
 
 COPY public.django_celery_beat_periodictask (id, name, task, args, kwargs, queue, exchange, routing_key, expires, enabled, last_run_at, total_run_count, date_changed, description, crontab_id, interval_id, solar_id, one_off, start_time, priority, headers, clocked_id, expire_seconds) FROM stdin;
-1	celery.backend_cleanup	celery.backend_cleanup	[]	{}	\N	\N	\N	\N	t	2026-01-15 12:32:31.239234+00	21	2026-01-15 21:07:30.356178+00		1	\N	\N	f	\N	\N	{}	\N	43200
+1	celery.backend_cleanup	celery.backend_cleanup	[]	{}	\N	\N	\N	\N	t	2026-01-21 13:52:17.626823+00	23	2026-01-21 13:52:17.674046+00		1	\N	\N	f	\N	\N	{}	\N	43200
 \.
 
 
@@ -2239,7 +2546,7 @@ COPY public.django_celery_beat_periodictask (id, name, task, args, kwargs, queue
 --
 
 COPY public.django_celery_beat_periodictasks (ident, last_update) FROM stdin;
-1	2026-01-15 21:07:30.358945+00
+1	2026-01-21 13:52:17.565137+00
 \.
 
 
@@ -2435,6 +2742,9 @@ cyre1stmvyk58xwejdvlpa49qffikzak	.eJxVjDsOwjAQBe_iGlkxu_5R0nMGa-21cQA5UpxUiLuTSC
 3zqaqnkpum9aqmkru3cvmlza04e8tc4z	e30:1vfSoI:RnMDGkIjlKAjBodTLRzcXonZn6fjiuRPQ8c-_V_rSqQ	2026-01-27 01:03:02.020434+00
 p4xc7pkqiiul9q8b5dscodom6xdcfki2	.eJxVjDsOwjAQBe_iGlkxu_5R0nMGa-21cQA5UpxUiLuTSCmgfTPz3iLQutSw9jyHkcVFKHH63SKlZ2474Ae1-yTT1JZ5jHJX5EG7vE2cX9fD_Tuo1OtWO1V0dFF7TTQUdSbLHn1Bb1gNGkwmZyMSIDAUBtxUg2RNRoMpAonPF9nvN6o:1vfT6C:COiKRNIhBggtR7UZ4ZSsmU6NHLqhIGywwirGxMlTgGo	2026-01-27 01:21:32.089157+00
 u5bc6nuimyjqoujqttc2ep5ydl2kgom7	.eJxVkM1ugzAMx9_FZ4QSCCHhNPW-J5gq5CSmZIOkIkHdVPXdR7ZeerP-Hz_LvgNaG_eQR9zzTCF7i9nHMK6U5-gSDB93-J9hgCumdIubgwoww8B7qTrW6U7VvJGai7YCWtEvR9REc_DM7hdH29ulqLWNKzzOFfztGvdE2-gLtoEXzaD9olAM94nhEo9eyJs3dYnUTzfV79HRcnpmXwAzpvlooxVcCst6JV0rhSE-kSIpSCrjWjuRZE0rLPbaWTfhpElLjQ1XljFjUBdoopTKO-j76ref4-SGacnY4xc7U2f_:1vgTBe:RHOC4I5EzQodNwRSqQCyF-DGVlBkERgOVpt7s--Kk5g	2026-01-29 19:39:18.362199+00
+52irfc3audsvv3mtddozmd9cu6wyvyuz	.eJxVjDsOwjAQBe_iGlkxu_5R0nMGa-21cQA5UpxUiLuTSCmgfTPz3iLQutSw9jyHkcVFKHH63SKlZ2474Ae1-yTT1JZ5jHJX5EG7vE2cX9fD_Tuo1OtWO1V0dFF7TTQUdSbLHn1Bb1gNGkwmZyMSIDAUBtxUg2RNRoMpAonPF9nvN6o:1viCfp:WNxTifLpQ68d1VmoPNlP6Fqh4p64_8hTKiRB0tCyhOE	2026-02-03 14:25:37.853192+00
+z6xgisn460e23vfuj3e35c63a2ks0cd4	e30:1vidv0:8VijUkN9uJbnKe8rRC-0A9r32wvFvcjBwtYNLGtLY98	2026-02-04 19:31:06.142994+00
+6babjnaan7v05ahhl9kmw0lf029byj44	e30:1vie74:1_uJCYMR6ZIfsnDstAYmsRl81yb9qpALQTEXopENPW8	2026-02-04 19:43:34.176197+00
 \.
 
 
@@ -2487,12 +2797,18 @@ COPY public.mfa_authenticator (id, type, data, user_id, created_at, last_used_at
 --
 
 COPY public.products_category (id, name, slug, description, image, display_order, is_active, created_at, updated_at, property_type_id, youtube_url, details, builder_section, show_in_catalog, video) FROM stdin;
-28	Surveillance	surveillance	Ensure your home is secure with a live feed sent directly to your smart devices.	categories/dsc04898-100716671-orig_ASxxCaQ.webp	4	t	2025-12-08 01:41:45.554014+00	2025-12-09 02:07:59.007126+00	1		Ensure your home is secure with a live feed sent directly to your smart devices. \r\n\r\nDETAILS	automations	t	
-26	Pre-wire & Networking	pre-wire-networking	Pre-wire for extended and fast network connection. \r\nNetworking to all TV & Computer Locations.\r\nAudio to Kitchen, Dining, Bed and Bath.	categories/dsc04898-100716671-orig.webp	0	t	2025-12-08 01:37:40.410173+00	2025-12-09 01:41:25.305032+00	1	https://www.youtube.com/watch?v=MaXtfCpexqM	Pre-wire for extended and fast network connection. \r\nNetworking to all TV & Computer Locations.\r\nAudio to Kitchen, Dining, Bed and Bath.\r\n\r\nInstalling this to get access to the most important Smart Home Automation Features and Increase Home Value.	pre_wire	t	
-27	Distributed Audio	distributed-audio	Distribute all your music to all areas of your home for use with your home or mobile device.	categories/listenhear_yy3Q2ZQ.png	3	t	2025-12-08 01:40:01.976123+00	2025-12-09 01:58:56.62227+00	1	https://www.youtube.com/watch?v=MaXtfCpexqM	Distribute all your music to all areas of your home for use with your home or mobile device.\r\n\r\nDETAILS	entertainment_audio	t	
-31	Automations	automations	Qualify for green home and tax benefits with automated thermostats, blinds, locks, and smart lights.\r\n\r\nControl your home with your voice or a simple touch through one app for all your home devices.		1	t	2025-12-08 02:30:14.217075+00	2025-12-09 02:03:24.026199+00	1		Qualify for green home and tax benefits with automated thermostats, blinds, locks, and smart lights.Qualify for green home and tax benefits with automated thermostats, blinds, locks, and smart lights.\r\n\r\nControl your home with your voice or a simple touch through one app for all your home devices.	automations	t	
-29	Great Room	great-room	Optimize your home entertainment experience complete control with, Control 4 system, hi-fi sound, and mounted television	categories/shopping.webp	5	t	2025-12-08 02:25:05.046778+00	2025-12-09 02:18:45.65993+00	1		Optimize your home entertainment experience complete control with, Control 4 system, hi-fi sound, and mounted television \r\n\r\nDETAILS	entertainment_audio	t	
-30	Home Theater	home-theater	Optimized Home Entertainment Experience. \r\n\r\nExperience the best of TVs, Projectors, and other high-end devices.	categories/Listen_Hear_Home_Automation_0fzT1Xm.avif	2	t	2025-12-08 02:28:14.580318+00	2025-12-09 02:19:05.489669+00	1		Optimized Home Entertainment Experience. \r\n\r\nExperience the best of TVs, Projectors, and other high-end devices. \r\n\r\nDETAILS	custom_solutions	t	
+35	Home Entertainment	home-entertainment	Home Entertainment brings TVs, streaming devices, and media sources together into one effortless experience. Powered by Control4, everything works in harmony.  Watching TV, streaming content, or enjoying a movie night is as simple as pressing one button. No juggling remotes. No confusion. Just seamless entertainment.		0	t	2026-01-20 16:38:01.824368+00	2026-01-20 17:08:22.411544+00	1			entertainment_audio	t	
+30	Home Theater	home-theater	Home Theater transforms a dedicated space into an immersive cinematic environment. Integrated with Control4, your video, audio, lighting, and climate works together seamlessly. With one touch, the room prepares itself for the perfect movie, sports, or gaming experience.	categories/Listen_Hear_Home_Automation_0fzT1Xm.avif	2	t	2025-12-08 02:28:14.580318+00	2026-01-20 17:20:39.172908+00	1		Optimized Home Entertainment Experience. \r\n\r\nExperience the best of TVs, Projectors, and other high-end devices. \r\n\r\nDETAILS	custom_solutions	t	
+28	Surveillance	surveillance	Smart surveillance keeps you connected to your home at all times. With Control4, cameras and security devices are integrated into the same system you use to control the rest of your home.	categories/dsc04898-100716671-orig_ASxxCaQ.webp	0	t	2025-12-08 01:41:45.554014+00	2026-01-20 16:18:46.233566+00	1			automations	t	
+38	Accent Lighting	accent-lighting	Accent Lighting adds depth, ambiance, and style to every room in your home. From subtle highlights to dramatic illumination, smart accent lighting enhances architecture, artwork, and outdoor spaces. Integrated with Control4, lighting scenes are effortless to manage, creating mood, safety, and beauty at the touch of a button.		0	t	2026-01-20 17:56:05.50939+00	2026-01-20 17:56:05.5094+00	1			custom_solutions	t	
+32	Motorized Blinds & Shades	motorized-blinds-shades	Motorized blinds and shades add elegance, convenience, and efficiency to your home. Integrated with Control4, shades respond automatically to time of day, sunlight, or touch scenes.	categories/ChatGPT_Image_Dec_29_2025_04_00_51_PM.png	4	t	2026-01-20 15:39:57.855925+00	2026-01-20 16:18:46.235395+00	1			automations	t	
+37	Creative Media Rooms	creative-media-rooms	Creative Media Rooms provide professional-quality spaces for content creation, recording, streaming, or podcasting. Each room is designed with acoustics, lighting, and smart automation in mind, delivering an environment that’s optimized for focus, clarity, and creative output. Control4 integration allows you to adjust audio, lighting, shades, and equipment with one touch technology that works with you.		0	t	2026-01-20 17:46:21.865656+00	2026-01-21 15:29:38.205247+00	1			custom_solutions	t	
+36	Simulation & Sport Rooms	simulation-sport-rooms	Simulation Rooms bring immersive sports, gaming, and skill experiences into the home. From golf and racing to shooting ranges and flight simulators, these rooms integrate high-performance displays, specialized equipment, and Control4 automation. With one touch, the environment adjusts lighting, sound, screens, and climate to create the perfect simulation experience.		0	t	2026-01-20 17:31:53.613212+00	2026-01-20 18:13:34.175555+00	1			custom_solutions	t	
+33	Climate Control	climate-control	Smart climate control ensures your home is always comfortable while maximizing energy efficiency. Control4 integrates with leading smart thermostats to automatically adjust temperature based on schedules, occupancy, or lifestyle preferences.		3	t	2026-01-20 15:57:26.824273+00	2026-01-20 16:03:46.943464+00	1			automations	t	
+34	Security & Access Control	security-access-control	Security & Access Control unifies entry points, locks, cameras, and alerts into a single intelligent system. Powered by Control4, homeowners can see who’s at the door, manage access, and monitor activity from anywhere. While automation ensures the home responds instantly to events for greater safety and peace of mind.		1	t	2026-01-20 16:16:28.491544+00	2026-01-20 16:19:14.101938+00	1			automations	t	
+31	Automated Lighting	automated-lighting	Smart lighting enhances comfort, safety, and ambiance throughout your home. We partner with Mirus lighting to give you complete control over individual lights, rooms, or the entire home can be adjusted instantly or automated to match your daily routine.	categories/Gemini_Generated_Image_2vpp6c2vpp6c2vpp.png	2	t	2025-12-08 02:30:14.217075+00	2026-01-21 16:46:02.833189+00	1			automations	t	
+27	Home Audio	home-audio	Home Audio brings high-quality sound to every part of the home, indoors and out. Integrated with Control4, music is easy to control, perfectly balanced, and always available. From background listening to entertaining guests, home audio delivers immersive sound without visible equipment or complicated controls.	categories/listenhear_yy3Q2ZQ.png	3	t	2025-12-08 01:40:01.976123+00	2026-01-21 15:21:20.483675+00	1	https://www.youtube.com/watch?v=MaXtfCpexqM		entertainment_audio	t	
+26	Pre-wire & Networking	pre-wire-networking	Pre-wire & Networking is the infrastructure or backbone of a modern smart home. During the rough-in stage of construction, structured low-voltage wiring is installed behind the walls to ensure fast, secure, and reliable connectivity throughout the home. This infrastructure is required to support whole-home Wi-Fi, smart devices, streaming, security, and future technology without relying solely on vulnerable wireless signals.	categories/dsc04898-100716671-orig.webp	0	t	2025-12-08 01:37:40.410173+00	2026-01-21 16:18:58.73937+00	1	https://youtu.be/RxtBI570TaQ?si=389FN6JFv1vSS_EB	Wi-Fi alone isn’t enough for today’s connected homes. Hardwired connections provide:\r\n\r\nFaster speeds and lower latency\r\n\r\nGreater reliability than wireless-only setups\r\n\r\nImproved security and network stability\r\n\r\nClean installs with no visible cables later\r\n\r\nLong-term flexibility as technology evolves\r\n\r\nInstalling this wiring during construction is significantly more cost-effective and cleaner than retrofitting after the home is finished.	pre_wire	t	
 \.
 
 
@@ -2512,25 +2828,42 @@ COPY public.products_csvimport (id, csv_file, uploaded_at, packages_created, pac
 --
 
 COPY public.products_package (id, name, slug, short_description, features, starting_price, image, display_order, is_custom, is_active, is_featured, created_at, updated_at, category_id, subcategory_id, installation_phase, catalog_only) FROM stdin;
-133	Bronze	bronze	Up to 3,000 Sq Ft.	Shortest install time with the most robust coverage. \r\n\r\nFeatures	6995.00	packages/silver_XJJUlyD.avif	0	f	t	f	2025-12-08 19:02:34.596932+00	2025-12-08 19:02:34.596957+00	26	\N	rough_ins	f
-134	Silver	silver	3,000 to 5,000 Sq Ft of coverage.	Shortest install time with the most robust coverage.	9995.00	packages/silver_qtdGhZ2.avif	1	f	t	f	2025-12-08 19:04:03.188514+00	2025-12-08 19:04:08.410972+00	26	\N	rough_ins	f
-136	Bronze	bronze	Voice Control of Amazon or Google. \r\n1 Thermostat\r\n1 Wireless Access Point\r\n4 Zones of Lighting		9995.00	packages/pietro-de-grandi-T7K4aEPoGGk-unsplash.jpg	0	f	t	f	2025-12-09 01:31:57.462369+00	2025-12-09 01:31:57.462399+00	31	\N	insulation_drywall	f
-139	Bronze	bronze	Bronze Audio Distribution	4 Zones \r\n3 Zones Indoors\r\n1 Zone Outdoors	8995.00	packages/cyril-mzn-WSvth_lwCi0-unsplash.jpg	0	f	t	t	2025-12-09 02:00:17.892472+00	2025-12-09 02:00:17.892495+00	27	\N	rough_ins	f
-140	Silver	silver	Silver Audio	8 Zones\r\n6 Indoor Zones\r\n2 Outdoor Zones	11995.00	packages/Listen_Hear_Home_Automation.avif	1	f	t	f	2025-12-09 02:01:01.704584+00	2025-12-09 02:01:01.704597+00	27	\N	rough_ins	f
-138	Gold	gold	Everything in Silver Plus...\r\n\r\nUnlimited options!		21000.00	packages/luca-micheli-ruWkmt3nU58-unsplash.jpg	2	f	t	f	2025-12-09 01:34:58.416559+00	2025-12-09 02:02:08.226624+00	31	\N	insulation_drywall	f
-142	Bronze	bronze	Bronze Surveillance	Just a list of features.\r\nIncluding: \r\n4 Cameras\r\n+4 Zone NVR	5995.00	packages/2d6333f0-61a3-49ea-87f1-9ae434a30678.jpg	0	f	t	f	2025-12-09 02:04:51.473513+00	2025-12-09 02:04:51.473528+00	28	\N	rough_ins	f
-145	Bronze	bronze	Bronze Great Room Description	SONOS Playbar\r\nControl 4 Remote Smart Home System\r\n8-port Network Switch\r\nCommercial Grade TV Mount	4995.00	packages/shopping_wNIQahC.webp	0	f	t	f	2025-12-09 02:09:50.263211+00	2025-12-09 02:11:22.703155+00	29	\N	insulation_drywall	f
-147	Gold	gold	Short Description for GOld	7.1 Surround Sound\r\nProfessional Help with TV Selection & Design \r\nCommercial Grade TV Wall Mount	29995.00	packages/shopping_ItuYiqi.webp	2	f	t	f	2025-12-09 02:13:10.097993+00	2025-12-09 02:13:43.088525+00	29	\N	insulation_drywall	f
-137	Silver	silver	Everything in Bronze, plus... \r\n3 Total Amazon or Google Voice Controls\r\n2 Total WIreless Zones\r\n10 Light Zones\r\n1 Smart Lock\r\n1 Door Bell Intercom		1698.00	packages/Listen_Hear_Home_Automation_F7TmTw6.avif	1	f	t	f	2025-12-09 01:33:51.058612+00	2025-12-09 02:14:29.092937+00	31	\N	insulation_drywall	f
-144	Gold	gold	Gold Description Surveillance	List of Features for Gold: \r\n8 IP Cameras\r\n+16 Zone NVR	19995.00	packages/shopping.webp	2	f	t	f	2025-12-09 02:06:58.336198+00	2025-12-09 02:14:52.00454+00	28	\N	rough_ins	f
-143	Silver	silver	Silver Description Package	6 Cameras\r\n+8 NVR Zone	9995.00	packages/17298_axIe1sw.jpg	1	f	t	f	2025-12-09 02:06:01.246943+00	2025-12-09 02:15:36.943879+00	28	\N	rough_ins	f
-146	Silver	silver	Experience perfect sound and movie theatre visions at home.	Everything in Bronze, Plus...\r\n5.1 Surround Sound\r\n+Custom TV Selection	14995.00	packages/17298_PIuF9c9.jpg	1	f	t	f	2025-12-09 02:11:09.2942+00	2025-12-09 02:15:54.337506+00	29	\N	insulation_drywall	f
-141	Gold	gold	Gold Audio	16+ Zones\r\n14 Indoor Zones \r\n2 Outdoor Zones	19995.00	packages/17298_X8qNle7.jpg	2	f	t	f	2025-12-09 02:01:51.07595+00	2025-12-09 02:16:13.881482+00	27	\N	rough_ins	f
-148	Bronze	bronze	Home Bronze Theater	5.1 Surround Sound\r\nHD Projector & Design Help \r\nControl 4 Home Theater Controller\r\n8 Port Network Switch	14995.00	packages/silver_jU2hczZ.avif	0	f	t	f	2025-12-09 02:18:15.621184+00	2025-12-09 02:18:15.62121+00	30	\N	trim_finishes	f
-149	Silver	silver	Silver Description	Silver Features\r\n7.1 Surround\r\nHD Projector & Design Help \r\n8-Port Network Switch	21898.00	packages/twine-strong-white-rope-close-up-knot_23-2148548201.avif	1	f	t	t	2025-12-09 02:20:34.659653+00	2025-12-09 02:20:34.659666+00	30	\N	rough_ins	f
-150	Gold	gold	Descript Home Theater	7.2.2 Dolby Atmos\r\nControl 4 System \r\n4k Projector\r\n8 - Port Network	31699.00	packages/dsc04898-100716671-orig_Nm6w6Pr.webp	2	f	t	f	2025-12-09 02:22:06.392685+00	2025-12-29 20:33:06.561666+00	30	\N	rough_ins	f
-151	Samsung TV	samsung-tv	State of the art NEW Samsung Television directly from dealer.	BOSE SOUND \r\nHIGH QUALITY STUFF	6999.00	packages/ChatGPT_Image_Dec_29_2025_04_00_51_PM.png	0	t	t	f	2026-01-14 23:43:11.316626+00	2026-01-15 19:09:04.987533+00	30	\N	trim_finishes	t
-135	Gold	gold	Gold gets your 5,000 sq t of hardwire network coverage.Best bang for your dolla	Shortest install time with the most robust coverage. \r\n\r\nFeatures\r\nOne million dollars	14995.00	packages/silver_E3hYGHT.avif	2	f	t	f	2025-12-08 19:05:16.795998+00	2026-01-15 19:28:17.30624+00	26	\N	rough_ins	f
+145	Essential Media	essential-media	Reliable control of everyday TV and streaming experiences.	Single-room TV system integration\r\n\r\nControl4 remote or app-based control\r\n\r\nUnified access to streaming devices\r\n\r\nOne-control for on/off functionality\r\n\r\nElimination of multiple remotes	4995.00	packages/Elec_how-to-choose-the-right-soundbar.webp	0	f	t	f	2025-12-09 02:09:50.263211+00	2026-01-21 17:17:34.588274+00	35	\N	trim_finishes	f
+142	Essential Surveillance	essential-surveillance	Basic camera coverage for visibility and peace of mind.	Up to 6 exterior and/or interior camera integration\r\n\r\nLive viewing through Control4 app\r\n\r\nMotion alerts and notifications\r\n\r\nRemote access from mobile devices\r\n\r\nClean, centralized interface	6295.00	packages/1252245110.jpeg	0	f	t	f	2025-12-09 02:04:51.473513+00	2026-01-21 16:40:57.599258+00	28	\N	insulation_drywall	f
+140	Premium Audio	premium-audio	Seamless music throughout the home with intuitive, centralized control.	Multiple audio zones up to 8 living spaces\r\n\r\nIndependent or grouped room playback\r\n\r\nOne-touch music scenes (Relax, Entertain, Party)\r\n\r\nStreaming and local source integration\r\n\r\nIntegration with lighting and automation scenes	7995.00	packages/outdoor-audio-speaker-landscape-design-pavilion_ryfU5c5.webp	1	f	t	f	2025-12-09 02:01:01.704584+00	2026-01-21 17:24:45.861473+00	27	\N	insulation_drywall	f
+135	Future-Proof	future-proof	Built for performance, reliability, and long-term value. It supports advanced automation, whole-home audio/video, high-bandwidth applications, and next-generation internet.  Best for: Large homes, high-performance users, and homeowners planning advanced automation.	Full-home Cat6 or Cat6A structured cabling\r\n\r\nMultiple Wi-Fi access point prewire locations\r\n\r\nDedicated wiring for home office, media rooms, and control systems\r\n\r\nPrewire for security, surveillance, audio, and automation systems\r\n\r\nRack-ready network and equipment location\r\n\r\nDetailed network layout documentation for future upgrades	19995.00	packages/dsc04898-100716671-orig_9XzvXEx.webp	2	f	t	f	2025-12-08 19:05:16.795998+00	2026-01-21 15:04:44.019954+00	26	\N	rough_ins	f
+134	Smart Home Ready	smart-home-ready	This package combines wired connections with properly placed Wi-Fi access points, it eliminates dead zones and ensures every device performs its best. Best for: Families, remote workers, and smart home adopters who want consistent coverage.	Expanded Cat6 wiring to additional rooms\r\n\r\nCeiling-mounted Wi-Fi access point prewires for even coverage\r\n\r\nPrewire support for smart TVs, streaming devices, and gaming\r\n\r\nNetwork-ready locations for security cameras and doorbells\r\n\r\nStructured wiring panel with expansion capacity\r\n\r\nFull labeling, testing, and documentation	11995.00	packages/17298_Xm36Szz.jpg	1	f	t	f	2025-12-08 19:04:03.188514+00	2026-01-21 16:05:21.124854+00	26	\N	rough_ins	f
+133	Essential Connectivity	essential-connetivity	This package supports work-from-home, streaming, and entry-level smart devices while keeping the home ready for future upgrades. Best for: Smaller homes or homeowners looking for reliable internet and basic smart home readiness.	Central structured wiring panel location\r\n\r\nCat6 data wiring to key rooms (office, living room, primary bedroom)\r\n\r\nDedicated wiring for internet modem and router\r\n\r\nBasic Wi-Fi access point locations planned\r\n\r\nLabeled and tested cable runs	4995.00	packages/1603548460510.jpeg	0	f	t	f	2025-12-08 19:02:34.596932+00	2026-01-21 16:05:43.5644+00	26	\N	rough_ins	f
+137	Premium Lighting	premium-lighting	Expanded lighting control designed for comfort, safety, and lifestyle automation across the home.	Lighting control throughout 4-6 living areas\r\n\r\nCustom scenes (Entertain, Away, Goodnight)\r\n\r\nOne-touch room and whole-home control\r\n\r\nAutomated safety and pathway lighting\r\n\r\nIntegrated lighting responses to security events	13698.00	packages/045-2019ParadeHome-OH-SM.webp	1	f	t	f	2025-12-09 01:33:51.058612+00	2026-01-21 16:53:23.424554+00	31	\N	insulation_drywall	f
+144	Whole-Home Protection	whole-home-protection	A proactive security experience that reacts instantly to activity.	Full-property AI surveillance integration\r\n\r\nDoor stations and smart lock visibility\r\n\r\nEvent-based automation and alerts\r\n\r\nInstant lighting and scene responses\r\n\r\nSecure remote monitoring from anywhere	31995.00	packages/1004203863.png	2	f	t	f	2025-12-09 02:06:58.336198+00	2026-01-21 17:00:58.356813+00	28	\N	rough_ins	f
+143	Premium Security	premium-security	Expanded surveillance coverage integrated into your smart home ecosystem.	Up to 16 camera views throughout the property\r\n\r\nLive camera viewing on touchscreens and TVs\r\n\r\nSmart lighting triggers for security events\r\n\r\nEnhanced alerts and activity monitoring\r\n\r\nSeamless Control4 integration	8905.00	packages/X4_Highland11.jpg	1	f	t	f	2025-12-09 02:06:01.246943+00	2026-01-21 17:01:53.252003+00	28	\N	insulation_drywall	f
+136	Essential Lighting	essential-lighting	Foundational smart lighting that replaces standard switches with intelligent control. Ideal for key spaces and everyday convenience.	Smart dimmers and switches in 1-3 rooms\r\n\r\nControl via Control4 app and wall keypads\r\n\r\nBasic automated lighting scenes (On, Off, Evening)\r\n\r\nScheduled lighting by time of day\r\n\r\nImproved energy efficiency	9995.00	packages/AT_IVAN2.webp	0	f	t	f	2025-12-09 01:31:57.462369+00	2026-01-21 16:52:40.194386+00	31	\N	insulation_drywall	f
+138	Whole-Home Lighting	whole-home-lighting	A fully orchestrated lighting system designed for ambiance, precision, and elegance.	Custom engraved Control4 keypads\r\n\r\nAdvanced dimming and scene logic\r\n\r\nAutomated circadian and time-based lighting\r\n\r\nSeamless integration with shades and climate\r\n\r\nCentralized panel lighting system	21000.00	packages/IMG_5129.webp	2	f	t	f	2025-12-09 01:34:58.416559+00	2026-01-21 16:56:04.428403+00	31	\N	insulation_drywall	f
+149	Performance Theater	performance-theater	Immersion that pulls you in.  Enhanced theater performance with deeper sound, richer visuals, and room-aware control.	High-performance display or projection system\r\n\r\nUpgraded surround sound and subwoofer integration\r\n\r\nAutomated lighting scenes for viewing\r\n\r\nShade integration for light control\r\n\r\nUnified Control4 control for all components\r\n\r\n7.1 Surround Sound\r\n\r\nHD Projector & Design Help	21000.00	packages/TS-LCR_HOME_THEATER_Final_1_cgjEtrb.png	1	f	t	t	2025-12-09 02:20:34.659653+00	2026-01-21 17:49:46.884204+00	30	\N	rough_ins	f
+161	Whole-Home Protection	whole-home-protection	A fully integrated security experience that actively responds to your home and lifestyle.	Multi-door smart lock integration\r\n\r\nVideo door stations with two-way communication\r\n\r\nEvent-based automation and alerts\r\n\r\nAutomatic lighting responses to entry events\r\n\r\nSecure remote monitoring and control\r\n\r\nExpansion-ready for additional security systems	7899.00	packages/1214174768_5pUehCt.png	3	f	t	f	2026-01-20 16:24:01.088093+00	2026-01-21 17:01:20.857782+00	34	\N	rough_ins	f
+160	Premium Access	premium-access	Expanded security and access control designed for everyday convenience and awareness.	Smart lock integration on primary entry points\r\n\r\nKeyless entry with secure access codes\r\n\r\nRemote locking and unlocking\r\n\r\nEntry notifications and activity history\r\n\r\nIntegration with lighting and surveillance	4999.00	packages/35409140.jpeg	1	f	t	f	2026-01-20 16:21:14.119663+00	2026-01-21 17:02:10.623274+00	34	\N	trim_finishes	f
+159	Essential Security	essential-security	Foundational smart security that keeps homeowners informed and connected.	Smart doorbell or door station integration\r\n\r\nLive door camera viewing via Control4 app\r\n\r\nMobile alerts for door activity\r\n\r\nRemote access and monitoring\r\n\r\nClean, centralized interface	2999.00	packages/27286585.jpeg	0	f	t	f	2026-01-20 16:17:39.372761+00	2026-01-21 14:41:49.66174+00	34	\N	trim_finishes	f
+141	Whole-Home Audio	whole-home-audio	A fully integrated audio system designed for performance, elegance, and flexibility.	Audio coverage throughout the home\r\n\r\nHigh-performance speakers and amplification\r\n\r\nUnified control from touchscreens, app, or keypads\r\n\r\nOutdoor audio zone integration (where applicable)\r\n\r\nAdvanced automation tied to lifestyle scenes\r\n\r\nExpansion-ready for future audio zones	19995.00	packages/best-in-wall-speakers_gVgBtiK.webp	2	f	t	f	2025-12-09 02:01:51.07595+00	2026-01-21 17:23:38.686624+00	27	\N	insulation_drywall	f
+154	Whole-Home Shades	whole-home-shades	A fully integrated shading system that enhances the entire home.	Motorized shades throughout the home\r\n\r\nOne-touch and automated scene control\r\n\r\nSun-position-based automation\r\n\r\nSeamless integration with lighting and climate\r\n\r\nElegant, silent operation	29999.00	packages/Quick-Buying-Guide-to-Smart-Window-Blinds-and-Motorized-Shades-featured.jpg	2	f	t	f	2026-01-20 15:54:14.457947+00	2026-01-21 15:34:54.327025+00	32	\N	trim_finishes	f
+164	Essential Theater	essential-theater	A dedicated theater experience designed for impactful sound and picture.	Large-format TV or entry-level projection system\r\n\r\nSurround sound speaker configuration\r\n\r\nControl4 remote or app-based control\r\n\r\nOne-touch power and source control\r\n\r\nOptimized speaker and display placement\r\n\r\n5.1 Surround Sound\r\n\r\nHD Projector & Design Help \r\n\r\nControl 4 Home Theater Controller	13900.00	packages/56545541.jpeg	0	f	t	f	2026-01-20 17:22:21.511639+00	2026-01-21 17:47:50.381577+00	30	\N	trim_finishes	f
+156	Premium Climate Control	premium-climate-control	Expanded climate control that adapts to how different areas of the home are used.	Multi-zone thermostat integration in 3-4 rooms\r\n\r\nRoom-by-room temperature scheduling\r\n\r\nAutomated comfort scenes (Home, Away, Sleep)\r\n\r\nOccupancy-based energy adjustments\r\n\r\nIntegration with lighting and shades for efficiency	4999.00	packages/Avalon_Beach-Lifestyle_4.jpg	1	f	t	f	2026-01-20 16:03:09.069503+00	2026-01-21 17:06:26.455368+00	33	\N	rough_ins	f
+157	Whole-Home Climate Control	whole-home-climate-control	A fully automated climate system designed for performance, comfort, and long-term efficiency.	Whole-home climate integration in 5+ rooms\r\n\r\nAdvanced scheduling and automation logic\r\n\r\nTemperature adjustments tied to time of day and usage\r\n\r\nShade-aware climate automation to reduce heat gain\r\n\r\nSecure remote monitoring and control\r\n\r\nExpansion-ready for future HVAC enhancements	8999.00	packages/smart-hvac-climate-control.jpeg	2	f	t	f	2026-01-20 16:04:51.111482+00	2026-01-21 17:03:13.143549+00	33	\N	insulation_drywall	f
+155	Essential Climate Control	essential-climate-control	Intelligent thermostat control that brings convenience and efficiency to everyday living.	Smart thermostat integration with Control4\r\n\r\nCentralized temperature control via app for 1-2 rooms\r\n\r\nBasic scheduling for heating and cooling\r\n\r\nRemote access from anywhere\r\n\r\nImproved energy efficiency over standard thermostats	1899.00	packages/67ec54c435ba8b727954ccc1_087_25_Control4.com_VoiceControl_Products_Thermostats.webp	0	f	t	f	2026-01-20 16:00:01.248536+00	2026-01-21 17:05:16.313338+00	33	\N	rough_ins	f
+139	Essential Audio	essential-audio	Simple, high-quality audio for everyday listening in key areas of the home.	In-ceiling or in-wall speakers in 4 rooms\r\n\r\nControl via Control4 app and wall keypads\r\n\r\nStreaming music service integration\r\n\r\nIndividual room volume control\r\n\r\nClean, low-profile speaker design	3495.00	packages/1191580325.jpeg	0	f	t	t	2025-12-09 02:00:17.892472+00	2026-01-21 17:22:48.406891+00	27	\N	insulation_drywall	f
+152	Essential Shades	essential-shades	Motorized blinds and shades that add comfort and convenience to everyday living.	Motorized shades in 1-2 rooms\r\n\r\nControl via app or wall keypad\r\n\r\nSimple open/close scenes\r\n\r\nQuiet, smooth operation\r\n\r\nClean, modern design and color	8999.00	packages/motorized_solar_shades_3__ultra_white-min.jpg	0	f	t	f	2026-01-20 15:42:22.928865+00	2026-01-21 17:08:07.953448+00	32	\N	trim_finishes	f
+153	Premium Shades	premium-shades	Shades that automatically adjust throughout the day to improve comfort and efficiency.	Scheduled shade movement by time of day\r\n\r\nDaylight and privacy scenes in 3-6 rooms\r\n\r\nIntegration with lighting and climate\r\n\r\nReduced glare and heat gain\r\n\r\nImproved energy efficiency	18999.00	packages/51S1ruJ5iL._AC_UF8941000_QL80_.jpg	1	f	t	f	2026-01-20 15:47:35.965512+00	2026-01-21 17:09:00.555268+00	32	\N	trim_finishes	f
+162	Premium Media	premium-media	Enhanced entertainment control that integrates media with the rest of the home.	Up to 5 room TV and media integration\r\n\r\nOne-touch media scenes (Watch TV, Movie Night)\r\n\r\nLighting and shade integration during playback\r\n\r\nControl via remote, app, or touchscreen	18999.00	packages/6481be021ed92e6c4753b081_Media_room_as_home_cinema_alternative_lB9ZPJK.jpg	1	f	t	f	2026-01-20 17:10:36.446184+00	2026-01-21 17:16:02.922429+00	35	\N	trim_finishes	f
+163	Whole-Home Media	whole-home-media	Cinema experience, at home. A fully integrated entertainment system designed for performance and immersion in every room.	Dedicated home entertainment room\r\n\r\nHigh-performance video and audio coordination\r\n\r\nCustom Control4 interfaces and remotes\r\n\r\nSecure equipment rack and clean cable management\r\n\r\nExpansion-ready for future media upgrades	39999.00	packages/20230112-192038creating-the-ultimate-home-entertainment-today-s-media-room.jpg	3	f	t	f	2026-01-20 17:11:56.353175+00	2026-01-21 17:20:05.247493+00	35	\N	trim_finishes	f
+166	Racing Simulator	racing-simulator	Experience high-speed racing with immersive visuals and realistic controls.	Racing simulator cockpit with steering wheel, pedals, and seat\r\n\r\nLarge-format or curved displays for realistic peripheral vision\r\n\r\nSurround sound system simulating engine, tire, and environment sounds\r\n\r\nLighting and shading scenes to enhance focus and immersion\r\n\r\nAutomated climate and fan control for comfort\r\n\r\nControl4 interface for instant session setup and customization	29999.00	packages/F-GTProBundle.webp	2	f	t	f	2026-01-20 17:37:49.919902+00	2026-01-21 17:45:14.154739+00	36	\N	trim_finishes	f
+169	Recording Studio	recording-studio	A full-featured home recording space for music, voiceovers, or multi-track production with professional-grade sound.	Multi-channel audio interface and mixer integration\r\n\r\nHigh-quality microphones and studio monitors\r\n\r\nAcoustic treatment for optimal sound performance\r\n\r\nAutomated lighting scenes for recording or editing\r\n\r\nControl4 integration for audio routing and room automation\r\n\r\nRack-mounted equipment with clean cable runs\r\n\r\nMulti-room monitoring and playback capability	17899.00	packages/mm-05112023-meadowlands-2805_1.webp	1	f	t	f	2026-01-20 17:51:21.770822+00	2026-01-21 15:31:39.720738+00	37	\N	rough_ins	f
+170	Content Creation	content-creation	A dedicated space for video production, live streaming, or content creation with optimized lighting, camera, and sound control.	Simple camera setup with video capture or live streaming support\r\n\r\nProfessional lighting integration (key, fill, and backlight)\r\n\r\nAcoustic panels to minimize echo and background noise\r\n\r\nControl4 automation for lights, shades, and audio\r\n\r\nOne-touch “Record” or “Stream” scene activation\r\n\r\nClean cable management and equipment organization\r\n\r\nOptional green screen or backdrop integration	7899.00	packages/ContentRoom-4.jpg	0	f	t	f	2026-01-20 17:52:53.586422+00	2026-01-21 17:41:58.895423+00	37	\N	rough_ins	f
+167	Premium Golf Simulator	premium-golf-simulator	Train with precision and safety. A safe, controlled environment for firearms, tactical, or skill-based simulation.	Shooting or tactical simulation system\r\n\r\nHigh-resolution display or projector setup\r\n\r\nRealistic sound and audio feedback\r\n\r\nAdjustable lighting and shades for focus and realism\r\n\r\nClimate and ventilation control for safety and comfort\r\n\r\nOne-touch Control4 operation for start, stop, and reset	89999.00	packages/074900_573e6fe7ed68488f8b6b035dbb954ec0mv2_1yozOrM.avif	1	f	t	f	2026-01-20 17:39:58.791584+00	2026-01-21 17:46:41.988213+00	36	\N	trim_finishes	f
+171	Key Accent Lighting	key-accent-lighting	Smart accent lighting in key rooms for subtle elegance and visual interest.	Accent lighting in 1–3 primary rooms (kitchen, great room, bedroom)\r\n\r\nLED strip or recessed lighting options\r\n\r\nControl4 app or keypad control\r\n\r\nOne-touch on/off and dimming functionality\r\n\r\nIndoor only	5900.00	packages/SSN2CrQnEeYpgr6H4xhdE7.jpg	0	f	t	f	2026-01-20 17:59:56.820559+00	2026-01-21 17:30:30.06549+00	38	\N	rough_ins	f
+173	Whole-Home Illumination	whole-home-illumination	A fully integrated lighting experience that highlights every indoor room and outdoor area with precision and style.	Accent lighting throughout the entire home (all rooms)\r\n\r\nFull outdoor property coverage (patios, pathways, landscaping, pool, or garden areas)\r\n\r\nAdvanced Control4 scene automation for entertaining, seasonal, and custom moods\r\n\r\nColor-tunable LED accents and dimming throughout\r\n\r\nSynchronized indoor/outdoor lighting for dynamic visual effects\r\n\r\nExpansion-ready for future outdoor or landscape lighting	14990.00	packages/lighting-design-led_pjfsb_cbebk.avif	2	t	t	f	2026-01-20 18:08:54.253642+00	2026-01-21 17:27:31.477768+00	38	\N	rough_ins	f
+168	Podcast	podcast	A professional-quality space for home podcasts, interviews, or streaming, designed for clear audio and simple operation.	Single or multi-microphone setup for solo or group recording\r\n\r\nBasic acoustic panels for noise control and sound clarity\r\n\r\nControl4 integration for lighting and audio levels\r\n\r\nOne-touch start/stop recording scenes\r\n\r\nMobile and touchscreen control for easy adjustments\r\n\r\nClean, hidden cable management	9995.00	packages/Banner_studio_podcast.jpg	0	f	t	f	2026-01-20 17:49:21.280186+00	2026-01-21 15:30:37.953969+00	37	\N	trim_finishes	f
+150	Luxury Theater	luxury-theater	Peak home theater experience.  A no-compromise theater built for precision, immersion, and luxury.	Premium projection or large-format display\r\n\r\nReference-grade surround sound system\r\n\r\nAcoustically optimized speaker layout\r\n\r\nFully automated lighting, shades, and climate\r\n\r\nCustom Control4 theater interface\r\n\r\nOne-touch “Movie Night” and “Intermission” scenes\r\n\r\nRack-based equipment with clean cable management\r\n\r\nComfortable Premium Seating\r\n\r\nExpansion-ready for future formats\r\n\r\n9.2.2 Dolby Atmos Surround Sound\r\n\r\nControl 4 System \r\n\r\n4k Projector or MicroLED Video Wall	31900.00	packages/HOME_THEATER_ROOM_PWRD12_BW_aW69mXP.png	2	t	t	f	2025-12-09 02:22:06.392685+00	2026-01-21 17:50:52.761627+00	30	\N	rough_ins	f
+172	Premium Accent Lights	extended-accent-lights	Expanded accent lighting to highlight multiple spaces, with seamless indoor/outdoor integration.	Accent lighting in 4–6 rooms\r\n\r\nOutdoor accent lighting for patios, landscaping, or entryways\r\n\r\nAutomated scenes for entertainment, evenings, or special occasions\r\n\r\nIntegration with Control4 for centralized control and scheduling\r\n\r\nDimming, color tuning (where supported), and scene presets\r\n\r\nEnhanced ambiance and visual continuity between spaces	7999.00	packages/Asymmetrical_Shelves_60_Degree_V02-3.jpg	1	f	t	f	2026-01-20 18:04:20.13481+00	2026-01-21 17:32:37.559637+00	38	\N	trim_finishes	f
+165	Golf Simulator	golf-simulator	Practice your swing, play famous courses, and improve your game, all from the comfort of home.	Full golf simulator system with high-resolution projection\r\n\r\nRealistic club and ball tracking\r\n\r\nDedicated surround or immersive audio for course sounds\r\n\r\nLighting scenes optimized for screen visibility\r\n\r\nClimate and ventilation control for comfort\r\n\r\nControl4 one-touch start, pause, and scene recall	52999.00	packages/download_dutHuBY.jpeg	0	f	t	f	2026-01-20 17:34:11.066561+00	2026-01-21 17:46:00.694653+00	36	\N	trim_finishes	f
 \.
 
 
@@ -2571,6 +2904,9 @@ COPY public.quotes_cart (id, session_key, created_at, updated_at, user_id, coupo
 12	kb57xa16tn22t7dqkvtv8r3mqjdut919	2026-01-13 01:21:10.400616+00	2026-01-13 01:21:10.400624+00	\N	\N
 7	\N	2025-12-16 15:39:43.480519+00	2026-01-15 19:19:43.304245+00	2	\N
 13	k8mksf8w5wgl9ygxmslhyo68vmwxgcjd	2026-01-15 19:38:56.204527+00	2026-01-15 19:38:56.204552+00	\N	\N
+14	vh8rsohk3ot491mdxnz2a4b4ns01a2v8	2026-01-20 14:25:25.384882+00	2026-01-20 14:25:25.384894+00	\N	\N
+15	z6xgisn460e23vfuj3e35c63a2ks0cd4	2026-01-21 19:31:06.12213+00	2026-01-21 19:31:06.122139+00	\N	\N
+16	6babjnaan7v05ahhl9kmw0lf029byj44	2026-01-21 19:43:34.120218+00	2026-01-21 19:43:34.120229+00	\N	\N
 \.
 
 
@@ -2579,12 +2915,24 @@ COPY public.quotes_cart (id, session_key, created_at, updated_at, user_id, coupo
 --
 
 COPY public.quotes_cartitem (id, quantity, notes, added_at, cart_id, package_id) FROM stdin;
+75	1		2026-01-21 16:38:39.629945+00	2	135
+76	1		2026-01-21 16:42:30.972503+00	2	144
+77	1		2026-01-21 17:05:29.551488+00	2	160
+78	1		2026-01-21 17:05:31.239898+00	2	137
+79	1		2026-01-21 17:05:35.028904+00	2	157
+80	1		2026-01-21 17:09:06.561453+00	2	153
+81	1		2026-01-21 17:20:19.302698+00	2	162
+82	1		2026-01-21 17:24:54.225978+00	2	139
+84	1		2026-01-21 17:46:53.280447+00	2	165
+85	1		2026-01-21 17:50:00.799558+00	2	164
 16	1		2025-12-10 14:05:09.426648+00	4	133
 17	1		2025-12-10 14:05:19.826179+00	4	137
 18	1		2025-12-10 14:05:39.146398+00	4	139
 19	1		2025-12-10 14:05:42.562231+00	4	145
 20	1		2025-12-14 19:36:06.908613+00	4	136
 21	1		2025-12-14 19:36:09.113598+00	4	143
+83	181		2026-01-21 17:32:56.173413+00	2	173
+86	1		2026-01-21 17:55:25.551146+00	2	172
 \.
 
 
@@ -2617,16 +2965,13 @@ COPY public.quotes_quoterequestitem (id, package_name, package_description, pric
 2	Silver	Everything in Bronze, plus... \r\n3 Total Amazon or Google Voice Controls\r\n2 Total WIreless Zones\r\n10 Light Zones\r\n1 Smart Lock\r\n1 Door Bell Intercom	1698.00	1		137	1	insulation_drywall
 3	Silver	Silver Description Package	9995.00	1		143	1	rough_ins
 4	Silver	Silver Audio	11995.00	1		140	1	rough_ins
-5	Gold	Short Description for GOld	29995.00	1		147	1	insulation_drywall
 6	Bronze	Up to 3,000 Sq Ft.	6995.00	1		133	2	rough_ins
 7	Gold	Everything in Silver Plus...\r\n\r\nUnlimited options!	21000.00	1		138	2	insulation_drywall
 8	Bronze	Bronze Surveillance	5995.00	1		142	2	rough_ins
 9	Bronze	Bronze Audio Distribution	8995.00	1		139	2	rough_ins
-10	Silver	Experience perfect sound and movie theatre visions at home.	14995.00	1		146	2	insulation_drywall
 11	Gold	Descript Home Theater	31699.00	1		150	2	rough_ins
 12	Bronze	Bronze Audio Distribution	8995.00	1		139	3	rough_ins
 13	Silver	Silver Audio	11995.00	1		140	3	rough_ins
-14	Silver	Experience perfect sound and movie theatre visions at home.	14995.00	1		146	3	insulation_drywall
 15	Silver	Silver Description	21898.00	1		149	3	rough_ins
 18	Bronze	Bronze Surveillance	5995.00	1		142	4	rough_ins
 19	Silver	Silver Audio	11995.00	1		140	4	rough_ins
@@ -2635,6 +2980,9 @@ COPY public.quotes_quoterequestitem (id, package_name, package_description, pric
 22	Gold	Descript Home Theater	31699.00	1		150	4	rough_ins
 16	Silver	3,000 to 5,000 Sq Ft of coverage.	20000.00	1		134	4	rough_ins
 17	Silver	Everything in Bronze, plus... \r\n3 Total Amazon or Google Voice Controls\r\n2 Total WIreless Zones\r\n10 Light Zones\r\n1 Smart Lock\r\n1 Door Bell Intercom	25000.00	1	Wanted expensive lights	137	4	insulation_drywall
+5	Gold	Short Description for GOld	29995.00	1		\N	1	insulation_drywall
+10	Silver	Experience perfect sound and movie theatre visions at home.	14995.00	1		\N	2	insulation_drywall
+14	Silver	Experience perfect sound and movie theatre visions at home.	14995.00	1		\N	3	insulation_drywall
 \.
 
 
@@ -2716,8 +3064,8 @@ COPY public.taggit_taggeditem (id, object_id, content_type_id, tag_id) FROM stdi
 --
 
 COPY public.users_user (id, password, last_login, is_superuser, email, is_staff, is_active, date_joined, name, is_builder, company_name, city, state, street, zip_code, phone, website) FROM stdin;
-1	argon2$argon2id$v=19$m=102400,t=2,p=8$cGNMQnIzaU9jUGl5VDNLVFVCcXdZcw$FPItGexgupjy7q3P/k2NhijUnL/Kkjd65qowWnQlAtk	2026-01-13 01:21:32.073645+00	t	jamesw@listenhearaudio.com	t	t	2025-12-05 21:19:43.029255+00		f							
 2	argon2$argon2id$v=19$m=102400,t=2,p=8$eEdsYVlwZVRmTEdBeXlVcGROME5CdQ$Fo++Y0MRaR+NNWnsgQYtouVtepLMCBFIQxSXmczynWc	2026-01-15 19:39:18.269333+00	f	bobthebuilder@gmail.com	f	t	2025-12-16 15:39:16.076896+00	Bob Builder	t	Bob's Builder	Pittsburgh	PA	ABCD 123	15229	123456789	https://www.website.com
+1	argon2$argon2id$v=19$m=102400,t=2,p=8$cGNMQnIzaU9jUGl5VDNLVFVCcXdZcw$FPItGexgupjy7q3P/k2NhijUnL/Kkjd65qowWnQlAtk	2026-01-20 14:25:37.799031+00	t	jamesw@listenhearaudio.com	t	t	2025-12-05 21:19:43.029255+00		f							
 \.
 
 
@@ -2853,7 +3201,7 @@ SELECT pg_catalog.setval('public.core_servicerequest_id_seq', 4, true);
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 256, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 563, true);
 
 
 --
@@ -2937,7 +3285,7 @@ SELECT pg_catalog.setval('public.mfa_authenticator_id_seq', 1, false);
 -- Name: products_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.products_category_id_seq', 31, true);
+SELECT pg_catalog.setval('public.products_category_id_seq', 38, true);
 
 
 --
@@ -2951,7 +3299,7 @@ SELECT pg_catalog.setval('public.products_csvimport_id_seq', 3, true);
 -- Name: products_package_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.products_package_id_seq', 151, true);
+SELECT pg_catalog.setval('public.products_package_id_seq', 173, true);
 
 
 --
@@ -2972,14 +3320,14 @@ SELECT pg_catalog.setval('public.products_subcategory_id_seq', 29, true);
 -- Name: quotes_cart_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.quotes_cart_id_seq', 13, true);
+SELECT pg_catalog.setval('public.quotes_cart_id_seq', 16, true);
 
 
 --
 -- Name: quotes_cartitem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.quotes_cartitem_id_seq', 45, true);
+SELECT pg_catalog.setval('public.quotes_cartitem_id_seq', 86, true);
 
 
 --
@@ -4639,5 +4987,5 @@ ALTER TABLE ONLY public.users_user_user_permissions
 -- PostgreSQL database dump complete
 --
 
-\unrestrict E07cSYIrfXmpKwGRyRDwpNS3k4axsko1MvIe3OGdJhwXXc5b2ExGPIZBvuRXfqJ
+\unrestrict eIygc0ANYW9PXlMGIi5LeGHZ3FkjPuWgjXqKF7PVhvB0OvIbF8V7cEdJ6zrh0c1
 
