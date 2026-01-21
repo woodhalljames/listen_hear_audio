@@ -17,12 +17,9 @@
       <div class="features-content p-3">
         <h6 class="text-white mb-2" style="font-size: 0.9rem; font-weight: 600;">Key Features:</h6>
         <ul class="mb-0 ps-3 text-white" style="font-size: 0.8rem; line-height: 1.4;">
-          {% for feature in package.get_features_list|slice:":5" %}
-          <li>{{ feature|truncatewords:8 }}</li>
+          {% for feature in package.get_features_list %}
+          <li>{{ feature }}</li>
           {% endfor %}
-          {% if package.get_features_list|length > 5 %}
-          <li class="text-white-50">+ {{ package.get_features_list|length|add:"-5" }} more...</li>
-          {% endif %}
         </ul>
       </div>
     </div>
@@ -33,7 +30,7 @@
     <h5 class="card-title">{{ package.name }}</h5>
 
     {% if package.short_description %}
-      <p class="card-text text-muted mb-3 small">{{ package.short_description|truncatewords:25 }}</p>
+      <p class="card-text text-muted mb-3 small package-short-description">{{ package.short_description }}</p>
     {% endif %}
 
     {% if package.is_featured %}

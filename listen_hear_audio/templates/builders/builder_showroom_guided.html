@@ -117,29 +117,37 @@
                                     </div>
                                     {% endif %}
 
-                                    <!-- Features Overlay -->
-                                    {% if package.get_features_list %}
-                                    <div class="features-overlay">
-                                        <div class="features-content p-2">
-                                            <h6 class="text-white mb-2" style="font-size: 0.8rem; font-weight: 600;">Key Features:</h6>
-                                            <ul class="mb-0 ps-3 text-white" style="font-size: 0.75rem; line-height: 1.3;">
-                                                {% for feature in package.get_features_list|slice:":4" %}
-                                                <li>{{ feature|truncatewords:6 }}</li>
-                                                {% endfor %}
-                                                {% if package.get_features_list|length > 4 %}
-                                                <li class="text-white-50">+ {{ package.get_features_list|length|add:"-4" }} more...</li>
-                                                {% endif %}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    {% endif %}
                                 </div>
 
                                 <div class="card-body d-flex flex-column p-3">
                                     <h6 class="card-title mb-2">{{ package.name }}</h6>
 
                                     {% if package.short_description %}
-                                    <p class="card-text text-muted small mb-2" style="font-size: 0.85rem;">{{ package.short_description|truncatewords:20 }}</p>
+                                    <p class="card-text text-muted small mb-2">{{ package.short_description }}</p>
+                                    {% endif %}
+
+                                    {% if package.get_features_list %}
+                                    <div class="package-features-list mb-2">
+                                        <small class="text-muted fw-bold d-block mb-1">Features:</small>
+                                        <ul class="features-list mb-0 ps-3">
+                                            {% for feature in package.get_features_list %}
+                                            <li>{{ feature }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    {% endif %}
+
+                                    {% if package.description %}
+                                    <div class="package-details mb-3">
+                                        <button class="btn btn-link btn-sm p-0 text-decoration-none details-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#details-{{ package.id }}">
+                                            <i class="bi bi-chevron-down"></i> More Details
+                                        </button>
+                                        <div class="collapse mt-2" id="details-{{ package.id }}">
+                                            <div class="package-description-full p-2 bg-light rounded small">
+                                                {{ package.description|linebreaks }}
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% endif %}
 
                                     <div class="mt-auto">
@@ -147,20 +155,16 @@
                                             <small class="text-primary fw-bold">{{ package.get_price_display }}</small>
                                         </div>
 
-                                        {% if package.id in cart_package_ids %}
                                         <button type="button"
-                                                class="btn btn-success btn-sm w-100"
-                                                disabled>
-                                            <i class="bi bi-check-circle-fill"></i> Added to Cart
-                                        </button>
-                                        {% else %}
-                                        <button type="button"
-                                                class="btn btn-primary btn-sm w-100 add-to-cart-btn"
+                                                class="btn btn-sm w-100 cart-toggle-btn {% if package.id in cart_package_ids %}btn-success in-cart{% else %}btn-primary{% endif %}"
                                                 data-package-id="{{ package.id }}"
                                                 data-package-name="{{ package.name }}">
+                                            {% if package.id in cart_package_ids %}
+                                            <i class="bi bi-check-circle-fill"></i> In Cart - Click to Remove
+                                            {% else %}
                                             <i class="bi bi-cart-plus"></i> Add to Cart
+                                            {% endif %}
                                         </button>
-                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -347,53 +351,83 @@
         transform: scale(1.05);
     }
 
-    .features-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.85) 100%);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .package-card:hover .features-overlay {
-        opacity: 1;
-    }
-
-    .features-content {
-        width: 100%;
-        max-height: 100%;
-        overflow-y: auto;
-    }
-
-    .features-content ul {
-        list-style-type: disc;
-    }
-
-    .features-content li {
-        margin-bottom: 0.2rem;
-    }
-
-    .add-to-cart-btn.loading {
+    .cart-toggle-btn.loading {
         pointer-events: none;
         opacity: 0.6;
     }
 
-    .add-to-cart-btn.btn-success {
+    .cart-toggle-btn.in-cart {
         background-color: #28a745 !important;
         border-color: #28a745 !important;
         color: white !important;
     }
 
-    .add-to-cart-btn.btn-danger {
+    .cart-toggle-btn.in-cart:hover {
+        background-color: #dc3545 !important;
+        border-color: #dc3545 !important;
+    }
+
+    .cart-toggle-btn.btn-danger {
         background-color: #dc3545 !important;
         border-color: #dc3545 !important;
         color: white !important;
+    }
+
+    .package-features-list {
+        font-size: 0.8rem;
+    }
+
+    .package-features-list .features-list {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    .package-features-list .features-list li {
+        position: relative;
+        padding-left: 1.2em;
+        margin-bottom: 0.25rem;
+        color: #495057;
+        line-height: 1.4;
+    }
+
+    .package-features-list .features-list li::before {
+        content: "\2713";
+        position: absolute;
+        left: 0;
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .package-details .details-toggle {
+        color: #667eea;
+        font-size: 0.85rem;
+    }
+
+    .package-details .details-toggle:hover {
+        color: #764ba2;
+    }
+
+    .package-details .details-toggle[aria-expanded="true"] .bi-chevron-down {
+        transform: rotate(180deg);
+    }
+
+    .package-details .bi-chevron-down {
+        transition: transform 0.2s ease;
+    }
+
+    .package-description-full {
+        max-height: 200px;
+        overflow-y: auto;
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+
+    .package-description-full p {
+        margin-bottom: 0.5rem;
+    }
+
+    .package-description-full p:last-child {
+        margin-bottom: 0;
     }
 
     .floating-cart-badge {
@@ -447,19 +481,23 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Handle add to cart
-        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        // Handle cart toggle (add/remove)
+        document.querySelectorAll('.cart-toggle-btn').forEach(button => {
             button.addEventListener('click', function(e) {
                 e.preventDefault();
 
                 const packageId = this.dataset.packageId;
                 const btn = this;
-                const originalHTML = btn.innerHTML;
+                const isInCart = btn.classList.contains('in-cart');
+                const action = isInCart ? 'remove' : 'add';
+                const url = isInCart ? `/quote/cart/remove/${packageId}/` : `/quote/cart/add/${packageId}/`;
 
                 btn.classList.add('loading');
-                btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Adding...';
+                btn.innerHTML = isInCart
+                    ? '<i class="bi bi-hourglass-split"></i> Removing...'
+                    : '<i class="bi bi-hourglass-split"></i> Adding...';
 
-                fetch(`/quote/cart/add/${packageId}/`, {
+                fetch(url, {
                     method: 'POST',
                     headers: {
                         'X-CSRFToken': getCSRFToken(),
@@ -472,53 +510,71 @@
                 .then(data => {
                     if (data.success) {
                         const packageCard = btn.closest('.package-card');
-                        if (packageCard) {
-                            packageCard.classList.add('in-cart');
 
-                            // Add "In Cart" badge to top right
-                            const badge = document.createElement('div');
-                            badge.className = 'position-absolute top-0 end-0 m-2';
-                            badge.style.zIndex = '10';
-                            badge.innerHTML = '<span class="badge bg-success"><i class="bi bi-check-circle-fill"></i> In Cart</span>';
-                            packageCard.insertBefore(badge, packageCard.firstChild);
+                        if (isInCart) {
+                            // Removed from cart
+                            if (packageCard) {
+                                packageCard.classList.remove('in-cart');
+                                // Remove the "In Cart" badge
+                                const badge = packageCard.querySelector('.position-absolute.top-0.end-0');
+                                if (badge) badge.remove();
+                            }
+                            btn.classList.remove('loading', 'btn-success', 'in-cart');
+                            btn.classList.add('btn-primary');
+                            btn.innerHTML = '<i class="bi bi-cart-plus"></i> Add to Cart';
+                        } else {
+                            // Added to cart
+                            if (packageCard) {
+                                packageCard.classList.add('in-cart');
+                                // Add "In Cart" badge if not already there
+                                if (!packageCard.querySelector('.position-absolute.top-0.end-0')) {
+                                    const badge = document.createElement('div');
+                                    badge.className = 'position-absolute top-0 end-0 m-2';
+                                    badge.style.zIndex = '10';
+                                    badge.innerHTML = '<span class="badge bg-success"><i class="bi bi-check-circle-fill"></i> In Cart</span>';
+                                    packageCard.insertBefore(badge, packageCard.firstChild);
+                                }
+                            }
+                            btn.classList.remove('loading', 'btn-primary');
+                            btn.classList.add('btn-success', 'in-cart');
+                            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Cart - Click to Remove';
                         }
-
-                        btn.classList.remove('loading', 'btn-primary');
-                        btn.classList.add('btn-success');
-                        btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Added to Cart';
-                        btn.disabled = true;
 
                         updateCartCount(data.cart_count);
                     } else {
-                        throw new Error(data.error || 'Failed to add to cart');
+                        throw new Error(data.error || 'Failed to update cart');
                     }
                 })
                 .catch(error => {
                     console.error('Cart Error:', error);
                     btn.classList.remove('loading');
-                    btn.classList.add('btn-danger');
-                    btn.innerHTML = '<i class="bi bi-x-circle"></i> Error';
 
+                    // Restore original state
+                    if (isInCart) {
+                        btn.classList.add('btn-success', 'in-cart');
+                        btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Cart - Click to Remove';
+                    } else {
+                        btn.classList.add('btn-primary');
+                        btn.innerHTML = '<i class="bi bi-cart-plus"></i> Add to Cart';
+                    }
+
+                    // Show brief error state
+                    btn.classList.add('btn-danger');
                     setTimeout(() => {
                         btn.classList.remove('btn-danger');
-                        btn.innerHTML = originalHTML;
-                    }, 2000);
+                    }, 1500);
                 });
             });
         });
 
         function updateCartCount(count) {
-            const floatingBadge = document.querySelector('.position-fixed .badge');
-            if (floatingBadge) {
-                floatingBadge.textContent = count;
-            }
+            let floatingCart = document.querySelector('.floating-cart-badge');
 
             if (count > 0) {
-                let floatingCart = document.querySelector('.position-fixed.bottom-0.end-0');
                 if (!floatingCart) {
+                    // Create floating cart if it doesn't exist
                     floatingCart = document.createElement('div');
-                    floatingCart.className = 'position-fixed bottom-0 end-0 p-3 m-3';
-                    floatingCart.style.zIndex = '1000';
+                    floatingCart.className = 'floating-cart-badge';
                     floatingCart.innerHTML = `
                         <a href="{% url 'quotes:cart' %}" class="btn btn-success btn-lg shadow-lg">
                             <i class="bi bi-cart-check-fill"></i>
@@ -526,7 +582,16 @@
                         </a>
                     `;
                     document.body.appendChild(floatingCart);
+                } else {
+                    // Update existing badge count
+                    const badge = floatingCart.querySelector('.badge');
+                    if (badge) {
+                        badge.textContent = count;
+                    }
                 }
+            } else if (floatingCart) {
+                // Remove floating cart when count is 0
+                floatingCart.remove();
             }
         }
 

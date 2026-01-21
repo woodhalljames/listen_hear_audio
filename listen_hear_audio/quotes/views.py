@@ -65,12 +65,23 @@ def update_cart_view(request, package_id):
 def remove_from_cart_view(request, package_id):
     """Remove item from cart"""
     cart = get_or_create_cart(request)
-    
+
     if remove_from_cart(cart, package_id):
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': True,
+                'message': 'Item removed from cart',
+                'cart_count': cart.get_total_items()
+            })
         messages.success(request, 'Item removed from cart.')
     else:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': False,
+                'message': 'Item not found in cart'
+            }, status=404)
         messages.error(request, 'Item not found in cart.')
-    
+
     return redirect('quotes:cart')
 
 
