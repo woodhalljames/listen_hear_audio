@@ -20,7 +20,7 @@
 
       <!-- Quote Details Card -->
       <div class="card mb-4 shadow">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header text-white" style="background-color: var(--primary-blue);">
           <div class="d-flex justify-content-between align-items-center">
             <h4 class="mb-0">
               <i class="bi bi-file-earmark-text"></i> Quote Details
@@ -32,7 +32,7 @@
           <div class="row mb-4">
             <div class="col-md-6">
               <h6 class="text-muted mb-2">Quote Number</h6>
-              <p class="h4 text-primary mb-0">{{ quote_request.quote_number }}</p>
+              <p class="h4 mb-0" style="color: var(--primary-blue);">{{ quote_request.quote_number }}</p>
             </div>
             <div class="col-md-6">
               <h6 class="text-muted mb-2">Submitted</h6>
@@ -95,7 +95,7 @@
           {% for property_group in property_groups %}
             <!-- Property Type Section -->
             <div class="mb-4">
-              <h6 class="text-primary fw-bold border-bottom pb-2 mb-3">
+              <h6 class="fw-bold border-bottom pb-2 mb-3" style="color: var(--primary-blue);">
                 <i class="bi bi-building"></i> {{ property_group.grouper.name }}
               </h6>
 
@@ -156,7 +156,7 @@
                 <tr>
                   <td colspan="3" class="text-end"><strong>Estimated Total:</strong></td>
                   <td class="text-end">
-                    <strong class="text-primary h5 mb-0">
+                    <strong class="h5 mb-0" style="color: var(--primary-blue);">
                       {% if quote_request.estimated_total > 0 %}
                         ${{ quote_request.estimated_total|floatformat:2 }}
                       {% else %}
@@ -172,8 +172,8 @@
       </div>
 
       <!-- What's Next Section -->
-      <div class="card mb-4 border-info">
-        <div class="card-header bg-info text-white">
+      <div class="card mb-4" style="border-color: var(--primary-blue);">
+        <div class="card-header text-white" style="background-color: var(--primary-blue);">
           <h5 class="mb-0">
             <i class="bi bi-clock-history"></i> What Happens Next?
           </h5>
@@ -203,7 +203,7 @@
                   <h6>Team Review</h6>
                   <p class="text-muted mb-0">
                     Our expert team will review your selections and requirements 
-                    to prepare for your new smart home or audio install.
+                    to prepare for your new home living experience.
                   </p>
                 </div>
               </div>
@@ -214,10 +214,9 @@
                   <div class="step-number">3</div>
                 </div>
                 <div>
-                  <h6>Custom Quote</h6>
+                  <h6>Finalize Quote</h6>
                   <p class="text-muted mb-0">
-                    Within 2-3 business days, you'll receive call or email to get more specific details
-                    with pricing, goals, and recommendations.
+                    Within 2-3 business days, you'll receive a call to schedule a consultation or finalize expectations.
                   </p>
                 </div>
               </div>
@@ -228,10 +227,9 @@
                   <div class="step-number">4</div>
                 </div>
                 <div>
-                  <h6>Consultation</h6>
+                  <h6>Schedule</h6>
                   <p class="text-muted mb-0">
-                    We'll schedule a full consultation to discuss your project in detail 
-                    and answer any questions.
+                    We'll schedule the delivery of your new at home experience or visit for a consultation to discuss your project in detail.
                   </p>
                 </div>
               </div>

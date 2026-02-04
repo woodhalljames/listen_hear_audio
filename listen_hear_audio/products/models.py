@@ -1,10 +1,6 @@
 from django.db import models
-from django.conf import settings
 from django.urls import reverse
 from django.utils.text import slugify
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
 
 
 class PropertyType(models.Model):
@@ -279,28 +275,5 @@ class Package(models.Model):
     def get_installation_phase_display_value(self):
         """Get human-readable installation phase name"""
         return dict(self.INSTALLATION_PHASE_CHOICES).get(self.installation_phase, '')
-
-
-class CSVImport(models.Model):
-    """Track CSV imports for audit trail"""
-
-    csv_file = models.FileField(upload_to='csv_imports/')
-    uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    # Import statistics
-    packages_created = models.IntegerField(default=0)
-    packages_updated = models.IntegerField(default=0)
-    packages_skipped = models.IntegerField(default=0)
-    property_types_detected = models.CharField(max_length=500, blank=True, help_text="Auto-detected property types")
-    error_log = models.TextField(blank=True)
-
-    class Meta:
-        ordering = ['-uploaded_at']
-        verbose_name = 'CSV Import'
-        verbose_name_plural = 'CSV Imports'
-
-    def __str__(self):
-        return f"CSV Import {self.uploaded_at.strftime('%Y-%m-%d %H:%M')} - {self.packages_created} created"
 
 

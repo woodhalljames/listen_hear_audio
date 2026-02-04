@@ -88,9 +88,31 @@ def get_cart_context(cart):
         'package__name'
     ).all()
 
+    # Build category summary for simplified order display
+    # Structure: {property_type_name: {category_name: total, ...}, ...}
+    category_summary = {}
+    for item in items:
+        property_type_name = item.package.category.property_type.name
+        category_name = item.package.category.name
+
+        if property_type_name not in category_summary:
+            category_summary[property_type_name] = {}
+
+        if category_name not in category_summary[property_type_name]:
+            category_summary[property_type_name][category_name] = {
+                'total': 0,
+                'has_custom': False,
+            }
+
+        if item.package.is_custom:
+            category_summary[property_type_name][category_name]['has_custom'] = True
+        else:
+            category_summary[property_type_name][category_name]['total'] += item.get_subtotal()
+
     return {
         'cart': cart,
         'cart_items': items,
+        'category_summary': category_summary,
         'total_items': cart.get_total_items(),
         'estimated_total': cart.get_estimated_total(),
         'discount_amount': cart.get_discount_amount(),

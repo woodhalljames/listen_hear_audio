@@ -269,7 +269,6 @@ tags
 dump.rdb
 
 ### Project template
-listen_hear_audio/media/
 
 .pytest_cache/
 .ipython/

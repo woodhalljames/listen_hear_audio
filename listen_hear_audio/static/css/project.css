@@ -2,12 +2,50 @@
 
 /* Color Variables */
 :root {
-  --primary-blue: #3333ff;
+  --primary-blue: #0311FC;
   --primary-yellow: #FFFF00;
   --primary-dark: #232323;
   --text-grey: #4a4a4a;
   --light-grey: #f8f9fa;
   --white: #ffffff;
+  /* Override Bootstrap's primary color */
+  --bs-primary: #0311FC;
+  --bs-primary-rgb: 3, 17, 252;
+}
+
+/* Override Bootstrap primary color classes */
+.text-primary {
+  color: var(--primary-blue) !important;
+}
+
+.bg-primary {
+  background-color: var(--primary-blue) !important;
+}
+
+.btn-primary {
+  background-color: var(--primary-blue) !important;
+  border-color: var(--primary-blue) !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-yellow) !important;
+  border-color: var(--primary-yellow) !important;
+  color: var(--primary-dark) !important;
+}
+
+.btn-outline-primary {
+  color: var(--primary-blue) !important;
+  border-color: var(--primary-blue) !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-blue) !important;
+  border-color: var(--primary-blue) !important;
+  color: var(--white) !important;
+}
+
+.border-primary {
+  border-color: var(--primary-blue) !important;
 }
 
 /* Base Styles */
