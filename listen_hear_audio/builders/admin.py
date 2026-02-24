@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 
-from .models import Property, PhaseInstallation, PurchasedPackage, PropertyNote
+from .models import Property, PhaseInstallation, PurchasedPackage, PropertyNote, phase_order_annotation
 from .tasks import send_property_creation_email, send_date_confirmation_email
 
 
@@ -13,7 +13,8 @@ class PhaseInstallationInline(admin.StackedInline):
     can_delete = False
 
     fields = (
-        ('phase', 'status'),
+        'status',
+        'phase',
         'packages_display',
         ('requested_date', 'alternate_dates_display'),
         'builder_notes',
@@ -21,7 +22,15 @@ class PhaseInstallationInline(admin.StackedInline):
         'company_notes',
     )
 
-    readonly_fields = ('phase', 'packages_display', 'alternate_dates_display')
+    readonly_fields = (
+        'phase', 'packages_display', 'alternate_dates_display',
+        'requested_date', 'builder_notes',
+    )
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(
+            _phase_order=phase_order_annotation()
+        ).order_by('_phase_order')
 
     def packages_display(self, obj):
         """Show category and package name for each package"""
@@ -149,23 +158,32 @@ class PhaseInstallationAdmin(admin.ModelAdmin):
     )
     list_filter = ('status', 'phase', 'requested_date', 'confirmed_date')
     search_fields = ('property__name', 'property__address')
-    readonly_fields = ('alternate_dates_display', 'packages_display')
+    readonly_fields = (
+        'packages_display', 'requested_date', 'alternate_dates_display',
+        'builder_notes',
+    )
     actions = ['confirm_dates', 'mark_in_progress', 'mark_completed']
 
     fieldsets = (
         (None, {
-            'fields': ('property', 'phase', 'status')
+            'fields': ('status', 'property', 'phase')
         }),
         ('Category / Package', {
             'fields': ('packages_display',),
         }),
         ('Requested by Builder', {
             'fields': ('requested_date', 'alternate_dates_display', 'builder_notes'),
+            'description': 'These fields are set by the builder and cannot be edited here.',
         }),
         ('Confirm Installation', {
             'fields': ('confirmed_date', 'estimated_end_date', 'company_notes', 'completion_date'),
         }),
     )
+
+    def get_queryset(self, request):
+        return super().get_queryset(request).annotate(
+            _phase_order=phase_order_annotation()
+        ).order_by('_phase_order')
 
     def property_link(self, obj):
         url = reverse('admin:builders_property_change', args=[obj.property.pk])
@@ -178,6 +196,7 @@ class PhaseInstallationAdmin(admin.ModelAdmin):
             'rough_ins': '#17a2b8',
             'insulation_drywall': '#ffc107',
             'trim_finishes': '#fd7e14',
+            'finished_property': '#0d6efd',
         }
         color = colors.get(obj.phase, '#6c757d')
         text_color = '#212529' if obj.phase == 'insulation_drywall' else 'white'
@@ -304,6 +323,7 @@ class PurchasedPackageAdmin(admin.ModelAdmin):
             'rough_ins': '#17a2b8',
             'insulation_drywall': '#ffc107',
             'trim_finishes': '#fd7e14',
+            'finished_property': '#0d6efd',
         }
         color = colors.get(obj.installation_phase_snapshot, '#6c757d')
         text_color = '#212529' if obj.installation_phase_snapshot == 'insulation_drywall' else 'white'
@@ -312,6 +332,7 @@ class PurchasedPackageAdmin(admin.ModelAdmin):
             'rough_ins': 'Rough-Ins',
             'insulation_drywall': 'Insulation/Drywall',
             'trim_finishes': 'Trim/Finishes',
+            'finished_property': 'Finished Property',
         }
         label = phase_labels.get(obj.installation_phase_snapshot, obj.installation_phase_snapshot or 'N/A')
         return format_html(

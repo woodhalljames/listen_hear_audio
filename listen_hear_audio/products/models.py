@@ -68,6 +68,7 @@ class Category(models.Model):
         help_text="Upload a video file directly (MP4, MOV, etc.). If both video and YouTube URL are provided, uploaded video takes priority."
     )
     youtube_url = models.URLField(
+        max_length=500,
         blank=True,
         help_text="YouTube video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID or https://youtu.be/VIDEO_ID)"
     )
@@ -109,8 +110,8 @@ class Category(models.Model):
         return self.packages.exists()
 
     def has_video(self):
-        """Check if category has either an uploaded video or YouTube URL"""
-        return bool(self.video) or bool(self.youtube_url)
+        """Check if category has an uploaded video, legacy YouTube URL, or CategoryVideo entries"""
+        return bool(self.video) or bool(self.youtube_url) or self.videos.exists()
 
     def get_youtube_embed_id(self):
         """Extract YouTube video ID from URL for embedding"""
@@ -134,6 +135,66 @@ class Category(models.Model):
         """Get URL for category detail view"""
         from django.urls import reverse
         return reverse('products:category_detail', kwargs={'slug': self.slug})
+
+
+class CategoryImage(models.Model):
+    """Gallery images for a category detail page"""
+
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        related_name='gallery_images'
+    )
+    image = models.ImageField(upload_to='categories/gallery/')
+    caption = models.CharField(max_length=200, blank=True)
+    display_order = models.PositiveIntegerField(default=0, help_text="Lower numbers appear first")
+
+    class Meta:
+        ordering = ['display_order']
+        verbose_name = 'Category Image'
+        verbose_name_plural = 'Category Images'
+
+    def __str__(self):
+        return f"{self.category.name} - Image {self.pk}"
+
+
+class CategoryVideo(models.Model):
+    """YouTube video embeds for a category detail page"""
+
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.CASCADE,
+        related_name='videos'
+    )
+    youtube_url = models.URLField(
+        max_length=500,
+        help_text="YouTube video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)"
+    )
+    title = models.CharField(max_length=200, blank=True)
+    display_order = models.PositiveIntegerField(default=0, help_text="Lower numbers appear first")
+
+    class Meta:
+        ordering = ['display_order']
+        verbose_name = 'Category Video'
+        verbose_name_plural = 'Category Videos'
+
+    def __str__(self):
+        return f"{self.category.name} - {self.title or 'Video'}"
+
+    def get_youtube_embed_id(self):
+        """Extract YouTube video ID from URL for embedding"""
+        if not self.youtube_url:
+            return None
+        import re
+        patterns = [
+            r'(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)',
+            r'youtube\.com\/embed\/([^&\n?#]+)',
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, self.youtube_url)
+            if match:
+                return match.group(1)
+        return None
 
 
 class SubCategory(models.Model):
@@ -183,12 +244,14 @@ class Package(models.Model):
     ROUGH_INS = 'rough_ins'
     INSULATION_DRYWALL = 'insulation_drywall'
     TRIM_FINISHES = 'trim_finishes'
+    FINISHED_PROPERTY = 'finished_property'
 
     INSTALLATION_PHASE_CHOICES = [
         (FRAMING, 'Framing'),
         (ROUGH_INS, 'Rough-Ins'),
         (INSULATION_DRYWALL, 'Insulation and Drywall'),
         (TRIM_FINISHES, 'Trim and Finishes'),
+        (FINISHED_PROPERTY, 'Finished Property'),
     ]
 
     category = models.ForeignKey(
@@ -232,9 +295,19 @@ class Package(models.Model):
         default=False,
         help_text="Mark as true for custom/quote-only packages"
     )
-    catalog_only = models.BooleanField(
-        default=False,
-        help_text="If checked, package only shows in catalog - not in builder showroom"
+    VISIBILITY_BOTH = 'both'
+    VISIBILITY_CATALOG = 'catalog'
+    VISIBILITY_SHOWROOM = 'showroom'
+    VISIBILITY_CHOICES = [
+        (VISIBILITY_BOTH, 'Both'),
+        (VISIBILITY_CATALOG, 'Catalog Only'),
+        (VISIBILITY_SHOWROOM, 'Showroom Only'),
+    ]
+    visibility = models.CharField(
+        max_length=20,
+        choices=VISIBILITY_CHOICES,
+        default=VISIBILITY_BOTH,
+        help_text="Where this package appears: catalog, builder showroom, or both"
     )
     is_active = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)
@@ -263,10 +336,14 @@ class Package(models.Model):
         return []
 
     def get_price_display(self):
-        """Return price with 'Starting at' or 'Contact for Pricing' for custom packages"""
-        if self.is_custom:
-            return "Contact for Pricing"
+        """Return price with 'Starting at' prefix"""
         return f"Starting at ${self.starting_price:,.2f}"
+
+    def get_custom_label(self):
+        """Return custom label for custom packages"""
+        if self.is_custom:
+            return "Custom design"
+        return ""
 
     def get_absolute_url(self):
         """Get URL for package detail view"""

@@ -1,63 +1,1437 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Listen Hear - Pittsburgh's Premiere Smart Home & Audio Dealer{% endblock %}
+{% block title %}Listen Hear! Smart Home Installation Pittsburgh PA | Audio, Video, Automation & Security{% endblock %}
 
-{% block content %}
+{% block meta %}
+  <meta name="description" content="Pittsburgh's premier smart home installation company. Custom home audio, video, home theater, security, surveillance, networking, motorized shades, and whole-home automation for residential, commercial, and new construction. Serving the greater Pittsburgh area since 2008.">
+  <meta name="keywords" content="smart home installation Pittsburgh, home automation Pittsburgh PA, home audio installation, home theater installation, security camera installation, Control4 dealer Pittsburgh, whole home audio, motorized shades, pre-wire networking, smart home builder, residential AV installer">
+  <meta property="og:title" content="Listen Hear! Pittsburgh's Premier Smart Home Installation Company">
+  <meta property="og:description" content="Custom smart home design, audio & video installation, and intelligent automation, expertly integrated for residential, commercial, and new construction in Pittsburgh PA.">
+  <meta property="og:type" content="website">
+{% endblock meta %}
 
-<!-- Value Proposition Section -->
-<div class="container py-5">
-    <div class="text-center mb-5">
-        <h2 class="display-5 fw-bold mb-3">Why Smart Home Features Matter</h2>
-        <p class="lead text-muted">Invest in your future with smart home technology</p>
+{% block main_wrapper %}
+
+  {% if messages %}
+    <div class="container-fluid">
+      {% for message in messages %}
+        <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %} mt-3">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <section class="lhx-hero" data-dn-phase="0.05" aria-label="Listen Hear Smart Home Installation Pittsburgh">
+    {% if business_info.hero_video_src %}
+      <video class="lhx-hero__video" autoplay muted loop playsinline aria-hidden="true">
+        <source src="{{ business_info.hero_video_src }}" type="video/mp4">
+      </video>
+    {% else %}
+    
+      <div class="lhx-hero__video-placeholder" aria-hidden="true"></div>
+    {% endif %}
+    <div class="lhx-hero__overlay"></div>
+
+    <div class="lhx-hero__content container-fluid">
+      <div class="lhx-hero__inner">
+        <p class="lhx-eyebrow lhx-eyebrow--gold">Pittsburgh's Premier Smart Home Company</p>
+        <h1 class="lhx-hero__headline">
+          We Make Life<br>
+          <span class="lhx-hero__accent">Better With</span><br>
+          Technology
+        </h1>
+        <p class="lhx-hero__sub">
+          Custom smart home design, professional audio &amp; video installation,
+          and intelligent automation. Expertly integrated for residential,
+          commercial, and new construction across the greater Pittsburgh area.
+        </p>
+        <div class="lhx-hero__ctas">
+          <a href="{% url 'products:catalog' %}" class="lhx-btn lhx-btn--primary">
+            <i class="bi bi-grid-3x3-gap"></i> Browse Our Catalog
+          </a>
+          <a href="{% url 'builders:showroom' %}" class="lhx-btn lhx-btn--ghost">
+            <i class="bi bi-house-heart"></i> Build Your Smart Home
+          </a>
+        </div>
+        <div class="lhx-hero__stats">
+          <div class="lhx-hero__stat">
+            <span class="lhx-hero__stat-num">30+</span>
+            <span class="lhx-hero__stat-label">Years Experience</span>
+          </div>
+          <div class="lhx-hero__stat-divider"></div>
+          <div class="lhx-hero__stat">
+            <span class="lhx-hero__stat-num">5,000+</span>
+            <span class="lhx-hero__stat-label">Homes Automated</span>
+          </div>
+          <div class="lhx-hero__stat-divider"></div>
+          <div class="lhx-hero__stat">
+            <span class="lhx-hero__stat-num">24/7</span>
+            <span class="lhx-hero__stat-label">Support</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="row g-5 mb-5">
-        <div class="col-md-4 text-center">
-            <div class="p-4">
-                <i class="bi bi-shield-check text-primary mb-3" style="font-size: 4rem;"></i>
-                <h3 class="h4 mb-3">Increase Home Value</h3>
-                <p class="text-muted">Smart home features add significant resale value and marketability to new construction. Homes with integrated smart technology sell faster and for more money.</p>
-            </div>
-        </div>
-
-        <div class="col-md-4 text-center">
-            <div class="p-4">
-                <i class="bi bi-piggy-bank text-primary mb-3" style="font-size: 4rem;"></i>
-                <h3 class="h4 mb-3">Mortgage-Friendly</h3>
-                <p class="text-muted">Roll smart home packages into your mortgage during construction. This makes premium features affordable with low monthly payments instead of large upfront costs.</p>
-            </div>
-        </div>
-
-        <div class="col-md-4 text-center">
-            <div class="p-4">
-                <i class="bi bi-calendar-check text-primary mb-3" style="font-size: 4rem;"></i>
-                <h3 class="h4 mb-3">Done Right, Done Once</h3>
-                <p class="text-muted">Installing during construction is easier, cleaner, and more cost-effective than retrofitting later. Get it right the first time without tearing into finished walls.</p>
-            </div>
-        </div>
+    <div class="lhx-hero__scroll" aria-hidden="true">
+      <div class="lhx-hero__scroll-line"></div>
+      <span>Scroll</span>
     </div>
+  </section>
 
-    <div class="text-center">
-        <a href="{% url 'builders:showroom' %}" class="btn btn-primary btn-lg px-5 py-3">
-            <i class="bi bi-house-heart"></i> Start Your Smart Home Journey
+  <section class="lhx-morning lhx-section" data-dn-phase="0.0" id="morning" aria-label="Smart Home Morning Experience">
+    <div class="container-fluid">
+
+      <div class="lhx-section-header">
+        <p class="lhx-eyebrow">The Smart Home Experience</p>
+        <h2 class="lhx-section-title">Your Home,<br><em>Anticipating Your Every Need</em></h2>
+        <p class="lhx-section-sub">
+          From the moment your alarm goes off, your home mood is set low lighting, 
+          Shades open with the sun. Your favorite playlist fills the kitchen.
+          The temperature is exactly right before you leave the bedroom.
+        </p>
+      </div>
+
+      <div class="lhx-bento">
+
+        <div class="lhx-bento__cell lhx-bento__cell--wide lhx-bento__cell--photo lhx-animate-reveal" data-delay="0">
+      <div class="lhx-photo-placeholder" style="--ph-ratio:58%">
+            <span class="lhx-photo-placeholder__label">Photo: Morning living room — shades opening, warm sunlight<br><small>Recommended: 1200×700px landscape</small></span>
+          </div>
+          <div class="lhx-bento__cell-overlay">
+            <a href="{% url 'products:catalog' %}?category=motorized-blinds-shades" class="lhx-bento__cell-tag">
+              <i class="bi bi-window-split"></i> Motorized Shades
+            </a>
+            <h3 class="lhx-bento__cell-title">Wake up to a room that already knows it's morning</h3>
+          </div>
+        </div>
+
+        <div class="lhx-bento__cell lhx-bento__cell--stat lhx-bento__cell--blue lhx-animate-reveal" data-delay="100">
+          <i class="bi bi-speaker-fill lhx-bento__cell-icon"></i>
+          <div class="lhx-bento__cell-stat-num">12</div>
+          <div class="lhx-bento__cell-stat-label">Audio Zones<br>One Home</div>
+          <a href="{% url 'products:catalog' %}?category=home-audio" class="lhx-bento__cell-link">Explore Whole-Home Audio <i class="bi bi-arrow-right"></i></a>
+        </div>
+
+        <div class="lhx-bento__cell lhx-bento__cell--photo lhx-animate-reveal" data-delay="150">
+       <div class="lhx-photo-placeholder" style="--ph-ratio:80%">
+            <span class="lhx-photo-placeholder__label">Photo: Modern kitchen / home office with integrated tech<br><small>Recommended: 600×500px</small></span>
+          </div>
+          <div class="lhx-bento__cell-overlay">
+            <a href="{% url 'products:catalog' %}?category=pre-wire-networking" class="lhx-bento__cell-tag">
+              <i class="bi bi-diagram-3-fill"></i> Networking
+            </a>
+            <h3 class="lhx-bento__cell-title">Enterprise-grade Wi-Fi, invisibly integrated</h3>
+          </div>
+        </div>
+
+        <div class="lhx-bento__cell lhx-bento__cell--quote lhx-animate-reveal" data-delay="200">
+          <blockquote class="lhx-bento__quote">
+            "Music that follows you from room to room. Shades that open on schedule.
+            A home that runs itself so you don't have to."
+          </blockquote>
+          <p class="lhx-bento__quote-attr">— The Listen Hear Experience</p>
+        </div>
+
+        <div class="lhx-bento__cell lhx-bento__cell--photo lhx-animate-reveal" data-delay="250">
+        <div class="lhx-photo-placeholder" style="--ph-ratio:75%">
+            <span class="lhx-photo-placeholder__label">Photo: Golf simulator / game room<br><small>Recommended: 600×450px</small></span>
+          </div>
+          <div class="lhx-bento__cell-overlay">
+            <a href="{% url 'products:catalog' %}?category=simulation-sport-rooms" class="lhx-bento__cell-tag">
+              <i class="bi bi-controller"></i> Simulation Rooms
+            </a>
+            <h3 class="lhx-bento__cell-title">Golf simulators, gaming rooms &amp; sport spaces</h3>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="lhx-bridge lhx-section" data-dn-phase="0.5" aria-label="Smart Home Day to Night Transition">
+    <div class="lhx-bridge__video-wrap" aria-hidden="true">
+     <video class="lhx-bridge__video" autoplay muted loop playsinline>
+        {# <source src="{% static 'videos/day-to-night.mp4' %}" type="video/mp4"> #}
+      </video>
+      <div class="lhx-bridge__video-placeholder" aria-hidden="true">
+        <span>VIDEO PLACEHOLDER<br>
+          <small>1920×900px MP4 — Living room transitioning from afternoon light to evening glow<br>
+          Motorized shades lowering · Lights shifting warm and dim · Clean loop, no audio</small>
+        </span>
+      </div>
+    </div>
+    <div class="lhx-bridge__overlay"></div>
+    <div class="lhx-bridge__content container-fluid">
+      <p class="lhx-eyebrow lhx-eyebrow--gold">As the Day Winds Down</p>
+      <h2 class="lhx-bridge__headline">Your home doesn't<br>just respond.<br><em>It anticipates.</em></h2>
+      <p class="lhx-bridge__sub">
+        As evening approaches, your home transitions with you — automatically.
+        Shades lower. The theater warms up. Perimeter lights activate.
+        Your sanctuary, ready before you even ask.
+      </p>
+    </div>
+  </section>
+
+  <section class="lhx-evening lhx-section" data-dn-phase="1.0" id="evening" aria-label="Smart Home Evening Features">
+    <div class="container-fluid">
+
+      <div class="lhx-section-header">
+        <p class="lhx-eyebrow lhx-eyebrow--gold">Your Home, Every Night</p>
+        <h2 class="lhx-section-title lhx-section-title--light">Where Your Home Becomes<br><em>Your Sanctuary</em></h2>
+        <p class="lhx-section-sub lhx-section-sub--light">
+          Security that never sleeps. Theater that rivals any cinema.
+          Lighting that sets every mood. Your evening, perfectly orchestrated.
+        </p>
+      </div>
+
+      <div class="lhx-bento lhx-bento--dark">
+
+        <div class="lhx-bento__cell lhx-bento__cell--wide lhx-bento__cell--photo lhx-bento__cell--dark lhx-animate-reveal" data-delay="0">
+
+          <div class="lhx-photo-placeholder lhx-photo-placeholder--dark" style="--ph-ratio:58%">
+            <span class="lhx-photo-placeholder__label">Photo: Nighttime home exterior — security &amp; landscape lighting<br><small>Recommended: 1200×700px</small></span>
+          </div>
+          <div class="lhx-bento__cell-overlay lhx-bento__cell-overlay--strong">
+            <a href="{% url 'products:catalog' %}?category=security-access-control" class="lhx-bento__cell-tag lhx-bento__cell-tag--night">
+              <i class="bi bi-shield-lock-fill"></i> Security &amp; Access Control
+            </a>
+            <h3 class="lhx-bento__cell-title">Protected. Aware. Always on.</h3>
+            <p class="lhx-bento__cell-body">AI-powered cameras that know the difference between a deer and an intruder. Smart locks you control from anywhere in the world.</p>
+          </div>
+        </div>
+
+        <div class="lhx-bento__cell lhx-bento__cell--stat lhx-bento__cell--dark-muted lhx-animate-reveal" data-delay="100">
+          <i class="bi bi-camera-video-fill lhx-bento__cell-icon"></i>
+          <div class="lhx-bento__cell-stat-num">4K</div>
+          <div class="lhx-bento__cell-stat-label">Ultra HD<br>Surveillance</div>
+          <a href="{% url 'products:catalog' %}?category=surveillance" class="lhx-bento__cell-link lhx-bento__cell-link--light">View Systems <i class="bi bi-arrow-right"></i></a>
+        </div>
+
+        <div class="lhx-bento__cell lhx-bento__cell--photo lhx-bento__cell--dark lhx-animate-reveal" data-delay="150">
+         <div class="lhx-photo-placeholder lhx-photo-placeholder--dark" style="--ph-ratio:80%">
+            <span class="lhx-photo-placeholder__label">Photo: Home theater — cinematic, dark, aspirational<br><small>Recommended: 600×500px</small></span>
+          </div>
+          <div class="lhx-bento__cell-overlay lhx-bento__cell-overlay--strong">
+            <a href="{% url 'products:catalog' %}?category=home-entertainment" class="lhx-bento__cell-tag lhx-bento__cell-tag--night">
+              <i class="bi bi-tv-fill"></i> Home Theater
+            </a>
+            <h3 class="lhx-bento__cell-title">Cinema without the commute</h3>
+          </div>
+        </div>
+
+        <div class="lhx-bento__cell lhx-bento__cell--photo lhx-bento__cell--dark lhx-animate-reveal" data-delay="200">
+       <div class="lhx-photo-placeholder lhx-photo-placeholder--dark" style="--ph-ratio:75%">
+            <span class="lhx-photo-placeholder__label">Photo: Accent lighting — warm LED cove, evening living room<br><small>Recommended: 600×450px</small></span>
+          </div>
+          <div class="lhx-bento__cell-overlay lhx-bento__cell-overlay--strong">
+            <a href="{% url 'products:catalog' %}?category=accent-lighting" class="lhx-bento__cell-tag lhx-bento__cell-tag--night">
+              <i class="bi bi-lightbulb-fill"></i> Accent Lighting
+            </a>
+            <h3 class="lhx-bento__cell-title">Every mood, dialed in perfectly</h3>
+          </div>
+        </div>
+
+        <div class="lhx-bento__cell lhx-bento__cell--quote lhx-bento__cell--dark-quote lhx-animate-reveal" data-delay="250">
+          <blockquote class="lhx-bento__quote lhx-bento__quote--light">
+            "Over 30 years of passion and expertise — brought to every installation, in every home."
+          </blockquote>
+          <p class="lhx-bento__quote-attr lhx-bento__quote-attr--light">— Listen Hear!, Pittsburgh PA</p>
+          <div class="lhx-bento__expertise-strip">
+            <span><i class="bi bi-patch-check-fill"></i> Certified Installers</span>
+            <span><i class="bi bi-award-fill"></i> Authorized Dealers</span>
+            <span><i class="bi bi-headset"></i> Lifetime Support</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="lhx-builder lhx-builder--transitional lhx-section" data-dn-phase="0.62" id="showroom" aria-label="Smart Home Builder Tool">
+    <div class="container-fluid">
+      <div class="row align-items-center g-5">
+
+        <div class="col-lg-6 lhx-animate-reveal" data-delay="0">
+          <div class="lhx-builder__visual">
+         <div class="lhx-photo-placeholder lhx-photo-placeholder--twilight" style="--ph-ratio:76%">
+              <span class="lhx-photo-placeholder__label">Photo / Screenshot: Smart Home Builder tool or couple reviewing plans on tablet<br><small>Recommended: 900×700px</small></span>
+            </div>
+            <div class="lhx-builder__visual-badge">
+              <i class="bi bi-house-heart-fill"></i>
+              <span>Room-by-Room Builder</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 lhx-animate-reveal" data-delay="100">
+          <p class="lhx-eyebrow lhx-eyebrow--transitional">Smart Home Builder</p>
+          <h2 class="lhx-section-title lhx-section-title--transitional">Build Your Dream Home,<br><em>Your Way</em></h2>
+          <p class="lhx-builder__text lhx-builder__text--transitional">
+            Our Smart Home Builder Showroom puts you in the driver's seat.
+            Browse curated packages room by room, mix and match technologies
+            that fit your lifestyle, and see exactly what your smart home
+            could look like — before a single wire is run.
+          </p>
+          <ul class="lhx-feature-list lhx-feature-list--transitional">
+            <li><i class="bi bi-check-circle-fill"></i><span>Room-by-room customization across your entire floor plan</span></li>
+            <li><i class="bi bi-check-circle-fill"></i><span>Build packages that roll seamlessly into new construction financing</span></li>
+            <li><i class="bi bi-check-circle-fill"></i><span>Transparent pricing — no surprises, no pressure</span></li>
+            <li><i class="bi bi-check-circle-fill"></i><span>Save your selections and share with your builder or designer</span></li>
+          </ul>
+          <a href="{% url 'builders:showroom' %}" class="lhx-btn lhx-btn--primary">
+            <i class="bi bi-house-heart"></i> Open Smart Home Builder
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="lhx-catalog-strip lhx-section" data-dn-phase="0.15" id="services" aria-label="Smart Home Services Catalog Pittsburgh">
+    <div class="container-fluid">
+
+      <div class="lhx-section-header lhx-section-header--split">
+        <div>
+          <p class="lhx-eyebrow">What We Do</p>
+          <h2 class="lhx-section-title lhx-section-title--left">Complete Smart Home<br>Solutions</h2>
+        </div>
+        <div class="lhx-catalog-strip__cta-wrap">
+          <p class="lhx-section-sub lhx-section-sub--left">
+            From initial consultation to final installation, we handle every aspect
+            of your connected home — inside and out.
+          </p>
+          <a href="{% url 'products:catalog' %}" class="lhx-btn lhx-btn--primary mt-3">
+            <i class="bi bi-grid-3x3-gap"></i> View Full Catalog
+          </a>
+        </div>
+      </div>
+
+      <div class="lhx-catalog-grid">
+
+        <a href="{% url 'products:catalog' %}?category=accent-lighting" class="lhx-catalog-item lhx-animate-reveal" data-delay="0">
+          <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-lightbulb-fill"></i></div>
+          <h3 class="lhx-catalog-item__label">Accent Lighting</h3>
+          <p class="lhx-catalog-item__desc">LED strips, landscape &amp; custom mood lighting</p>
+          <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
         </a>
-    </div>
-</div>
 
-<!-- CTA Section -->
-<div class="bg-dark text-white py-5">
-    <div class="container text-center">
-        <h2 class="display-5 fw-bold mb-3">Ready to Build Your Smart Home?</h2>
-        <p class="lead mb-4">Visit our showroom or contact us to start planning your smart home installation</p>
-        <div class="d-flex gap-3 justify-content-center flex-wrap">
-            <a href="{% url 'builders:showroom' %}" class="btn btn-light btn-lg px-5">
-                <i class="bi bi-house-heart"></i> Visit Showroom
-            </a>
-            <a href="{% url 'about' %}" class="btn btn-outline-light btn-lg px-5">
-                <i class="bi bi-info-circle"></i> Learn More
-            </a>
-        </div>
+        <a href="{% url 'products:catalog' %}?category=pre-wire-networking" class="lhx-catalog-item lhx-animate-reveal" data-delay="60">
+          <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-diagram-3-fill"></i></div>
+          <h3 class="lhx-catalog-item__label">Pre-wire &amp; Networking</h3>
+          <p class="lhx-catalog-item__desc">Structured wiring, enterprise Wi-Fi, new construction</p>
+          <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
+        </a>
+
+        <a href="{% url 'products:catalog' %}?category=simulation-sport-rooms" class="lhx-catalog-item lhx-animate-reveal" data-delay="120">
+          <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-controller"></i></div>
+          <h3 class="lhx-catalog-item__label">Simulation &amp; Sport</h3>
+          <p class="lhx-catalog-item__desc">Golf simulators, gaming rooms, dedicated entertainment</p>
+          <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
+        </a>
+
+        <a href="{% url 'products:catalog' %}?category=surveillance" class="lhx-catalog-item lhx-animate-reveal" data-delay="180">
+          <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-camera-video-fill"></i></div>
+          <h3 class="lhx-catalog-item__label">Surveillance</h3>
+          <p class="lhx-catalog-item__desc">HD cameras, NVR recording, remote monitoring</p>
+          <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
+        </a>
+
+        <a href="{% url 'products:catalog' %}?category=home-audio" class="lhx-catalog-item lhx-animate-reveal" data-delay="240">
+          <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-speaker-fill"></i></div>
+          <h3 class="lhx-catalog-item__label">Whole-Home Audio</h3>
+          <p class="lhx-catalog-item__desc">Multi-zone audio, in-ceiling speakers, outdoor sound</p>
+          <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
+        </a>
+
+        <a href="{% url 'products:catalog' %}?category=security-access-control" class="lhx-catalog-item lhx-animate-reveal" data-delay="300">
+          <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-shield-lock-fill"></i></div>
+          <h3 class="lhx-catalog-item__label">Security &amp; Access</h3>
+          <p class="lhx-catalog-item__desc">Smart locks, alarm systems, keyless entry</p>
+          <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
+        </a>
+
+        <a href="{% url 'products:catalog' %}?category=home-entertainment" class="lhx-catalog-item lhx-animate-reveal" data-delay="360">
+          <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-tv-fill"></i></div>
+          <h3 class="lhx-catalog-item__label">Home Entertainment</h3>
+          <p class="lhx-catalog-item__desc">4K/8K displays, motorized lifts, media rooms</p>
+          <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
+        </a>
+
+        <a href="{% url 'products:catalog' %}?category=motorized-blinds-shades" class="lhx-catalog-item lhx-animate-reveal" data-delay="420">
+          <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-window-split"></i></div>
+          <h3 class="lhx-catalog-item__label">Motorized Shades</h3>
+          <p class="lhx-catalog-item__desc">Automated window treatments, app and voice control</p>
+          <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
+        </a>
+
+      </div>
     </div>
-</div>
-{% endblock %}
+  </section>
+
+  <section class="lhx-scheduler lhx-section" data-dn-phase="0.08" id="scheduler" aria-label="Builder Installation Scheduling">
+    <div class="container-fluid">
+      <div class="row align-items-center g-5">
+
+        <div class="col-lg-6 order-lg-2">
+          <div class="lhx-scheduler__cards">
+            <div class="lhx-scheduler__card lhx-scheduler__card--1 lhx-animate-reveal" data-delay="0">
+              <i class="bi bi-calendar2-check-fill"></i>
+              <div><strong>Installation Confirmed</strong><span>March 18 — 9:00 AM</span></div>
+            </div>
+            <div class="lhx-scheduler__card lhx-scheduler__card--2 lhx-animate-reveal" data-delay="120">
+              <i class="bi bi-geo-alt-fill"></i>
+              <div><strong>Site: Hartwood Estates Lot 14</strong><span>Pre-wire &amp; AV rough-in</span></div>
+            </div>
+            <div class="lhx-scheduler__card lhx-scheduler__card--3 lhx-animate-reveal" data-delay="240">
+              <i class="bi bi-people-fill"></i>
+              <div><strong>Crew Assigned</strong><span>2 certified technicians</span></div>
+            </div>
+            <div class="lhx-scheduler__card lhx-scheduler__card--4 lhx-animate-reveal" data-delay="360">
+              <i class="bi bi-graph-up-arrow"></i>
+              <div><strong>3 Lots Active</strong><span>Managed from one dashboard</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 order-lg-1 lhx-animate-reveal" data-delay="60">
+          <p class="lhx-eyebrow">For Builders &amp; Designers</p>
+          <h2 class="lhx-section-title">Schedule Installations<br>Without the Back-and-Forth</h2>
+          <p class="lhx-builder__text">
+            Building a development or managing multiple projects? Our Builder Scheduler
+            lets you book smart home installation appointments directly — coordinated
+            to your construction timeline, not ours. No phone tag. No delays.
+          </p>
+          <ul class="lhx-feature-list">
+            <li><i class="bi bi-check-circle-fill"></i><span>Schedule pre-wire, rough-in, and trim-out visits in one place</span></li>
+            <li><i class="bi bi-check-circle-fill"></i><span>Synced to our technician availability in real time</span></li>
+            <li><i class="bi bi-check-circle-fill"></i><span>Manage multiple lots and projects from a single dashboard</span></li>
+          </ul>
+          <div class="d-flex gap-3 flex-wrap mt-4">
+            <a href="{% url 'builders:showroom' %}" class="lhx-btn lhx-btn--primary">
+              <i class="bi bi-calendar2-plus"></i> Schedule an Installation
+            </a>
+            <a href="{% url 'about' %}" class="lhx-btn lhx-btn--outline">Learn More</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="lhx-brands lhx-section" data-dn-phase="0.05" id="brands" aria-label="Trusted Smart Home Brand Partners">
+    <div class="container-fluid">
+      <div class="lhx-section-header text-center">
+        <p class="lhx-eyebrow">Trusted Partners</p>
+        <h2 class="lhx-section-title">Industry-Leading Brands,<br>Expert Installation</h2>
+        <p class="lhx-section-sub">
+          We're certified installers and authorized dealers for the world's most respected
+          smart home, audio, video, and home automation brands.
+        </p>
+      </div>
+      <div class="lhx-brands-grid">
+        {% for brand in brands %}
+          <div class="lhx-brand-card lhx-animate-reveal" data-delay="{{ forloop.counter0 }}0">
+            {% if brand.website_url %}
+              <a href="{{ brand.website_url }}" target="_blank" rel="noopener" class="lhx-brand-logo" title="{{ brand.name }}">
+                <img src="{{ brand.logo.url }}" alt="{{ brand.name }} - Authorized Dealer Pittsburgh" loading="lazy">
+              </a>
+            {% else %}
+              <div class="lhx-brand-logo" title="{{ brand.name }}">
+                <img src="{{ brand.logo.url }}" alt="{{ brand.name }} - Authorized Dealer Pittsburgh" loading="lazy">
+              </div>
+            {% endif %}
+          </div>
+        {% empty %}
+          <div class="text-center text-muted py-3 col-12"><p>Brand partners coming soon.</p></div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="lhx-closer" data-dn-phase="0.0" id="expertise" aria-label="Listen Hear Expertise and Contact">
+
+    {# ── Upper: light, photo tiles ── #}
+    <div class="lhx-closer__upper">
+      <div class="container-fluid">
+
+        <div class="lhx-section-header text-center">
+          <p class="lhx-eyebrow">The Listen Hear Difference</p>
+          <h2 class="lhx-section-title lhx-closer__headline">
+            One Team. Every Screen,<br>Speaker &amp; Switch.
+            <em>For Life.</em>
+          </h2>
+          <p class="lhx-section-sub">
+            For over 30 years, Pittsburgh homeowners have trusted us with everything
+            electronic in their home — from the first wire pulled to the last remote
+            programmed, and every service call in between.
+          </p>
+        </div>
+
+        {# Credential bar #}
+        <div class="lhx-cred-bar lhx-animate-reveal" data-delay="0">
+          <div class="lhx-cred-bar__item">
+            <span class="lhx-cred-bar__num">30+</span>
+            <span class="lhx-cred-bar__label">Years in Pittsburgh</span>
+          </div>
+          <div class="lhx-cred-bar__divider"></div>
+          <div class="lhx-cred-bar__item">
+            <span class="lhx-cred-bar__num">500+</span>
+            <span class="lhx-cred-bar__label">Homes &amp; Businesses</span>
+          </div>
+          <div class="lhx-cred-bar__divider"></div>
+          <div class="lhx-cred-bar__item">
+            <span class="lhx-cred-bar__num">24/7</span>
+            <span class="lhx-cred-bar__label">Lifetime Support</span>
+          </div>
+          <div class="lhx-cred-bar__divider"></div>
+          <div class="lhx-cred-bar__item">
+            <i class="bi bi-patch-check-fill lhx-cred-bar__icon"></i>
+            <span class="lhx-cred-bar__label">Certified &amp; Authorized</span>
+          </div>
+        </div>
+
+        {# Three specialty proof tiles #}
+        <div class="lhx-proof-strip">
+
+          <div class="lhx-proof-tile lhx-animate-reveal" data-delay="0">
+        <div class="lhx-photo-placeholder lhx-proof-tile__photo" style="--ph-ratio:60%">
+              <span class="lhx-photo-placeholder__label">Photo: 4K/8K TV install — dramatic wall mount<br><small>Recommended: 560×340px</small></span>
+            </div>
+            <div class="lhx-proof-tile__body">
+              <div class="lhx-proof-tile__icon"><i class="bi bi-tv-fill"></i></div>
+              <h3 class="lhx-proof-tile__title">Display &amp; Home Theater</h3>
+              <p class="lhx-proof-tile__text">4K and 8K installation, calibration, motorized lifts — and the ongoing tuning and support that keeps your picture perfect for years.</p>
+              <a href="{% url 'products:catalog' %}?category=home-entertainment" class="lhx-proof-tile__link">Explore <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+
+          <div class="lhx-proof-tile lhx-proof-tile--featured lhx-animate-reveal" data-delay="100">
+         <div class="lhx-photo-placeholder lhx-proof-tile__photo" style="--ph-ratio:60%">
+              <span class="lhx-photo-placeholder__label">Photo: Security camera or smart lock install<br><small>Recommended: 560×340px</small></span>
+            </div>
+            <div class="lhx-proof-tile__body">
+              <div class="lhx-proof-tile__icon lhx-proof-tile__icon--featured"><i class="bi bi-shield-lock-fill"></i></div>
+              <h3 class="lhx-proof-tile__title">Surveillance, AI Cams &amp; Locks</h3>
+              <p class="lhx-proof-tile__text">HD cameras, AI detection, and smart locks — installed right the first time and monitored, updated, and supported for the life of your system.</p>
+              <a href="{% url 'products:catalog' %}?category=surveillance" class="lhx-proof-tile__link">Explore <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+
+          <div class="lhx-proof-tile lhx-animate-reveal" data-delay="200">
+         <div class="lhx-photo-placeholder lhx-proof-tile__photo" style="--ph-ratio:60%">
+              <span class="lhx-photo-placeholder__label">Photo: In-ceiling speakers / whole-home audio<br><small>Recommended: 560×340px</small></span>
+            </div>
+            <div class="lhx-proof-tile__body">
+              <div class="lhx-proof-tile__icon"><i class="bi bi-music-note-beamed"></i></div>
+              <h3 class="lhx-proof-tile__title">Whole-Home Audio</h3>
+              <p class="lhx-proof-tile__text">Multi-zone systems designed to disappear and deliver studio-quality sound — in every room, outdoors, and for every owner that comes after you.</p>
+              <a href="{% url 'products:catalog' %}?category=home-audio" class="lhx-proof-tile__link">Explore <i class="bi bi-arrow-right"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+   <div class="lhx-closer__lower">
+      <div class="container-fluid">
+        <div class="row g-4 align-items-stretch">
+
+          <div class="col-lg-6 lhx-animate-reveal" data-delay="0">
+            <div class="lhx-closer__service-card">
+              <div class="lhx-closer__service-icon">
+                <i class="bi bi-headset"></i>
+              </div>
+              <div>
+                <p class="lhx-eyebrow lhx-eyebrow--gold mb-1">Existing Customers</p>
+                <h3 class="lhx-closer__service-title">We're Still Your Team.</h3>
+                <p class="lhx-closer__service-text">
+                  Your relationship with Listen Hear doesn't end at installation.
+                  Log in to submit a service request, track an open ticket, or reach
+                  a certified technician directly — 24/7, for the lifetime of your system.
+                  No runaround, no third parties. Just us.
+                </p>
+                {% if request.user.is_authenticated %}
+                  <a href="{% url 'users:detail' request.user.pk %}" class="lhx-btn lhx-btn--primary">
+                    <i class="bi bi-tools"></i> Request Service
+                  </a>
+                {% else %}
+                  <div class="d-flex gap-3 flex-wrap align-items-center">
+                    <a href="{% url 'account_login' %}" class="lhx-btn lhx-btn--primary">
+                      <i class="bi bi-person-circle"></i> Sign In to Request Service
+                    </a>
+                    <a href="{% url 'account_signup' %}" class="lhx-btn lhx-btn--text lhx-btn--text-light">
+                      Create an account →
+                    </a>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          {# Main CTA #}
+          <div class="col-lg-6 lhx-animate-reveal" data-delay="120">
+            <div class="lhx-closer__cta-card">
+              <p class="lhx-eyebrow lhx-eyebrow--gold">Ready to Begin?</p>
+              <h3 class="lhx-closer__cta-title">
+                Start Your Relationship<br>With Listen Hear Today.
+              </h3>
+              <p class="lhx-closer__cta-text">
+                Visit our Pittsburgh showroom, design your home online, or talk to
+                a certified technician — the first of many conversations we hope
+                to have with you over the life of your home.
+              </p>
+              <div class="d-flex flex-column gap-3">
+                <a href="{% url 'contact' %}" class="lhx-btn lhx-btn--primary lhx-btn--full">
+                  <i class="bi bi-chat-dots"></i> Talk to an Expert
+                </a>
+                <a href="{% url 'builders:showroom' %}" class="lhx-btn lhx-btn--ghost lhx-btn--full">
+                  <i class="bi bi-house-heart"></i> Open Smart Home Builder
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>{# /closer__lower #}
+
+  </section>
+
+{% endblock main_wrapper %}
+
+
+{% block inline_javascript %}
+<script>
+(function () {
+  'use strict';
+
+  // ── COLOR PALETTES ──────────────────────────────────────────
+  const DAY = {
+    sectionBg:   [255, 255, 255],
+    altBg:       [237, 241, 255],
+    cardBg:      [255, 255, 255],
+    cardBorder:  [220, 226, 255],
+    eyebrow:     [3,  17, 252],
+    titleColor:  [18,  18,  40],
+    bodyColor:   [60,  65,  90],
+    subColor:    [110, 118, 150],
+    accentBlue:  [3,  17, 252],
+    iconBg:      [228, 232, 255],
+    checkColor:  [3,  17, 252],
+  };
+
+  const NIGHT = {
+    sectionBg:   [14,  17,  35],
+    altBg:       [20,  24,  48],
+    cardBg:      [22,  27,  55],
+    cardBorder:  [40,  50,  90],
+    eyebrow:     [255, 204,   0],
+    titleColor:  [230, 235, 255],
+    bodyColor:   [170, 180, 220],
+    subColor:    [120, 130, 170],
+    accentBlue:  [90, 140, 255],
+    iconBg:      [30,  38,  75],
+    checkColor:  [255, 204,   0],
+  };
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function lerpColor(ca, cb, t) {
+    return [
+      Math.round(lerp(ca[0], cb[0], t)),
+      Math.round(lerp(ca[1], cb[1], t)),
+      Math.round(lerp(ca[2], cb[2], t)),
+    ];
+  }
+  function rgb(c)       { return `rgb(${c[0]},${c[1]},${c[2]})`; }
+  function rgba(c, a)   { return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
+  function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+  const sections  = Array.from(document.querySelectorAll('[data-dn-phase]'));
+  let currentDn   = 0;
+  let targetDn    = 0;
+  let rafId       = null;
+
+  function computeTargetDn() {
+    // Find which section CONTAINS the viewport midpoint.
+    // Much more reliable than nearest-center — avoids tall sections (hero, bridge)
+    // dominating the calculation long after the user has scrolled past them.
+    const mid = window.scrollY + window.innerHeight * 0.5;
+
+    let activeIdx = 0;
+    for (let i = 0; i < sections.length; i++) {
+      const top = sections[i].getBoundingClientRect().top + window.scrollY;
+      if (mid >= top) activeIdx = i;
+    }
+
+    const sec      = sections[activeIdx];
+    const top      = sec.getBoundingClientRect().top + window.scrollY;
+    const progress = Math.max(0, Math.min(1, (mid - top) / (sec.offsetHeight || 1)));
+
+    const thisPhase = parseFloat(sec.dataset.dnPhase) || 0;
+    const nextSec   = sections[activeIdx + 1];
+    const nextPhase = nextSec ? parseFloat(nextSec.dataset.dnPhase) : thisPhase;
+
+    targetDn = lerp(thisPhase, nextPhase, easeInOut(progress));
+  }
+
+  function applyTheme(dn) {
+    const t    = Math.max(0, Math.min(1, dn));
+    const p    = (key) => rgb(lerpColor(DAY[key], NIGHT[key], t));
+    const pa   = (key, a) => rgba(lerpColor(DAY[key], NIGHT[key], t), a);
+    const root = document.documentElement;
+
+    root.style.setProperty('--dn',             t.toFixed(4));
+    root.style.setProperty('--dn-section-bg',  p('sectionBg'));
+    root.style.setProperty('--dn-alt-bg',      p('altBg'));
+    root.style.setProperty('--dn-card-bg',     p('cardBg'));
+    root.style.setProperty('--dn-card-border', p('cardBorder'));
+    root.style.setProperty('--dn-eyebrow',     p('eyebrow'));
+    root.style.setProperty('--dn-title',       p('titleColor'));
+    root.style.setProperty('--dn-body',        p('bodyColor'));
+    root.style.setProperty('--dn-sub',         p('subColor'));
+    root.style.setProperty('--dn-accent',      p('accentBlue'));
+    root.style.setProperty('--dn-icon-bg',     p('iconBg'));
+    root.style.setProperty('--dn-check',       p('checkColor'));
+    root.style.setProperty('--dn-shadow',      pa('accentBlue', lerp(0.06, 0.20, t)));
+  }
+
+  function animate() {
+    currentDn += (targetDn - currentDn) * 0.048;
+    applyTheme(currentDn);
+    if (Math.abs(targetDn - currentDn) > 0.0008) {
+      rafId = requestAnimationFrame(animate);
+    } else {
+      currentDn = targetDn;
+      applyTheme(currentDn);
+      rafId = null;
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    computeTargetDn();
+    if (!rafId) rafId = requestAnimationFrame(animate);
+  }, { passive: true });
+
+  computeTargetDn();
+  applyTheme(currentDn);
+
+  // ── SCROLL REVEAL ───────────────────────────────────────────
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const delay = parseInt(e.target.dataset.delay || 0, 10);
+      setTimeout(() => e.target.classList.add('lhx-revealed'), delay);
+      revealObs.unobserve(e.target);
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.lhx-animate-reveal').forEach(el => revealObs.observe(el));
+
+  // ── CATALOG SIDEBAR HIGHLIGHT (project.js companion) ────────
+  const catObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      document.querySelectorAll('.catalog-nav-link').forEach(link => {
+        link.style.backgroundColor = '';
+        link.style.color = '';
+        if (link.getAttribute('href') === `#${e.target.id}`) {
+          link.style.backgroundColor = 'var(--white)';
+          link.style.color = 'var(--primary-blue)';
+        }
+      });
+    });
+  }, { threshold: 0, rootMargin: '-20% 0px -70% 0px' });
+
+  document.querySelectorAll('[id^="property-"]').forEach(s => catObs.observe(s));
+
+}());
+</script>
+{% endblock inline_javascript %}
+
+
+{% block css %}
+{{ block.super }}
+<style>
+/* ════════════════════════════════════════════════════════════════
+   LHX HOME PAGE — Day/Night System v2
+   Fonts: Cormorant Garamond (display) · DM Sans (body/UI)
+   All theme colors driven by --dn-* CSS variables set by JS engine
+   ════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+/* ── DN TOKEN DEFAULTS (pre-JS) ─────────────────────────────── */
+:root {
+  --dn:             0;
+  --dn-section-bg:  rgb(255,255,255);
+  --dn-alt-bg:      rgb(237,241,255);
+  --dn-card-bg:     rgb(255,255,255);
+  --dn-card-border: rgb(220,226,255);
+  --dn-eyebrow:     rgb(3,17,252);
+  --dn-title:       rgb(18,18,40);
+  --dn-body:        rgb(60,65,90);
+  --dn-sub:         rgb(110,118,150);
+  --dn-accent:      rgb(3,17,252);
+  --dn-icon-bg:     rgb(228,232,255);
+  --dn-check:       rgb(3,17,252);
+  --dn-shadow:      rgba(3,17,252,0.06);
+}
+
+/* Body tracks the day/night theme — eliminates white gaps between sections */
+html, body {
+  background-color: var(--dn-section-bg);
+  transition: background-color 0.1s linear;
+  margin: 0; padding: 0;
+  overflow-x: hidden;
+}
+
+/* ── SECTION BASE ───────────────────────────────────────────── */
+.lhx-section {
+  font-family: 'DM Sans', 'Inter', sans-serif;
+  padding-top: 5.5rem;
+  padding-bottom: 5.5rem;
+  width: 100%;
+}
+
+/* Ensure all sections are truly full-bleed */
+.lhx-hero, .lhx-section, .lhx-bridge, .lhx-closer {
+  box-sizing: border-box;
+}
+
+/* ── 80% CONTENT CONSTRAINT ─────────────────────────────────── */
+/* Backgrounds fill 100% — only the inner content wrapper is constrained */
+[data-dn-phase] > .container-fluid,
+.lhx-closer__upper > .container-fluid,
+.lhx-closer__lower > .container-fluid {
+  width: 92%;
+  padding-left: 0;
+  padding-right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (min-width: 768px) {
+  [data-dn-phase] > .container-fluid,
+  .lhx-closer__upper > .container-fluid,
+  .lhx-closer__lower > .container-fluid { width: 86%; }
+}
+@media (min-width: 1200px) {
+  [data-dn-phase] > .container-fluid,
+  .lhx-closer__upper > .container-fluid,
+  .lhx-closer__lower > .container-fluid { width: 80%; }
+}
+
+/* Day-tracking sections */
+/* Day-tracking sections — background interpolates with scroll */
+.lhx-morning,
+.lhx-scheduler,
+.lhx-brands           { background-color: var(--dn-section-bg); transition: background-color 0.1s linear; }
+
+/* Closer manages its own two-zone backgrounds (see __upper / __lower) */
+.lhx-closer           { background: none; }
+
+/* Alternate tint */
+.lhx-catalog-strip { background-color: var(--dn-alt-bg); transition: background-color 0.1s linear; }
+
+/* Hard dark — stays constant, no interpolation */
+.lhx-evening  { background-color: #080b1e !important; }
+
+/* Transitional builder — hard gradient, pulls from night to day */
+.lhx-builder--transitional {
+  background: linear-gradient(180deg, #0e1530 0%, #141c3a 55%, #1c2448 100%) !important;
+}
+
+
+/* ── TYPOGRAPHY ─────────────────────────────────────────────── */
+.lhx-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--dn-eyebrow); margin-bottom: 0.75rem; transition: color 0.3s;
+}
+.lhx-eyebrow--gold         { color: #FFCC00 !important; }
+.lhx-eyebrow--transitional { color: #a8c0ff !important; }
+
+.lhx-section-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700;
+  color: var(--dn-title); line-height: 1.1; margin-bottom: 1rem; transition: color 0.3s;
+}
+.lhx-section-title em              { font-style: italic; color: var(--dn-accent); }
+.lhx-section-title--left          { text-align: left; }
+.lhx-section-title--light         { color: #e8eeff; }
+.lhx-section-title--light em      { color: #FFCC00; }
+.lhx-section-title--transitional  { color: #d0dbff; }
+.lhx-section-title--transitional em { color: #FFCC00; }
+
+.lhx-section-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.05rem; color: var(--dn-sub);
+  line-height: 1.75; max-width: 800px; margin: 0 auto; transition: color 0.3s;
+}
+.lhx-section-sub--left  { margin: 0; }
+.lhx-section-sub--light { color: rgba(200,210,255,0.85); }
+
+/* ── SECTION HEADER LAYOUTS ─────────────────────────────────── */
+.lhx-section-header              { margin-bottom: 3.5rem; }
+.lhx-section-header.text-center .lhx-section-title { text-align: center; }
+.lhx-section-header--split {
+  display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 3rem; flex-wrap: wrap; margin-bottom: 3rem;
+}
+.lhx-catalog-strip__cta-wrap {
+  max-width: 420px; display: flex; flex-direction: column; justify-content: flex-end;
+}
+
+/* ── BUTTONS ────────────────────────────────────────────────── */
+.lhx-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+  letter-spacing: 0.02em; padding: 0.75rem 1.75rem; border-radius: 8px;
+  text-decoration: none; transition: all 0.2s ease;
+  border: 2px solid transparent; cursor: pointer; white-space: nowrap;
+}
+.lhx-btn--primary   { background: var(--primary-blue); color: #fff; border-color: var(--primary-blue); }
+.lhx-btn--primary:hover {
+  background: #FFFF00; border-color: #FFFF00; color: #1a1a1a;
+  transform: translateY(-2px); box-shadow: 0 6px 20px rgba(3,17,252,0.25);
+}
+.lhx-btn--ghost     { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.6); backdrop-filter: blur(4px); }
+.lhx-btn--ghost:hover { background: rgba(255,255,255,0.2); border-color: #fff; color: #fff; transform: translateY(-2px); }
+.lhx-btn--ghost-dark { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.3); }
+.lhx-btn--ghost-dark:hover { background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.6); }
+.lhx-btn--outline   { background: transparent; color: var(--dn-accent); border-color: var(--dn-card-border); }
+.lhx-btn--outline:hover { background: var(--dn-icon-bg); border-color: var(--dn-accent); }
+.lhx-btn--text      { background: transparent; color: var(--dn-sub); border-color: transparent; padding-left: 0; padding-right: 0; }
+.lhx-btn--text:hover { color: var(--dn-accent); }
+.lhx-btn--full      { width: 100%; justify-content: center; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   1. HERO
+   ══════════════════════════════════════════════════════════════ */
+.lhx-hero {
+  position: relative; width: 100%; min-height: 100svh;
+  display: flex; align-items: flex-end;
+  overflow: hidden; background-color: #060818; padding-bottom: 6rem;
+}
+.lhx-hero__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+.lhx-hero__video-placeholder {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #0d1a4a 0%, #060818 50%, #1a0830 100%);
+}
+.lhx-hero__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(5,8,24,0.25) 0%, rgba(5,8,24,0.1) 40%, rgba(5,8,24,0.7) 80%, rgba(5,8,24,0.95) 100%);
+  z-index: 1;
+}
+.lhx-hero__content   { position: relative; z-index: 2; padding-top: 8rem; width: 100%; }
+.lhx-hero__inner     { max-width: 1100px; animation: lhxFadeUp 1s 0.15s ease both; }
+.lhx-hero__headline  {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(3.5rem, 8vw, 7rem); font-weight: 700; color: #fff;
+  line-height: 1.0; margin-bottom: 1.5rem; letter-spacing: -0.01em;
+}
+.lhx-hero__accent    { color: #FFCC00; }
+.lhx-hero__sub {
+  font-family: 'DM Sans', sans-serif; font-size: clamp(1rem, 1.8vw, 1.2rem);
+  color: rgba(210,220,255,0.88); line-height: 1.75; max-width: 580px; margin-bottom: 2.5rem;
+}
+.lhx-hero__ctas      { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 4rem; }
+.lhx-hero__stats {
+  display: flex; align-items: center; flex-wrap: wrap;
+  padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.12);
+}
+.lhx-hero__stat         { display: flex; flex-direction: column; padding: 0 2.5rem 0 0; }
+.lhx-hero__stat-num     { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: #fff; line-height: 1; }
+.lhx-hero__stat-label   { font-family: 'DM Sans', sans-serif; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(180,190,230,0.7); margin-top: 0.25rem; }
+.lhx-hero__stat-divider { width: 1px; height: 40px; background: rgba(255,255,255,0.15); margin-right: 2.5rem; }
+.lhx-hero__scroll {
+  position: absolute; bottom: 2.5rem; right: 3rem;
+  display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; opacity: 0.6;
+}
+.lhx-hero__scroll span {
+  font-family: 'DM Sans', sans-serif; font-size: 0.65rem;
+  text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.7); writing-mode: vertical-rl;
+}
+.lhx-hero__scroll-line {
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes lhxFadeUp   { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scrollPulse { 0%, 100% { transform: scaleY(0.85); opacity: 0.5; } 50% { transform: scaleY(1.15); opacity: 1; } }
+
+
+/* ══════════════════════════════════════════════════════════════
+   PHOTO PLACEHOLDERS
+   ══════════════════════════════════════════════════════════════ */
+.lhx-photo-placeholder {
+  position: relative; width: 100%; padding-top: var(--ph-ratio, 66%);
+  background: linear-gradient(135deg, #d0d8f0 0%, #bbc5e8 100%);
+  border-radius: 10px; overflow: hidden;
+}
+.lhx-photo-placeholder--dark     { background: linear-gradient(135deg, #1e2550 0%, #141838 100%); }
+.lhx-photo-placeholder--twilight { background: linear-gradient(135deg, #1e2860 0%, #2a1840 60%, #1a1030 100%); }
+.lhx-photo-placeholder__label {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 1.5rem;
+  font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 500;
+  color: rgba(80,95,140,0.8); line-height: 1.5;
+}
+.lhx-photo-placeholder--dark .lhx-photo-placeholder__label,
+.lhx-photo-placeholder--twilight .lhx-photo-placeholder__label { color: rgba(150,165,210,0.65); }
+.lhx-photo-placeholder small { display: block; margin-top: 0.35rem; font-size: 0.72rem; opacity: 0.7; font-weight: 400; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   BENTO GRID
+   ══════════════════════════════════════════════════════════════ */
+.lhx-bento { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; }
+.lhx-bento__cell {
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--dn-card-border); background: var(--dn-card-bg);
+  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+.lhx-bento__cell:hover { box-shadow: 0 12px 40px var(--dn-shadow); transform: translateY(-4px); }
+.lhx-bento__cell--wide   { grid-column: span 2; }
+.lhx-bento__cell--photo  { position: relative; }
+.lhx-bento__cell--dark        { border-color: rgba(50,65,120,0.5); background: #0e1123; }
+.lhx-bento__cell--dark:hover  { border-color: rgba(90,140,255,0.4); box-shadow: 0 12px 40px rgba(90,140,255,0.15); }
+.lhx-bento__cell--dark-muted  { background: #131628; border-color: rgba(40,55,100,0.6); }
+.lhx-bento__cell--dark-quote  { background: #0a0d20; border: none; }
+
+.lhx-bento__cell-overlay {
+  position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem;
+  background: linear-gradient(to top, rgba(8,10,30,0.88) 0%, rgba(8,10,30,0.45) 50%, transparent 100%);
+}
+.lhx-bento__cell-overlay--strong {
+  background: linear-gradient(to top, rgba(5,7,20,0.96) 0%, rgba(5,7,20,0.6) 55%, transparent 100%);
+}
+.lhx-bento__cell-tag {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: 'DM Sans', sans-serif; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: #FFCC00; text-decoration: none;
+  margin-bottom: 0.6rem; transition: color 0.2s;
+}
+.lhx-bento__cell-tag:hover        { color: #fff; }
+.lhx-bento__cell-tag--night       { color: #80aaff; }
+.lhx-bento__cell-tag--night:hover { color: #FFCC00; }
+.lhx-bento__cell-title {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(1.2rem, 2vw, 1.65rem);
+  font-weight: 600; color: #fff; line-height: 1.2; margin: 0;
+}
+.lhx-bento__cell-body {
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+  color: rgba(200,210,240,0.85); line-height: 1.65; margin-top: 0.5rem;
+}
+
+.lhx-bento__cell--stat {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end;
+  padding: 2rem; min-height: 260px;
+}
+.lhx-bento__cell--blue { background: linear-gradient(145deg, var(--primary-blue) 0%, #020cb5 100%); border-color: transparent; }
+.lhx-bento__cell-icon  { font-size: 1.8rem; color: rgba(255,255,255,0.5); margin-bottom: auto; }
+.lhx-bento__cell--dark-muted .lhx-bento__cell-icon { color: rgba(100,130,220,0.6); }
+.lhx-bento__cell-stat-num {
+  font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 700;
+  color: #fff; line-height: 1; margin-bottom: 0.35rem;
+}
+.lhx-bento__cell--dark-muted .lhx-bento__cell-stat-num { color: #e0e8ff; }
+.lhx-bento__cell-stat-label {
+  font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600;
+  color: rgba(255,255,255,0.7); line-height: 1.4; margin-bottom: 1.25rem;
+}
+.lhx-bento__cell-link {
+  font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 700;
+  color: rgba(255,255,255,0.9); text-decoration: none;
+  display: flex; align-items: center; gap: 0.35rem; transition: gap 0.2s;
+}
+.lhx-bento__cell-link:hover       { gap: 0.65rem; color: #FFCC00; }
+.lhx-bento__cell-link--light      { color: rgba(180,200,255,0.85); }
+.lhx-bento__cell-link--light:hover { color: #fff; }
+
+.lhx-bento__cell--quote {
+  padding: 2.5rem; display: flex; flex-direction: column; justify-content: center;
+  background: var(--dn-alt-bg); min-height: 220px;
+}
+.lhx-bento__quote {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-style: italic; color: var(--dn-title); line-height: 1.55;
+  margin: 0 0 1rem; border: none; padding: 0; transition: color 0.3s;
+}
+.lhx-bento__quote--light      { color: #c8d4ff; }
+.lhx-bento__quote-attr {
+  font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--dn-eyebrow); margin: 0;
+}
+.lhx-bento__quote-attr--light { color: rgba(180,200,255,0.6); }
+.lhx-bento__expertise-strip   { display: flex; gap: 1.25rem; margin-top: 1.5rem; flex-wrap: wrap; }
+.lhx-bento__expertise-strip span {
+  font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 600;
+  color: rgba(150,170,220,0.75); display: flex; align-items: center; gap: 0.4rem;
+}
+.lhx-bento__expertise-strip i { color: #5080ff; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   3. BRIDGE
+   ══════════════════════════════════════════════════════════════ */
+.lhx-bridge {
+  position: relative; min-height: 80vh; display: flex; align-items: center; overflow: hidden;
+  width: 100%;
+}
+.lhx-bridge__video-wrap         { position: absolute; inset: 0; }
+.lhx-bridge__video              { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+.lhx-bridge__video-placeholder {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, #1a2240 0%, #0d1528 35%, #1a100a 70%, #0a0810 100%);
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500;
+  color: rgba(150,165,200,0.45); line-height: 1.7; padding: 2rem;
+}
+.lhx-bridge__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(5,8,20,0.85) 0%, rgba(5,8,20,0.55) 50%, rgba(5,8,20,0.35) 100%);
+}
+.lhx-bridge__content { position: relative; z-index: 2; padding-top: 7rem; padding-bottom: 7rem; }
+.lhx-bridge__headline {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5.5vw, 5rem);
+  font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 1.5rem;
+}
+.lhx-bridge__headline em { color: #FFCC00; font-style: italic; }
+.lhx-bridge__sub {
+  font-family: 'DM Sans', sans-serif; font-size: 1.1rem;
+  color: rgba(200,215,255,0.82); line-height: 1.75; max-width: 520px;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   5. BUILDER — shared styles
+   ══════════════════════════════════════════════════════════════ */
+.lhx-builder__visual { position: relative; }
+.lhx-builder__visual-badge {
+  position: absolute; bottom: -1rem; right: -1rem;
+  background: var(--primary-blue); color: #fff; border-radius: 50px;
+  padding: 0.65rem 1.25rem; font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;
+  box-shadow: 0 4px 20px rgba(3,17,252,0.35);
+}
+.lhx-builder__text {
+  font-family: 'DM Sans', sans-serif; font-size: 1.05rem; color: var(--dn-body);
+  line-height: 1.75; margin-bottom: 1.75rem; transition: color 0.3s;
+}
+.lhx-builder__text--transitional { color: rgba(190,205,245,0.85); }
+
+/* ── FEATURE LIST ────────────────────────────────────────────── */
+.lhx-feature-list { list-style: none; padding: 0; margin: 0 0 2rem; }
+.lhx-feature-list li {
+  display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.55rem 0;
+  font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--dn-body); transition: color 0.3s;
+}
+.lhx-feature-list .bi-check-circle-fill {
+  color: var(--dn-check); font-size: 1.05rem; flex-shrink: 0; margin-top: 2px; transition: color 0.3s;
+}
+.lhx-feature-list--transitional li                     { color: rgba(190,205,245,0.85); }
+.lhx-feature-list--transitional .bi-check-circle-fill  { color: #FFCC00; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   6. CATALOG STRIP
+   ══════════════════════════════════════════════════════════════ */
+.lhx-catalog-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.lhx-catalog-item {
+  display: flex; flex-direction: column; padding: 1.75rem 1.5rem;
+  background: var(--dn-card-bg); border: 1px solid var(--dn-card-border);
+  border-radius: 14px; text-decoration: none; transition: all 0.25s ease; position: relative; overflow: hidden;
+}
+.lhx-catalog-item::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--primary-blue); transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
+}
+.lhx-catalog-item:hover { border-color: var(--dn-accent); box-shadow: 0 8px 30px var(--dn-shadow); transform: translateY(-4px); }
+.lhx-catalog-item:hover::before { transform: scaleX(1); }
+.lhx-catalog-item__icon-wrap {
+  width: 48px; height: 48px; background: var(--dn-icon-bg); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; transition: background 0.3s;
+}
+.lhx-catalog-item__icon-wrap i { font-size: 1.4rem; color: var(--dn-accent); transition: color 0.3s; }
+.lhx-catalog-item:hover .lhx-catalog-item__icon-wrap   { background: var(--primary-blue); }
+.lhx-catalog-item:hover .lhx-catalog-item__icon-wrap i { color: #fff; }
+.lhx-catalog-item__label  { font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--dn-title); margin-bottom: 0.35rem; transition: color 0.3s; }
+.lhx-catalog-item__desc   { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--dn-sub); line-height: 1.55; flex-grow: 1; margin-bottom: 1rem; transition: color 0.3s; }
+.lhx-catalog-item__arrow  { font-size: 0.85rem; color: var(--dn-accent); margin-top: auto; transition: transform 0.2s, color 0.3s; }
+.lhx-catalog-item:hover .lhx-catalog-item__arrow { transform: translateX(5px); }
+
+
+/* ══════════════════════════════════════════════════════════════
+   7. SCHEDULER
+   ══════════════════════════════════════════════════════════════ */
+.lhx-scheduler__cards { position: relative; padding: 1rem; }
+.lhx-scheduler__card {
+  background: var(--dn-card-bg); border: 1px solid var(--dn-card-border);
+  border-left: 4px solid var(--primary-blue); border-radius: 12px;
+  padding: 1.1rem 1.35rem; display: flex; align-items: center; gap: 1rem;
+  box-shadow: 0 2px 16px var(--dn-shadow); margin-bottom: 1rem;
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, opacity 0.45s ease, transform 0.45s ease;
+}
+.lhx-scheduler__card--1 { margin-left: 0; }
+.lhx-scheduler__card--2 { margin-left: 2rem;   border-left-color: #FFCC00; }
+.lhx-scheduler__card--3 { margin-left: 1rem; }
+.lhx-scheduler__card--4 { margin-left: 2.5rem; border-left-color: #2ECC71; }
+.lhx-scheduler__card i  { font-size: 1.6rem; color: var(--primary-blue); flex-shrink: 0; }
+.lhx-scheduler__card--2 i { color: #c89e00; }
+.lhx-scheduler__card--4 i { color: #27ae60; }
+.lhx-scheduler__card div  { display: flex; flex-direction: column; gap: 0.15rem; }
+.lhx-scheduler__card strong { font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--dn-title); transition: color 0.3s; }
+.lhx-scheduler__card span   { font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--dn-sub); transition: color 0.3s; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   8. BRANDS
+   ══════════════════════════════════════════════════════════════ */
+.lhx-brands-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.25rem; align-items: center; margin-top: 3rem;
+}
+.lhx-brand-logo {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--dn-card-bg); border: 1px solid var(--dn-card-border);
+  border-radius: 12px; padding: 1.25rem; aspect-ratio: 16/9; transition: all 0.3s ease; text-decoration: none;
+}
+.lhx-brand-logo:hover { border-color: var(--primary-blue); box-shadow: 0 4px 18px var(--dn-shadow); transform: translateY(-4px); }
+.lhx-brand-logo img   { max-width: 100%; max-height: 55px; object-fit: contain; filter: grayscale(40%); opacity: 0.8; transition: all 0.3s; }
+.lhx-brand-logo:hover img { filter: grayscale(0); opacity: 1; }
+
+
+/* ══════════════════════════════════════════════════════════════
+   9. COMBINED CLOSER — "Trusted Pros For Life"
+   Two zones, no gap between them:
+     __upper  — light day palette, credential bar + proof tiles
+     __lower  — dark band, service card + main CTA
+   ══════════════════════════════════════════════════════════════ */
+
+/* Section wrapper — no padding, each zone manages its own */
+.lhx-closer { overflow: hidden; }
+
+/* ── Upper: light zone tracks day/night like other sections ── */
+.lhx-closer__upper {
+  background-color: var(--dn-section-bg);
+  transition: background-color 0.1s linear;
+  padding-top: 5.5rem;
+  padding-bottom: 3rem;
+}
+
+/* Headline size override — slightly larger for the page finale */
+.lhx-closer__headline {
+  font-size: clamp(2.2rem, 4.5vw, 3.6rem) !important;
+}
+.lhx-closer__headline em { display: block; }
+
+/* ── Credential bar ─────────────────────────────────────────── */
+.lhx-cred-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  border: 1px solid var(--dn-card-border);
+  border-radius: 14px;
+  background: var(--dn-card-bg);
+  padding: 1.25rem 2rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  transition: background 0.3s, border-color 0.3s;
+}
+.lhx-cred-bar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 2.5rem;
+  gap: 0.2rem;
+  text-align: center;
+}
+.lhx-cred-bar__num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; font-weight: 700;
+  color: var(--dn-title); line-height: 1;
+  transition: color 0.3s;
+}
+.lhx-cred-bar__label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--dn-sub);
+  transition: color 0.3s;
+}
+.lhx-cred-bar__icon  { font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 0.15rem; }
+.lhx-cred-bar__divider {
+  width: 1px; height: 40px;
+  background: var(--dn-card-border);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+/* ── Proof tiles — same grid as before ─────────────────────── */
+.lhx-proof-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+
+.lhx-proof-tile {
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--dn-card-border); background: var(--dn-card-bg);
+  display: flex; flex-direction: column; transition: all 0.3s ease;
+}
+.lhx-proof-tile:hover { border-color: var(--dn-accent); box-shadow: 0 12px 36px var(--dn-shadow); transform: translateY(-5px); }
+.lhx-proof-tile--featured { border-color: var(--primary-blue); box-shadow: 0 4px 20px var(--dn-shadow); }
+.lhx-proof-tile__photo    { border-radius: 0; display: block; }
+.lhx-proof-tile__body     { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+
+.lhx-proof-tile__icon {
+  width: 42px; height: 42px; background: var(--dn-icon-bg); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 0.85rem; transition: background 0.3s;
+}
+.lhx-proof-tile__icon i           { font-size: 1.3rem; color: var(--dn-accent); }
+.lhx-proof-tile__icon--featured   { background: var(--primary-blue); }
+.lhx-proof-tile__icon--featured i { color: #fff; }
+
+.lhx-proof-tile__title {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 700;
+  color: var(--dn-title); line-height: 1.2; margin-bottom: 0.6rem; transition: color 0.3s;
+}
+.lhx-proof-tile__text {
+  font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--dn-body);
+  line-height: 1.65; flex-grow: 1; margin-bottom: 1rem; transition: color 0.3s;
+}
+.lhx-proof-tile__link {
+  font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 700;
+  color: var(--dn-accent); text-decoration: none;
+  display: flex; align-items: center; gap: 0.35rem; transition: gap 0.2s, color 0.3s; margin-top: auto;
+}
+.lhx-proof-tile__link:hover { gap: 0.6rem; }
+
+/* ── Lower: dark band ───────────────────────────────────────── */
+.lhx-closer__lower {
+  background: linear-gradient(160deg, #0a0e24 0%, #06091a 60%, #0e0620 100%);
+  padding-top: 4rem;
+  padding-bottom: 5rem;
+}
+
+/* Service card — sits on the dark background */
+.lhx-closer__service-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 2.5rem;
+  height: 100%;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+.lhx-closer__service-icon {
+  width: 56px; height: 56px; min-width: 56px;
+  background: var(--primary-blue);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.lhx-closer__service-icon i { font-size: 1.6rem; color: #fff; }
+.lhx-closer__service-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem; font-weight: 700; color: #e8eeff;
+  margin-bottom: 0.75rem; line-height: 1.1;
+}
+.lhx-closer__service-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; color: rgba(180,195,240,0.8);
+  line-height: 1.75; margin-bottom: 1.5rem;
+}
+.lhx-btn--text-light { color: rgba(180,200,255,0.7) !important; }
+.lhx-btn--text-light:hover { color: #fff !important; }
+
+/* Main CTA card — blue gradient, strong close */
+.lhx-closer__cta-card {
+  background: linear-gradient(145deg, #0311FC 0%, #020cb5 40%, #1a0060 100%);
+  border-radius: 16px;
+  padding: 2.5rem;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.lhx-closer__cta-card::before {
+  content: '';
+  position: absolute; top: -60%; right: -20%;
+  width: 300px; height: 300px;
+  background: rgba(255,255,255,0.05); border-radius: 50%; pointer-events: none;
+}
+.lhx-closer__cta-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 700;
+  color: #fff; line-height: 1.1; margin-bottom: 0.75rem;
+}
+.lhx-closer__cta-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; color: rgba(200,215,255,0.85);
+  line-height: 1.7; margin-bottom: 1.75rem;
+}
+
+
+/* ══════════════════════════════════════════════════════════════
+   SCROLL REVEAL
+   ══════════════════════════════════════════════════════════════ */
+.lhx-animate-reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.lhx-animate-reveal.lhx-revealed { opacity: 1; transform: translateY(0); }
+.lhx-scheduler__card.lhx-animate-reveal { transform: translateX(28px); }
+.lhx-scheduler__card.lhx-revealed       { transform: translateX(0); }
+
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 1199px) {
+  .lhx-bento              { grid-template-columns: 1fr 1fr; }
+  .lhx-bento__cell--wide  { grid-column: span 2; }
+  .lhx-catalog-grid       { grid-template-columns: repeat(4, 1fr); }
+  .lhx-brands-grid        { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 991px) {
+  .lhx-catalog-grid            { grid-template-columns: repeat(2, 1fr); }
+  .lhx-brands-grid             { grid-template-columns: repeat(3, 1fr); }
+  .lhx-proof-strip             { grid-template-columns: 1fr 1fr; }
+  .lhx-section-header--split   { flex-direction: column; gap: 1.5rem; }
+  .lhx-catalog-strip__cta-wrap { max-width: 100%; }
+  .lhx-cred-bar__item          { padding: 0 1.5rem; }
+}
+
+@media (max-width: 767px) {
+  .lhx-hero__headline              { font-size: clamp(2.5rem, 10vw, 4rem); }
+  .lhx-hero__ctas                  { flex-direction: column; }
+  .lhx-hero__ctas .lhx-btn        { width: 100%; justify-content: center; }
+  .lhx-hero__stat-divider          { display: none; }
+  .lhx-hero__stat                  { padding: 0 1rem 0 0; }
+  .lhx-hero__scroll                { display: none; }
+  .lhx-bento                      { grid-template-columns: 1fr; }
+  .lhx-bento__cell--wide           { grid-column: span 1; }
+  .lhx-catalog-grid                { grid-template-columns: repeat(2, 1fr); }
+  .lhx-brands-grid                 { grid-template-columns: repeat(2, 1fr); }
+  .lhx-proof-strip                 { grid-template-columns: 1fr; }
+  .lhx-closer__service-card        { flex-direction: column; padding: 1.75rem; }
+  .lhx-cred-bar                    { gap: 0.5rem; padding: 1rem; }
+  .lhx-cred-bar__item              { padding: 0.5rem 1rem; }
+  .lhx-cred-bar__divider           { display: none; }
+  .lhx-closer__upper               { padding-top: 3rem; padding-bottom: 2rem; }
+  .lhx-closer__lower               { padding-top: 2.5rem; padding-bottom: 3.5rem; }
+  .lhx-section                     { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+  .lhx-bridge                      { min-height: 50vh; }
+  .lhx-bridge__content             { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+}
+
+@media (max-width: 575px) {
+  .lhx-catalog-grid  { grid-template-columns: 1fr 1fr; }
+  .lhx-brands-grid   { grid-template-columns: repeat(2, 1fr); }
+  .lhx-hero__stats   { flex-wrap: wrap; gap: 1rem; }
+}
+</style>
+{% endblock css %}

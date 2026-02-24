@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
-from .models import PropertyType, Category, SubCategory, Package
+from django.db.models import Prefetch
+from .models import PropertyType, Category, CategoryImage, CategoryVideo, SubCategory, Package
 
 
 class CatalogView(ListView):
@@ -12,12 +13,21 @@ class CatalogView(ListView):
     def get_queryset(self):
         """Get all active property types with related data"""
         # Get property types that have active categories (with or without show_in_catalog set)
+        catalog_packages = Package.objects.filter(
+            is_active=True, visibility__in=['both', 'catalog']
+        )
         return PropertyType.objects.filter(
             is_active=True,
             categories__is_active=True
         ).distinct().prefetch_related(
-            'categories__subcategories__packages',
-            'categories__packages'
+            Prefetch(
+                'categories__subcategories__packages',
+                queryset=catalog_packages,
+            ),
+            Prefetch(
+                'categories__packages',
+                queryset=catalog_packages,
+            ),
         ).order_by('display_order')
 
     def get_context_data(self, **kwargs):
@@ -48,12 +58,51 @@ class CategoryDetailView(DetailView):
 
     def get_queryset(self):
         """Only show active categories"""
-        return Category.objects.filter(is_active=True).select_related('property_type')
+        catalog_packages = Package.objects.filter(
+            is_active=True, visibility__in=['both', 'catalog']
+        )
+        return Category.objects.filter(is_active=True).select_related(
+            'property_type'
+        ).prefetch_related(
+            'gallery_images',
+            'videos',
+            Prefetch(
+                'subcategories',
+                queryset=SubCategory.objects.filter(is_active=True).prefetch_related(
+                    Prefetch('packages', queryset=catalog_packages)
+                )
+            ),
+            Prefetch(
+                'packages',
+                queryset=catalog_packages,
+            ),
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add count of packages for this category
-        context['package_count'] = self.object.packages.filter(is_active=True).count()
+        category = self.object
+        packages = category.packages.filter(is_active=True, visibility__in=['both', 'catalog'])
+        context['package_count'] = packages.count()
+        context['packages'] = packages
+        context['gallery_images'] = category.gallery_images.all()
+        context['category_videos'] = category.videos.all()
+
+        # Group packages by subcategory if applicable
+        if category.has_subcategories():
+            subcategories = category.subcategories.filter(is_active=True)
+            grouped = []
+            for sub in subcategories:
+                sub_packages = packages.filter(subcategory=sub)
+                if sub_packages.exists():
+                    grouped.append({'subcategory': sub, 'packages': sub_packages})
+            # Also get packages with no subcategory
+            unsorted = packages.filter(subcategory__isnull=True)
+            if unsorted.exists():
+                grouped.append({'subcategory': None, 'packages': unsorted})
+            context['grouped_packages'] = grouped
+        else:
+            context['grouped_packages'] = None
+
         return context
 
 

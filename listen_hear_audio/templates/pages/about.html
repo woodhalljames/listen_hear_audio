@@ -1,3 +1,704 @@
 {% extends "base.html" %}
+{% load static %}
 
+{% block title %}About Us – Listen Hear! Smart Home & Audio | Pittsburgh, PA{% endblock %}
 
+{% block main %}
+
+  {% if messages %}
+    <div class="container-fluid px-lg-5">
+      {% for message in messages %}
+        <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %} mt-3">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <section class="ab-hero">
+    <div class="ab-hero__overlay"></div>
+    <div class="container-fluid px-lg-5 ab-hero__content">
+      <p class="ab-eyebrow">Who We Are</p>
+      <h1 class="ab-hero__headline">We Make Life Better<br><span class="ab-hero__accent">With Technology</span></h1>
+      <p class="ab-hero__sub">A Pittsburgh family business built on 30+ years of passion,<br class="d-none d-md-inline"> craftsmanship, and a relentless curiosity for what's next.</p>
+    </div>
+  </section>
+
+  <section class="ab-section py-6">
+    <div class="container-fluid px-lg-5">
+      <div class="row g-5 align-items-center">
+
+        <div class="col-lg-5">
+          <div class="ab-image-block">
+            <div class="ab-image-placeholder">
+              <i class="bi bi-house-heart-fill"></i>
+              <span>Showroom / Team Photo</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-7">
+          <p class="ab-eyebrow">Our Story</p>
+          <h2 class="ab-title">Imagine a Home That Works As Hard As You Do</h2>
+          <div class="ab-story-text">
+            <p>
+              Imagine having a better experience in your home or office every single day —
+              using technology that's seamlessly woven into your life and décor, yet effortless
+              to understand and use. Systems that simply <em>work</em>. Mundane routines automated
+              so you never have to think about them again.
+            </p>
+            <p>
+              Picture a haven of pure joy and relaxation where you can connect or disconnect,
+              entertain family, friends, or coworkers, and feel completely safe — even when
+              you're miles away. These are the experiences we design and build every day at
+              Listen Hear.
+            </p>
+            <p>
+              We're passionate about home and commercial technology: audio, video, home theater,
+              smart home automation, lighting, motorized shades, and more. That <em>"more"</em>
+              represents the tireless curiosity that drives us — always exploring what's new,
+              always searching for the right solution. Our family business was founded on over
+              30 years of this passion, and it remains at the core of everything we do.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="ab-founders py-6">
+    <div class="container-fluid px-lg-5">
+      <div class="row g-5 align-items-center">
+
+        <div class="col-lg-7 order-lg-1">
+          <p class="ab-eyebrow">Our Founders</p>
+          <h2 class="ab-title">A Dream 30 Years in the Making</h2>
+          <div class="ab-story-text">
+            <p>
+              Listen Hear was founded — and continues to be led — by husband and wife team
+              <strong>Albert and Leslie Wurst</strong>, both North Hills, Pittsburgh natives.
+              Albert's love of technology started in his teens, researching and installing a
+              car stereo system in his Z28 Camaro. His passion quickly caught the attention
+              of a local shop owner, who hired him on the spot.
+            </p>
+            <p>
+              Barely out of high school, Albert joined the IT department at Federated Investors,
+              launching a successful 33-year career navigating complex systems — all while never
+              stopping his tinkering and learning. In 2008, an opportunity presented itself and a
+              dream came true: Albert and Leslie launched Listen Hear, channeling every year of
+              passion and experience into a business built to serve their community.
+            </p>
+            <p>
+              Today, Albert remains active in designing tailored solutions for every client, while
+              Leslie leads the administrative and marketing functions that keep the team running
+              smoothly. Their commitment and enthusiasm for the people of Pittsburgh remain as
+              strong as ever.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-lg-5 order-lg-2">
+          <div class="ab-founders__portrait-grid">
+            {% for member in team_members|slice:":2" %}
+              <div class="ab-member-row">
+                <div class="ab-member-row__photo-wrap">
+                  {% if member.photo %}
+                    <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="ab-member-row__photo">
+                  {% else %}
+                    <div class="ab-member-row__photo ab-member-row__photo--placeholder">
+                      <i class="bi bi-person-fill"></i>
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="ab-member-row__info">
+                  <strong>{{ member.name }}</strong>
+                  <span>{{ member.title }}</span>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="ab-process py-6">
+    <div class="container-fluid px-lg-5">
+      <div class="text-center mb-5">
+        <p class="ab-eyebrow">How We Work</p>
+        <h2 class="ab-title">Great Relationships Foster Great Work</h2>
+        <p class="ab-sub">
+          Whether it's new construction, an existing home, or a commercial space —
+          indoors or out — our process is built around you.
+        </p>
+      </div>
+
+      <div class="ab-process__steps">
+        <div class="ab-process-step">
+          <div class="ab-process-step__number">01</div>
+          <div class="ab-process-step__content">
+            <h3>We Listen First</h3>
+            <p>Every project starts with a conversation. We take the time to truly understand
+               your vision, lifestyle, and goals — before we ever recommend a single product
+               or draw a single wire.</p>
+          </div>
+        </div>
+
+        <div class="ab-process-step">
+          <div class="ab-process-step__number">02</div>
+          <div class="ab-process-step__content">
+            <h3>We Collaborate</h3>
+            <p>We work closely with architects, builders, decorators, electricians, and
+               contractors — integrating seamlessly into the broader project team to ensure
+               technology enhances the design rather than fighting it.</p>
+          </div>
+        </div>
+
+        <div class="ab-process-step">
+          <div class="ab-process-step__number">03</div>
+          <div class="ab-process-step__content">
+            <h3>We Design &amp; Install</h3>
+            <p>Our team of highly trained, certified technicians handles every installation
+               with precision and pride. We make sure everything is right — and that you
+               fully understand your new systems — before we pack up.</p>
+          </div>
+        </div>
+
+        <div class="ab-process-step">
+          <div class="ab-process-step__number">04</div>
+          <div class="ab-process-step__content">
+            <h3>We're Here for Life</h3>
+            <p>The relationship doesn't end at installation. We're available 24/7 for the
+               lifetime of your system — for support, upgrades, or simply a question about
+               your setup. That's the Listen Hear promise.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ab-team py-6">
+    <div class="container-fluid px-lg-5">
+      <div class="text-center mb-5">
+        <p class="ab-eyebrow">The Team</p>
+        <h2 class="ab-title">The People Behind the Tech</h2>
+        <p class="ab-sub">Certified technicians and dedicated professionals who care as much
+           about your home as you do.</p>
+      </div>
+
+      <div class="ab-team__list">
+        {% for member in team_members %}
+          <div class="ab-member{% if forloop.counter|divisibleby:2 %} ab-member--flip{% endif %}{% if member.bio == 'mascot' %} ab-member--mascot{% endif %}">
+            <div class="ab-member__photo-side">
+              {% if member.photo %}
+                <img src="{{ member.photo.url }}" alt="{{ member.name }}" class="ab-member__img">
+              {% else %}
+                <div class="ab-member__img ab-member__img--placeholder{% if member.bio == 'mascot' %} ab-member__img--pup{% endif %}">
+                  {% if member.bio == 'mascot' %}
+                    <i class="bi bi-emoji-smile-fill"></i>
+                  {% else %}
+                    <i class="bi bi-person-fill"></i>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+            <div class="ab-member__text-side">
+              <h3 class="ab-member__name">{{ member.name }}</h3>
+              <span class="ab-member__title">{{ member.title }}</span>
+              {% if member.bio and member.bio != 'mascot' %}
+                <p class="ab-member__bio">{{ member.bio }}</p>
+              {% endif %}
+            </div>
+          </div>
+        {% empty %}
+          <div class="text-center text-muted py-4">
+            <p>Team members coming soon.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="ab-contact-cta py-6">
+    <div class="container-fluid px-lg-5">
+      <div class="ab-contact-cta__inner">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-7">
+            <p class="ab-eyebrow ab-eyebrow--light">Get in Touch</p>
+            <h2 class="ab-contact-cta__title">Let's Build Something<br>Extraordinary Together</h2>
+            <p class="ab-contact-cta__sub">
+              Visit our showroom, give us a call, or drop us a message. We're happy to talk
+              through your project — big or small — with no pressure and no rush.
+            </p>
+
+            {% if business_info %}
+              <div class="ab-contact-cta__details mt-4">
+                {% if business_info.phone %}
+                  <a href="tel:{{ business_info.phone }}" class="ab-contact-detail">
+                    <i class="bi bi-telephone-fill"></i>
+                    <span>{{ business_info.phone }}</span>
+                  </a>
+                {% endif %}
+                {% if business_info.full_address %}
+                  <a href="{{ business_info.google_maps_url }}" target="_blank" class="ab-contact-detail">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span>{{ business_info.street_address }}, {{ business_info.city }}, {{ business_info.state }}</span>
+                  </a>
+                {% endif %}
+                <div class="ab-contact-detail">
+                  <i class="bi bi-clock-fill"></i>
+                  <span>Mon–Fri: {{ business_info.monday_hours }} &nbsp;·&nbsp; Sat–Sun: {{ business_info.saturday_hours }}</span>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+          <div class="col-lg-5 text-lg-end d-flex flex-column gap-3 align-items-lg-end">
+            <a href="{% url 'contact' %}" class="btn btn-primary btn-lg px-5">
+              <i class="bi bi-chat-dots-fill me-2"></i>Send Us a Message
+            </a>
+            <a href="{% url 'builders:showroom' %}" class="btn btn-outline-light btn-lg px-5">
+              <i class="bi bi-house-heart me-2"></i>Visit the Showroom
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock main %}
+
+{% block css %}
+{{ block.super }}
+<style>
+.py-6 { padding-top: 5rem; padding-bottom: 5rem; }
+
+.ab-eyebrow {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--primary-blue);
+  margin-bottom: 0.5rem;
+}
+
+.ab-eyebrow--light { color: var(--primary-yellow); }
+
+.ab-title {
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  font-weight: 800;
+  color: var(--primary-dark);
+  line-height: 1.2;
+  margin-bottom: 1.25rem;
+}
+
+.ab-sub {
+  color: #6c757d;
+  font-size: 1.05rem;
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* ---- Hero ---- */
+.ab-hero {
+  position: relative;
+  min-height: 55vh;
+  display: flex;
+  align-items: center;
+  background-color: var(--primary-dark);
+  background-image: linear-gradient(135deg, #0311FC 0%, #020cb5 35%, #232323 100%);
+  overflow: hidden;
+}
+
+.ab-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(3,17,252,0.4) 0%, transparent 70%);
+}
+
+.ab-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(3,17,252,0.3) 0%, rgba(35,35,35,0.75) 100%);
+}
+
+.ab-hero__content {
+  position: relative;
+  z-index: 2;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  animation: abFadeUp 0.9s ease both;
+}
+
+.ab-hero .ab-eyebrow { color: var(--primary-yellow); }
+
+.ab-hero__headline {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 900;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.ab-hero__accent { color: var(--primary-yellow); }
+
+.ab-hero__sub {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.7;
+}
+
+/* ---- Story Image ---- */
+.ab-section { background: white; }
+
+.ab-image-block {
+  position: relative;
+}
+
+.ab-image-placeholder {
+  aspect-ratio: 4/3;
+  background: #f0f2ff;
+  border: 2px dashed #c5caff;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: #aab0ff;
+}
+
+.ab-image-placeholder i { font-size: 3.5rem; color: var(--primary-blue); opacity: 0.4; }
+.ab-image-placeholder span { font-weight: 600; font-size: 0.95rem; color: #6c757d; }
+
+.ab-image {
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+  aspect-ratio: 4/3;
+}
+
+.ab-story-text p {
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 1.1rem;
+  font-size: 1rem;
+}
+
+.ab-story-text p:last-child { margin-bottom: 0; }
+.ab-story-text em { color: var(--primary-blue); font-style: italic; }
+
+/* ---- Founders ---- */
+.ab-founders { background: #f8f9fa; }
+
+.ab-founders__portrait-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.ab-member-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: white;
+  border-radius: 14px;
+  padding: 1.25rem;
+  border: 1px solid #e8ecf0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.ab-member-row:hover {
+  box-shadow: 0 6px 20px rgba(3,17,252,0.1);
+  transform: translateY(-3px);
+  border-color: var(--primary-blue);
+}
+
+.ab-member-row__photo-wrap { flex-shrink: 0; }
+
+.ab-member-row__photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.ab-member-row__photo--placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, #020cb5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ab-member-row__photo--placeholder i {
+  font-size: 2rem;
+  color: rgba(255,255,255,0.7);
+}
+
+.ab-member-row__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.ab-member-row__info strong {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+.ab-member-row__info span {
+  font-size: 0.85rem;
+  color: #6c757d;
+  line-height: 1.4;
+}
+
+/* ---- Process ---- */
+.ab-process { background: white; }
+
+.ab-process__steps {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.ab-process-step {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 14px;
+  border-top: 4px solid var(--primary-blue);
+  transition: all 0.3s ease;
+}
+
+.ab-process-step:hover {
+  background: white;
+  box-shadow: 0 6px 24px rgba(3,17,252,0.1);
+  transform: translateY(-4px);
+}
+
+.ab-process-step:nth-child(even) {
+  border-top-color: var(--primary-yellow);
+}
+
+.ab-process-step__number {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--primary-blue);
+  opacity: 0.2;
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 2.5rem;
+}
+
+.ab-process-step:nth-child(even) .ab-process-step__number {
+  color: var(--primary-dark);
+}
+
+.ab-process-step__content h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-bottom: 0.6rem;
+}
+
+.ab-process-step__content p {
+  color: #6c757d;
+  font-size: 0.93rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ---- Team (alternating rows) ---- */
+.ab-team { background: #f8f9fa; }
+
+.ab-team__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.ab-member {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e8ecf0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  transition: all 0.3s ease;
+}
+
+.ab-member:hover {
+  box-shadow: 0 8px 28px rgba(3,17,252,0.1);
+  transform: translateY(-4px);
+  border-color: var(--primary-blue);
+}
+
+.ab-member--flip {
+  flex-direction: row-reverse;
+}
+
+.ab-member--mascot {
+  border-top: 3px solid var(--primary-yellow);
+}
+
+.ab-member__photo-side {
+  flex-shrink: 0;
+  width: 220px;
+}
+
+.ab-member__img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+.ab-member__img--placeholder {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, #020cb5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ab-member__img--placeholder i {
+  font-size: 4rem;
+  color: rgba(255,255,255,0.45);
+}
+
+.ab-member__img--pup {
+  background: linear-gradient(135deg, #232323 0%, #444 100%);
+}
+
+.ab-member__text-side {
+  flex: 1;
+  padding: 2rem 2rem 2rem 0;
+}
+
+.ab-member--flip .ab-member__text-side {
+  padding: 2rem 0 2rem 2rem;
+}
+
+.ab-member__name {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin: 0 0 0.25rem;
+  line-height: 1.3;
+}
+
+.ab-member__title {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--primary-blue);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.ab-member__bio {
+  color: #6c757d;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ---- Contact CTA ---- */
+.ab-contact-cta { background: var(--primary-dark); }
+
+.ab-contact-cta__inner {
+  background: linear-gradient(135deg, #0311FC 0%, #020cb5 35%, #1a1a2e 100%);
+  border-radius: 20px;
+  padding: 3.5rem;
+}
+
+.ab-contact-cta .ab-title,
+.ab-contact-cta__title {
+  font-size: clamp(1.7rem, 2.5vw, 2.2rem);
+  font-weight: 900;
+  color: white;
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+
+.ab-contact-cta__sub {
+  color: rgba(255,255,255,0.75);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+
+.ab-contact-cta__details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ab-contact-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.ab-contact-detail:hover { color: var(--primary-yellow); }
+
+.ab-contact-detail i {
+  font-size: 1rem;
+  color: var(--primary-yellow);
+  width: 20px;
+  text-align: center;
+}
+
+/* ---- Animations ---- */
+@keyframes abFadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 991px) {
+  .ab-process__steps { grid-template-columns: 1fr; }
+  .ab-contact-cta__inner { padding: 2.5rem; }
+  .ab-member__photo-side { width: 180px; }
+}
+
+@media (max-width: 767px) {
+  .py-6 { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+  .ab-hero { min-height: 45vh; }
+  .ab-contact-cta__inner { padding: 2rem; }
+  .ab-member {
+    flex-direction: column !important;
+    text-align: center;
+  }
+  .ab-member__photo-side { width: 100%; }
+  .ab-member__img { aspect-ratio: 16/9; }
+  .ab-member__text-side,
+  .ab-member--flip .ab-member__text-side {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .ab-process-step { flex-direction: column; gap: 0.75rem; }
+  .ab-process-step__number { font-size: 1.8rem; }
+}
+</style>
+{% endblock css %}

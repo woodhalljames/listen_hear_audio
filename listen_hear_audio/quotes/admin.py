@@ -4,7 +4,8 @@ from django.urls import reverse, path
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.http import HttpResponse
-from .models import Cart, CartItem, QuoteRequest, QuoteRequestItem, SiteConfiguration, Coupon
+from .models import Cart, CartItem, QuoteRequest, QuoteRequestItem, Coupon
+from listen_hear_audio.core.models import SiteConfiguration
 
 
 class CartItemInline(admin.TabularInline):
@@ -35,11 +36,14 @@ class CartAdmin(admin.ModelAdmin):
 class QuoteRequestItemInline(admin.TabularInline):
     model = QuoteRequestItem
     extra = 1
-    readonly_fields = ['installation_phase_snapshot']
-    fields = ['package', 'package_name', 'installation_phase_snapshot', 'quantity', 'price_snapshot', 'notes']
+    fields = ['package', 'price_snapshot', 'quantity', 'notes']
     autocomplete_fields = ['package']
     verbose_name = 'Package'
     verbose_name_plural = 'Packages'
+
+    class Media:
+        js = ('js/admin/quote_inline_autofill.js',)
+
 
 
 @admin.register(QuoteRequest)
@@ -68,6 +72,7 @@ class QuoteRequestAdmin(admin.ModelAdmin):
         'finalized_by',
         'pdf_link',
         'finalize_link',
+        'convert_property_link',
         'property_link'
     ]
     inlines = [QuoteRequestItemInline]
@@ -75,7 +80,7 @@ class QuoteRequestAdmin(admin.ModelAdmin):
 
     fieldsets = (
         ('Quote Information', {
-            'fields': ('quote_number', 'status', 'user', 'estimated_total', 'pdf_link', 'property_link')
+            'fields': ('quote_number', 'status', 'user', 'estimated_total')
         }),
         ('Customer Contact', {
             'fields': ('contact_person', 'email', 'phone', 'website')
@@ -88,8 +93,12 @@ class QuoteRequestAdmin(admin.ModelAdmin):
             'description': 'Notes from the customer about their project requirements'
         }),
         ('Admin Finalization', {
-            'fields': ('admin_notes', 'final_total', 'email_recipients', 'finalize_link', 'finalized_at', 'finalized_by'),
-            'description': 'Set final price and email recipients (one per line) above, then click the button below to finalize and send.',
+            'fields': ('admin_notes', 'email_recipients', 'pdf_link', 'finalize_link', 'finalized_at', 'finalized_by'),
+            'description': 'Set email recipients (one per line), then generate & preview the PDF before finalizing.',
+        }),
+        ('Property Management', {
+            'fields': ('convert_property_link', 'property_link'),
+            'description': 'Convert this quote into a managed property for builder coordination.',
         }),
         ('Timestamps', {
             'fields': ('created_at', 'updated_at'),
@@ -131,7 +140,7 @@ class QuoteRequestAdmin(admin.ModelAdmin):
         if obj.pdf_path:
             buttons.append(
                 f'<a href="{obj.pdf_path.url}" target="_blank" class="button" style="margin-right: 5px;">'
-                '<i class="bi bi-file-pdf"></i> View PDF</a>'
+                '<i class="bi bi-file-pdf"></i> View Original</a>'
             )
 
         # Generate/Download PDF button
@@ -151,17 +160,39 @@ class QuoteRequestAdmin(admin.ModelAdmin):
         finalize_url = reverse('admin:quotes_quoterequest_finalize', args=[obj.pk])
 
         if obj.is_finalized():
-            button_text = '🔄 Re-Finalize & Send'
+            button_text = '🔄 Re-Finalize & Send Email'
             button_style = 'background-color: #f0ad4e; color: white;'
         else:
-            button_text = '✓ Finalize & Send'
+            button_text = '✓ Finalize & Send Email'
             button_style = 'background-color: #5cb85c; color: white;'
 
         return format_html(
             '<a href="{}" class="button" style="margin-right: 5px; {}">{}</a>',
             finalize_url, button_style, button_text
         )
-    finalize_link.short_description = 'Finalize Quote'
+    finalize_link.short_description = 'Finalize & Send Email'
+
+    def convert_property_link(self, obj):
+        """Button to convert quote to a managed property"""
+        if not obj.pk:
+            return "Save quote first"
+
+        if obj.properties.exists():
+            prop = obj.properties.first()
+            url = reverse('admin:builders_property_change', args=[prop.pk])
+            return format_html(
+                '<span style="color: green; margin-right: 10px;">✓ Already converted</span>'
+                '<a href="{}" class="button" style="background-color: var(--primary); color: white;">View Property</a>',
+                url
+            )
+
+        convert_url = reverse('admin:quotes_quoterequest_convert_property', args=[obj.pk])
+        return format_html(
+            '<a href="{}" class="button" style="background-color: #0275d8; color: white;">'
+            '🏠 Convert to Property</a>',
+            convert_url
+        )
+    convert_property_link.short_description = 'Convert to Property'
 
     def property_link(self, obj):
         """Show link to property if quote has been converted"""
@@ -215,7 +246,7 @@ class QuoteRequestAdmin(admin.ModelAdmin):
             f'{finalized_count} quote(s) finalized. PDFs are being regenerated and emails will be sent.',
             level=messages.SUCCESS
         )
-    finalize_quotes.short_description = 'Finalize selected quotes and send to customers'
+    finalize_quotes.short_description = 'Finalize selected quotes & send emails'
 
     def regenerate_pdfs(self, request, queryset):
         """Regenerate PDFs for selected quotes without sending emails"""
@@ -241,6 +272,11 @@ class QuoteRequestAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         custom_urls = [
             path(
+                'package-info/<int:package_id>/',
+                self.admin_site.admin_view(self.package_info_view),
+                name='quotes_quoterequest_package_info',
+            ),
+            path(
                 '<int:quote_id>/generate-pdf/',
                 self.admin_site.admin_view(self.generate_pdf_view),
                 name='quotes_quoterequest_generate_pdf',
@@ -250,8 +286,27 @@ class QuoteRequestAdmin(admin.ModelAdmin):
                 self.admin_site.admin_view(self.finalize_view),
                 name='quotes_quoterequest_finalize',
             ),
+            path(
+                '<int:quote_id>/convert-property/',
+                self.admin_site.admin_view(self.convert_property_view),
+                name='quotes_quoterequest_convert_property',
+            ),
         ]
         return custom_urls + urls
+
+    def package_info_view(self, request, package_id):
+        """Return package details as JSON for inline auto-fill"""
+        from django.http import JsonResponse
+        from listen_hear_audio.products.models import Package
+        try:
+            package = Package.objects.get(id=package_id)
+            return JsonResponse({
+                'name': package.name,
+                'installation_phase_value': package.installation_phase,
+                'price': str(package.starting_price),
+            })
+        except Package.DoesNotExist:
+            return JsonResponse({'error': 'Package not found'}, status=404)
 
     def generate_pdf_view(self, request, quote_id):
         """Generate PDF and download it immediately"""
@@ -260,7 +315,7 @@ class QuoteRequestAdmin(admin.ModelAdmin):
 
         try:
             quote_request = QuoteRequest.objects.get(id=quote_id)
-            config = SiteConfiguration.get_config()
+            config = SiteConfiguration.load()
 
             # Recalculate estimated total
             quote_request.recalculate_estimated_total()
@@ -289,11 +344,10 @@ class QuoteRequestAdmin(admin.ModelAdmin):
             return redirect('admin:quotes_quoterequest_change', quote_id)
 
     def finalize_view(self, request, quote_id):
-        """Finalize quote and send emails"""
+        """Finalize quote, generate PDF, and send emails (no property creation)"""
         from django.utils import timezone
         from celery import chain
         from listen_hear_audio.quotes.tasks import generate_quote_pdf, send_quote_emails
-        from listen_hear_audio.builders.models import Property, PurchasedPackage
 
         try:
             quote_request = QuoteRequest.objects.get(id=quote_id)
@@ -301,9 +355,8 @@ class QuoteRequestAdmin(admin.ModelAdmin):
             # Pre-populate email_recipients if empty
             if not quote_request.email_recipients:
                 quote_request.email_recipients = quote_request.email
-                quote_request.save()
 
-            # Set finalized timestamp and user
+            # Always update finalized timestamp (supports re-finalize after adjustments)
             quote_request.finalized_at = timezone.now()
             quote_request.finalized_by = request.user
             quote_request.status = 'quoted'
@@ -313,87 +366,6 @@ class QuoteRequestAdmin(admin.ModelAdmin):
                 quote_request.recalculate_estimated_total()
 
             quote_request.save()
-
-            # Pre-populate email_recipients with all relevant emails if empty
-            if not quote_request.email_recipients:
-                recipient_options = quote_request.get_recipient_options()
-                quote_request.email_recipients = '\n'.join(recipient_options)
-                quote_request.save()
-
-            # Create property if not already created
-            if not quote_request.properties.exists():
-                # Build property name and address
-                property_name = f"{quote_request.contact_person} - {quote_request.quote_number}"
-                address_parts = []
-                if quote_request.street:
-                    address_parts.append(quote_request.street)
-                if quote_request.city:
-                    address_parts.append(quote_request.city)
-                if quote_request.state:
-                    address_parts.append(quote_request.state)
-                if quote_request.zip_code:
-                    address_parts.append(quote_request.zip_code)
-                full_address = ', '.join(address_parts)
-
-                # Create property
-                property_obj = Property.objects.create(
-                    name=property_name,
-                    address=full_address,
-                    property_type='',
-                    quote_request=quote_request
-                )
-
-                # Track assigned builders for success message
-                assigned_builders = []
-
-                # Add quote requester if they are a builder
-                if quote_request.user and quote_request.user.is_builder:
-                    property_obj.builders.add(quote_request.user)
-                    assigned_builders.append(quote_request.user.email)
-
-                # Check email_recipients for builder emails and auto-assign them
-                from listen_hear_audio.users.models import User
-                if quote_request.email_recipients:
-                    recipient_emails = quote_request.get_email_recipients()
-                    for email in recipient_emails:
-                        try:
-                            builder_user = User.objects.get(email=email, is_builder=True)
-                            if builder_user not in property_obj.builders.all():
-                                property_obj.builders.add(builder_user)
-                                assigned_builders.append(builder_user.email)
-                        except User.DoesNotExist:
-                            # Not a builder or doesn't exist, skip
-                            pass
-
-                # Send notification email to assigned builders
-                from listen_hear_audio.builders.tasks import send_property_creation_email
-                if property_obj.builders.exists():
-                    send_property_creation_email.delay(property_obj.id)
-
-                # Create purchased packages from quote items
-                for item in quote_request.items.all():
-                    PurchasedPackage.objects.create(
-                        property=property_obj,
-                        package=item.package,
-                        package_name=item.package_name,
-                        package_description=item.package_description,
-                        installation_phase_snapshot=item.installation_phase_snapshot,
-                        price_snapshot=item.price_snapshot,
-                        quantity=item.quantity,
-                        status='pending'
-                    )
-
-                # Build success message with builder assignments
-                if assigned_builders:
-                    builder_msg = f' Assigned to builders: {", ".join(assigned_builders)}.'
-                else:
-                    builder_msg = ' No builders assigned yet.'
-
-                self.message_user(
-                    request,
-                    f'Property "{property_name}" created successfully!{builder_msg}',
-                    level=messages.SUCCESS
-                )
 
             # Regenerate PDF and send email
             task_chain = chain(
@@ -418,150 +390,114 @@ class QuoteRequestAdmin(admin.ModelAdmin):
             self.message_user(request, f'Error finalizing quote: {str(e)}', level=messages.ERROR)
             return redirect('admin:quotes_quoterequest_change', quote_id)
 
-    def convert_to_property(self, request, queryset):
-        """Convert selected quote requests to properties"""
+    def convert_property_view(self, request, quote_id):
+        """Convert a quote request into a managed property"""
         from listen_hear_audio.builders.models import Property, PurchasedPackage
 
+        try:
+            quote = QuoteRequest.objects.get(id=quote_id)
+
+            # Check if already converted
+            if quote.properties.exists():
+                existing = quote.properties.first()
+                url = reverse('admin:builders_property_change', args=[existing.pk])
+                self.message_user(
+                    request,
+                    format_html('This quote has already been converted to property: <a href="{}">{}</a>', url, existing.name),
+                    level=messages.WARNING
+                )
+                return redirect('admin:quotes_quoterequest_change', quote_id)
+
+            # Build property name and address
+            property_name = f"{quote.contact_person} - {quote.quote_number}"
+            address_parts = []
+            if quote.street:
+                address_parts.append(quote.street)
+            if quote.city:
+                address_parts.append(quote.city)
+            if quote.state:
+                address_parts.append(quote.state)
+            if quote.zip_code:
+                address_parts.append(quote.zip_code)
+            full_address = ', '.join(address_parts)
+
+            # Create property
+            property_obj = Property.objects.create(
+                name=property_name,
+                address=full_address,
+                property_type='',
+                quote_request=quote
+            )
+
+            # Create purchased packages from quote items
+            for item in quote.items.all():
+                PurchasedPackage.objects.create(
+                    property=property_obj,
+                    package=item.package,
+                    package_name=item.package_name,
+                    package_description=item.package_description,
+                    installation_phase_snapshot=item.installation_phase_snapshot,
+                    price_snapshot=item.price_snapshot,
+                    quantity=item.quantity,
+                )
+
+            # Auto-assign builders
+            assigned_builders = []
+            if quote.user and quote.user.is_builder:
+                property_obj.builders.add(quote.user)
+                assigned_builders.append(quote.user.email)
+
+            from listen_hear_audio.users.models import User
+            if quote.email_recipients:
+                for email in quote.get_email_recipients():
+                    try:
+                        builder_user = User.objects.get(email=email, is_builder=True)
+                        if builder_user not in property_obj.builders.all():
+                            property_obj.builders.add(builder_user)
+                            assigned_builders.append(builder_user.email)
+                    except User.DoesNotExist:
+                        pass
+
+            # Send notification email to assigned builders
+            from listen_hear_audio.builders.tasks import send_property_creation_email
+            if property_obj.builders.exists():
+                send_property_creation_email.delay(property_obj.id)
+
+            # Update quote status
+            quote.status = 'accepted'
+            quote.save()
+
+            # Build success message
+            url = reverse('admin:builders_property_change', args=[property_obj.pk])
+            if assigned_builders:
+                builder_msg = f' Assigned to builders: {", ".join(assigned_builders)}.'
+            else:
+                builder_msg = ' No builders assigned yet.'
+
+            self.message_user(
+                request,
+                format_html('Property "{}" created successfully!{} <a href="{}">View Property</a>', property_name, builder_msg, url),
+                level=messages.SUCCESS
+            )
+
+            return redirect('admin:quotes_quoterequest_change', quote_id)
+
+        except QuoteRequest.DoesNotExist:
+            self.message_user(request, 'Quote request not found.', level=messages.ERROR)
+            return redirect('admin:quotes_quoterequest_changelist')
+        except Exception as e:
+            self.message_user(request, f'Error converting to property: {str(e)}', level=messages.ERROR)
+            return redirect('admin:quotes_quoterequest_change', quote_id)
+
+    def convert_to_property(self, request, queryset):
+        """Bulk action: Convert selected quote to property"""
         if queryset.count() != 1:
             self.message_user(request, 'Please select exactly one quote to convert.', level=messages.WARNING)
             return
-
         quote = queryset.first()
-
-        # Check if already converted
-        if quote.properties.exists():
-            existing = quote.properties.first()
-            url = reverse('admin:builders_property_change', args=[existing.pk])
-            self.message_user(
-                request,
-                format_html('This quote has already been converted to property: <a href="{}">{}</a>', url, existing.name),
-                level=messages.WARNING
-            )
-            return
-
-        # Create property from quote
-        property_name = f"{quote.contact_person} - {quote.quote_number}"
-
-        # Build address from separate fields
-        address_parts = []
-        if quote.street:
-            address_parts.append(quote.street)
-        if quote.city:
-            address_parts.append(quote.city)
-        if quote.state:
-            address_parts.append(quote.state)
-        if quote.zip_code:
-            address_parts.append(quote.zip_code)
-        full_address = ', '.join(address_parts)
-
-        property_obj = Property.objects.create(
-            name=property_name,
-            address=full_address,
-            property_type='',  # Can be set manually later
-            quote_request=quote
-        )
-
-        # Create purchased packages from quote items
-        for item in quote.items.all():
-            PurchasedPackage.objects.create(
-                property=property_obj,
-                package=item.package,
-                package_name=item.package_name,
-                package_description=item.package_description,
-                installation_phase_snapshot=item.installation_phase_snapshot,
-                price_snapshot=item.price_snapshot,
-                quantity=item.quantity,
-                status='pending'
-            )
-
-        # Auto-assign builder if quote requester is a builder
-        assigned_builders = []
-        if quote.user and quote.user.is_builder:
-            property_obj.builders.add(quote.user)
-            assigned_builders.append(quote.user.email)
-
-        # Check email_recipients for builder emails and auto-assign them
-        from listen_hear_audio.users.models import User
-        if quote.email_recipients:
-            recipient_emails = quote.get_email_recipients()
-            for email in recipient_emails:
-                try:
-                    builder_user = User.objects.get(email=email, is_builder=True)
-                    if builder_user not in property_obj.builders.all():
-                        property_obj.builders.add(builder_user)
-                        assigned_builders.append(builder_user.email)
-                except User.DoesNotExist:
-                    # Not a builder or doesn't exist, skip
-                    pass
-
-        # Send notification email to assigned builders
-        from listen_hear_audio.builders.tasks import send_property_creation_email
-        if property_obj.builders.exists():
-            send_property_creation_email.delay(property_obj.id)
-
-        # Redirect to property admin
-        url = reverse('admin:builders_property_change', args=[property_obj.pk])
-
-        # Build success message
-        if assigned_builders:
-            builder_msg = f' Assigned to builders: {", ".join(assigned_builders)}.'
-        else:
-            builder_msg = ' No builders assigned. You can add them in the property admin.'
-
-        messages.success(
-            request,
-            format_html('Property created successfully!{} <a href="{}">Click here to manage the property.</a>', builder_msg, url)
-        )
-
-        # Update quote status
-        quote.status = 'accepted'
-        quote.save()
+        return redirect(reverse('admin:quotes_quoterequest_convert_property', args=[quote.pk]))
 
     convert_to_property.short_description = 'Convert selected quote to property'
-
-
-@admin.register(SiteConfiguration)
-class SiteConfigurationAdmin(admin.ModelAdmin):
-    list_display = ['business_name', 'business_email', 'updated_at']
-    readonly_fields = ['created_at', 'updated_at']
-    
-    fieldsets = (
-        ('Business Information', {
-            'fields': (
-                'business_name',
-                'business_logo',
-                'business_address',
-                'business_phone',
-                'business_email',
-                'business_website'
-            )
-        }),
-        ('Notifications', {
-            'fields': ('notification_emails',),
-            'description': 'Enter email addresses as a JSON array, e.g., ["email1@example.com", "email2@example.com"]'
-        }),
-        ('Email Templates', {
-            'fields': (
-                'customer_email_subject',
-                'customer_email_message'
-            )
-        }),
-        ('Legal', {
-            'fields': ('quote_disclaimer',)
-        }),
-        ('Timestamps', {
-            'fields': ('created_at', 'updated_at'),
-            'classes': ('collapse',)
-        }),
-    )
-    
-    def has_add_permission(self, request):
-        # Only allow one configuration instance
-        return not SiteConfiguration.objects.exists()
-    
-    def has_delete_permission(self, request, obj=None):
-        # Prevent deletion of the configuration
-        return False
 
 
 @admin.register(Coupon)

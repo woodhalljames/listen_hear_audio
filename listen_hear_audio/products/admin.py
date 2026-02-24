@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from .models import PropertyType, Category, SubCategory, Package
+from .models import PropertyType, Category, CategoryImage, CategoryVideo, SubCategory, Package
 
 @admin.register(PropertyType)
 class PropertyTypeAdmin(admin.ModelAdmin):
@@ -12,6 +12,20 @@ class PropertyTypeAdmin(admin.ModelAdmin):
     ordering = ['display_order', 'name']
 
 
+class CategoryImageInline(admin.TabularInline):
+    model = CategoryImage
+    extra = 0
+    min_num = 0
+    fields = ['image', 'caption', 'display_order']
+
+
+class CategoryVideoInline(admin.TabularInline):
+    model = CategoryVideo
+    extra = 0
+    min_num = 0
+    fields = ['youtube_url', 'title', 'display_order']
+
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'property_type', 'builder_section', 'show_in_catalog', 'display_order', 'is_active', 'has_video', 'has_subcategories', 'has_packages']
@@ -20,14 +34,12 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['property_type', 'display_order', 'name']
+    inlines = [CategoryImageInline, CategoryVideoInline]
 
     fieldsets = (
         ('Basic Information', {
-            'fields': ('property_type', 'name', 'slug', 'description', 'details', 'image')
-        }),
-        ('Video Content', {
-            'fields': ('video', 'youtube_url'),
-            'description': 'Add a video to showcase this category. You can upload a video file directly or provide a YouTube URL. Uploaded videos take priority.'
+            'fields': ('property_type', 'name', 'slug', 'description', 'details', 'image', 'video'),
+            'description': 'Upload an MP4 video file directly, or use the YouTube Videos section below for YouTube links.'
         }),
         ('Builder Showroom', {
             'fields': ('builder_section',),
@@ -110,9 +122,9 @@ class PackageAdminForm(forms.ModelForm):
 @admin.register(Package)
 class PackageAdmin(admin.ModelAdmin):
     form = PackageAdminForm
-    list_display = ['name', 'category', 'subcategory', 'installation_phase', 'starting_price', 'is_custom', 'catalog_only', 'is_featured', 'is_active', 'display_order']
-    list_editable = ['display_order', 'is_active', 'is_featured', 'catalog_only']
-    list_filter = ['installation_phase', 'category__property_type', 'category', 'subcategory', 'is_custom', 'catalog_only', 'is_featured', 'is_active']
+    list_display = ['name', 'category', 'subcategory', 'installation_phase', 'starting_price', 'is_custom', 'visibility', 'is_featured', 'is_active', 'display_order']
+    list_editable = ['display_order', 'is_active', 'is_featured', 'visibility']
+    list_filter = ['installation_phase', 'category__property_type', 'category', 'subcategory', 'is_custom', 'visibility', 'is_featured', 'is_active']
     search_fields = ['name', 'short_description', 'features']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['installation_phase', 'category', 'subcategory', 'display_order', 'name']
@@ -129,8 +141,8 @@ class PackageAdmin(admin.ModelAdmin):
             'fields': ('starting_price', 'is_custom')
         }),
         ('Display Settings', {
-            'fields': ('image', 'display_order', 'catalog_only', 'is_featured', 'is_active'),
-            'description': 'Catalog only packages will only show in the main catalog, not the builder showroom.'
+            'fields': ('image', 'display_order', 'visibility', 'is_featured', 'is_active'),
+            'description': 'Visibility controls where this package appears: catalog, builder showroom, or both.'
         }),
     )
 

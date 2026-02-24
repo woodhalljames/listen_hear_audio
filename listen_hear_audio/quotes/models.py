@@ -97,9 +97,7 @@ class CartItem(models.Model):
         return f"{self.quantity}x {self.package.name}"
 
     def get_subtotal(self):
-        """Get subtotal for this item"""
-        if self.package.is_custom:
-            return 0  # Custom packages don't have a price until quoted
+        """Get subtotal for this item based on starting price"""
         return self.package.starting_price * self.quantity
 
 
@@ -267,8 +265,8 @@ class QuoteRequestItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     notes = models.TextField(
         blank=True,
-        verbose_name="Customer Notes",
-        help_text="Notes from the customer about this package (visible to customer in emails/PDFs)"
+        verbose_name="Internal Notes",
+        help_text="Internal notes for admin use only (not visible to customers)"
     )
 
     class Meta:
@@ -286,59 +284,15 @@ class QuoteRequestItem(models.Model):
         return self.price_snapshot * self.quantity
 
     def save(self, *args, **kwargs):
-        """Auto-populate installation_phase_snapshot from package if not set"""
-        if self.package and not self.installation_phase_snapshot:
-            self.installation_phase_snapshot = self.package.installation_phase
+        """Auto-populate snapshot fields from package if not set"""
+        if self.package:
+            if not self.installation_phase_snapshot:
+                self.installation_phase_snapshot = self.package.installation_phase
+            if not self.package_name:
+                self.package_name = self.package.name
+            if self.price_snapshot is None:
+                self.price_snapshot = self.package.starting_price
         super().save(*args, **kwargs)
-
-
-class SiteConfiguration(models.Model):
-    """Site-wide configuration for quote notifications and business info"""
-    
-    # Business information for PDF
-    business_name = models.CharField(max_length=200, default="Listen Hear Audio")
-    business_logo = models.ImageField(upload_to='site/', blank=True, null=True)
-    business_address = models.TextField(blank=True)
-    business_phone = models.CharField(max_length=20, blank=True)
-    business_email = models.EmailField(blank=True)
-    business_website = models.URLField(blank=True)
-    
-    # Notification emails (stored as JSON array)
-    notification_emails = models.JSONField(
-        default=list,
-        help_text="List of email addresses to receive quote notifications"
-    )
-    
-    # Email content
-    customer_email_subject = models.CharField(
-        max_length=200,
-        default="Your Listen Hear Audio Quote Request"
-    )
-    customer_email_message = models.TextField(
-        default="Thank you for your quote request. We'll review your requirements and get back to you within 24-48 hours."
-    )
-    
-    # Terms and disclaimer
-    quote_disclaimer = models.TextField(
-        blank=True,
-        default="This is an estimate based on the packages selected. Final pricing will be determined after consultation and site evaluation."
-    )
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = 'Site Configuration'
-        verbose_name_plural = 'Site Configuration'
-
-    def __str__(self):
-        return f"Site Configuration (updated: {self.updated_at.strftime('%Y-%m-%d')})"
-
-    @classmethod
-    def get_config(cls):
-        """Get or create the singleton configuration"""
-        config, created = cls.objects.get_or_create(pk=1)
-        return config
 
 
 class Coupon(models.Model):

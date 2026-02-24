@@ -4,7 +4,8 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.core.files.base import ContentFile
 from weasyprint import HTML
-from .models import QuoteRequest, SiteConfiguration
+from .models import QuoteRequest
+from listen_hear_audio.core.models import SiteConfiguration
 from email.mime.image import MIMEImage
 import logging
 import os
@@ -17,7 +18,7 @@ def generate_quote_pdf(quote_request_id):
     """Generate PDF for a quote request"""
     try:
         quote_request = QuoteRequest.objects.get(id=quote_request_id)
-        config = SiteConfiguration.get_config()
+        config = SiteConfiguration.load()
 
         logger.info(f'Starting PDF generation for quote {quote_request.quote_number}')
 
@@ -51,7 +52,7 @@ def send_quote_emails(quote_request_id):
     """Send quote confirmation emails to customer and host"""
     try:
         quote_request = QuoteRequest.objects.get(id=quote_request_id)
-        config = SiteConfiguration.get_config()
+        config = SiteConfiguration.load()
 
         logger.info(f'Starting email send for quote {quote_request.quote_number}')
 
@@ -77,10 +78,10 @@ def send_quote_emails(quote_request_id):
         customer_email.attach_alternative(customer_message, "text/html")
 
         # Attach logo as inline image if available
-        if config.business_logo:
+        if config.logo:
             logger.info(f'Attaching logo to customer email for quote {quote_request.quote_number}')
             try:
-                with config.business_logo.open('rb') as logo_file:
+                with config.logo.open('rb') as logo_file:
                     logo_data = logo_file.read()
                     logo_image = MIMEImage(logo_data)
                     logo_image.add_header('Content-ID', '<logo>')
@@ -104,8 +105,8 @@ def send_quote_emails(quote_request_id):
         customer_email.send()
         logger.info(f'Customer email sent successfully to {", ".join(recipients)} for quote {quote_request.quote_number}')
         
-        # Email to host(s)
-        if config.notification_emails:
+        # Email to host(s) — only for new submissions, not finalized quotes
+        if config.notification_emails and not quote_request.is_finalized():
             logger.info(f'Sending host emails to {config.notification_emails} for quote {quote_request.quote_number}')
             host_subject = f'New Quote Request - {quote_request.quote_number}'
             # Build site URL from settings
@@ -127,10 +128,10 @@ def send_quote_emails(quote_request_id):
             host_email.attach_alternative(host_message, "text/html")
 
             # Attach logo as inline image if available
-            if config.business_logo:
+            if config.logo:
                 logger.info(f'Attaching logo to host email for quote {quote_request.quote_number}')
                 try:
-                    with config.business_logo.open('rb') as logo_file:
+                    with config.logo.open('rb') as logo_file:
                         logo_data = logo_file.read()
                         logo_image = MIMEImage(logo_data)
                         logo_image.add_header('Content-ID', '<logo>')

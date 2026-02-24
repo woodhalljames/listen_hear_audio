@@ -5,19 +5,15 @@
 {% block title %}Request Service - Listen Hear Smart Homes{% endblock title %}
 
 {% block extra_css %}
-<!-- Flatpickr Calendar -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
 <style>
-  .flatpickr-calendar {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  .date-time-row {
+    padding: 12px;
+    background: #f8f9fa;
     border-radius: 8px;
+    border: 1px solid #e9ecef;
   }
-  .flatpickr-input {
-    background-color: white !important;
-  }
-  #date-picker-wrapper [data-toggle]:hover {
-    background: #0000cc !important;
+  .date-time-row:not(:last-child) {
+    margin-bottom: 12px;
   }
 </style>
 {% endblock extra_css %}
@@ -91,27 +87,42 @@
             </h5>
             <div class="alert alert-info">
               <i class="bi bi-info-circle me-2"></i>
-              These are your preferred dates and times. We'll contact you to confirm availability.
+              Add your preferred dates and times. We'll contact you to confirm availability.
             </div>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Preferred Date</label>
-                <div class="input-group flatpickr" id="date-picker-wrapper">
-                  <input type="text" name="preferred_date" id="id_preferred_date" class="form-control" placeholder="Select a date..." data-input>
-                  <button type="button" class="btn" data-toggle style="background: #3333ff; color: white; border-color: #3333ff;">
-                    <i class="bi bi-calendar3"></i>
-                  </button>
+
+            <!-- Date/Time Container -->
+            <div id="preferred-dates-container">
+              <!-- First date/time row (always visible) -->
+              <div class="date-time-row mb-3">
+                <div class="row align-items-end">
+                  <div class="col-md-5 mb-2 mb-md-0">
+                    <label class="form-label">Preferred Date</label>
+                    <input type="date" name="preferred_dates[]" class="form-control">
+                  </div>
+                  <div class="col-md-5 mb-2 mb-md-0">
+                    <label class="form-label">Preferred Time</label>
+                    <input type="text" name="preferred_times[]" class="form-control" placeholder="e.g., Morning, Afternoon, ASAP">
+                  </div>
+                  <div class="col-md-2 text-end">
+                    <button type="button" class="btn btn-outline-danger btn-remove-date" style="display: none;" title="Remove this date">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div class="col-md-6 mb-3">
-                {{ form.preferred_time|as_crispy_field }}
-                <small class="form-text text-muted">e.g., Morning (9AM-12PM), Afternoon (1PM-5PM), or specific time</small>
-              </div>
+            </div>
+
+            <!-- Add Another Date Button -->
+            <div class="mb-3">
+              <button type="button" id="add-date-btn" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-plus-circle me-1"></i>Add Another Preferred Date
+              </button>
+              <small class="text-muted ms-2">Up to 3 dates</small>
             </div>
 
             <!-- Action Buttons -->
             <div class="d-flex gap-2 justify-content-end mt-4">
-              <a href="{% if request.user.is_authenticated %}{% url 'users:detail' request.user.pk %}{% else %}{% url 'home' %}{% endif %}" class="btn btn-secondary">
+              <a href="{% if request.user.is_authenticated %}{% url 'users:detail' request.user.pk %}{% else %}{% url 'home' %}{% endif %}" class="btn btn-secondary btn-lg">
                 <i class="bi bi-x-circle me-1"></i>Cancel
               </a>
               <button type="submit" class="btn btn-success btn-lg">
@@ -141,27 +152,88 @@
 {% endblock content %}
 
 {% block inline_javascript %}
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Find the wrapper element
-  const datePickerWrapper = document.querySelector('#date-picker-wrapper');
+  const container = document.getElementById('preferred-dates-container');
+  const addBtn = document.getElementById('add-date-btn');
+  const MAX_DATES = 3;
 
-  if (datePickerWrapper) {
-    // Initialize flatpickr with wrap mode
-    flatpickr(datePickerWrapper, {
-      dateFormat: "Y-m-d",
-      altInput: true,
-      altFormat: "F j, Y",
-      minDate: "today",
-      disableMobile: false,
-      animate: true,
-      wrap: true,
-      monthSelectorType: "dropdown",
-      prevArrow: '<i class="bi bi-chevron-left"></i>',
-      nextArrow: '<i class="bi bi-chevron-right"></i>'
+  // Update remove buttons visibility and add button state
+  function updateUI() {
+    const rows = container.querySelectorAll('.date-time-row');
+    const rowCount = rows.length;
+
+    // Show/hide remove buttons (hide if only one row)
+    rows.forEach(row => {
+      const removeBtn = row.querySelector('.btn-remove-date');
+      removeBtn.style.display = rowCount > 1 ? 'inline-block' : 'none';
     });
+
+    // Disable add button if max reached
+    addBtn.disabled = rowCount >= MAX_DATES;
+    if (rowCount >= MAX_DATES) {
+      addBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Maximum dates added';
+      addBtn.classList.remove('btn-outline-primary');
+      addBtn.classList.add('btn-outline-secondary');
+    } else {
+      addBtn.innerHTML = '<i class="bi bi-plus-circle me-1"></i>Add Another Preferred Date';
+      addBtn.classList.remove('btn-outline-secondary');
+      addBtn.classList.add('btn-outline-primary');
+    }
   }
+
+  // Create a new date/time row
+  function createDateTimeRow() {
+    const row = document.createElement('div');
+    row.className = 'date-time-row mb-3';
+    row.innerHTML = `
+      <div class="row align-items-end">
+        <div class="col-md-5 mb-2 mb-md-0">
+          <label class="form-label">Preferred Date</label>
+          <input type="date" name="preferred_dates[]" class="form-control">
+        </div>
+        <div class="col-md-5 mb-2 mb-md-0">
+          <label class="form-label">Preferred Time</label>
+          <input type="text" name="preferred_times[]" class="form-control" placeholder="e.g., Morning, Afternoon, ASAP">
+        </div>
+        <div class="col-md-2 text-end">
+          <button type="button" class="btn btn-outline-danger btn-remove-date" title="Remove this date">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </div>
+    `;
+    return row;
+  }
+
+  // Add date button click handler
+  addBtn.addEventListener('click', function() {
+    const rows = container.querySelectorAll('.date-time-row');
+    if (rows.length < MAX_DATES) {
+      const newRow = createDateTimeRow();
+      container.appendChild(newRow);
+      updateUI();
+
+      // Focus the new date input
+      const newInput = newRow.querySelector('input[type="date"]');
+      if (newInput) {
+        newInput.focus();
+      }
+    }
+  });
+
+  // Remove date button click handler (delegated)
+  container.addEventListener('click', function(e) {
+    const removeBtn = e.target.closest('.btn-remove-date');
+    if (removeBtn) {
+      const row = removeBtn.closest('.date-time-row');
+      row.remove();
+      updateUI();
+    }
+  });
+
+  // Initialize on page load
+  updateUI();
 });
 </script>
 {% endblock inline_javascript %}

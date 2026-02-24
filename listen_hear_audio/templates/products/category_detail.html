@@ -4,147 +4,284 @@
 {% block title %}{{ category.name }} - Listen Hear Audio{% endblock %}
 
 {% block content %}
+<!-- Hidden CSRF token for AJAX requests -->
+{% csrf_token %}
 <div class="category-detail-page">
-    <!-- Hero Section -->
-    <div class="category-hero py-5 mb-5" style="background: var(--primary-blue); color: white;">
-        <div class="container">
-            <nav aria-label="breadcrumb" class="mb-3">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'products:catalog' %}" class="text-white">Catalog</a></li>
-                    <li class="breadcrumb-item"><span class="text-white">{{ category.property_type.name }}</span></li>
-                    <li class="breadcrumb-item active text-white" aria-current="page">{{ category.name }}</li>
-                </ol>
-            </nav>
 
-            <h1 class="display-3 fw-bold mb-3" style="color: white;">{{ category.name }}</h1>
+    <!-- Section: Header with Image -->
+    <div class="container pt-4">
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'products:catalog' %}">Catalog</a></li>
+                <li class="breadcrumb-item"><span>{{ category.property_type.name }}</span></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
+            </ol>
+        </nav>
 
-            {% if category.description %}
-            <p class="lead mb-0" style="color: white; max-width: 800px;">{{ category.description }}</p>
-            {% endif %}
+        <div class="category-detail-header mb-5">
+            <div class="row align-items-center g-4">
+                <div class="{% if category.image %}col-lg-7{% else %}col-12{% endif %}">
+                    <span class="badge bg-primary mb-3">{{ category.property_type.name }}</span>
+                    <h1 class="display-4 fw-bold mb-3">{{ category.name }}</h1>
+                    {% if category.description %}
+                    <p class="lead text-muted">{{ category.description }}</p>
+                    {% endif %}
+                    {% if package_count > 0 %}
+                    <div class="d-flex align-items-center gap-2 mt-3">
+                        <i class="bi bi-box-seam text-primary fs-5"></i>
+                        <span><strong>{{ package_count }}</strong> package{{ package_count|pluralize }} available</span>
+                    </div>
+                    {% endif %}
+                </div>
+                {% if category.image %}
+                <div class="col-lg-5">
+                    <div class="category-hero-image-wrapper">
+                        <img src="{{ category.image.url }}" alt="{{ category.name }}" class="category-hero-img">
+                    </div>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 
-    <div class="container mb-5">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-
-                <!-- Category Image -->
-                {% if category.image %}
-                <div class="category-image mb-5 text-center">
-                    <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid rounded shadow" style="max-height: 400px;">
+    <!-- Section: Video (full width) -->
+    {% if category.video or category_videos %}
+    <div class="category-videos-section py-5" style="background: var(--light-grey);">
+        <div class="container">
+            <!-- Uploaded MP4 video -->
+            {% if category.video %}
+            <div class="category-video-primary mb-4">
+                <div class="ratio ratio-16x9 rounded shadow-sm overflow-hidden">
+                    <video controls class="rounded" controlsList="nodownload">
+                        <source src="{{ category.video.url }}" type="video/mp4">
+                        <source src="{{ category.video.url }}" type="video/webm">
+                        Your browser does not support the video tag.
+                    </video>
                 </div>
-                {% endif %}
+            </div>
+            {% endif %}
 
-                <!-- Video Section -->
-                {% if category.has_video %}
-                <div class="category-video mb-5">
-                    <h3 class="mb-3">
-                        <i class="bi bi-play-circle-fill text-primary"></i> Overview Video
-                    </h3>
-
-                    <div class="ratio ratio-16x9 rounded shadow">
-                        {% if category.video %}
-                        <!-- Uploaded Video (takes priority) -->
-                        <video controls class="rounded" controlsList="nodownload">
-                            <source src="{{ category.video.url }}" type="video/mp4">
-                            <source src="{{ category.video.url }}" type="video/webm">
-                            <source src="{{ category.video.url }}" type="video/ogg">
-                            Your browser does not support the video tag.
-                        </video>
-                        {% elif category.youtube_url and category.get_youtube_embed_id %}
-                        <!-- YouTube Video Embed -->
+            <!-- YouTube videos from CategoryVideo inline -->
+            {% if category_videos %}
+            <div class="row g-4">
+                {% for vid in category_videos %}
+                {% if vid.get_youtube_embed_id %}
+                <div class="{% if category_videos|length == 1 and not category.video %}col-12{% else %}col-md-6{% endif %}">
+                    {% if vid.title %}
+                    <h5 class="mb-2">{{ vid.title }}</h5>
+                    {% endif %}
+                    <div class="ratio ratio-16x9 rounded shadow-sm overflow-hidden">
                         <iframe
-                            src="https://www.youtube.com/embed/{{ category.get_youtube_embed_id }}"
-                            title="{{ category.name }} Overview Video"
+                            src="https://www.youtube.com/embed/{{ vid.get_youtube_embed_id }}"
+                            title="{{ vid.title|default:category.name }}"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             referrerpolicy="strict-origin-when-cross-origin"
                             allowfullscreen
                             class="rounded">
                         </iframe>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Section: Details -->
+    {% if category.details %}
+    <div class="container py-5">
+        <h3 class="fw-bold mb-3">About {{ category.name }}</h3>
+        <div class="category-details-text" style="white-space: pre-wrap;">{{ category.details }}</div>
+    </div>
+    {% endif %}
+
+    <!-- Section: Packages -->
+    {% if packages %}
+    <div class="category-packages-section py-5" style="background: var(--light-grey);">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+                <h2 class="fw-bold mb-0">
+                    <i class="bi bi-grid-3x3-gap text-primary"></i> Available Packages
+                </h2>
+                <span class="badge bg-primary fs-6 px-3 py-2">{{ package_count }} Package{{ package_count|pluralize }}</span>
+            </div>
+
+            {% if grouped_packages %}
+                {% for group in grouped_packages %}
+                <div class="mb-5">
+                    {% if group.subcategory %}
+                    <h4 class="category-subtitle mb-3">{{ group.subcategory.name }}</h4>
+                    {% if group.subcategory.description %}
+                    <p class="text-muted mb-3">{{ group.subcategory.description }}</p>
+                    {% endif %}
+                    {% else %}
+                    <h4 class="category-subtitle mb-3">Other Packages</h4>
+                    {% endif %}
+                    <div class="row g-4">
+                        {% for package in group.packages %}
+                        <div class="col-md-6 col-lg-4">
+                            {% include "products/partials/package_card.html" with package=package %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="row g-4">
+                    {% for package in packages %}
+                    <div class="col-md-6 col-lg-4">
+                        {% include "products/partials/package_card.html" with package=package %}
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Section: Image Slideshow -->
+    {% if gallery_images %}
+    <div class="category-slideshow-section py-5">
+        <div class="container">
+            <h2 class="fw-bold mb-4">
+                <i class="bi bi-images text-primary"></i> Gallery
+            </h2>
+            <div id="categorySlideshow" class="carousel slide" data-bs-ride="carousel">
+                <!-- Indicators -->
+                <div class="carousel-indicators">
+                    {% for img in gallery_images %}
+                    <button type="button" data-bs-target="#categorySlideshow" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active" aria-current="true"{% endif %} aria-label="Slide {{ forloop.counter }}"></button>
+                    {% endfor %}
+                </div>
+
+                <!-- Slides -->
+                <div class="carousel-inner rounded shadow">
+                    {% for img in gallery_images %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{{ img.image.url }}" class="d-block w-100 category-slideshow-img" alt="{{ img.caption|default:category.name }}">
+                        {% if img.caption %}
+                        <div class="carousel-caption d-none d-md-block">
+                            <p class="mb-0">{{ img.caption }}</p>
+                        </div>
                         {% endif %}
                     </div>
-                </div>
-                {% endif %}
-
-                <!-- Detailed Description -->
-                {% if category.details %}
-                <div class="category-details mb-5">
-                    <h3 class="mb-3">
-                        <i class="bi bi-info-circle-fill text-primary"></i> About This Category
-                    </h3>
-                    <div class="card border-0 shadow-sm">
-                        <div class="card-body p-4">
-                            <div class="text-muted" style="white-space: pre-wrap;">{{ category.details }}</div>
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- Call to Action -->
-                <div class="category-cta card border-primary">
-                    <div class="card-body text-center p-5">
-                        <h3 class="card-title mb-3">Explore {{ category.name }} Packages</h3>
-                        <p class="card-text text-muted mb-4">
-                            {% if package_count > 0 %}
-                            We have {{ package_count }} package{{ package_count|pluralize }} available in this category.
-                            {% else %}
-                            Discover our selection of packages in this category.
-                            {% endif %}
-                        </p>
-                        <div class="d-flex gap-3 justify-content-center flex-wrap">
-                            <a href="{% url 'products:catalog' %}#category-{{ category.slug }}" class="btn btn-primary btn-lg">
-                                <i class="bi bi-grid-3x3-gap"></i> View in Catalog
-                            </a>
-                            <a href="{% url 'builders:showroom' %}" class="btn btn-outline-primary btn-lg">
-                                <i class="bi bi-house-door"></i> View in Builder Showroom
-                            </a>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
 
+                <!-- Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#categorySlideshow" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#categorySlideshow" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
         </div>
     </div>
+    {% endif %}
+
+    <!-- Section: CTA -->
+    <div class="container py-5">
+        <div class="category-cta-section text-center">
+            <h3 class="fw-bold mb-3">Explore More</h3>
+            <p class="text-muted mb-4">Browse our full catalog or see how these packages fit into a new build.</p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a href="{% url 'products:catalog' %}#category-{{ category.slug }}" class="btn btn-primary btn-lg px-4">
+                    <i class="bi bi-grid-3x3-gap"></i> View in Catalog
+                </a>
+                <a href="{% url 'builders:showroom' %}" class="btn btn-outline-primary btn-lg px-4">
+                    <i class="bi bi-house-door"></i> Builder Showroom
+                </a>
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<style>
-    .breadcrumb {
-        background: transparent;
-        padding: 0;
-    }
+{% endblock %}
 
-    .breadcrumb-item + .breadcrumb-item::before {
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .category-hero {
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .category-cta {
-        background: linear-gradient(to bottom right, #f8f9fa, #ffffff);
-    }
-
-    .category-video video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        background-color: #000;
-    }
-
-    .category-video iframe {
-        border: none;
-    }
-
-    .category-video .ratio {
-        background-color: #f8f9fa;
-    }
-
-    @media (max-width: 768px) {
-        .display-3 {
-            font-size: 2rem;
+{% block inline_javascript %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // ===== AJAX Add to Cart =====
+    function getCSRFToken() {
+        const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
+        if (tokenInput) return tokenInput.value;
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, 10) === 'csrftoken=') {
+                    cookieValue = decodeURIComponent(cookie.substring(10));
+                    break;
+                }
+            }
         }
+        return cookieValue;
     }
-</style>
+
+    document.querySelectorAll('.add-to-cart-btn').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const btn = this;
+            const packageId = btn.dataset.packageId;
+            const originalHTML = btn.innerHTML;
+
+            btn.classList.add('loading');
+            btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Adding...';
+            btn.disabled = true;
+
+            fetch('/quote/cart/add/' + packageId + '/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCSRFToken(),
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('HTTP error! status: ' + response.status);
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const packageCard = btn.closest('.product-card');
+                    if (packageCard) packageCard.classList.add('in-cart');
+
+                    // Update cart badges
+                    document.querySelectorAll('.cart-count').forEach(el => {
+                        el.textContent = data.cart_count;
+                    });
+                    const floatingBadge = document.querySelector('.floating-cart-badge .badge');
+                    if (floatingBadge) floatingBadge.textContent = data.cart_count;
+
+                    btn.classList.remove('loading');
+                    btn.classList.add('btn-success');
+                    btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Cart';
+                    btn.disabled = false;
+                } else {
+                    throw new Error(data.error || 'Failed to add to cart');
+                }
+            })
+            .catch(function() {
+                btn.classList.remove('loading');
+                btn.classList.add('btn-danger');
+                btn.innerHTML = '<i class="bi bi-x-circle"></i> Error';
+                setTimeout(function() {
+                    btn.classList.remove('btn-danger');
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                }, 2000);
+            });
+        });
+    });
+});
+</script>
 {% endblock %}

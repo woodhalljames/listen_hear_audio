@@ -13,37 +13,6 @@
         </div>
     </div>
 
-    <!-- Original Quote Details -->
-    {% if property.quote_request %}
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card" style="border-color: var(--primary-blue); border-width: 2px;">
-                <div class="card-body">
-                    <h5 class="card-title" style="color: var(--primary-blue);">
-                        <i class="bi bi-file-text"></i> Quote: {{ property.quote_request.quote_number }}
-                    </h5>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p class="mb-1"><strong>Contact:</strong> {{ property.quote_request.contact_person }}</p>
-                            <p class="mb-1"><strong>Email:</strong> {{ property.quote_request.email }}</p>
-                            <p class="mb-1"><strong>Phone:</strong> {{ property.quote_request.phone }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="mb-1"><strong>Total:</strong> ${{ property.quote_request.get_effective_total|floatformat:2 }}</p>
-                            <p class="mb-1"><strong>Status:</strong> {{ property.quote_request.get_status_display }}</p>
-                        </div>
-                    </div>
-                    {% if property.quote_request.pdf_path %}
-                    <a href="{{ property.quote_request.pdf_path.url }}" target="_blank" class="btn btn-sm mt-2" style="background-color: var(--primary-blue); color: white;">
-                        <i class="bi bi-file-earmark-pdf"></i> View Quote PDF
-                    </a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
     <!-- Phase Summary -->
     <div class="row mb-4">
         <div class="col-12">
@@ -78,6 +47,13 @@
                             <small class="text-muted">Completed</small>
                         </div>
                     </div>
+                    {% if property.quote_request and property.quote_request.pdf_path %}
+                    <div class="mt-3">
+                        <a href="{{ property.quote_request.pdf_path.url }}" target="_blank" class="btn btn-sm" style="background-color: var(--primary-blue); color: white;">
+                            <i class="bi bi-file-earmark-pdf me-1"></i>View Quote PDF
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -232,7 +208,7 @@
     </div>
 
     <!-- Activity Timeline -->
-    {% if notes %}
+    {% if timeline %}
     <div class="row">
         <div class="col-12">
             <h3 class="mb-3" style="color: var(--primary-blue);">
@@ -240,20 +216,34 @@
             </h3>
             <div class="card">
                 <div class="card-body">
-                    {% for note in notes %}
+                    {% for item in timeline %}
                     <div class="d-flex mb-3 {% if not forloop.last %}border-bottom pb-3{% endif %}">
-                        <div class="flex-shrink-0">
+                        <div class="flex-shrink-0 mt-1">
+                            {% if item.type == 'date_request' %}
+                            <i class="bi bi-calendar-plus" style="font-size: 0.75rem; color: #fd7e14;"></i>
+                            {% elif item.type == 'date_confirmation' %}
+                            <i class="bi bi-calendar-check" style="font-size: 0.75rem; color: #198754;"></i>
+                            {% elif item.type == 'status_change' %}
+                            <i class="bi bi-arrow-repeat" style="font-size: 0.75rem; color: #6f42c1;"></i>
+                            {% else %}
                             <i class="bi bi-circle-fill" style="font-size: 0.5rem; color: var(--primary-blue);"></i>
+                            {% endif %}
                         </div>
                         <div class="flex-grow-1 ms-3">
                             <div class="d-flex justify-content-between align-items-start mb-1">
-                                <strong style="color: var(--primary-blue);">{{ note.get_note_type_display }}</strong>
-                                <small class="text-muted">{{ note.created_at|date:"M d, Y g:i A" }}</small>
+                                <strong style="color: {% if item.type == 'date_request' %}#fd7e14{% elif item.type == 'date_confirmation' %}#198754{% elif item.type == 'status_change' %}#6f42c1{% else %}var(--primary-blue){% endif %};">
+                                    {% if item.type == 'date_request' %}Date Request{% elif item.type == 'date_confirmation' %}Date Confirmed{% elif item.type == 'status_change' %}Status Change{% else %}Note{% endif %}
+                                </strong>
+                                <small class="text-muted">{{ item.date|date:"M d, Y g:i A" }}</small>
                             </div>
-                            <p class="mb-1">{{ note.message }}</p>
-                            {% if note.phase_installation %}
-                            <small class="text-muted">Phase: {{ note.phase_installation.get_phase_display }}</small>
+                            <p class="mb-1">{{ item.message }}</p>
+                            {% if item.builder_notes %}
+                            <p class="mb-1" style="color: #fd7e14;"><small><i class="bi bi-chat-left-text me-1"></i>{{ item.builder_notes }}</small></p>
                             {% endif %}
+                            {% if item.company_notes %}
+                            <p class="mb-1" style="color: var(--primary-blue);"><small><i class="bi bi-chat-left-text me-1"></i>{{ item.company_notes }}</small></p>
+                            {% endif %}
+                          
                         </div>
                     </div>
                     {% endfor %}

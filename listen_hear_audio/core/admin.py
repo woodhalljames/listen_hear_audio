@@ -1,8 +1,16 @@
 from django.contrib import admin
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django_celery_beat.models import ClockedSchedule, IntervalSchedule, SolarSchedule
+from django_summernote.models import Attachment
 
-from .models import BusinessInfo, ServiceRequest
+from .models import BrandPartner, SiteConfiguration, ServiceRequest, TeamMember
+
+# Unregister unused admin models
+admin.site.unregister(ClockedSchedule)
+admin.site.unregister(IntervalSchedule)
+admin.site.unregister(SolarSchedule)
+admin.site.unregister(Attachment)
 
 
 @admin.register(ServiceRequest)
@@ -62,7 +70,7 @@ class ServiceRequestAdmin(admin.ModelAdmin):
                     send_mail(
                         subject,
                         message,
-                        BusinessInfo.load().email,
+                        SiteConfiguration.load().email,
                         [service_request.email],
                         html_message=message,
                         fail_silently=False,
@@ -77,19 +85,26 @@ class ServiceRequestAdmin(admin.ModelAdmin):
     send_response_email.short_description = "Send response email to selected"
 
 
-@admin.register(BusinessInfo)
-class BusinessInfoAdmin(admin.ModelAdmin):
+@admin.register(SiteConfiguration)
+class SiteConfigurationAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             "Business Information",
             {
-                "fields": ("business_name", "phone", "email"),
+                "fields": ("business_name", "phone", "email", "website", "logo"),
             },
         ),
         (
             "Address",
             {
                 "fields": ("street_address", "city", "state", "zip_code"),
+            },
+        ),
+        (
+            "Hero Video",
+            {
+                "fields": ("hero_video", "hero_video_url"),
+                "description": "Upload an MP4 or provide a URL for the looping background video. Uploaded file takes priority.",
             },
         ),
         (
@@ -114,6 +129,25 @@ class BusinessInfoAdmin(admin.ModelAdmin):
             },
         ),
         (
+            "Notifications",
+            {
+                "fields": ("notification_emails",),
+                "description": 'Enter email addresses as a JSON array, e.g., ["email1@example.com", "email2@example.com"]',
+            },
+        ),
+        (
+            "Email Templates",
+            {
+                "fields": ("customer_email_subject", "customer_email_message"),
+            },
+        ),
+        (
+            "Legal",
+            {
+                "fields": ("quote_disclaimer",),
+            },
+        ),
+        (
             "Social Media",
             {
                 "fields": ("facebook_url", "instagram_url", "twitter_url", "linkedin_url"),
@@ -124,8 +158,33 @@ class BusinessInfoAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         """Only allow one instance."""
-        return not BusinessInfo.objects.exists()
+        return not SiteConfiguration.objects.exists()
 
     def has_delete_permission(self, request, obj=None):
         """Prevent deletion."""
         return False
+
+
+@admin.register(BrandPartner)
+class BrandPartnerAdmin(admin.ModelAdmin):
+    list_display = ("name", "display_order", "is_active")
+    list_editable = ("display_order", "is_active")
+    list_filter = ("is_active",)
+    search_fields = ("name",)
+
+
+@admin.register(TeamMember)
+class TeamMemberAdmin(admin.ModelAdmin):
+    list_display = ("name", "title", "display_order", "is_active")
+    list_editable = ("display_order", "is_active")
+    list_filter = ("is_active",)
+    search_fields = ("name", "title")
+
+    fieldsets = (
+        (None, {
+            "fields": ("name", "title", "bio", "photo"),
+        }),
+        ("Display", {
+            "fields": ("display_order", "is_active"),
+        }),
+    )

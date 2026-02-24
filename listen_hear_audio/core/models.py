@@ -68,8 +68,8 @@ class ServiceRequest(models.Model):
         return f"{self.street_address}, {self.city}, {self.state} {self.zip_code}"
 
 
-class BusinessInfo(models.Model):
-    """Singleton model to store business information."""
+class SiteConfiguration(models.Model):
+    """Singleton model for all site-wide configuration and business information."""
 
     # Contact Information
     business_name = models.CharField(max_length=200, default="Listen Hear Smart Homes")
@@ -97,18 +97,58 @@ class BusinessInfo(models.Model):
     twitter_url = models.URLField(blank=True)
     linkedin_url = models.URLField(blank=True)
 
+    # Website & Branding
+    website = models.URLField(blank=True)
+    logo = models.ImageField(upload_to='site/', blank=True, null=True)
+
+    # Notification emails (stored as JSON array)
+    notification_emails = models.JSONField(
+        default=list,
+        help_text="List of email addresses to receive quote notifications"
+    )
+
+    # Email content
+    customer_email_subject = models.CharField(
+        max_length=200,
+        default="Your Listen Hear! Quote Request"
+    )
+    customer_email_message = models.TextField(
+        default="Thank you for your quote request. We'll review your requirements and get back to you within 24-48 hours."
+    )
+
+    # Terms and disclaimer
+    quote_disclaimer = models.TextField(
+        blank=True,
+        default="This is an estimate based on the packages selected. Final pricing will be determined after consultation and site evaluation."
+    )
+
+    # Hero Video (looping background video for home/about pages)
+    hero_video = models.FileField(
+        upload_to='site/video/',
+        blank=True,
+        null=True,
+        help_text="Upload an MP4 video for the hero background loop"
+    )
+    hero_video_url = models.URLField(
+        blank=True,
+        help_text="Or provide an external URL to a video file (used if no upload)"
+    )
+
     # Google Maps
     google_maps_embed_url = models.TextField(
         blank=True,
         help_text="Full Google Maps embed URL from maps.google.com (Share > Embed a map)",
     )
 
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
     class Meta:
-        verbose_name = "Business Information"
-        verbose_name_plural = "Business Information"
+        verbose_name = "Site Configuration"
+        verbose_name_plural = "Site Configuration"
 
     def __str__(self):
-        return self.business_name
+        return f"Site Configuration ({self.business_name})"
 
     def save(self, *args, **kwargs):
         """Ensure only one instance exists."""
@@ -121,6 +161,11 @@ class BusinessInfo(models.Model):
         obj, created = cls.objects.get_or_create(pk=1)
         return obj
 
+    @classmethod
+    def get_config(cls):
+        """Alias for load() for backward compatibility."""
+        return cls.load()
+
     @property
     def full_address(self):
         """Return formatted full address."""
@@ -130,9 +175,55 @@ class BusinessInfo(models.Model):
         return ", ".join(filter(None, parts))
 
     @property
+    def hero_video_src(self):
+        """Return the hero video source — uploaded file takes priority over URL."""
+        if self.hero_video:
+            return self.hero_video.url
+        return self.hero_video_url or ""
+
+    @property
     def google_maps_url(self):
         """Return Google Maps URL for the address."""
         if self.full_address:
             import urllib.parse
             return f"https://www.google.com/maps/search/?api=1&query={urllib.parse.quote(self.full_address)}"
         return ""
+
+
+class BrandPartner(models.Model):
+    """Brand logos displayed on the home page trust bar."""
+
+    name = models.CharField(max_length=200)
+    logo = models.ImageField(upload_to='brands/', help_text="Brand logo image")
+    website_url = models.URLField(blank=True)
+    display_order = models.PositiveIntegerField(default=0, help_text="Lower numbers appear first")
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['display_order', 'name']
+        verbose_name = "Brand Partner"
+        verbose_name_plural = "Brand Partners"
+
+    def __str__(self):
+        return self.name
+
+
+class TeamMember(models.Model):
+    """Team member displayed on the about page."""
+
+    name = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, help_text="Job title or role")
+    bio = models.TextField(blank=True, help_text="Short blurb about this team member")
+    photo = models.ImageField(upload_to='team/', blank=True, null=True)
+    display_order = models.PositiveIntegerField(default=0, help_text="Lower numbers appear first")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['display_order', 'name']
+        verbose_name = "Team Member"
+        verbose_name_plural = "Team Members"
+
+    def __str__(self):
+        return f"{self.name} - {self.title}"

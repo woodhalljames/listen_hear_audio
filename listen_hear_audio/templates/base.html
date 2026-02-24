@@ -14,6 +14,7 @@
         content="Professional smart home audio and video installation services. Custom packages for residential, commercial, and industrial properties." />
   <meta name="author"
         content="Cactus Cat LLC" />
+  {% block meta %}{% endblock meta %}
   <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
   
   {% block css %}
@@ -82,7 +83,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'builders:showroom' %}">
-                  <i class="bi bi-house-heart"></i> Builder Showroom
+                  <i class="bi bi-house"></i> Builder Showroom
                 </a>
               </li>
               <li class="nav-item">
@@ -212,6 +213,7 @@
   </nav>
 
   <!-- Main Content -->
+  {% block main_wrapper %}
   <div class="container my-4">
     {% if messages %}
       {% for message in messages %}
@@ -224,12 +226,13 @@
         </div>
       {% endfor %}
     {% endif %}
-    
+
     {% block main %}
       {% block content %}
       {% endblock content %}
     {% endblock main %}
   </div>
+  {% endblock main_wrapper %}
 
   <!-- Footer -->
   <footer class="footer">
@@ -241,7 +244,7 @@
             <img src="{% static 'images/listenhear.png' %}" alt="Listen Hear Smart Homes" class="footer-logo-image me-2">
             <span class="footer-logo-text">Listen Hear!</span>
           </a>
-          <p>Professional smart home audio and video installation services for residential, commercial, and industrial properties.</p>
+          <p>Professional smart home, audio and video installation services for residential, commercial, and industrial properties.</p>
 
           <!-- Social Media Links -->
           {% if business_info.facebook_url or business_info.instagram_url or business_info.twitter_url or business_info.linkedin_url %}
@@ -285,6 +288,7 @@
           <h5>Company</h5>
           <ul class="footer-links">
             <li><a href="{% url 'about' %}">About Us</a></li>
+            <li><a href="{% url 'commercial' %}">Commercial</a></li>
             <li><a href="{% url 'contact' %}">Contact</a></li>
             <li><a href="{% url 'careers:job_list' %}">Careers</a></li>
             <li><a href="#">Legal</a></li>
@@ -317,7 +321,7 @@
         <!-- Column 5: Newsletter -->
         <div class="col-lg-3 col-md-12">
           <h5>Stay Updated</h5>
-          <p>Subscribe to our newsletter for the latest products and promotions.</p>
+          <p>Subscribe to our newsletter for the latest in smart homes and home entertainment.</p>
           <form class="newsletter-form">
             <input type="email"
                    placeholder="Enter your email"
@@ -331,17 +335,75 @@
       <!-- Footer Bottom -->
       <div class="footer-bottom">
         <p class="mb-0">
-          &copy; {% now "Y" %} Listen Hear Smart Homes & Audio. All rights reserved.
+          &copy; {% now "Y" %} Listen Hear! All rights reserved.
         </p>
       </div>
     </div>
   </footer>
   
   {% endblock body %}
-  
+
+  <!-- Floating Cart Badge (global, updated via JS) -->
+  {% if cart_count > 0 %}
+  <div id="floating-cart" class="floating-cart-badge">
+    <a href="{% url 'quotes:cart' %}" class="btn btn-success btn-lg shadow-lg">
+      <i class="bi bi-cart-check-fill"></i>
+      <span class="badge bg-light text-dark ms-2">{{ cart_count }}</span>
+    </a>
+  </div>
+  {% endif %}
+
+  <script>
+    // Global cart update — updates navbar badge + floating cart on every page
+    function updateCartCount(count) {
+      // Update all navbar cart badges
+      document.querySelectorAll('.cart-badge').forEach(function(badge) {
+        badge.textContent = count;
+      });
+
+      // Create navbar badges if they don't exist yet
+      if (count > 0) {
+        document.querySelectorAll('a[href*="cart"] .bi-cart3').forEach(function(icon) {
+          var link = icon.closest('a');
+          if (link && !link.querySelector('.cart-badge')) {
+            var badge = document.createElement('span');
+            badge.className = 'cart-badge';
+            badge.textContent = count;
+            link.appendChild(badge);
+          }
+        });
+      } else {
+        document.querySelectorAll('.cart-badge').forEach(function(badge) {
+          badge.remove();
+        });
+      }
+
+      // Floating cart badge
+      var floatingCart = document.getElementById('floating-cart');
+      if (count > 0) {
+        if (!floatingCart) {
+          floatingCart = document.createElement('div');
+          floatingCart.id = 'floating-cart';
+          floatingCart.className = 'floating-cart-badge';
+          floatingCart.innerHTML =
+            '<a href="{% url "quotes:cart" %}" class="btn btn-success btn-lg shadow-lg">' +
+            '<i class="bi bi-cart-check-fill"></i>' +
+            '<span class="badge bg-light text-dark ms-2">' + count + '</span>' +
+            '</a>';
+          document.body.appendChild(floatingCart);
+        } else {
+          var badge = floatingCart.querySelector('.badge');
+          if (badge) badge.textContent = count;
+        }
+      } else if (floatingCart) {
+        floatingCart.remove();
+      }
+    }
+  </script>
+
   {% block modal %}
   {% endblock modal %}
-  
+
   {% block inline_javascript %}
   {% endblock inline_javascript %}
 </body>

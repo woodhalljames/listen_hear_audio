@@ -6,7 +6,7 @@
 {% block content %}
 <div class="builder-intro-container">
     <!-- Hero Section -->
-    <section class="hero-section text-center py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+    <section class="hero-section text-center py-5" style="background: var(--primary-blue); color: white;">
         <div class="container">
             <h1 class="display-2 fw-bold mb-4" style="color: white;">Transform Your Homes into Smart Homes</h1>
             <p class="lead fs-3 mb-4" style="color: white;">Partner with Listen Hear to deliver cutting-edge smart home technology that buyers love</p>
@@ -185,7 +185,7 @@
                             <i class="bi bi-people-fill text-primary mb-3" style="font-size: 3rem;"></i>
                             <h4 class="card-title mb-3">Builder-Friendly Process</h4>
                             <p class="card-text text-muted">
-                                Clear communication, respect for your schedule, and seamless coordination with your trades. We make your job easier, not harder.
+                                Clear communication, respect for your schedule, and seamless coordination with your trades. We make install easy, and your home more valuable.
                             </p>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
     </section>
 
     <!-- Call to Action -->
-    <section class="cta-section py-5 text-center" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+    <section class="cta-section py-5 text-center" style="background: var(--primary-blue); color: white;">
         <div class="container">
             <h2 class="display-3 fw-bold mb-4" style="color: white;">Ready to Explore Smart Home Packages?</h2>
             <p class="lead fs-4 mb-5" style="color: white;">
@@ -221,50 +221,5 @@
     </section>
 </div>
 
-<style>
-    .hero-section {
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-
-    .card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0,0,0,0.2) !important;
-    }
-
-    .benefits-section {
-        background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
-    }
-
-    .cta-section {
-        box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
-    }
-
-    .showroom-option-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        height: 100%;
-    }
-
-    .showroom-option-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 12px 24px rgba(0,0,0,0.3) !important;
-    }
-
-    @media (max-width: 768px) {
-        .display-2 {
-            font-size: 2.5rem;
-        }
-
-        .display-3 {
-            font-size: 2rem;
-        }
-
-        .display-4 {
-            font-size: 1.75rem;
-        }
-    }
-</style>
+<!-- Styles moved to project.css -->
 {% endblock %}

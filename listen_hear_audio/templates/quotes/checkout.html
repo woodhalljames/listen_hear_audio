@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static crispy_forms_tags %}
 
-{% block title %}Checkout - Listen Hear Audio{% endblock %}
+{% block title %}Checkout - Listen Hear{% endblock %}
 
 {% block content %}
 <div class="py-4">
@@ -63,12 +63,13 @@
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label for="{{ form.email.id_for_label }}" class="form-label">
-                  <i class="bi bi-envelope"></i> Email Address <span class="text-danger">*</span>
+                  <i class="bi bi-envelope"></i> Email Address(es) <span class="text-danger">*</span>
                 </label>
                 {{ form.email }}
                 {% if form.email.errors %}
                   <div class="text-danger small">{{ form.email.errors }}</div>
                 {% endif %}
+                <small class="form-text text-muted">Separate multiple emails with commas</small>
               </div>
               <div class="col-md-6 mb-3">
                 <label for="{{ form.phone.id_for_label }}" class="form-label">
@@ -154,8 +155,7 @@
             <div class="alert alert-light border">
               <small>
                 <i class="bi bi-shield-check"></i>
-                <strong>Legal:</strong> All pricing provided is an estimate only and is subject to change based on final design, site conditions, and product availability.
-                Your information is secure and will only be used to prepare your quote. We never share details with third parties.
+                <strong>Legal:</strong> All pricing provided is an estimate and is subject to change based on final design, site conditions, and product availability.  Your information is secure and will only be used to prepare your quote. We never share details with third parties.
               </small>
             </div>
 
@@ -222,7 +222,7 @@
             <small>
               <i class="bi bi-info-circle"></i>
               {% if estimated_total > 0 %}
-                Final pricing will be provided in your custom quote.
+                Final pricing will be provided after consultation.
               {% else %}
                 Custom package pricing will be provided after consultation.
               {% endif %}
@@ -240,8 +240,8 @@
           <ol class="small text-muted ps-3 mb-0">
             <li class="mb-2">We review your selections and requirements</li>
             <li class="mb-2">Our team contacts you, gathering more specifics</li>
-            <li class="mb-2">You'll receive a more detailed, final quote within 2-3 business days</li>
-            <li>Use Builder or Customer Dashboard to manage scheduling and communications</li>
+            <li class="mb-2">You'll receive a more detailed, final quote</li>
+            <li>Schedule the installation of your new smart home</li>
           </ol>
         </div>
       </div>

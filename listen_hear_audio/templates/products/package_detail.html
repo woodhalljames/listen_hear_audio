@@ -65,10 +65,11 @@
 
       <!-- Price -->
       <div class="mb-4">
-        <h3 class="text-primary mb-0">{{ package.get_price_display }}</h3>
-        {% if not package.is_custom %}
-          <small class="text-muted">Base price - final pricing after consultation</small>
+        {% if package.is_custom %}
+          <h3 class="text-primary mb-0">{{ package.get_custom_label }}</h3>
         {% endif %}
+        <h3 class="text-primary mb-0">{{ package.get_price_display }}</h3>
+        <small class="text-muted">Base price - final pricing after consultation</small>
       </div>
 
       <!-- Add to Cart Form -->

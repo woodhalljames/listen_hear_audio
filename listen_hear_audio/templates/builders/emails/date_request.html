@@ -172,12 +172,21 @@
         {% endif %}
 
         <div style="text-align: center; margin: 30px 0;">
-            <a href="{{ config.website }}/shadycorvette/builders/phaseinstallation/{{ phase.id }}/change/" class="cta-button">Confirm Date</a>
+            <a href="{{ site_url }}/{{ admin_url }}builders/phaseinstallation/{{ phase.id }}/change/" class="cta-button">Confirm Date</a>
         </div>
 
         <div class="footer">
-            <p><strong>{{ config.business_name }}</strong></p>
-            <p>{{ config.email }} | {{ config.phone }}</p>
+            <p><strong>{{ config.business_name|default:"Listen Hear!" }}</strong></p>
+            {% if config.phone or config.email %}
+            <p>
+                {% if config.phone %}{{ config.phone }}{% endif %}
+                {% if config.phone and config.email %} | {% endif %}
+                {% if config.email %}{{ config.email }}{% endif %}
+            </p>
+            {% endif %}
+            {% if config.website %}
+            <p>{{ config.website }}</p>
+            {% endif %}
         </div>
     </div>
 </body>

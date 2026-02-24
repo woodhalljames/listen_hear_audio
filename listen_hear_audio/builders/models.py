@@ -1,6 +1,26 @@
 from django.db import models
+from django.db.models import Case, When, Value, IntegerField
 from django.conf import settings
 from django.urls import reverse
+
+
+# Canonical chronological order for construction phases
+PHASE_ORDER = {
+    'framing': 1,
+    'rough_ins': 2,
+    'insulation_drywall': 3,
+    'trim_finishes': 4,
+    'finished_property': 5,
+}
+
+
+def phase_order_annotation():
+    """Returns a Case expression for chronological phase ordering."""
+    return Case(
+        *[When(phase=k, then=Value(v)) for k, v in PHASE_ORDER.items()],
+        default=Value(99),
+        output_field=IntegerField(),
+    )
 
 
 class Property(models.Model):
@@ -33,7 +53,9 @@ class Property(models.Model):
         return f"{self.name} - {self.address[:50]}"
 
     def get_absolute_url(self):
-        return reverse('builders:property_detail', kwargs={'pk': self.pk})
+        if self.quote_request:
+            return reverse('builders:property_detail', kwargs={'quote_number': self.quote_request.quote_number})
+        return reverse('builders:property_detail', kwargs={'quote_number': self.pk})
 
     def get_phase_summary(self):
         """Get summary of phase statuses"""
@@ -47,6 +69,23 @@ class Property(models.Model):
             'completed': phases.filter(status='completed').count(),
         }
 
+    def get_dashboard_summary(self):
+        """Get summary stats for the builder dashboard"""
+        phases = self.phase_installations.all()
+        completed_phases = phases.filter(status='completed').values_list('phase', flat=True)
+        next_date = (
+            phases.filter(status='scheduled', confirmed_date__isnull=False)
+            .order_by('confirmed_date')
+            .values_list('confirmed_date', flat=True)
+            .first()
+        )
+        return {
+            'installs_to_request': phases.filter(status='pending').count(),
+            'installs_scheduled': phases.filter(status='scheduled').count(),
+            'next_scheduled_date': next_date,
+            'packages_installed': self.packages.filter(installation_phase_snapshot__in=completed_phases).count(),
+        }
+
 
 class PhaseInstallation(models.Model):
     """Installation schedule for a construction phase - groups all packages in that phase"""
@@ -56,6 +95,7 @@ class PhaseInstallation(models.Model):
         ('rough_ins', 'Rough-Ins'),
         ('insulation_drywall', 'Insulation & Drywall'),
         ('trim_finishes', 'Trim & Finishes'),
+        ('finished_property', 'Finished Property'),
     ]
 
     STATUS_CHOICES = [
@@ -89,8 +129,8 @@ class PhaseInstallation(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = 'Phase Installation'
-        verbose_name_plural = 'Phase Installations'
+        verbose_name = 'Installation'
+        verbose_name_plural = 'Installations'
         ordering = ['phase']
         unique_together = ['property', 'phase']
 

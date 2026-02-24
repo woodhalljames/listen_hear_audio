@@ -6,7 +6,7 @@ from django.urls import path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 
-from listen_hear_audio.core.views import ContactView
+from listen_hear_audio.core.views import AboutView, CommercialView, ContactView, HomeView
 
 # Customize admin site
 admin.site.site_header = "Listen Hear Administration"
@@ -14,12 +14,9 @@ admin.site.site_title = "Listen Hear Admin"
 admin.site.index_title = "Welcome to Listen Hear Administration"
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
-    path(
-        "about/",
-        TemplateView.as_view(template_name="pages/about.html"),
-        name="about",
-    ),
+    path("", HomeView.as_view(), name="home"),
+    path("about/", AboutView.as_view(), name="about"),
+    path("commercial/", CommercialView.as_view(), name="commercial"),
     path("contact/", ContactView.as_view(), name="contact"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),

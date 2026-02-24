@@ -10,7 +10,7 @@ urlpatterns = [
     path('showroom/guided/<int:step>/', views.builder_showroom, name='showroom_guided_step'),
 
     # Property detail
-    path('property/<int:pk>/', views.BuilderPropertyDetailView.as_view(), name='property_detail'),
+    path('property/<str:quote_number>/', views.BuilderPropertyDetailView.as_view(), name='property_detail'),
 
     # Phase installation request
     path('property/<int:property_id>/phase/<str:phase>/request/', views.request_phase_install, name='request_phase_install'),

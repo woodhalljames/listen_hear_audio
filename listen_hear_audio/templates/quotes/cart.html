@@ -108,20 +108,18 @@
                             </form>
                           </td>
                           <td class="text-end align-middle">
+                            ${{ item.package.starting_price|floatformat:2 }}
                             {% if item.package.is_custom %}
-                              <span class="text-muted">Custom</span>
-                            {% else %}
-                              ${{ item.package.starting_price|floatformat:2 }}
+                              <div class="small text-muted">Custom</div>
                             {% endif %}
                           </td>
                           <td class="text-end align-middle">
                             <strong style="color: #3333ff;">
-                              {% if item.package.is_custom %}
-                                TBD
-                              {% else %}
-                                ${{ item.get_subtotal|floatformat:2 }}
-                              {% endif %}
+                              ${{ item.get_subtotal|floatformat:2 }}
                             </strong>
+                            {% if item.package.is_custom %}
+                              <div class="small text-muted">+ custom</div>
+                            {% endif %}
                           </td>
                           <td class="text-end align-middle">
                             <form method="post"
@@ -250,7 +248,7 @@
           <div class="card-footer bg-light">
             <small class="text-muted">
               <i class="bi bi-shield-check"></i> No credit card required<br>
-              <i class="bi bi-clock-history"></i> Response within 24-48 hours
+              <i class="bi bi-clock-history"></i> Response within 2-3 business days
             </small>
           </div>
         </div>

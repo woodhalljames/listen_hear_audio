@@ -14,12 +14,13 @@ class CheckoutForm(forms.Form):
         })
     )
     
-    email = forms.EmailField(
-        label='Email Address',
-        widget=forms.EmailInput(attrs={
+    email = forms.CharField(
+        label='Email Address(es)',
+        widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': 'your.email@example.com'
-        })
+            'placeholder': 'email@example.com, another@example.com'
+        }),
+        help_text='Separate multiple emails with commas'
     )
     
     phone_regex = RegexValidator(
@@ -98,6 +99,25 @@ class CheckoutForm(forms.Form):
         })
     )
     
+    def clean_email(self):
+        """Validate one or more comma-separated email addresses"""
+        from django.core.validators import validate_email
+        from django.core.exceptions import ValidationError
+
+        raw = self.cleaned_data.get('email', '')
+        emails = [e.strip() for e in raw.replace('\n', ',').split(',') if e.strip()]
+
+        if not emails:
+            raise ValidationError('Please provide at least one email address.')
+
+        for email in emails:
+            try:
+                validate_email(email)
+            except ValidationError:
+                raise ValidationError(f'"{email}" is not a valid email address.')
+
+        return ', '.join(emails)
+
     def clean_phone(self):
         """Clean and format phone number"""
         phone = self.cleaned_data.get('phone')

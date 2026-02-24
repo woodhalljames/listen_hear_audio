@@ -24,12 +24,14 @@ class BuilderPropertyDetailView(BuilderRequiredMixin, DetailView):
     model = Property
     template_name = 'builders/builder_property_detail.html'
     context_object_name = 'property'
+    slug_field = 'quote_request__quote_number'
+    slug_url_kwarg = 'quote_number'
 
     def get_queryset(self):
         """Only show properties assigned to this builder"""
         return Property.objects.filter(
             builders=self.request.user
-        ).prefetch_related('packages', 'phase_installations', 'notes', 'builders')
+        ).select_related('quote_request').prefetch_related('packages', 'phase_installations', 'notes', 'builders')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -39,12 +41,13 @@ class BuilderPropertyDetailView(BuilderRequiredMixin, DetailView):
 
         # Build phases data with packages grouped
         phases_data = []
-        phase_order = ['framing', 'rough_ins', 'insulation_drywall', 'trim_finishes']
+        phase_order = ['framing', 'rough_ins', 'insulation_drywall', 'trim_finishes', 'finished_property']
         phase_labels = {
             'framing': 'Framing',
             'rough_ins': 'Rough-Ins',
             'insulation_drywall': 'Insulation & Drywall',
             'trim_finishes': 'Trim & Finishes',
+            'finished_property': 'Finished Property',
         }
 
         for phase_key in phase_order:
@@ -67,8 +70,49 @@ class BuilderPropertyDetailView(BuilderRequiredMixin, DetailView):
 
         context['phases'] = phases_data
 
-        # Get activity timeline
-        context['notes'] = property_obj.notes.select_related('created_by', 'phase_installation').all()[:20]
+        # Build unified activity timeline
+        timeline = []
+
+        # Track which phases already have a confirmation entry (from PhaseInstallation)
+        confirmed_phase_ids = set()
+
+        # Date confirmations — built directly from phase installations with confirmed_date
+        for phase_data in phases_data:
+            inst = phase_data['installation']
+            if inst.confirmed_date:
+                confirmed_phase_ids.add(inst.pk)
+                timeline.append({
+                    'type': 'date_confirmation',
+                    'message': f"{phase_data['label']} confirmed: {inst.get_confirmed_dates_display()}",
+                    'date': inst.updated_at,
+                    'phase_label': phase_data['label'],
+                    'builder_notes': '',
+                    'company_notes': inst.company_notes or '',
+                })
+
+        # PropertyNote entries — date_request (with builder notes), status_change, general
+        for note in property_obj.notes.select_related('created_by', 'phase_installation').all()[:20]:
+            # Skip date_confirmation PropertyNotes — already covered above
+            if note.note_type == 'date_confirmation':
+                continue
+
+            entry = {
+                'type': note.note_type,
+                'message': note.message,
+                'date': note.created_at,
+                'phase_label': note.phase_installation.get_phase_display() if note.phase_installation else '',
+                'builder_notes': '',
+                'company_notes': '',
+            }
+
+            # Merge builder_notes for date requests
+            if note.note_type == 'date_request' and note.phase_installation:
+                entry['builder_notes'] = note.phase_installation.builder_notes or ''
+
+            timeline.append(entry)
+
+        timeline.sort(key=lambda x: x['date'], reverse=True)
+        context['timeline'] = timeline
 
         # Get phase summary
         context['phase_summary'] = property_obj.get_phase_summary()
@@ -85,12 +129,16 @@ def request_phase_install(request, property_id, phase):
         messages.error(request, 'Not authorized')
         return redirect('home')
 
-    property_obj = get_object_or_404(Property, pk=property_id)
+    property_obj = get_object_or_404(Property.objects.select_related('quote_request'), pk=property_id)
 
     # Verify builder has access
     if not property_obj.builders.filter(pk=request.user.pk).exists():
         messages.error(request, 'Not authorized')
         return redirect('home')
+
+    # Helper to redirect back to property detail
+    def _redirect_to_property():
+        return redirect(property_obj.get_absolute_url())
 
     # Get or create phase installation
     phase_install, created = PhaseInstallation.objects.get_or_create(
@@ -102,7 +150,7 @@ def request_phase_install(request, property_id, phase):
     # Only allow requesting if pending
     if phase_install.status != 'pending':
         messages.warning(request, 'Date already requested for this phase')
-        return redirect('builders:property_detail', pk=property_id)
+        return _redirect_to_property()
 
     # Get form data
     preferred_dates = request.POST.getlist('preferred_dates')
@@ -110,7 +158,7 @@ def request_phase_install(request, property_id, phase):
 
     if not preferred_dates or not any(preferred_dates):
         messages.error(request, 'Please provide at least one date')
-        return redirect('builders:property_detail', pk=property_id)
+        return _redirect_to_property()
 
     # Parse dates
     valid_dates = []
@@ -124,7 +172,7 @@ def request_phase_install(request, property_id, phase):
 
     if not valid_dates:
         messages.error(request, 'Please provide a valid date')
-        return redirect('builders:property_detail', pk=property_id)
+        return _redirect_to_property()
 
     # Update phase installation
     primary_date = valid_dates[0]
@@ -153,7 +201,7 @@ def request_phase_install(request, property_id, phase):
     send_date_request_email.delay(phase_install.id)
 
     messages.success(request, f'Install date requested for {phase_install.get_phase_display()}')
-    return redirect('builders:property_detail', pk=property_id)
+    return _redirect_to_property()
 
 
 def builder_showroom_intro(request):
@@ -179,6 +227,7 @@ def _get_phase_icon(phase):
         'rough_ins': 'bi-router',
         'insulation_drywall': 'bi-layers',
         'trim_finishes': 'bi-paint-bucket',
+        'finished_property': 'bi-house-check',
     }
     return icons.get(phase, 'bi-box')
 
@@ -201,7 +250,7 @@ def builder_showroom(request, step=1):
             category__builder_section=section_value,
             category__is_active=True,
             is_active=True,
-            catalog_only=False
+            visibility__in=['both', 'showroom'],
         ).select_related('category', 'subcategory').order_by('display_order', 'name')
 
         if categories.exists() or packages.exists():

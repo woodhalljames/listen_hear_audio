@@ -19,7 +19,7 @@ django.setup()
 from django.contrib.auth import get_user_model
 from listen_hear_audio.builders.models import Property, PurchasedPackage
 from listen_hear_audio.products.models import Package
-from listen_hear_audio.quotes.models import SiteConfiguration
+from listen_hear_audio.core.models import SiteConfiguration
 from listen_hear_audio.builders.tasks import (
     send_property_creation_email,
     send_date_request_email,

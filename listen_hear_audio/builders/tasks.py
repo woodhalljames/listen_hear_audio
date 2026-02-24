@@ -3,7 +3,7 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
 from .models import Property, PhaseInstallation
-from listen_hear_audio.quotes.models import SiteConfiguration
+from listen_hear_audio.core.models import SiteConfiguration
 import logging
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ def send_property_creation_email(property_id):
     """Send email when a new property is created"""
     try:
         property_obj = Property.objects.get(id=property_id)
-        config = SiteConfiguration.get_config()
+        config = SiteConfiguration.load()
 
         builders = property_obj.builders.all()
         if not builders.exists():
@@ -23,10 +23,15 @@ def send_property_creation_email(property_id):
 
         recipient_emails = [builder.email for builder in builders]
 
+        site_url = getattr(settings, 'SITE_URL', 'http://localhost:8000').rstrip('/')
+        admin_url = getattr(settings, 'ADMIN_URL', 'admin/')
+
         subject = f'New Property Assigned: {property_obj.name}'
         message = render_to_string('builders/emails/property_creation.html', {
             'property': property_obj,
             'config': config,
+            'site_url': site_url,
+            'admin_url': admin_url,
         })
 
         email = EmailMessage(
@@ -51,7 +56,7 @@ def send_date_request_email(phase_id):
     """Send email to admin when builder requests phase installation date"""
     try:
         phase = PhaseInstallation.objects.select_related('property').get(id=phase_id)
-        config = SiteConfiguration.get_config()
+        config = SiteConfiguration.load()
 
         if not config.notification_emails:
             logger.warning('No notification emails configured')
@@ -59,12 +64,17 @@ def send_date_request_email(phase_id):
 
         packages = phase.get_packages()
 
+        site_url = getattr(settings, 'SITE_URL', 'http://localhost:8000').rstrip('/')
+        admin_url = getattr(settings, 'ADMIN_URL', 'admin/')
+
         subject = f'Install Date Requested: {phase.get_phase_display()} - {phase.property.name}'
         message = render_to_string('builders/emails/date_request.html', {
             'phase': phase,
             'property': phase.property,
             'packages': packages,
             'config': config,
+            'site_url': site_url,
+            'admin_url': admin_url,
         })
 
         email = EmailMessage(
@@ -89,7 +99,7 @@ def send_date_confirmation_email(phase_id):
     """Send email to builders when phase installation date is confirmed"""
     try:
         phase = PhaseInstallation.objects.select_related('property').get(id=phase_id)
-        config = SiteConfiguration.get_config()
+        config = SiteConfiguration.load()
 
         builders = phase.property.builders.all()
         if not builders.exists():
@@ -104,12 +114,17 @@ def send_date_confirmation_email(phase_id):
 
         packages = phase.get_packages()
 
+        site_url = getattr(settings, 'SITE_URL', 'http://localhost:8000').rstrip('/')
+        admin_url = getattr(settings, 'ADMIN_URL', 'admin/')
+
         subject = f'Install Date Confirmed: {phase.get_phase_display()} - {phase.property.name}'
         message = render_to_string('builders/emails/date_confirmation.html', {
             'phase': phase,
             'property': phase.property,
             'packages': packages,
             'config': config,
+            'site_url': site_url,
+            'admin_url': admin_url,
         })
 
         email = EmailMessage(

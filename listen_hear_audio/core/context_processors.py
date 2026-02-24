@@ -1,8 +1,8 @@
-from .models import BusinessInfo
+from .models import SiteConfiguration
 
 
 def business_info(request):
-    """Make business info available to all templates."""
+    """Make site configuration available to all templates."""
     return {
-        "business_info": BusinessInfo.load(),
+        "business_info": SiteConfiguration.load(),
     }

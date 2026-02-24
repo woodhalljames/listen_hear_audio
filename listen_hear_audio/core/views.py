@@ -6,7 +6,35 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 
-from .models import BusinessInfo, ServiceRequest
+from .models import BrandPartner, SiteConfiguration, ServiceRequest, TeamMember
+
+
+class HomeView(TemplateView):
+    """Home page view."""
+
+    template_name = "pages/home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["brands"] = BrandPartner.objects.filter(is_active=True)
+        return context
+
+
+class AboutView(TemplateView):
+    """About page view."""
+
+    template_name = "pages/about.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["team_members"] = TeamMember.objects.filter(is_active=True)
+        return context
+
+
+class CommercialView(TemplateView):
+    """Commercial & Industrial services page."""
+
+    template_name = "pages/commercial.html"
 
 
 class ContactView(TemplateView):
@@ -16,7 +44,7 @@ class ContactView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["business_info"] = BusinessInfo.load()
+        context["business_info"] = SiteConfiguration.load()
         return context
 
 
@@ -65,7 +93,7 @@ class ServiceRequestView(CreateView):
         response = super().form_valid(form)
 
         # Send email notification
-        business_info = BusinessInfo.load()
+        business_info = SiteConfiguration.load()
         subject = f"New Service Request from {form.instance.name}"
         message = render_to_string("core/emails/service_request_notification.html", {
             "service_request": form.instance,

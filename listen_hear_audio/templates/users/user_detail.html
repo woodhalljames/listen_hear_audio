@@ -98,27 +98,25 @@
                               <i class="bi bi-geo-alt me-1"></i>{{ property.address|truncatewords:10 }}
                             </p>
 
-                            {% with status_summary=property.get_package_status_summary %}
+                            {% with summary=property.get_dashboard_summary %}
                               <div class="mb-3 p-3 bg-light rounded">
-                                <small class="text-muted d-block mb-2">
-                                  <strong>Packages:</strong> {{ status_summary.total }} total
-                                </small>
-                                <div class="d-flex flex-wrap gap-1">
-                                  {% if status_summary.pending > 0 %}
-                                    <span class="badge text-white" style="background-color: var(--primary-blue);">{{ status_summary.pending }} Pending</span>
-                                  {% endif %}
-                                  {% if status_summary.date_requested > 0 %}
-                                    <span class="badge text-dark" style="background-color: var(--primary-yellow);">{{ status_summary.date_requested }} Requested</span>
-                                  {% endif %}
-                                  {% if status_summary.scheduled > 0 %}
-                                    <span class="badge text-white" style="background-color: var(--primary-blue);">{{ status_summary.scheduled }} Scheduled</span>
-                                  {% endif %}
-                                  {% if status_summary.in_progress > 0 %}
-                                    <span class="badge text-white" style="background-color: var(--primary-blue);">{{ status_summary.in_progress }} In Progress</span>
-                                  {% endif %}
-                                  {% if status_summary.completed > 0 %}
-                                    <span class="badge text-dark" style="background-color: var(--primary-yellow);">{{ status_summary.completed }} Completed</span>
-                                  {% endif %}
+                                <div class="row row-cols-2 g-2 text-center">
+                                  <div class="col">
+                                    <small class="text-muted d-block">Installs to Request</small>
+                                    <span class="fw-bold" style="color: var(--primary-blue);">{{ summary.installs_to_request }}</span>
+                                  </div>
+                                  <div class="col">
+                                    <small class="text-muted d-block">Installs Scheduled</small>
+                                    <span class="fw-bold" style="color: var(--primary-blue);">{{ summary.installs_scheduled }}</span>
+                                  </div>
+                                  <div class="col">
+                                    <small class="text-muted d-block">Next Install Date</small>
+                                    <span class="fw-bold small">{% if summary.next_scheduled_date %}{{ summary.next_scheduled_date|date:"M d, Y" }}{% else %}—{% endif %}</span>
+                                  </div>
+                                  <div class="col">
+                                    <small class="text-muted d-block">Packages Installed</small>
+                                    <span class="fw-bold" style="color: var(--primary-blue);">{{ summary.packages_installed }}</span>
+                                  </div>
                                 </div>
                               </div>
                             {% endwith %}
@@ -128,7 +126,7 @@
                             </p>
                           </div>
                           <div class="card-footer bg-white border-top">
-                            <a href="{% url 'builders:property_detail' property.pk %}" class="btn w-100" style="background-color: var(--primary-blue); color: white;">
+                            <a href="{{ property.get_absolute_url }}" class="btn w-100" style="background-color: var(--primary-blue); color: white;">
                               View Details <i class="bi bi-arrow-right ms-1"></i>
                             </a>
                           </div>
@@ -164,65 +162,23 @@
                   {% for quote in object.quote_requests.all %}
                     <div class="col">
                       <div class="card h-100 border shadow-sm hover-lift">
-                        <div class="card-header bg-white border-bottom">
-                          <div class="d-flex justify-content-between align-items-center">
-                            <h6 class="mb-0 fw-bold" style="color: var(--primary-blue);">{{ quote.quote_number }}</h6>
-                            {% if quote.is_finalized %}
-                              <i class="bi bi-check-circle-fill" style="color: var(--primary-blue);"></i>
-                            {% endif %}
-                          </div>
-                        </div>
                         <div class="card-body">
-                          <div class="row g-2 mb-3">
-                            <div class="col-6">
-                              <div class="d-flex flex-column">
-                                <small class="text-muted">Requested</small>
-                                <span class="small fw-semibold">{{ quote.created_at|date:"M d, Y" }}</span>
-                              </div>
-                            </div>
-                            {% if quote.is_finalized %}
-                              <div class="col-6">
-                                <div class="d-flex flex-column">
-                                  <small class="text-muted">Finalized</small>
-                                  <span class="small fw-semibold">{{ quote.finalized_at|date:"M d, Y" }}</span>
-                                </div>
-                              </div>
-                            {% endif %}
-                            <div class="col-6">
-                              <div class="d-flex flex-column">
-                                <small class="text-muted">Items</small>
-                                <span class="small fw-semibold">{{ quote.get_total_items }}</span>
-                              </div>
-                            </div>
-                            <div class="col-6">
-                              <div class="d-flex flex-column">
-                                <small class="text-muted">Total</small>
-                                {% if quote.is_finalized and quote.final_total %}
-                                  <span class="small fw-bold" style="color: var(--primary-blue);">${{ quote.final_total|floatformat:2 }}</span>
-                                {% else %}
-                                  <span class="small fw-bold" style="color: var(--primary-blue);">${{ quote.estimated_total|floatformat:2 }}</span>
-                                {% endif %}
-                              </div>
-                            </div>
+                          <h6 class="fw-bold mb-3" style="color: var(--primary-blue);">{{ quote.quote_number }}</h6>
+                          <div class="d-flex justify-content-between mb-2">
+                            <small class="text-muted">Requested</small>
+                            <span class="small fw-semibold">{{ quote.created_at|date:"M d, Y" }}</span>
                           </div>
-
-                          <div class="mb-3">
-                            <span class="badge me-1" style="background-color: {% if quote.status == 'accepted' or quote.status == 'completed' %}var(--primary-yellow){% else %}var(--primary-blue){% endif %}; color: {% if quote.status == 'accepted' or quote.status == 'completed' %}var(--primary-dark){% else %}white{% endif %};">
-                              {{ quote.get_status_display }}
-                            </span>
-                            {% if quote.is_finalized %}
-                              <span class="badge text-dark" style="background-color: var(--primary-yellow);">Finalized</span>
-                            {% endif %}
+                          <div class="d-flex justify-content-between mb-3">
+                            <small class="text-muted">Items</small>
+                            <span class="small fw-semibold">{{ quote.get_total_items }}</span>
                           </div>
-                        </div>
-                        <div class="card-footer bg-white border-top">
                           {% if quote.pdf_path %}
                             <a href="{% url 'quotes:download_pdf' quote.quote_number %}"
-                               class="btn w-100" style="background-color: var(--primary-blue); color: white;">
-                              <i class="bi bi-file-pdf me-1"></i>Download PDF
+                               class="btn btn-sm w-100" style="background-color: var(--primary-blue); color: white;">
+                              <i class="bi bi-file-pdf me-1"></i>Download Quote
                             </a>
                           {% else %}
-                            <button class="btn btn-secondary w-100" disabled>
+                            <button class="btn btn-secondary btn-sm w-100" disabled>
                               <i class="bi bi-hourglass-split me-1"></i>Generating PDF...
                             </button>
                           {% endif %}

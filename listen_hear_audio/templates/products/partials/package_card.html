@@ -40,7 +40,10 @@
     {% endif %}
 
     <div class="mt-auto">
-      <div class="d-flex justify-content-between align-items-center mb-3">
+      <div class="mb-3">
+        {% if package.is_custom %}
+          <strong class="text-primary d-block">{{ package.get_custom_label }}</strong>
+        {% endif %}
         <strong class="text-primary">{{ package.get_price_display }}</strong>
       </div>
 

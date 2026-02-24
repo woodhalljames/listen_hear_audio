@@ -144,11 +144,18 @@ def checkout_view(request):
     if request.method == 'POST':
         form = CheckoutForm(request.POST)
         if form.is_valid():
+            # Build email recipients list: form emails + logged-in user's email
+            form_emails = [e.strip() for e in form.cleaned_data['email'].split(',') if e.strip()]
+            all_recipients = list(form_emails)
+            if request.user.is_authenticated and request.user.email:
+                if request.user.email.lower() not in [e.lower() for e in all_recipients]:
+                    all_recipients.append(request.user.email)
+
             # Create quote request
             quote_request = QuoteRequest.objects.create(
                 user=request.user if request.user.is_authenticated else None,
                 contact_person=form.cleaned_data['contact_person'],
-                email=form.cleaned_data['email'],
+                email=form_emails[0],  # Primary contact email
                 phone=form.cleaned_data['phone'],
                 street=form.cleaned_data.get('street', ''),
                 city=form.cleaned_data['city'],
@@ -157,7 +164,7 @@ def checkout_view(request):
                 website=form.cleaned_data.get('website', ''),
                 notes=form.cleaned_data.get('notes', ''),
                 estimated_total=cart.get_estimated_total(),
-                email_recipients=form.cleaned_data['email']  # Pre-populate with customer email
+                email_recipients='\n'.join(all_recipients),
             )
             
             # Copy cart items to quote request

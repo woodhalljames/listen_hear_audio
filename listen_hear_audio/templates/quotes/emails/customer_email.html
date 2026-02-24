@@ -110,10 +110,10 @@
   <div class="email-container">
     <!-- Header -->
     <div class="header">
-      {% if config.business_logo %}
-        <img src="cid:logo" alt="Listen Hear" style="max-height: 80px; margin-bottom: 15px;">
+      {% if config.logo %}
+        <img src="cid:logo" alt="Listen Hear" style="max-height: 80px; width: 80px; margin-bottom: 15px; border-radius: 50%; border: 3px solid #ffffff; object-fit: cover; background-color: #ffffff;">
       {% endif %}
-      <h1>Listen Hear</h1>
+      <h1>Listen Hear!</h1>
       <p style="margin: 10px 0 0 0;">
         {% if quote_request.is_finalized %}
           Final Quote
@@ -134,7 +134,7 @@
       </h2>
 
       {% if quote_request.is_finalized %}
-        <p>We're pleased to present your finalized quote for your smart home audio project. This quote includes detailed pricing for all selected packages and represents our commitment to delivering exceptional quality and service.</p>
+        <p>We're pleased to present your finalized quote for your smart home project. This quote includes detailed pricing for all selected packages and represents our commitment to delivering exceptional quality and service.</p>
         <p><strong>This quote is valid for 30 days from the date below.</strong></p>
       {% else %}
         <p>We've received your quote request and our team is already reviewing your selections. You'll hear from us within 2-3 business days for more details on your request.</p>
@@ -145,7 +145,12 @@
       </div>
       <!-- Quote Details -->
       <div class="info-box">
-        <strong>Submitted:</strong> {{ quote_request.created_at|date:"F d, Y" }} at {{ quote_request.created_at|time:"g:i A" }}<br>
+        {% if quote_request.is_finalized %}
+          <strong>Quote Finalized:</strong> {{ quote_request.finalized_at|date:"F d, Y" }} at {{ quote_request.finalized_at|time:"g:i A" }}<br>
+          <strong>Originally Submitted:</strong> {{ quote_request.created_at|date:"F d, Y" }}<br>
+        {% else %}
+          <strong>Submitted:</strong> {{ quote_request.created_at|date:"F d, Y" }} at {{ quote_request.created_at|time:"g:i A" }}<br>
+        {% endif %}
         <strong>Contact Email:</strong> {{ quote_request.email }}<br>
         <strong>Phone:</strong> {{ quote_request.phone }}<br>
         <strong>Installation Address:</strong><br>
@@ -175,7 +180,6 @@
             <td>
               <strong style="color: #6c757d; font-size: 12px;">{{ item.package.category.name }}</strong><br>
               {{ item.package_name }}
-              {% if item.notes %}<br><small style="color: #6c757d;">Note: {{ item.notes }}</small>{% endif %}
             </td>
             <td style="text-align: right;">
               {% if item.price_snapshot %}
@@ -224,7 +228,7 @@
             <li><strong>Schedule Installation:</strong> We'll coordinate dates and finalize all project details</li>
           </ol>
           <p style="background-color: #e7f3ff; padding: 15px; border-radius: 8px; margin-top: 15px;">
-            <strong>Ready to proceed?</strong> Simply reply to this email or give us a call. We're excited to bring your smart home audio vision to life!
+            <strong>Ready to proceed?</strong> Simply reply to this email or give us a call. We're excited to bring your vision to life!
           </p>
         {% else %}
           <ol>
@@ -241,7 +245,7 @@
       <div style="text-align: center;">
         <p><strong>Questions? We're here to help!</strong></p>
         <p>
-          Email: <a href="mailto:{{ config.business_email }}">info@listenhearaudio.com</a><br>
+          Email: <a href="mailto:{{ config.email }}">{{ config.email|default:"info@listenhearaudio.com" }}</a><br>
           Website: www.listenhearsmarthomes.com
         </p>
       </div>
@@ -249,15 +253,15 @@
 
     <!-- Footer -->
     <div class="footer">
-      <p><strong>Listen Hear</strong></p>
-      {% if config.business_address %}
-        <p>{{ config.business_address }}</p>
+      <p><strong>Listen Hear!</strong></p>
+      {% if config.full_address %}
+        <p>{{ config.full_address }}</p>
       {% endif %}
       <p>
-        <a href="{{ config.business_website }}">{{ config.business_website }}</a>
+        <a href="{{ config.website }}">{{ config.website }}</a>
       </p>
       <p style="margin-top: 20px; font-size: 12px; color: #aaa;">
-        &copy; {% now "Y" %} Listen Hear. All rights reserved.
+        &copy; {% now "Y" %} Listen Hear! All rights reserved.
       </p>
     </div>
   </div>
