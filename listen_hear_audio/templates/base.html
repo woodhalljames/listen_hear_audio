@@ -288,10 +288,8 @@
           <h5>Company</h5>
           <ul class="footer-links">
             <li><a href="{% url 'about' %}">About Us</a></li>
-            <li><a href="{% url 'commercial' %}">Commercial</a></li>
             <li><a href="{% url 'contact' %}">Contact</a></li>
             <li><a href="{% url 'careers:job_list' %}">Careers</a></li>
-            <li><a href="#">Legal</a></li>
           </ul>
         </div>
 
@@ -315,20 +313,28 @@
           {% endif %}
           <p class="mb-1 small"><strong>Hours:</strong></p>
           <p class="small mb-0">Mon-Fri: {{ business_info.monday_hours }}</p>
-          <p class="small mb-0">Sat-Sun: {{ business_info.saturday_hours }}</p>
+          <p class="small mb-0">Sun: {{ business_info.saturday_hours }}</p>
+              <p class="small mb-0">Sun: {{ business_info.sunday_hours }}</p>
+      
         </div>
 
         <!-- Column 5: Newsletter -->
         <div class="col-lg-3 col-md-12">
           <h5>Stay Updated</h5>
           <p>Subscribe to our newsletter for the latest in smart homes and home entertainment.</p>
-          <form class="newsletter-form">
+          <form class="newsletter-form" id="newsletter-form" method="post" action="{% url 'subscribers:subscribe' %}">
+            {% csrf_token %}
             <input type="email"
+                   name="email"
                    placeholder="Enter your email"
                    required
                    aria-label="Email address">
             <button type="submit">Subscribe</button>
           </form>
+          <p id="newsletter-msg" class="small mt-1 mb-0" style="opacity: 0.85; min-height: 1.2em;"></p>
+          <p class="small mt-0 mb-0" style="opacity: 0.7;">
+            <a href="{% url 'subscribers:unsubscribe' %}" class="text-white">Click here to unsubscribe</a>
+          </p>
         </div>
       </div>
       
@@ -403,6 +409,25 @@
 
   {% block modal %}
   {% endblock modal %}
+
+  <script>
+    (function () {
+      var form = document.getElementById('newsletter-form');
+      var msg  = document.getElementById('newsletter-msg');
+      if (!form || !msg) return;
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var data = new FormData(form);
+        fetch(form.action, {method: 'POST', body: data})
+          .then(function (r) { return r.json(); })
+          .then(function (json) {
+            msg.textContent = json.message || '';
+            form.reset();
+          })
+          .catch(function () { msg.textContent = 'Something went wrong. Please try again.'; });
+      });
+    })();
+  </script>
 
   {% block inline_javascript %}
   {% endblock inline_javascript %}

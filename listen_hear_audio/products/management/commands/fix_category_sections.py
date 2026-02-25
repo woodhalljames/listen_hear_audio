@@ -81,7 +81,7 @@ class Command(BaseCommand):
             if suggested_section:
                 section_display = dict(Category.BUILDER_SECTION_CHOICES).get(suggested_section, suggested_section)
                 self.stdout.write(
-                    f'  - {category.property_type.name} > {category.name} '
+                    f'  - {category.name} '
                     f'({package_count} packages) -> {self.style.SUCCESS(section_display)}'
                 )
 
@@ -91,7 +91,7 @@ class Command(BaseCommand):
                     fixed_count += 1
             else:
                 self.stdout.write(
-                    f'  - {category.property_type.name} > {category.name} '
+                    f'  - {category.name} '
                     f'({package_count} packages) -> {self.style.WARNING("UNKNOWN - needs manual assignment")}'
                 )
 

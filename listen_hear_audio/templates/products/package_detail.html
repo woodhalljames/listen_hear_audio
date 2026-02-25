@@ -10,8 +10,7 @@
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
       <li class="breadcrumb-item"><a href="{% url 'products:catalog' %}">Catalog</a></li>
-      <li class="breadcrumb-item">{{ package.category.property_type.name }}</li>
-      <li class="breadcrumb-item">{{ package.category.name }}</li>
+      <li class="breadcrumb-item"><a href="{% url 'products:catalog' %}#category-{{ package.category.slug }}">{{ package.category.name }}</a></li>
       {% if package.subcategory %}
         <li class="breadcrumb-item">{{ package.subcategory.name }}</li>
       {% endif %}
@@ -124,13 +123,13 @@
       {% endif %}
 
       <!-- Info Box -->
-      <div class="alert alert-info">
+      <div class="alert apackage lert-info">
         <h5 class="alert-heading">
           <i class="bi bi-info-circle"></i> Need Help?
         </h5>
         <p class="mb-0">
           Our team is here to help you choose the perfect package for your needs. 
-          Add this to your cart and we'll provide a detailed quote within 24-48 hours.
+          Add this to your cart and we'll provide a detailed quote within 1-2 business days.
         </p>
       </div>
     </div>

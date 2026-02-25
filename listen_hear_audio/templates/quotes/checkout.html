@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static crispy_forms_tags %}
 
-{% block title %}Checkout - Listen Hear{% endblock %}
+{% block title %}Checkout - Listen Hear!{% endblock %}
 
 {% block content %}
 <div class="py-4">
@@ -182,25 +182,18 @@
         <div class="card-body">
           <!-- Category Summary -->
           <div class="mb-3">
-            {% for property_type, categories in category_summary.items %}
-              <div class="mb-3">
-                <div class="small fw-bold mb-2" style="color: #3333ff; border-bottom: 1px solid #dee2e6; padding-bottom: 4px;">
-                  <i class="bi bi-building"></i> {{ property_type }}
-                </div>
-                {% for category_name, data in categories.items %}
-                  <div class="d-flex justify-content-between mb-2 ms-2">
-                    <span class="small">{{ category_name }}</span>
-                    <span class="small">
-                      {% if data.has_custom and data.total == 0 %}
-                        <span class="text-muted">Custom</span>
-                      {% elif data.has_custom %}
-                        ${{ data.total|floatformat:2 }}+
-                      {% else %}
-                        ${{ data.total|floatformat:2 }}
-                      {% endif %}
-                    </span>
-                  </div>
-                {% endfor %}
+            {% for category_name, data in category_summary.items %}
+              <div class="d-flex justify-content-between mb-2">
+                <span class="small fw-semibold">{{ category_name }}</span>
+                <span class="small">
+                  {% if data.has_custom and data.total == 0 %}
+                    <span class="text-muted">Custom</span>
+                  {% elif data.has_custom %}
+                    ${{ data.total|floatformat:2 }}+
+                  {% else %}
+                    ${{ data.total|floatformat:2 }}
+                  {% endif %}
+                </span>
               </div>
             {% endfor %}
           </div>

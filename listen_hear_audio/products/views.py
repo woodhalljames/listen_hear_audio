@@ -1,51 +1,32 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.db.models import Prefetch
-from .models import PropertyType, Category, CategoryImage, CategoryVideo, SubCategory, Package
+from .models import Category, CategoryImage, CategoryVideo, SubCategory, Package
 
 
 class CatalogView(ListView):
-    """Single-page view showing all property types, categories, and packages"""
-    model = PropertyType
+    """Single-page view showing all categories and packages"""
+    model = Category
     template_name = 'products/catalog.html'
-    context_object_name = 'property_types'
+    context_object_name = 'categories'
 
     def get_queryset(self):
-        """Get all active property types with related data"""
-        # Get property types that have active categories (with or without show_in_catalog set)
         catalog_packages = Package.objects.filter(
             is_active=True, visibility__in=['both', 'catalog']
         )
-        return PropertyType.objects.filter(
+        return Category.objects.filter(
             is_active=True,
-            categories__is_active=True
-        ).distinct().prefetch_related(
+            show_in_catalog=True
+        ).prefetch_related(
             Prefetch(
-                'categories__subcategories__packages',
+                'subcategories__packages',
                 queryset=catalog_packages,
             ),
             Prefetch(
-                'categories__packages',
+                'packages',
                 queryset=catalog_packages,
             ),
-        ).order_by('display_order')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Filter property types to include categories visible in catalog
-        # Default to showing all if show_in_catalog is not set (empty/null) or is True
-        property_types = context['property_types']
-        for property_type in property_types:
-            # Show categories where show_in_catalog=True OR show_in_catalog is unset
-            # This ensures backward compatibility with categories that existed before the field was added
-            visible_categories = property_type.categories.filter(
-                is_active=True
-            ).filter(
-                show_in_catalog=True
-            )
-
-            property_type.visible_categories = visible_categories.order_by('display_order', 'name')
-        return context
+        ).order_by('display_order', 'name')
 
 
 class CategoryDetailView(DetailView):
@@ -57,13 +38,10 @@ class CategoryDetailView(DetailView):
     slug_url_kwarg = 'slug'
 
     def get_queryset(self):
-        """Only show active categories"""
         catalog_packages = Package.objects.filter(
             is_active=True, visibility__in=['both', 'catalog']
         )
-        return Category.objects.filter(is_active=True).select_related(
-            'property_type'
-        ).prefetch_related(
+        return Category.objects.filter(is_active=True).prefetch_related(
             'gallery_images',
             'videos',
             Prefetch(
@@ -95,7 +73,6 @@ class CategoryDetailView(DetailView):
                 sub_packages = packages.filter(subcategory=sub)
                 if sub_packages.exists():
                     grouped.append({'subcategory': sub, 'packages': sub_packages})
-            # Also get packages with no subcategory
             unsorted = packages.filter(subcategory__isnull=True)
             if unsorted.exists():
                 grouped.append({'subcategory': None, 'packages': unsorted})
@@ -113,10 +90,9 @@ class PackageDetailView(DetailView):
     context_object_name = 'package'
     slug_field = 'slug'
     slug_url_kwarg = 'slug'
-    
+
     def get_queryset(self):
-        """Only show active packages"""
         return Package.objects.filter(is_active=True).select_related(
-            'category__property_type',
+            'category',
             'subcategory'
         )

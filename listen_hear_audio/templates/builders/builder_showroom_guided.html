@@ -48,7 +48,7 @@
                 </a>
                 {% else %}
                 <a href="{% url 'quotes:cart' %}" class="btn btn-success">
-                    View Cart
+                    Finish & View
                 </a>
                 {% endif %}
             </div>
@@ -76,18 +76,18 @@
             {% for category in section.categories %}
             <div class="category-card card mb-4 shadow-sm">
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
+                    <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-start mb-3 gap-2">
+                        <a href="{% url 'products:category_detail' category.slug %}"
+                           class="btn btn-outline-primary btn-sm flex-shrink-0 align-self-start order-first order-md-last ms-md-3"
+                           target="_blank">
+                            <i class="bi bi-info-circle"></i> Learn More
+                        </a>
+                        <div class="order-last order-md-first">
                             <h5 class="card-title mb-2">{{ category.name }}</h5>
                             {% if category.description %}
                             <p class="text-muted small mb-0">{{ category.description }}</p>
                             {% endif %}
                         </div>
-                        <a href="{% url 'products:category_detail' category.slug %}"
-                           class="btn btn-outline-primary btn-sm ms-3 flex-shrink-0"
-                           target="_blank">
-                            <i class="bi bi-info-circle"></i> Learn More
-                        </a>
                     </div>
 
                     <!-- Packages -->
@@ -98,11 +98,11 @@
                         {% if package.is_active %}
                         <div class="col-md-6 col-lg-4">
                             <div class="card package-card h-100 border {% if package.id in cart_package_ids %}in-cart{% endif %}">
-                                <!-- In Cart Badge -->
+                                <!-- In Home Badge -->
                                 {% if package.id in cart_package_ids %}
                                 <div class="position-absolute top-0 end-0 m-2" style="z-index: 10;">
                                     <span class="badge bg-success">
-                                        <i class="bi bi-check-circle-fill"></i> In Cart
+                                        <i class="bi bi-check-circle-fill"></i> In Home
                                     </span>
                                 </div>
                                 {% endif %}
@@ -163,9 +163,9 @@
                                                 data-package-id="{{ package.id }}"
                                                 data-package-name="{{ package.name }}">
                                             {% if package.id in cart_package_ids %}
-                                            <i class="bi bi-check-circle-fill"></i> In Cart - Click to Remove
+                                            <i class="bi bi-check-circle-fill"></i> In Home - Click to Remove
                                             {% else %}
-                                            <i class="bi bi-cart-plus"></i> Add to Cart
+                                            <i class="bi bi-cart-plus"></i> Add to Home
                                             {% endif %}
                                         </button>
                                     </div>
@@ -207,7 +207,7 @@
             </a>
             {% else %}
             <a href="{% url 'quotes:cart' %}" class="btn btn-success">
-                View Cart
+                Finish & View
             </a>
             {% endif %}
         </div>
@@ -254,29 +254,29 @@
                             // Removed from cart
                             if (packageCard) {
                                 packageCard.classList.remove('in-cart');
-                                // Remove the "In Cart" badge
+                                // Remove the "In Home" badge
                                 const badge = packageCard.querySelector('.position-absolute.top-0.end-0');
                                 if (badge) badge.remove();
                             }
                             btn.classList.remove('loading', 'btn-success', 'in-cart');
                             btn.classList.add('btn-primary');
-                            btn.innerHTML = '<i class="bi bi-cart-plus"></i> Add to Cart';
+                            btn.innerHTML = '<i class="bi bi-cart-plus"></i> Add to Home';
                         } else {
-                            // Added to cart
+                            // Added to home
                             if (packageCard) {
                                 packageCard.classList.add('in-cart');
-                                // Add "In Cart" badge if not already there
+                                // Add "In Home" badge if not already there
                                 if (!packageCard.querySelector('.position-absolute.top-0.end-0')) {
                                     const badge = document.createElement('div');
                                     badge.className = 'position-absolute top-0 end-0 m-2';
                                     badge.style.zIndex = '10';
-                                    badge.innerHTML = '<span class="badge bg-success"><i class="bi bi-check-circle-fill"></i> In Cart</span>';
+                                    badge.innerHTML = '<span class="badge bg-success"><i class="bi bi-check-circle-fill"></i> In Home</span>';
                                     packageCard.insertBefore(badge, packageCard.firstChild);
                                 }
                             }
                             btn.classList.remove('loading', 'btn-primary');
                             btn.classList.add('btn-success', 'in-cart');
-                            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Cart - Click to Remove';
+                            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Home - Click to Remove';
                         }
 
                         updateCartCount(data.cart_count);
@@ -291,10 +291,10 @@
                     // Restore original state
                     if (isInCart) {
                         btn.classList.add('btn-success', 'in-cart');
-                        btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Cart - Click to Remove';
+                        btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Home - Click to Remove';
                     } else {
                         btn.classList.add('btn-primary');
-                        btn.innerHTML = '<i class="bi bi-cart-plus"></i> Add to Cart';
+                        btn.innerHTML = '<i class="bi bi-cart-plus"></i> Add to Home';
                     }
 
                     // Show brief error state

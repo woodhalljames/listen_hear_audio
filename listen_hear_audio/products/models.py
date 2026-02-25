@@ -3,34 +3,8 @@ from django.urls import reverse
 from django.utils.text import slugify
 
 
-class PropertyType(models.Model):
-    """Top-level property type categorization (Residential, Commercial, Industrial)"""
-    
-    name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=100, unique=True, blank=True)
-    description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='property_types/', blank=True, null=True)
-    display_order = models.PositiveIntegerField(default=0, help_text="Lower numbers appear first")
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ['display_order', 'name']
-        verbose_name = 'Property Type'
-        verbose_name_plural = 'Property Types'
-
-    def __str__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
-
-
 class Category(models.Model):
-    """Second-level categorization (e.g., Networking, Media & Entertainment)"""
+    """Categorization for packages (e.g., Networking, Media & Entertainment)"""
 
     # Builder section choices for showroom organization (organized by construction phase)
     PRE_WIRE = 'pre_wire'
@@ -45,13 +19,8 @@ class Category(models.Model):
         (CUSTOM_SOLUTIONS, 'Custom Solutions'),
     ]
 
-    property_type = models.ForeignKey(
-        PropertyType,
-        on_delete=models.CASCADE,
-        related_name='categories'
-    )
     name = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, blank=True)
+    slug = models.SlugField(max_length=200, blank=True, unique=True)
     description = models.TextField(
         blank=True,
         help_text="Brief description shown in catalog listings"
@@ -91,10 +60,9 @@ class Category(models.Model):
         ordering = ['display_order', 'name']
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
-        unique_together = ['property_type', 'slug']
 
     def __str__(self):
-        return f"{self.property_type.name} - {self.name}"
+        return self.name
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -119,7 +87,6 @@ class Category(models.Model):
             return None
 
         import re
-        # Handle various YouTube URL formats
         patterns = [
             r'(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)',
             r'youtube\.com\/embed\/([^&\n?#]+)',
@@ -199,10 +166,10 @@ class CategoryVideo(models.Model):
 
 class SubCategory(models.Model):
     """Optional third-level categorization (e.g., Audio, TV & Display under Media & Entertainment)"""
-    
+
     category = models.ForeignKey(
-        Category, 
-        on_delete=models.CASCADE, 
+        Category,
+        on_delete=models.CASCADE,
         related_name='subcategories'
     )
     name = models.CharField(max_length=200)
@@ -228,7 +195,7 @@ class SubCategory(models.Model):
         unique_together = ['category', 'slug']
 
     def __str__(self):
-        return f"{self.category.property_type.name} - {self.category.name} - {self.name}"
+        return f"{self.category.name} - {self.name}"
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -285,7 +252,7 @@ class Package(models.Model):
         help_text="Enter features as bullet points, one per line"
     )
     starting_price = models.DecimalField(
-        max_digits=10, 
+        max_digits=10,
         decimal_places=2,
         help_text="Starting price for this package"
     )
@@ -352,5 +319,3 @@ class Package(models.Model):
     def get_installation_phase_display_value(self):
         """Get human-readable installation phase name"""
         return dict(self.INSTALLATION_PHASE_CHOICES).get(self.installation_phase, '')
-
-

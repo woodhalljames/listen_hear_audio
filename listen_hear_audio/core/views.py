@@ -31,12 +31,6 @@ class AboutView(TemplateView):
         return context
 
 
-class CommercialView(TemplateView):
-    """Commercial & Industrial services page."""
-
-    template_name = "pages/commercial.html"
-
-
 class ContactView(TemplateView):
     """Contact page view."""
 

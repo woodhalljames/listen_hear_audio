@@ -1,73 +1,220 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Careers - Listen Hear{% endblock %}
+{% block title %}Careers – Listen Hear! Smart Home Pittsburgh{% endblock %}
 
-{% block content %}
-<div class="row">
-  <div class="col-12">
-    <h1 class="mb-4">Careers</h1>
-    {% if config.introduction %}
-      <div class="lead mb-5">
-        {{ config.introduction|linebreaks }}
-      </div>
-    {% endif %}
-  </div>
-</div>
+{% block main_wrapper %}
 
-<div class="row">
-  {% for job in jobs %}
-    <div class="col-12 mb-3">
-      <div class="card shadow-sm">
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <h4 class="mb-1">
-                <a href="{{ job.get_absolute_url }}" class="text-decoration-none">{{ job.title }}</a>
-              </h4>
-              <p class="text-muted small mb-0">
-                <i class="bi bi-calendar"></i> Posted {{ job.created_at|date:"F d, Y" }}
-              </p>
+  {# ── Page Header ── #}
+  <section class="ca-header">
+    <div class="ca-container">
+      <p class="ca-eyebrow">Listen Hear!</p>
+      <h1 class="ca-title">Careers <span class="ca-title__amp">&</span> Opportunities</h1>
+    </div>
+  </section>
+
+  {# ── Introduction ── #}
+  {% if config.introduction %}
+    <div class="ca-container ca-intro">
+      {{ config.introduction|linebreaks }}
+    </div>
+  {% endif %}
+
+  {# ── Jobs grid ── #}
+  <section class="ca-grid-section">
+    <div class="ca-container">
+      <div class="ca-grid">
+
+        {% for job in jobs %}
+          <article class="ca-card">
+
+            <div class="ca-card__img-placeholder">
+              <i class="bi bi-briefcase-fill"></i>
             </div>
-            <a href="{{ job.get_absolute_url }}" class="btn btn-primary">View & Apply</a>
+
+            <div class="ca-card__body">
+
+              <h2 class="ca-card__title">
+                <a href="{{ job.get_absolute_url }}">{{ job.title }}</a>
+              </h2>
+
+              <p class="ca-card__meta">
+                <span><i class="bi bi-calendar3"></i> Posted {{ job.created_at|date:"M d, Y" }}</span>
+              </p>
+
+              <div class="ca-card__excerpt">
+                {{ job.body|truncatewords_html:10|safe }}
+              </div>
+
+              <a href="{{ job.get_absolute_url }}" class="ca-card__read-more">
+                View &amp; Apply <i class="bi bi-arrow-right"></i>
+              </a>
+
+            </div>
+          </article>
+        {% empty %}
+          <div class="ca-empty">
+            <i class="bi bi-briefcase"></i>
+            <p>No open positions right now — check back soon.</p>
           </div>
-        </div>
-      </div>
-    </div>
-  {% empty %}
-    <div class="col-12">
-      <div class="alert alert-info">
-        <i class="bi bi-info-circle"></i> No open positions at the moment. Please check back later!
-      </div>
-    </div>
-  {% endfor %}
-</div>
+        {% endfor %}
 
-{% if is_paginated %}
-  <nav aria-label="Page navigation" class="mt-4">
-    <ul class="pagination justify-content-center">
+      </div>
+    </div>
+  </section>
+
+  {# ── Pagination ── #}
+  {% if is_paginated %}
+    <div class="ca-container ca-pagination">
       {% if page_obj.has_previous %}
-        <li class="page-item">
-          <a class="page-link" href="?page=1">First</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-        </li>
+        <a href="?page=1" class="ca-page-btn">First</a>
+        <a href="?page={{ page_obj.previous_page_number }}" class="ca-page-btn">
+          <i class="bi bi-chevron-left"></i> Prev
+        </a>
       {% endif %}
-
-      <li class="page-item active">
-        <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-      </li>
-
+      <span class="ca-page-current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
       {% if page_obj.has_next %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-        </li>
+        <a href="?page={{ page_obj.next_page_number }}" class="ca-page-btn">
+          Next <i class="bi bi-chevron-right"></i>
+        </a>
+        <a href="?page={{ page_obj.paginator.num_pages }}" class="ca-page-btn">Last</a>
       {% endif %}
-    </ul>
-  </nav>
-{% endif %}
-{% endblock %}
+    </div>
+  {% endif %}
+
+{% endblock main_wrapper %}
+
+{% block css %}
+{{ block.super }}
+<style>
+/* ── Container ──────────────────────────────────────────────────────── */
+.ca-container {
+  width: 92%; max-width: 1200px; margin: 0 auto;
+  padding-left: 0; padding-right: 0;
+}
+@media (min-width: 768px)  { .ca-container { width: 86%; } }
+@media (min-width: 1200px) { .ca-container { width: 80%; } }
+
+/* ── Page Header ────────────────────────────────────────────────────── */
+.ca-header {
+  padding: 3.5rem 0 2.5rem;
+  background: #fff;
+  border-bottom: 1px solid #e8ecf4;
+}
+.ca-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--primary-blue); margin-bottom: 0.6rem;
+}
+.ca-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.4rem, 5vw, 3.75rem); font-weight: 700;
+  color: var(--primary-dark); line-height: 1.05; margin: 0;
+}
+.ca-title__amp { color: var(--primary-blue); font-style: italic; }
+
+/* ── Introduction ───────────────────────────────────────────────────── */
+.ca-intro {
+  padding: 2rem 0 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.05rem; color: #555; line-height: 1.75;
+}
+
+/* ── Grid ───────────────────────────────────────────────────────────── */
+.ca-grid-section { padding: 3rem 0 4rem; background: #f8f9fc; }
+.ca-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+@media (max-width: 1199px) { .ca-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 767px)  { .ca-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 499px) { .ca-grid { grid-template-columns: 1fr; } }
+
+/* ── Card ───────────────────────────────────────────────────────────── */
+.ca-card {
+  background: #fff;
+  border: 1px solid #e4e8f4;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.ca-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(3,17,252,0.09);
+  border-color: var(--primary-blue);
+}
+
+.ca-card__img-placeholder {
+  height: 100px; background: #eef0ff;
+  display: flex; align-items: center; justify-content: center;
+}
+.ca-card__img-placeholder i { font-size: 2.5rem; color: var(--primary-blue); opacity: 0.3; }
+
+.ca-card__body {
+  padding: 1.25rem; display: flex; flex-direction: column; flex: 1;
+}
+
+/* Title */
+.ca-card__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.2rem; font-weight: 700; line-height: 1.3;
+  margin: 0 0 0.5rem; color: var(--primary-dark);
+}
+.ca-card__title a { color: inherit; text-decoration: none; }
+.ca-card__title a:hover { color: var(--primary-blue); }
+
+/* Meta */
+.ca-card__meta {
+  display: flex; flex-wrap: wrap; gap: 0.6rem;
+  font-family: 'DM Sans', sans-serif; font-size: 0.78rem;
+  color: #8a92a8; margin-bottom: 0.65rem;
+}
+.ca-card__meta i { margin-right: 0.2rem; }
+
+/* Excerpt */
+.ca-card__excerpt {
+  font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
+  color: #6c757d; line-height: 1.65; flex: 1; margin-bottom: 1rem;
+}
+.ca-card__excerpt p { margin: 0; }
+
+/* View & Apply */
+.ca-card__read-more {
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 700;
+  color: var(--primary-blue); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  margin-top: auto;
+  transition: gap 0.2s, color 0.2s;
+}
+.ca-card__read-more:hover { color: #020cb5; gap: 0.55rem; }
+
+/* Empty state */
+.ca-empty {
+  grid-column: 1 / -1; text-align: center;
+  padding: 4rem 0; color: #8a92a8;
+}
+.ca-empty i { font-size: 3rem; display: block; margin-bottom: 1rem; opacity: 0.4; }
+.ca-empty p { font-family: 'DM Sans', sans-serif; font-size: 1rem; margin: 0; }
+
+/* ── Pagination ─────────────────────────────────────────────────────── */
+.ca-pagination {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0.5rem; padding: 2rem 0 3.5rem; flex-wrap: wrap;
+}
+.ca-page-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600;
+  color: var(--primary-blue); text-decoration: none;
+  padding: 0.45rem 1rem; border-radius: 8px;
+  border: 1px solid #d6dcf8; background: #fff;
+  transition: all 0.2s;
+}
+.ca-page-btn:hover { background: var(--primary-blue); color: #fff; border-color: var(--primary-blue); }
+.ca-page-current {
+  font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600;
+  color: #8a92a8; padding: 0.45rem 0.75rem;
+}
+</style>
+{% endblock css %}

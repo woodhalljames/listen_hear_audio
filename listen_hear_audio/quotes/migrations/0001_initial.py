@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('business_website', models.URLField(blank=True)),
                 ('notification_emails', models.JSONField(default=list, help_text='List of email addresses to receive quote notifications')),
                 ('customer_email_subject', models.CharField(default='Your Listen Hear Audio Quote Request', max_length=200)),
-                ('customer_email_message', models.TextField(default="Thank you for your quote request. We'll review your requirements and get back to you within 24-48 hours.")),
+                ('customer_email_message', models.TextField(default="Thank you for your quote request. We'll review your requirements and get back to you within 1-2 business days.")),
                 ('quote_disclaimer', models.TextField(blank=True, default='This is an estimate based on the packages selected. Final pricing will be determined after consultation and site evaluation.')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),

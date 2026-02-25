@@ -1,202 +1,331 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Contact Us - Listen Hear Smart Homes{% endblock %}
+{% block title %}Contact Us – Listen Hear! Smart Home & Audio | Pittsburgh, PA{% endblock %}
 
-{% block content %}
-<!-- Contact Header -->
-<div class="text-center py-5" style="background: linear-gradient(135deg, #3333ff 0%, #667eea 100%);">
-    <div class="container">
-        <h1 class="display-3 fw-bold text-white mb-3">Get In Touch</h1>
-        <p class="lead text-white">We'd love to hear from you about your smart home project</p>
+{% block main_wrapper %}
+
+  {# ── Hero ── #}
+  <section class="ct-hero">
+    <div class="ct-hero__overlay"></div>
+    <div class="ct-hero__content">
+      <p class="ct-eyebrow">Get In Touch</p>
+      <h1 class="ct-hero__headline">Let's Build Something<br><span class="ct-hero__accent">Extraordinary Together</span></h1>
+      <p class="ct-hero__sub">Visit our showroom, give us a call, or drop us a email<br class="d-none d-md-inline"> We're happy to talk through your project -- big or small.</p>
     </div>
-</div>
+  </section>
 
-<!-- Contact Information -->
-<div class="container py-5">
-    <div class="row g-4">
-        <!-- Hours of Operation -->
-        <div class="col-md-6 col-lg-3">
-            <div class="card h-100 border-0 shadow-sm text-center">
-                <div class="card-body p-4">
-                    <div class="mb-3">
-                        <i class="bi bi-clock text-primary" style="font-size: 3rem;"></i>
-                    </div>
-                    <h4 class="card-title mb-4">Business Hours</h4>
-                    <div class="text-start">
-                        <p class="mb-2"><strong>Monday:</strong></p>
-                        <p class="mb-3 text-muted">{{ business_info.monday_hours }}</p>
-                        <p class="mb-2"><strong>Tuesday:</strong></p>
-                        <p class="mb-3 text-muted">{{ business_info.tuesday_hours }}</p>
-                        <p class="mb-2"><strong>Wednesday:</strong></p>
-                        <p class="mb-3 text-muted">{{ business_info.wednesday_hours }}</p>
-                        <p class="mb-2"><strong>Thursday:</strong></p>
-                        <p class="mb-3 text-muted">{{ business_info.thursday_hours }}</p>
-                        <p class="mb-2"><strong>Friday:</strong></p>
-                        <p class="mb-3 text-muted">{{ business_info.friday_hours }}</p>
-                        <p class="mb-2"><strong>Saturday:</strong></p>
-                        <p class="mb-3 text-muted">{{ business_info.saturday_hours }}</p>
-                        <p class="mb-2"><strong>Sunday:</strong></p>
-                        <p class="mb-0 text-muted">{{ business_info.sunday_hours }}</p>
-                    </div>
-                </div>
+  {# ── Quick contact info ── #}
+  <section class="ct-info-section">
+    <div class="ct-container">
+      <div class="ct-info-list">
+
+        {% if business_info.phone %}
+        <div class="ct-info-row">
+          <i class="bi bi-telephone-fill ct-info-icon"></i>
+          <div>
+            <div class="ct-info-label">Call Us</div>
+            <a href="tel:{{ business_info.phone }}" class="ct-info-value">{{ business_info.phone }}</a>
+          </div>
+        </div>
+        {% endif %}
+
+        {% if business_info.email %}
+        <div class="ct-info-row">
+          <i class="bi bi-envelope-fill ct-info-icon"></i>
+          <div>
+            <div class="ct-info-label">Email Us</div>
+            <a href="mailto:{{ business_info.email }}" class="ct-info-value">{{ business_info.email }}</a>
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="ct-info-row ct-info-row--top">
+          <i class="bi bi-clock-fill ct-info-icon"></i>
+          <div>
+            <div class="ct-info-label">Hours</div>
+            <div class="ct-hours-list">
+              <span>Mon – Fri</span><span>{{ business_info.monday_hours }}</span>
+              <span>Saturday</span><span>{{ business_info.saturday_hours }}</span>
+              <span>Sunday</span><span>{{ business_info.sunday_hours }}</span>
             </div>
+          </div>
         </div>
 
-        <!-- Phone -->
-        <div class="col-md-6 col-lg-3">
-            <div class="card h-100 border-0 shadow-sm text-center">
-                <div class="card-body p-4">
-                    <div class="mb-3">
-                        <i class="bi bi-telephone text-primary" style="font-size: 3rem;"></i>
-                    </div>
-                    <h4 class="card-title mb-4">Call Us</h4>
-                    <p class="text-muted mb-3">Give us a call to discuss your smart home needs</p>
-                    {% if business_info.phone %}
-                        <a href="tel:{{ business_info.phone }}" class="btn btn-outline-primary btn-lg">
-                            <i class="bi bi-phone"></i> {{ business_info.phone }}
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <!-- Email -->
-        <div class="col-md-6 col-lg-3">
-            <div class="card h-100 border-0 shadow-sm text-center">
-                <div class="card-body p-4">
-                    <div class="mb-3">
-                        <i class="bi bi-envelope text-primary" style="font-size: 3rem;"></i>
-                    </div>
-                    <h4 class="card-title mb-4">Email Us</h4>
-                    <p class="text-muted mb-3">Send us an email and we'll get back to you soon</p>
-                    {% if business_info.email %}
-                        <a href="mailto:{{ business_info.email }}" class="btn btn-outline-primary btn-lg">
-                            <i class="bi bi-envelope"></i> Email Us
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <!-- Location -->
-        <div class="col-md-6 col-lg-3">
-            <div class="card h-100 border-0 shadow-sm text-center">
-                <div class="card-body p-4">
-                    <div class="mb-3">
-                        <i class="bi bi-geo-alt text-primary" style="font-size: 3rem;"></i>
-                    </div>
-                    <h4 class="card-title mb-4">Visit Us</h4>
-                    <div class="text-start">
-                        <p class="mb-1">{{ business_info.business_name }}</p>
-                        {% if business_info.street_address %}
-                            <p class="mb-1 text-muted">{{ business_info.street_address }}</p>
-                            <p class="mb-3 text-muted">{{ business_info.city }}, {{ business_info.state }} {{ business_info.zip_code }}</p>
-                            {% if business_info.google_maps_url %}
-                                <a href="{{ business_info.google_maps_url }}"
-                                   target="_blank"
-                                   class="btn btn-outline-primary">
-                                    <i class="bi bi-map"></i> Get Directions
-                                </a>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-</div>
+  </section>
 
-<!-- Google Maps Section -->
-{% if business_info.google_maps_embed_url %}
-<div class="py-5">
-    <div class="container">
-        <div class="text-center mb-4">
-            <h2 class="display-5 fw-bold mb-3">Find Us</h2>
-            <p class="lead text-muted">Visit our location</p>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="card border-0 shadow-sm overflow-hidden">
-                    <iframe
-                        width="100%"
-                        height="450"
-                        style="border:0;"
-                        loading="lazy"
-                        allowfullscreen
-                        referrerpolicy="no-referrer-when-downgrade"
-                        src="{{ business_info.google_maps_embed_url }}">
-                    </iframe>
-                </div>
-            </div>
-        </div>
+  {# ── Visit Us / Map ── #}
+  <section class="ct-map-section">
+    <div class="ct-container">
+      <p class="ct-eyebrow ct-eyebrow--blue">Visit Us</p>
+      <h2 class="ct-section-title">Servicing Greater Pittsburgh</h2>
+      {% if business_info.full_address %}
+      <p class="ct-map-address">
+        <i class="bi bi-geo-alt-fill"></i>
+        {{ business_info.street_address }}, {{ business_info.city }}, {{ business_info.state }} {{ business_info.zip_code }}
+        {% if business_info.google_maps_url %}
+          &nbsp;·&nbsp;<a href="{{ business_info.google_maps_url }}" target="_blank" rel="noopener">Get Directions <i class="bi bi-arrow-right"></i></a>
+        {% endif %}
+      </p>
+      {% endif %}
+      <p class="ct-section-sub">
+        From the North Hills to the South Hills, the East to the western suburbs,
+        our team serves homeowners and builders throughout the entire greater Pittsburgh area.
+      </p>
     </div>
-</div>
-{% endif %}
+    {% if business_info.google_maps_embed_url %}
+      <div class="ct-map-card">
+        <iframe
+          src="{{ business_info.google_maps_embed_url }}"
+          width="100%"
+          height="400"
+          style="border:0;"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Listen Hear location map">
+        </iframe>
+      </div>
+    {% endif %}
+  </section>
 
-<!-- Service Areas -->
-<div class="bg-light py-5">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold mb-3">Service Areas</h2>
-            <p class="lead text-muted">Proudly serving the greater metro area</p>
+  {# ── Project types ── #}
+  <section class="ct-types-section">
+    <div class="ct-container">
+      <p class="ct-eyebrow ct-eyebrow--blue">What We Do</p>
+      <h2 class="ct-section-title">Professional Solutions for Every Property</h2>
+      <div class="ct-types-grid">
+
+        <div class="ct-type-card">
+          <div class="ct-type-card__icon"><i class="bi bi-house-door-fill"></i></div>
+          <h3 class="ct-type-card__title">Residential</h3>
+          <p class="ct-type-card__body">Complete smart home packages for new construction and existing homes. Everything from basic audio, entertainment, lighting to whole-home automation.</p>
         </div>
 
-        <div class="row text-center">
-            <div class="col-md-12">
-                <p class="lead">We provide smart home installation services for new construction throughout the region. Contact us to confirm service availability in your area.</p>
-            </div>
+        <div class="ct-type-card">
+          <div class="ct-type-card__icon"><i class="bi bi-building"></i></div>
+          <h3 class="ct-type-card__title">Commercial</h3>
+          <p class="ct-type-card__body">Professional security systems, conference room media, and business automation for offices, retail spaces, restaurants and hospitality.</p>
         </div>
+
+        <div class="ct-type-card">
+          <div class="ct-type-card__icon"><i class="bi bi-buildings-fill"></i></div>
+          <h3 class="ct-type-card__title">Industrial</h3>
+          <p class="ct-type-card__body">Large-scale installation and custom solutions for warehouses, facilities, hospitals and industrial properties throughout Pittsburgh.</p>
+        </div>
+
+      </div>
     </div>
-</div>
+  </section>
 
-<!-- Project Types -->
-<div class="container py-5">
-    <div class="text-center mb-5">
-        <h2 class="display-5 fw-bold mb-3">What We Do</h2>
-        <p class="lead text-muted">Professional smart home solutions for every property type</p>
+  {# ── CTA ── #}
+  <section class="ct-cta-section">
+    <div class="ct-container ct-cta-inner">
+      <div class="ct-cta-left">
+        <p class="ct-eyebrow ct-eyebrow--blue">Ready to Start?</p>
+        <h2 class="ct-section-title">Explore What's Possible</h2>
+        <p class="ct-section-sub">Walk through our interactive builder showroom or browse the full catalog of packages we offer to Pittsburgh.</p>
+      </div>
+      <div class="ct-cta-right">
+        <a href="{% url 'builders:showroom' %}" class="btn btn-primary btn-lg px-5">
+          <i class="bi bi-house me-2"></i>Visit the Showroom
+        </a>
+        <a href="{% url 'products:catalog' %}" class="btn btn-outline-primary btn-lg px-5">
+          <i class="bi bi-grid-3x3-gap me-2"></i>Browse Packages
+        </a>
+      </div>
     </div>
+  </section>
 
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="text-center p-4">
-                <i class="bi bi-house-door text-primary mb-3" style="font-size: 3.5rem;"></i>
-                <h4 class="mb-3">Residential</h4>
-                <p class="text-muted">Complete smart home packages for new home construction, from basic audio to whole-home automation</p>
-            </div>
-        </div>
+{% endblock main_wrapper %}
 
-        <div class="col-md-4">
-            <div class="text-center p-4">
-                <i class="bi bi-building text-primary mb-3" style="font-size: 3.5rem;"></i>
-                <h4 class="mb-3">Commercial</h4>
-                <p class="text-muted">Professional AV systems, conference rooms, and business automation for offices and retail spaces</p>
-            </div>
-        </div>
+{% block css %}
+{{ block.super }}
+<style>
+/* ── Shared tokens ─────────────────────────────────────────────── */
+.ct-container {
+  width: 92%; max-width: 1200px; margin: 0 auto;
+  padding-left: 0; padding-right: 0;
+}
+@media (min-width: 768px)  { .ct-container { width: 86%; } }
+@media (min-width: 1200px) { .ct-container { width: 80%; } }
 
-        <div class="col-md-4">
-            <div class="text-center p-4">
-                <i class="bi bi-buildings text-primary mb-3" style="font-size: 3.5rem;"></i>
-                <h4 class="mb-3">Industrial</h4>
-                <p class="text-muted">Large-scale installation and custom solutions for warehouses, facilities, and industrial properties</p>
-            </div>
-        </div>
-    </div>
-</div>
+.ct-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(200,215,255,0.75); margin-bottom: 0.75rem;
+}
+.ct-eyebrow--blue { color: var(--primary-blue); }
 
-<!-- CTA Section -->
-<div class="bg-dark text-white py-5">
-    <div class="container text-center">
-        <h2 class="display-5 fw-bold mb-3">Ready to Start Your Project?</h2>
-        <p class="lead mb-4">Explore our showroom or browse our catalog to see what's possible</p>
-        <div class="d-flex gap-3 justify-content-center flex-wrap">
-            <a href="{% url 'builders:showroom' %}" class="btn btn-light btn-lg px-5">
-                <i class="bi bi-house-heart"></i> Visit Showroom
-            </a>
-            <a href="{% url 'products:catalog' %}" class="btn btn-outline-light btn-lg px-5">
-                <i class="bi bi-grid-3x3"></i> Browse Catalog
-            </a>
-        </div>
-    </div>
-</div>
-{% endblock %}
+.ct-section-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+  line-height: 1.1; margin-bottom: 1rem; color: var(--primary-dark);
+}
+
+.ct-section-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.175rem; line-height: 1.75;
+  color: #555; max-width: 680px;
+}
+
+/* ── Hero ──────────────────────────────────────────────────────── */
+.ct-hero {
+  position: relative; min-height: 55vh; display: flex; align-items: center;
+  background: var(--primary-blue);
+  overflow: hidden; width: 100%;
+}
+.ct-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 90% 100%, rgba(255,255,255,0.12) 0%, transparent 50%);
+  pointer-events: none;
+}
+.ct-hero__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(1,8,128,0.4) 0%, transparent 70%);
+}
+.ct-hero__content {
+  position: relative; z-index: 2;
+  width: 92%; max-width: 1200px; margin: 0 auto;
+  padding: 4rem 0;
+  animation: ctFadeUp 0.9s ease both;
+}
+@media (min-width: 768px)  { .ct-hero__content { width: 86%; } }
+@media (min-width: 1200px) { .ct-hero__content { width: 80%; } }
+
+.ct-hero .ct-eyebrow { color: var(--primary-yellow); }
+
+.ct-hero__headline {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 900;
+  color: #fff; line-height: 1.1; margin-bottom: 1rem;
+}
+.ct-hero__accent { color: #FFCC00; }
+
+.ct-hero__sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(1.125rem, 1.8vw, 1.275rem);
+  color: rgba(255,255,255,0.8); line-height: 1.7;
+  max-width: 540px;
+}
+
+@keyframes ctFadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Contact info list ─────────────────────────────────────────── */
+.ct-info-section { padding: 4.5rem 0; background: #fff; }
+
+.ct-info-list { max-width: 560px; }
+
+.ct-info-row {
+  display: flex; align-items: center; gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #eef0f8;
+}
+.ct-info-row:first-child { border-top: 1px solid #eef0f8; }
+.ct-info-row--top { align-items: flex-start; }
+
+.ct-info-icon { font-size: 1.1rem; color: var(--primary-blue); flex-shrink: 0; width: 18px; text-align: center; }
+
+.ct-info-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: #aab0c6; margin-bottom: 0.2rem;
+}
+
+.ct-info-value {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.075rem; font-weight: 500;
+  color: var(--primary-dark); text-decoration: none; line-height: 1.4;
+}
+a.ct-info-value:hover { color: var(--primary-blue); }
+
+.ct-hours-list {
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 0.2rem 2rem;
+  font-family: 'DM Sans', sans-serif; font-size: 1rem;
+}
+.ct-hours-list span:nth-child(odd)  { font-weight: 500; color: var(--primary-dark); }
+.ct-hours-list span:nth-child(even) { color: #6c757d; }
+
+/* ── Map section ───────────────────────────────────────────────── */
+.ct-map-section { padding: 5rem 0 0; background: #fff; border-top: 1px solid #eef0f8; }
+.ct-map-section .ct-section-title { color: var(--primary-dark); }
+
+.ct-map-address {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem; color: #555;
+  display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+.ct-map-address i { color: var(--primary-blue); }
+.ct-map-address a {
+  font-weight: 600; color: var(--primary-blue); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 0.25rem;
+}
+.ct-map-address a:hover { text-decoration: underline; }
+
+.ct-map-section .ct-section-sub { margin-bottom: 2.5rem; }
+
+.ct-map-card {
+  margin-top: 0;
+  border-top: 1px solid #e8ecf4;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+.ct-map-card iframe { display: block; }
+
+/* ── Project types ────────────────────────────────────────────── */
+.ct-types-section { padding: 5rem 0; background: #f4f6ff; border-top: 1px solid #e0e4f4; }
+.ct-types-section .ct-section-title { margin-bottom: 2.5rem; }
+
+.ct-types-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+}
+@media (max-width: 767px) { .ct-types-grid { grid-template-columns: 1fr; } }
+
+.ct-type-card {
+  padding: 2.25rem 2rem; border-radius: 16px;
+  background: #fff; border: 1px solid #e8ecf4;
+  transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
+}
+.ct-type-card:hover { box-shadow: 0 8px 28px rgba(3,17,252,0.1); transform: translateY(-4px); border-color: var(--primary-blue); }
+
+.ct-type-card__icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: #eef0ff; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.1rem;
+}
+.ct-type-card__icon i     { font-size: 1.4rem; color: var(--primary-blue); }
+.ct-type-card__title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.225rem; color: var(--primary-dark); margin-bottom: 0.6rem; }
+.ct-type-card__body  { font-size: 1.055rem; color: #6c757d; line-height: 1.7; margin: 0; }
+
+/* ── CTA section ───────────────────────────────────────────────── */
+.ct-cta-section {
+  padding: 5rem 0;
+  background: #fff;
+  border-top: 1px solid #e8ecf4;
+}
+.ct-cta-inner {
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 3rem; flex-wrap: wrap;
+}
+.ct-cta-left  { flex: 1; min-width: 260px; }
+.ct-cta-right { display: flex; flex-direction: column; gap: 1rem; flex-shrink: 0; }
+.ct-cta-section .ct-section-title { margin-bottom: 0.75rem; }
+.ct-cta-section .ct-section-sub   { margin-bottom: 0; }
+
+/* ── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .ct-hero { min-height: 50vh; }
+  .ct-hero__content { padding: 3.5rem 0; }
+  .ct-info-section { padding: 3rem 0; }
+  .ct-map-section  { padding: 3.5rem 0 0; }
+}
+</style>
+{% endblock css %}

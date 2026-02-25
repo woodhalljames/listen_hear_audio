@@ -113,7 +113,7 @@ class SiteConfiguration(models.Model):
         default="Your Listen Hear! Quote Request"
     )
     customer_email_message = models.TextField(
-        default="Thank you for your quote request. We'll review your requirements and get back to you within 24-48 hours."
+        default="Thank you for your quote request. We'll review your requirements and get back to you within 1-2 business days."
     )
 
     # Terms and disclaimer

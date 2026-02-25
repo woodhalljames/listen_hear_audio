@@ -1,0 +1,178 @@
+{# ── Subscribe / Unsubscribe widget ─────────────────────────────────────────
+   Drop this anywhere with:  {% include "subscribers/widget.html" %}
+   Requires:  base.html already loads jQuery OR vanilla JS below handles it.
+───────────────────────────────────────────────────────────────────────────── #}
+
+<!-- Subscribe Form -->
+<div class="lh-subscribe-widget">
+  <form id="lh-subscribe-form" novalidate>
+    {% csrf_token %}
+    <div class="lh-subscribe-row">
+      <input type="email" name="email" id="lh-subscribe-email"
+             placeholder="Your email address"
+             class="lh-subscribe-input" required>
+      <button type="submit" class="lh-subscribe-btn">Subscribe</button>
+    </div>
+    <p class="lh-subscribe-note">No spam. Unsubscribe any time.</p>
+  </form>
+
+  <!-- Inline result popup -->
+  <div id="lh-subscribe-msg" class="lh-subscribe-msg" style="display:none;" role="alert"></div>
+</div>
+
+<!-- Unsubscribe link (opens modal) -->
+<p class="lh-unsubscribe-trigger-wrap">
+  <button type="button" class="lh-unsubscribe-trigger" data-lh-modal="lh-unsub-modal">
+    Unsubscribe
+  </button>
+</p>
+
+<!-- Unsubscribe modal -->
+<div id="lh-unsub-modal" class="lh-modal-backdrop" style="display:none;" aria-modal="true" role="dialog">
+  <div class="lh-modal">
+    <button class="lh-modal-close" aria-label="Close">&times;</button>
+    <h4 class="lh-modal-title">Unsubscribe</h4>
+    <p class="lh-modal-body">Enter your email and we will remove you from our list.</p>
+    <form id="lh-unsub-form" novalidate>
+      {% csrf_token %}
+      <input type="email" name="email" id="lh-unsub-email"
+             placeholder="Your email address"
+             class="lh-subscribe-input" required style="margin-bottom:.75rem;">
+      <button type="submit" class="lh-subscribe-btn lh-subscribe-btn--outline">
+        Unsubscribe me
+      </button>
+    </form>
+    <div id="lh-unsub-msg" class="lh-subscribe-msg" style="display:none;" role="alert"></div>
+  </div>
+</div>
+
+<style>
+.lh-subscribe-widget { max-width: 420px; }
+.lh-subscribe-row { display: flex; gap: .5rem; }
+.lh-subscribe-input {
+  flex: 1; padding: .65rem 1rem; border-radius: 8px;
+  border: 1px solid #d0d5e8; font-size: .95rem; outline: none;
+  transition: border-color .2s;
+}
+.lh-subscribe-input:focus { border-color: var(--primary-blue, #0311FC); }
+.lh-subscribe-btn {
+  padding: .65rem 1.4rem; border-radius: 8px; border: none;
+  background: var(--primary-blue, #0311FC); color: #fff;
+  font-size: .95rem; font-weight: 700; cursor: pointer;
+  white-space: nowrap; transition: background .2s;
+}
+.lh-subscribe-btn:hover { background: #020cb5; }
+.lh-subscribe-btn--outline {
+  background: transparent; border: 2px solid var(--primary-blue, #0311FC);
+  color: var(--primary-blue, #0311FC); width: 100%;
+}
+.lh-subscribe-btn--outline:hover { background: var(--primary-blue, #0311FC); color: #fff; }
+.lh-subscribe-note { font-size: .78rem; color: #8a92a8; margin: .4rem 0 0; }
+.lh-subscribe-msg {
+  margin-top: .75rem; padding: .65rem 1rem; border-radius: 8px;
+  font-size: .9rem; font-weight: 600;
+}
+.lh-subscribe-msg.success { background: #eaffea; color: #1a6b1a; border: 1px solid #a3d9a3; }
+.lh-subscribe-msg.error   { background: #fff0f0; color: #b00020; border: 1px solid #f5a0a0; }
+.lh-unsubscribe-trigger-wrap { margin-top: .5rem; }
+.lh-unsubscribe-trigger {
+  background: none; border: none; padding: 0;
+  font-size: .8rem; color: #8a92a8; cursor: pointer; text-decoration: underline;
+}
+.lh-unsubscribe-trigger:hover { color: var(--primary-blue, #0311FC); }
+
+/* Modal */
+.lh-modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+}
+.lh-modal {
+  background: #fff; border-radius: 16px; padding: 2rem 2rem 1.75rem;
+  max-width: 400px; width: 92%; position: relative;
+  box-shadow: 0 12px 40px rgba(0,0,0,.18);
+}
+.lh-modal-close {
+  position: absolute; top: 1rem; right: 1.1rem;
+  background: none; border: none; font-size: 1.4rem;
+  color: #8a92a8; cursor: pointer; line-height: 1;
+}
+.lh-modal-close:hover { color: #333; }
+.lh-modal-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.5rem; font-weight: 700; margin: 0 0 .5rem; }
+.lh-modal-body  { font-size: .95rem; color: #6c757d; margin: 0 0 1.25rem; }
+</style>
+
+<script>
+(function () {
+  const SUBSCRIBE_URL   = "{% url 'subscribers:subscribe' %}";
+  const UNSUBSCRIBE_URL = "{% url 'subscribers:unsubscribe' %}";
+
+  function getCsrf(form) {
+    return form.querySelector('[name=csrfmiddlewaretoken]').value;
+  }
+
+  function showMsg(el, text, ok) {
+    el.textContent = text;
+    el.className = 'lh-subscribe-msg ' + (ok ? 'success' : 'error');
+    el.style.display = 'block';
+  }
+
+  function postForm(url, email, csrf) {
+    const body = new URLSearchParams({ email, csrfmiddlewaretoken: csrf });
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'X-CSRFToken': csrf },
+      body,
+      credentials: 'same-origin',
+    }).then(r => r.json());
+  }
+
+  // ── Subscribe ──────────────────────────────────────────────────────────────
+  const subForm = document.getElementById('lh-subscribe-form');
+  const subMsg  = document.getElementById('lh-subscribe-msg');
+
+  subForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const email = document.getElementById('lh-subscribe-email').value.trim();
+    postForm(SUBSCRIBE_URL, email, getCsrf(subForm))
+      .then(data => {
+        showMsg(subMsg, data.message, data.success);
+        if (data.success) subForm.reset();
+      })
+      .catch(() => showMsg(subMsg, 'Something went wrong. Please try again.', false));
+  });
+
+  // ── Unsubscribe modal ──────────────────────────────────────────────────────
+  const modal    = document.getElementById('lh-unsub-modal');
+  const unsubForm = document.getElementById('lh-unsub-form');
+  const unsubMsg  = document.getElementById('lh-unsub-msg');
+
+  document.querySelectorAll('[data-lh-modal="lh-unsub-modal"]').forEach(btn => {
+    btn.addEventListener('click', () => { modal.style.display = 'flex'; });
+  });
+
+  modal.querySelector('.lh-modal-close').addEventListener('click', () => {
+    modal.style.display = 'none';
+    unsubMsg.style.display = 'none';
+    unsubForm.reset();
+  });
+
+  modal.addEventListener('click', e => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+      unsubMsg.style.display = 'none';
+      unsubForm.reset();
+    }
+  });
+
+  unsubForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const email = document.getElementById('lh-unsub-email').value.trim();
+    postForm(UNSUBSCRIBE_URL, email, getCsrf(unsubForm))
+      .then(data => {
+        showMsg(unsubMsg, data.message, data.success);
+        if (data.success) unsubForm.reset();
+      })
+      .catch(() => showMsg(unsubMsg, 'Something went wrong. Please try again.', false));
+  });
+})();
+</script>

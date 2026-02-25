@@ -159,7 +159,7 @@ readme = "README.md"
 
 license = { text = "Not open source" }
 authors = [
-  { name = "Cactus Cat LLC", email = "jamesw@listenhearaudio.com" },
+  { name = "Cactus Cat LLC", email = "jamesw@listenhearsmarthomes.com" },
 ]
 requires-python = "==3.13.*"
 dependencies = [

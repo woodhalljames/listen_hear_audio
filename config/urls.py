@@ -6,7 +6,7 @@ from django.urls import path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 
-from listen_hear_audio.core.views import AboutView, CommercialView, ContactView, HomeView
+from listen_hear_audio.core.views import AboutView, ContactView, HomeView
 
 # Customize admin site
 admin.site.site_header = "Listen Hear Administration"
@@ -16,7 +16,6 @@ admin.site.index_title = "Welcome to Listen Hear Administration"
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
     path("about/", AboutView.as_view(), name="about"),
-    path("commercial/", CommercialView.as_view(), name="commercial"),
     path("contact/", ContactView.as_view(), name="contact"),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
@@ -36,6 +35,8 @@ urlpatterns = [
     path("careers/", include("listen_hear_audio.careers.urls", namespace="careers")),
     # Gallery app
     path("gallery/", include("listen_hear_audio.gallery.urls", namespace="gallery")),
+    # Subscribers
+    path("subscribers/", include("listen_hear_audio.subscribers.urls", namespace="subscribers")),
     # Summernote
     path("summernote/", include("django_summernote.urls")),
     # Media files

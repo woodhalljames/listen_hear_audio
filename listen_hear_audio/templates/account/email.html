@@ -1,0 +1,91 @@
+{% extends "account/base_manage_password.html" %}
+{% load i18n static %}
+
+{% block title %}Manage Email Addresses{% endblock title %}
+
+{% block content %}
+  <h5 class="card-title mb-4" style="color: var(--primary-blue);">
+    <i class="bi bi-envelope me-2"></i>{% trans "Email Addresses" %}
+  </h5>
+
+  {% if emailaddresses %}
+    <p class="text-muted mb-3">{% trans "The following email addresses are associated with your account:" %}</p>
+
+    <form method="post" action="{% url 'account_email' %}" id="email-list-form">
+      {% csrf_token %}
+
+      <div class="mb-4">
+        {% for radio in emailaddress_radios %}
+          {% with addr=radio.emailaddress %}
+            <div class="d-flex align-items-center justify-content-between p-3 mb-2 rounded border {% if radio.checked %}border-primary bg-light{% endif %}">
+              <div class="d-flex align-items-center gap-2">
+                <input class="form-check-input me-1" type="radio"
+                       name="email" value="{{ addr.email }}"
+                       id="{{ radio.id }}"
+                       {% if radio.checked %}checked{% endif %}>
+                <label class="form-check-label fw-semibold mb-0" for="{{ radio.id }}">{{ addr.email }}</label>
+                {% if addr.verified %}
+                  <span class="badge bg-success">{% trans "Verified" %}</span>
+                {% else %}
+                  <span class="badge bg-warning text-dark">{% trans "Unverified" %}</span>
+                {% endif %}
+                {% if addr.primary %}
+                  <span class="badge" style="background-color: var(--primary-blue); color: white;">{% trans "Primary" %}</span>
+                {% endif %}
+              </div>
+            </div>
+          {% endwith %}
+        {% endfor %}
+      </div>
+
+      <div class="d-flex flex-wrap gap-2">
+        <button type="submit" name="action_primary" class="btn" style="background-color: var(--primary-blue); color: white;">
+          {% trans "Make Primary" %}
+        </button>
+        <button type="submit" name="action_send" class="btn btn-outline-secondary">
+          {% trans "Re-send Verification" %}
+        </button>
+        <button type="submit" name="action_remove" class="btn btn-outline-danger" id="remove-email-btn">
+          {% trans "Remove" %}
+        </button>
+      </div>
+    </form>
+
+    <hr class="my-4">
+  {% else %}
+    <div class="alert alert-warning mb-4">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      {% trans "Warning: You currently do not have any email address set up. You should add an email address so you can receive notifications and reset your password." %}
+    </div>
+  {% endif %}
+
+  {% if can_add_email %}
+    <h6 class="mb-3" style="color: var(--primary-blue);">{% trans "Add Email Address" %}</h6>
+    <form method="post" action="{% url 'account_email' %}">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_email" class="form-label">{% trans "Email address" %}</label>
+        <input type="email" name="email" id="id_email" class="form-control" required>
+      </div>
+      <button type="submit" name="action_add" class="btn" style="background-color: var(--primary-blue); color: white;">
+        {% trans "Add Email" %}
+      </button>
+    </form>
+  {% endif %}
+
+  <div class="mt-4">
+    <a href="{% url 'users:detail' request.user.pk %}" class="btn btn-outline-secondary">
+      <i class="bi bi-arrow-left me-1"></i>{% trans "Back to Profile" %}
+    </a>
+  </div>
+{% endblock content %}
+
+{% block inline_javascript %}
+  <script>
+    document.getElementById('remove-email-btn')?.addEventListener('click', function(e) {
+      if (!confirm("{% trans 'Do you really want to remove the selected email address?' %}")) {
+        e.preventDefault();
+      }
+    });
+  </script>
+{% endblock inline_javascript %}

@@ -92,6 +92,7 @@ LOCAL_APPS = [
     "listen_hear_audio.blog",
     "listen_hear_audio.careers",
     "listen_hear_audio.gallery",
+    "listen_hear_audio.subscribers",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -239,7 +240,7 @@ EMAIL_TIMEOUT = 5
 # Django Admin URL.
 ADMIN_URL = "shadycorvette/"
 # https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = [("""Cactus Cat LLC""", "jamesw@listenhearaudio.com")]
+ADMINS = [("""Cactus Cat LLC""", "jamesw@listenhearsmarthomes.com")]
 # https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
 # https://cookiecutter-django.readthedocs.io/en/latest/settings.html#other-environment-settings

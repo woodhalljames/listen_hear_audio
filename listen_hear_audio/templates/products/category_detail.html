@@ -13,15 +13,13 @@
         <nav aria-label="breadcrumb" class="mb-3">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'products:catalog' %}">Catalog</a></li>
-                <li class="breadcrumb-item"><span>{{ category.property_type.name }}</span></li>
-                <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
+              <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
             </ol>
         </nav>
 
         <div class="category-detail-header mb-5">
             <div class="row align-items-center g-4">
                 <div class="{% if category.image %}col-lg-7{% else %}col-12{% endif %}">
-                    <span class="badge bg-primary mb-3">{{ category.property_type.name }}</span>
                     <h1 class="display-4 fw-bold mb-3">{{ category.name }}</h1>
                     {% if category.description %}
                     <p class="lead text-muted">{{ category.description }}</p>
@@ -45,7 +43,7 @@
     </div>
 
     <!-- Section: Video (full width) -->
-    {% if category.video or category_videos %}
+    {% if category.video or category.youtube_url or category_videos %}
     <div class="category-videos-section py-5" style="background: var(--light-grey);">
         <div class="container">
             <!-- Uploaded MP4 video -->
@@ -61,12 +59,33 @@
             </div>
             {% endif %}
 
-            <!-- YouTube videos from CategoryVideo inline -->
+            <!-- Single YouTube URL from category field -->
+            {% if category.youtube_url %}
+            {% with embed_id=category.get_youtube_embed_id %}
+            {% if embed_id %}
+            <div class="category-video-primary mb-4">
+                <div class="ratio ratio-16x9 rounded shadow-sm overflow-hidden">
+                    <iframe
+                        src="https://www.youtube.com/embed/{{ embed_id }}"
+                        title="{{ category.name }}"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen
+                        class="rounded">
+                    </iframe>
+                </div>
+            </div>
+            {% endif %}
+            {% endwith %}
+            {% endif %}
+
+            <!-- Additional YouTube videos from CategoryVideo inline -->
             {% if category_videos %}
             <div class="row g-4">
                 {% for vid in category_videos %}
                 {% if vid.get_youtube_embed_id %}
-                <div class="{% if category_videos|length == 1 and not category.video %}col-12{% else %}col-md-6{% endif %}">
+                <div class="{% if category_videos|length == 1 and not category.video and not category.youtube_url %}col-12{% else %}col-md-6{% endif %}">
                     {% if vid.title %}
                     <h5 class="mb-2">{{ vid.title }}</h5>
                     {% endif %}
@@ -93,7 +112,7 @@
     <!-- Section: Details -->
     {% if category.details %}
     <div class="container py-5">
-        <h3 class="fw-bold mb-3">About {{ category.name }}</h3>
+        <h3 class="fw-bold mb-3">About</h3>
         <div class="category-details-text" style="white-space: pre-wrap;">{{ category.details }}</div>
     </div>
     {% endif %}
@@ -102,11 +121,10 @@
     {% if packages %}
     <div class="category-packages-section py-5" style="background: var(--light-grey);">
         <div class="container">
-            <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+            <div class="mb-4">
                 <h2 class="fw-bold mb-0">
                     <i class="bi bi-grid-3x3-gap text-primary"></i> Available Packages
                 </h2>
-                <span class="badge bg-primary fs-6 px-3 py-2">{{ package_count }} Package{{ package_count|pluralize }}</span>
             </div>
 
             {% if grouped_packages %}

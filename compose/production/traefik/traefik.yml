@@ -22,7 +22,7 @@ certificatesResolvers:
   letsencrypt:
     # https://doc.traefik.io/traefik/https/acme/#lets-encrypt
     acme:
-      email: 'jamesw@listenhearaudio.com'
+      email: 'jamesw@listenhearsmarthomes.com'
       storage: /etc/traefik/acme/acme.json
       # https://doc.traefik.io/traefik/https/acme/#httpchallenge
       httpChallenge:
@@ -31,7 +31,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: 'Host(`listenhearaudio.com`) || Host(`www.listenhearaudio.com`)'
+      rule: 'Host(`listenhearsmarthomes.com`) || Host(`www.listenhearsmarthomes.com`)'
       entryPoints:
         - web-secure
       middlewares:
@@ -42,7 +42,7 @@ http:
         certResolver: letsencrypt
 
     flower-secure-router:
-      rule: 'Host(`listenhearaudio.com`)'
+      rule: 'Host(`listenhearsmarthomes.com`)'
       entryPoints:
         - flower
       service: flower
@@ -51,7 +51,7 @@ http:
         certResolver: letsencrypt
 
     web-media-router:
-      rule: '(Host(`listenhearaudio.com`) || Host(`www.listenhearaudio.com`)) && PathPrefix(`/media/`)'
+      rule: '(Host(`listenhearsmarthomes.com`) || Host(`www.listenhearsmarthomes.com`)) && PathPrefix(`/media/`)'
       entryPoints:
         - web-secure
       middlewares:

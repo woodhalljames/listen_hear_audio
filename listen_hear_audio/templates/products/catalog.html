@@ -12,33 +12,12 @@
     <div class="col-lg-3 mb-4">
       <div class="catalog-sidebar">
         <div class="sidebar-sticky">
-          <h5 class="sidebar-title">Browse By Type</h5>
+          <h5 class="sidebar-title">Browse Categories</h5>
           <nav class="nav flex-column">
-            {% for property_type in property_types %}
-              <div class="property-nav-section">
-                <a class="nav-link catalog-nav-link property-nav-link" href="#property-{{ property_type.slug }}">
-                  {% if 'residential' in property_type.name|lower %}
-                    <i class="bi bi-house-door-fill"></i>
-                  {% elif 'commercial' in property_type.name|lower %}
-                    <i class="bi bi-building"></i>
-                  {% elif 'industrial' in property_type.name|lower %}
-                    <i class="bi bi-gear-wide-connected"></i>
-                  {% else %}
-                    <i class="bi bi-box"></i>
-                  {% endif %}
-                  <span>{{ property_type.name }}</span>
-                  <i class="bi bi-chevron-down ms-auto chevron-icon"></i>
-                </a>
-                
-                <!-- Categories under this property type -->
-                <div class="category-nav-list">
-                  {% for category in property_type.visible_categories %}
-                    <a class="nav-link category-nav-link" href="#category-{{ category.slug }}">
-                      {{ category.name }}
-                    </a>
-                  {% endfor %}
-                </div>
-              </div>
+            {% for category in categories %}
+              <a class="nav-link category-nav-link" href="#category-{{ category.slug }}">
+                {{ category.name }}
+              </a>
             {% endfor %}
           </nav>
         </div>
@@ -50,93 +29,51 @@
       <!-- Page Header -->
       <div class="text-center mb-5">
         <h1 class="display-4 fw-bold">Product Packages</h1>
-        <p class="lead text-muted">Browse our comprehensive selection of smart home audio and video solutions</p>
+        <p class="lead text-muted">Browse our comprehensive selection of smart home, audio and video solutions.<br>Hover or tap images to view key features</p>
       </div>
 
-      {% for property_type in property_types %}
-        <!-- Property Type Section -->
-        <div class="category-section mb-5" id="property-{{ property_type.slug }}">
-          <div class="category-header">
-            <h2 class="category-title">
-              {% if 'residential' in property_type.name|lower %}
-                <i class="bi bi-house-door-fill text-primary"></i>
-              {% elif 'commercial' in property_type.name|lower %}
-                <i class="bi bi-building text-primary"></i>
-              {% elif 'industrial' in property_type.name|lower %}
-                <i class="bi bi-gear-wide-connected text-primary"></i>
-              {% else %}
-                <i class="bi bi-box text-primary"></i>
-              {% endif %}
-              {{ property_type.name }}
-            </h2>
-            
-            {% if property_type.description %}
-              <div class="property-type-description-card">
-                <div class="card border-primary">
-                  <div class="card-body">
-                    <p class="card-text mb-0">{{ property_type.description }}</p>
-                  </div>
-                </div>
-              </div>
-            {% endif %}
+      {% for category in categories %}
+        <!-- Category Section -->
+        <div class="mb-5" id="category-{{ category.slug }}">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="h4 mb-0 category-subtitle">
+              {{ category.name }}
+            </h3>
+            <a href="{% url 'products:category_detail' category.slug %}"
+               class="btn btn-outline-primary btn-sm">
+              <i class="bi bi-info-circle"></i> Learn More
+            </a>
           </div>
 
-          {% for category in property_type.visible_categories %}
-              <!-- Category Section -->
-              <div class="mb-5" id="category-{{ category.slug }}">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <h3 class="h4 mb-0 category-subtitle">
-                    {{ category.name }}
-                  </h3>
-                  <a href="{% url 'products:category_detail' category.slug %}"
-                     class="btn btn-outline-primary btn-sm">
-                    <i class="bi bi-info-circle"></i> Learn More
-                  </a>
+          {% if category.description %}
+            <div class="category-description-card mb-4">
+              <div class="card bg-light border-0">
+                <div class="card-body py-3">
+                  <p class="card-text text-muted mb-0">{{ category.description }}</p>
                 </div>
+              </div>
+            </div>
+          {% endif %}
 
-                {% if category.description %}
-                  <div class="category-description-card mb-4">
-                    <div class="card bg-light border-0">
-                      <div class="card-body py-3">
-                        <p class="card-text text-muted mb-0">{{ category.description }}</p>
+          {% if category.has_subcategories %}
+            <!-- Display by Subcategories -->
+            {% for subcategory in category.subcategories.all %}
+              {% if subcategory.is_active %}
+                <div class="mb-4">
+                  <h4 class="h5 mb-3 text-secondary">
+                    <i class="bi bi-tag-fill"></i> {{ subcategory.name }}
+                  </h4>
+
+                  {% if subcategory.description %}
+                    <div class="subcategory-description-card mb-3">
+                      <div class="alert alert-info py-2">
+                        <small>{{ subcategory.description }}</small>
                       </div>
                     </div>
-                  </div>
-                {% endif %}
+                  {% endif %}
 
-                {% if category.has_subcategories %}
-                  <!-- Display by Subcategories -->
-                  {% for subcategory in category.subcategories.all %}
-                    {% if subcategory.is_active %}
-                      <div class="mb-4">
-                        <h4 class="h5 mb-3 text-secondary">
-                          <i class="bi bi-tag-fill"></i> {{ subcategory.name }}
-                        </h4>
-                        
-                        {% if subcategory.description %}
-                          <div class="subcategory-description-card mb-3">
-                            <div class="alert alert-info py-2">
-                              <small>{{ subcategory.description }}</small>
-                            </div>
-                          </div>
-                        {% endif %}
-                        
-                        <div class="row g-4">
-                          {% for package in subcategory.packages.all %}
-                            {% if package.is_active %}
-                              <div class="col-lg-6 col-xl-4">
-                                {% include "products/partials/package_card.html" %}
-                              </div>
-                            {% endif %}
-                          {% endfor %}
-                        </div>
-                      </div>
-                    {% endif %}
-                  {% endfor %}
-                {% else %}
-                  <!-- Display Packages Directly -->
                   <div class="row g-4">
-                    {% for package in category.packages.all %}
+                    {% for package in subcategory.packages.all %}
                       {% if package.is_active %}
                         <div class="col-lg-6 col-xl-4">
                           {% include "products/partials/package_card.html" %}
@@ -144,10 +81,23 @@
                       {% endif %}
                     {% endfor %}
                   </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <!-- Display Packages Directly -->
+            <div class="row g-4">
+              {% for package in category.packages.all %}
+                {% if package.is_active %}
+                  <div class="col-lg-6 col-xl-4">
+                    {% include "products/partials/package_card.html" %}
+                  </div>
                 {% endif %}
-              </div>
-          {% endfor %}
+              {% endfor %}
+            </div>
+          {% endif %}
         </div>
+
       {% empty %}
         <!-- No Products Message -->
         <div class="text-center py-5">
@@ -164,50 +114,21 @@
 
 {% block inline_javascript %}
 <script>
-  // Toggle category visibility in sidebar
   document.addEventListener('DOMContentLoaded', function() {
-    const propertyLinks = document.querySelectorAll('.property-nav-link');
 
-    propertyLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
-        const section = this.closest('.property-nav-section');
-        const categoryList = section.querySelector('.category-nav-list');
-        const chevron = this.querySelector('.chevron-icon');
-
-        // Toggle category list
-        categoryList.classList.toggle('show');
-        chevron.classList.toggle('rotated');
-      });
-    });
-
-    // Auto-expand the active section
-    const activeSection = document.querySelector('.category-section');
-    if (activeSection) {
-      const firstPropertySection = document.querySelector('.property-nav-section');
-      if (firstPropertySection) {
-        const categoryList = firstPropertySection.querySelector('.category-nav-list');
-        const chevron = firstPropertySection.querySelector('.chevron-icon');
-        categoryList.classList.add('show');
-        chevron.classList.add('rotated');
-      }
-    }
-
-    // Handle add to cart without redirect (AJAX)
+    // Handle add to cart (AJAX)
     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
       button.addEventListener('click', function(e) {
         e.preventDefault();
 
         const packageId = this.dataset.packageId;
-        const packageName = this.dataset.packageName;
         const btn = this;
         const originalHTML = btn.innerHTML;
 
-        // Show loading state
         btn.classList.add('loading');
         btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Adding...';
         btn.disabled = true;
 
-        // Make AJAX request
         fetch(`/quote/cart/add/${packageId}/`, {
           method: 'POST',
           headers: {
@@ -218,45 +139,26 @@
           credentials: 'same-origin'
         })
         .then(response => {
-          console.log('Response status:', response.status);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
           return response.json();
         })
         .then(data => {
           if (data.success) {
-            // Mark package card as in cart
             const packageCard = btn.closest('.product-card');
-            if (packageCard) {
-              packageCard.classList.add('in-cart');
-            }
-
-            // Update navbar badge and floating cart
+            if (packageCard) packageCard.classList.add('in-cart');
             updateCartCount(data.cart_count);
-
-            // Show success state and keep it
             btn.classList.remove('loading');
             btn.classList.add('btn-success');
             btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Cart';
             btn.disabled = false;
-
-            // Allow adding more by clicking again
-            btn.onclick = function() {
-              // Re-trigger add to cart
-              btn.dispatchEvent(new Event('click', { bubbles: true }));
-            };
           } else {
             throw new Error(data.error || 'Failed to add to cart');
           }
         })
         .catch(error => {
-          console.error('Cart Error:', error);
           btn.classList.remove('loading');
           btn.classList.add('btn-danger');
           btn.innerHTML = '<i class="bi bi-x-circle"></i> Error';
-
-          // Reset button after 2 seconds
           setTimeout(() => {
             btn.classList.remove('btn-danger');
             btn.innerHTML = originalHTML;
@@ -266,26 +168,16 @@
       });
     });
 
-    // Helper function to get CSRF token
     function getCSRFToken() {
-      // Try to get from DOM first (most reliable)
       const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
-      if (tokenInput) {
-        return tokenInput.value;
-      }
-
-      // Fallback to cookie
-      return getCookie('csrftoken');
-    }
-
-    function getCookie(name) {
+      if (tokenInput) return tokenInput.value;
       let cookieValue = null;
       if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
           const cookie = cookies[i].trim();
-          if (cookie.substring(0, name.length + 1) === (name + '=')) {
-            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          if (cookie.substring(0, 10) === 'csrftoken=') {
+            cookieValue = decodeURIComponent(cookie.substring(10));
             break;
           }
         }
@@ -300,7 +192,6 @@
     display: flex;
     flex-wrap: wrap;
   }
-
   .row.g-4 > [class*="col-"] {
     display: flex;
   }

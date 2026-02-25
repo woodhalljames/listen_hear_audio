@@ -156,7 +156,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Footer Styles */
 .footer {
-  background-color: var(--primary-dark);
+  background: #06091a;
   color: var(--white);
   padding: 3rem 0 1rem;
   margin-top: 4rem;

@@ -32,6 +32,10 @@ class BlogPost(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published = models.BooleanField(default=False)
+    notified_at = models.DateTimeField(
+        null=True, blank=True,
+        help_text="Set automatically when subscribers are notified. Prevents duplicate sends."
+    )
 
     class Meta:
         ordering = ["-created_at"]

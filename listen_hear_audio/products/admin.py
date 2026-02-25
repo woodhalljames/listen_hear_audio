@@ -1,15 +1,6 @@
 from django.contrib import admin
 from django import forms
-from .models import PropertyType, Category, CategoryImage, CategoryVideo, SubCategory, Package
-
-@admin.register(PropertyType)
-class PropertyTypeAdmin(admin.ModelAdmin):
-    list_display = ['name', 'display_order', 'is_active', 'created_at']
-    list_editable = ['display_order', 'is_active']
-    list_filter = ['is_active']
-    search_fields = ['name', 'description']
-    prepopulated_fields = {'slug': ('name',)}
-    ordering = ['display_order', 'name']
+from .models import Category, CategoryImage, CategoryVideo, SubCategory, Package
 
 
 class CategoryImageInline(admin.TabularInline):
@@ -28,18 +19,18 @@ class CategoryVideoInline(admin.TabularInline):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'property_type', 'builder_section', 'show_in_catalog', 'display_order', 'is_active', 'has_video', 'has_subcategories', 'has_packages']
+    list_display = ['name', 'builder_section', 'show_in_catalog', 'display_order', 'is_active', 'has_video', 'has_subcategories', 'has_packages']
     list_editable = ['display_order', 'is_active', 'show_in_catalog']
-    list_filter = ['property_type', 'builder_section', 'show_in_catalog', 'is_active']
+    list_filter = ['builder_section', 'show_in_catalog', 'is_active']
     search_fields = ['name', 'description']
     prepopulated_fields = {'slug': ('name',)}
-    ordering = ['property_type', 'display_order', 'name']
+    ordering = ['display_order', 'name']
     inlines = [CategoryImageInline, CategoryVideoInline]
 
     fieldsets = (
         ('Basic Information', {
-            'fields': ('property_type', 'name', 'slug', 'description', 'details', 'image', 'video'),
-            'description': 'Upload an MP4 video file directly, or use the YouTube Videos section below for YouTube links.'
+            'fields': ('name', 'slug', 'description', 'details', 'image', 'video', 'youtube_url'),
+            'description': 'Upload an MP4 video file directly, enter a single YouTube URL, or add multiple YouTube videos via the YouTube Videos section below.'
         }),
         ('Builder Showroom', {
             'fields': ('builder_section',),
@@ -55,12 +46,12 @@ class CategoryAdmin(admin.ModelAdmin):
         return obj.has_video()
     has_video.boolean = True
     has_video.short_description = 'Video'
-    
+
     def has_subcategories(self, obj):
         return obj.has_subcategories()
     has_subcategories.boolean = True
     has_subcategories.short_description = 'Has SubCats'
-    
+
     def has_packages(self, obj):
         return obj.has_packages()
     has_packages.boolean = True
@@ -71,7 +62,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class SubCategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'category', 'display_order', 'is_active', 'package_count']
     list_editable = ['display_order', 'is_active']
-    list_filter = ['category__property_type', 'category', 'is_active']
+    list_filter = ['category', 'is_active']
     search_fields = ['name', 'description', 'details']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['category', 'display_order', 'name']
@@ -124,7 +115,7 @@ class PackageAdmin(admin.ModelAdmin):
     form = PackageAdminForm
     list_display = ['name', 'category', 'subcategory', 'installation_phase', 'starting_price', 'is_custom', 'visibility', 'is_featured', 'is_active', 'display_order']
     list_editable = ['display_order', 'is_active', 'is_featured', 'visibility']
-    list_filter = ['installation_phase', 'category__property_type', 'category', 'subcategory', 'is_custom', 'visibility', 'is_featured', 'is_active']
+    list_filter = ['installation_phase', 'category', 'subcategory', 'is_custom', 'visibility', 'is_featured', 'is_active']
     search_fields = ['name', 'short_description', 'features']
     prepopulated_fields = {'slug': ('name',)}
     ordering = ['installation_phase', 'category', 'subcategory', 'display_order', 'name']
@@ -145,5 +136,3 @@ class PackageAdmin(admin.ModelAdmin):
             'description': 'Visibility controls where this package appears: catalog, builder showroom, or both.'
         }),
     )
-
-

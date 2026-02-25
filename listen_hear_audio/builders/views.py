@@ -9,7 +9,7 @@ from datetime import datetime
 
 from .models import Property, PhaseInstallation, PurchasedPackage, PropertyNote
 from .tasks import send_date_request_email
-from listen_hear_audio.products.models import Package, Category, PropertyType
+from listen_hear_audio.products.models import Package, Category
 
 
 class BuilderRequiredMixin(UserPassesTestMixin):

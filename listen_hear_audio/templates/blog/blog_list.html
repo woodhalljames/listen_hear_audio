@@ -1,104 +1,266 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Blog - Listen Hear!{% endblock %}
+{% block title %}Blog & News – Listen Hear! Smart Home Pittsburgh{% endblock %}
 
-{% block content %}
-<div class="row">
-  <div class="col-12">
-    <h1 class="mb-4" style="color: var(--primary-blue);">
-     Blog
-    </h1>
+{% block main_wrapper %}
 
-    {% if request.GET.tag %}
-      <div class="alert alert-info d-flex align-items-center justify-content-between">
-        <span>
-          <i class="bi bi-funnel-fill"></i> Showing posts tagged with: <strong>{{ request.GET.tag }}</strong>
-        </span>
-        <a href="{% url 'blog:post_list' %}" class="btn btn-sm btn-outline-secondary">
-          <i class="bi bi-x-circle"></i> Clear Filter
-        </a>
-      </div>
-    {% endif %}
-  </div>
-</div>
+  {# ── Page Header ── #}
+  <section class="bl-header">
+    <div class="bl-container">
+      <p class="bl-eyebrow">Listen Hear!</p>
+      <h1 class="bl-title">Blog <span class="bl-title__amp">&</span> News</h1>
+    </div>
+  </section>
 
-<div class="row">
-  {% for post in posts %}
-    <div class="col-lg-6 col-md-12 mb-4">
-      <div class="card h-100 shadow-sm">
-        {% if post.featured_image %}
-          <a href="{{ post.get_absolute_url }}">
-            <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="card-img-top" style="height: 250px; object-fit: cover;">
-          </a>
-        {% endif %}
-        <div class="card-body">
-          <h3 class="card-title">
-            <a href="{{ post.get_absolute_url }}" class="text-decoration-none">{{ post.title }}</a>
-          </h3>
-          <p class="text-muted small mb-3">
-            {% if post.author_name %}
-              <i class="bi bi-person-circle"></i> {{ post.author_name }}
-              <span class="mx-2">•</span>
-            {% elif post.author %}
-              <i class="bi bi-person-circle"></i> {{ post.author.name|default:post.author.username }}
-              <span class="mx-2">•</span>
+  {# ── Tag filter bar ── #}
+  {% if request.GET.tag %}
+    <div class="bl-container bl-filter-bar">
+      <span><i class="bi bi-funnel-fill"></i> Posts tagged: <strong>{{ request.GET.tag }}</strong></span>
+      <a href="{% url 'blog:post_list' %}" class="bl-filter-clear">
+        <i class="bi bi-x-circle"></i> Clear filter
+      </a>
+    </div>
+  {% endif %}
+
+  {# ── Posts grid ── #}
+  <section class="bl-grid-section">
+    <div class="bl-container">
+      <div class="bl-grid">
+
+        {% for post in posts %}
+          <article class="bl-card">
+
+            {% if post.featured_image %}
+              <a href="{{ post.get_absolute_url }}" class="bl-card__img-wrap">
+                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" class="bl-card__img">
+              </a>
+            {% else %}
+              <div class="bl-card__img-placeholder">
+                <i class="bi bi-journal-text"></i>
+              </div>
             {% endif %}
-            <i class="bi bi-calendar"></i> {{ post.created_at|date:"F d, Y" }}
-          </p>
 
-          {% if post.tags.all %}
-            <div class="mb-3">
-              <i class="bi bi-tags"></i>
-              {% for tag in post.tags.all %}
-                <a href="?tag={{ tag.name }}" class="badge text-decoration-none" style="background-color: var(--primary-blue);">{{ tag.name }}</a>
-              {% endfor %}
+            <div class="bl-card__body">
+
+              {% if post.tags.all %}
+                <div class="bl-card__tags">
+                  {% for tag in post.tags.all %}
+                    <a href="?tag={{ tag.name }}" class="bl-tag">{{ tag.name }}</a>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <h2 class="bl-card__title">
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+              </h2>
+
+              <p class="bl-card__meta">
+                {% if post.author_name %}
+                  <span><i class="bi bi-person-circle"></i> {{ post.author_name }}</span>
+                {% elif post.author %}
+                  <span><i class="bi bi-person-circle"></i> {{ post.author.name|default:post.author.username }}</span>
+                {% endif %}
+                <span><i class="bi bi-calendar3"></i> {{ post.created_at|date:"M d, Y" }}</span>
+              </p>
+
+              <div class="bl-card__excerpt">
+                {{ post.body|truncatewords_html:37|safe }}
+              </div>
+
+              <a href="{{ post.get_absolute_url }}" class="bl-card__read-more">
+                Read More <i class="bi bi-arrow-right"></i>
+              </a>
+
             </div>
-          {% endif %}
-
-          <div class="card-text">
-            {{ post.body|truncatewords_html:30|safe }}
+          </article>
+        {% empty %}
+          <div class="bl-empty">
+            <i class="bi bi-journal-x"></i>
+            <p>No posts yet — check back soon.</p>
           </div>
-          <a href="{{ post.get_absolute_url }}" class="btn mt-3" style="background-color: var(--primary-blue); color: white;">
-            Read More <i class="bi bi-arrow-right"></i>
-          </a>
-        </div>
-      </div>
-    </div>
-  {% empty %}
-    <div class="col-12">
-      <div class="alert alert-info">
-        <i class="bi bi-info-circle"></i> No blog posts available yet. Check back soon!
-      </div>
-    </div>
-  {% endfor %}
-</div>
+        {% endfor %}
 
-{% if is_paginated %}
-  <nav aria-label="Page navigation" class="mt-4">
-    <ul class="pagination justify-content-center">
+      </div>
+    </div>
+  </section>
+
+  {# ── Pagination ── #}
+  {% if is_paginated %}
+    <div class="bl-container bl-pagination">
       {% if page_obj.has_previous %}
-        <li class="page-item">
-          <a class="page-link" href="?page=1{% if request.GET.tag %}&tag={{ request.GET.tag }}{% endif %}">First</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.tag %}&tag={{ request.GET.tag }}{% endif %}">Previous</a>
-        </li>
+        <a href="?page=1{% if request.GET.tag %}&tag={{ request.GET.tag }}{% endif %}" class="bl-page-btn">First</a>
+        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.tag %}&tag={{ request.GET.tag }}{% endif %}" class="bl-page-btn">
+          <i class="bi bi-chevron-left"></i> Prev
+        </a>
       {% endif %}
-
-      <li class="page-item active">
-        <span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-      </li>
-
+      <span class="bl-page-current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
       {% if page_obj.has_next %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.tag %}&tag={{ request.GET.tag }}{% endif %}">Next</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.tag %}&tag={{ request.GET.tag }}{% endif %}">Last</a>
-        </li>
+        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.tag %}&tag={{ request.GET.tag }}{% endif %}" class="bl-page-btn">
+          Next <i class="bi bi-chevron-right"></i>
+        </a>
+        <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.tag %}&tag={{ request.GET.tag }}{% endif %}" class="bl-page-btn">Last</a>
       {% endif %}
-    </ul>
-  </nav>
-{% endif %}
-{% endblock %}
+    </div>
+  {% endif %}
+
+{% endblock main_wrapper %}
+
+{% block css %}
+{{ block.super }}
+<style>
+/* ── Container ──────────────────────────────────────────────────── */
+.bl-container {
+  width: 92%; max-width: 1200px; margin: 0 auto;
+  padding-left: 0; padding-right: 0;
+}
+@media (min-width: 768px)  { .bl-container { width: 86%; } }
+@media (min-width: 1200px) { .bl-container { width: 80%; } }
+
+/* ── Page Header ────────────────────────────────────────────────── */
+.bl-header {
+  padding: 3.5rem 0 2.5rem;
+  background: #fff;
+  border-bottom: 1px solid #e8ecf4;
+}
+.bl-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--primary-blue); margin-bottom: 0.6rem;
+}
+.bl-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.4rem, 5vw, 3.75rem); font-weight: 700;
+  color: var(--primary-dark); line-height: 1.05; margin: 0;
+}
+.bl-title__amp { color: var(--primary-blue); font-style: italic; }
+
+/* ── Tag filter bar ─────────────────────────────────────────────── */
+.bl-filter-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.75rem 1.25rem; margin-top: 1.5rem;
+  background: #f0f3ff; border: 1px solid #d6dcf8;
+  border-radius: 10px; font-size: 0.9rem; color: var(--primary-dark);
+}
+.bl-filter-clear {
+  font-size: 0.85rem; font-weight: 600; color: var(--primary-blue);
+  text-decoration: none; display: flex; align-items: center; gap: 0.35rem;
+}
+.bl-filter-clear:hover { color: #020cb5; }
+
+/* ── Grid ───────────────────────────────────────────────────────── */
+.bl-grid-section { padding: 3rem 0 4rem; background: #f8f9fc; }
+.bl-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+@media (max-width: 1199px) { .bl-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 767px)  { .bl-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 499px)  { .bl-grid { grid-template-columns: 1fr; } }
+
+/* ── Card ───────────────────────────────────────────────────────── */
+.bl-card {
+  background: #fff;
+  border: 1px solid #e4e8f4;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.bl-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(3,17,252,0.09);
+  border-color: var(--primary-blue);
+}
+
+.bl-card__img-wrap { display: block; overflow: hidden; }
+.bl-card__img {
+  width: 100%; height: 155px; object-fit: cover; display: block;
+  transition: transform 0.35s ease;
+}
+.bl-card:hover .bl-card__img { transform: scale(1.04); }
+
+.bl-card__img-placeholder {
+  height: 155px; background: #eef0ff;
+  display: flex; align-items: center; justify-content: center;
+}
+.bl-card__img-placeholder i { font-size: 2.5rem; color: var(--primary-blue); opacity: 0.3; }
+
+.bl-card__body {
+  padding: 1.25rem; display: flex; flex-direction: column; flex: 1;
+}
+
+/* Tags */
+.bl-card__tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.6rem; }
+.bl-tag {
+  font-family: 'DM Sans', sans-serif; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none;
+  background: #eef0ff; color: var(--primary-blue);
+  padding: 0.2rem 0.55rem; border-radius: 20px;
+  transition: background 0.2s, color 0.2s;
+}
+.bl-tag:hover { background: var(--primary-blue); color: #fff; }
+
+/* Title */
+.bl-card__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.15rem; font-weight: 700; line-height: 1.3;
+  margin: 0 0 0.5rem; color: var(--primary-dark);
+}
+.bl-card__title a { color: inherit; text-decoration: none; }
+.bl-card__title a:hover { color: var(--primary-blue); }
+
+/* Meta */
+.bl-card__meta {
+  display: flex; flex-wrap: wrap; gap: 0.6rem;
+  font-family: 'DM Sans', sans-serif; font-size: 0.78rem;
+  color: #8a92a8; margin-bottom: 0.65rem;
+}
+.bl-card__meta i { margin-right: 0.2rem; }
+
+/* Excerpt */
+.bl-card__excerpt {
+  font-family: 'DM Sans', sans-serif; font-size: 0.875rem;
+  color: #6c757d; line-height: 1.65; flex: 1; margin-bottom: 1rem;
+}
+.bl-card__excerpt p { margin: 0; }
+
+/* Read more */
+.bl-card__read-more {
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 700;
+  color: var(--primary-blue); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  margin-top: auto;
+  transition: gap 0.2s, color 0.2s;
+}
+.bl-card__read-more:hover { color: #020cb5; gap: 0.55rem; }
+
+/* Empty state */
+.bl-empty {
+  grid-column: 1 / -1; text-align: center;
+  padding: 4rem 0; color: #8a92a8;
+}
+.bl-empty i { font-size: 3rem; display: block; margin-bottom: 1rem; opacity: 0.4; }
+.bl-empty p { font-family: 'DM Sans', sans-serif; font-size: 1rem; margin: 0; }
+
+/* ── Pagination ─────────────────────────────────────────────────── */
+.bl-pagination {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0.5rem; padding: 2rem 0 3.5rem; flex-wrap: wrap;
+}
+.bl-page-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600;
+  color: var(--primary-blue); text-decoration: none;
+  padding: 0.45rem 1rem; border-radius: 8px;
+  border: 1px solid #d6dcf8; background: #fff;
+  transition: all 0.2s;
+}
+.bl-page-btn:hover { background: var(--primary-blue); color: #fff; border-color: var(--primary-blue); }
+.bl-page-current {
+  font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600;
+  color: #8a92a8; padding: 0.45rem 0.75rem;
+}
+</style>
+{% endblock css %}

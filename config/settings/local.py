@@ -73,3 +73,6 @@ INSTALLED_APPS += ["django_extensions"]
 CELERY_TASK_EAGER_PROPAGATES = True
 # Your stuff...
 # ------------------------------------------------------------------------------
+# Absolute site URL used in emails (images, links).
+# Points to local Django dev server so Mailpit renders images correctly.
+SITE_URL = "http://localhost:8000"

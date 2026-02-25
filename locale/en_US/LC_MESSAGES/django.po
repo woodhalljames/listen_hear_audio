@@ -1,6 +1,6 @@
 # Translations for the Listen Hear Audio project
 # Copyright (C) 2025 Cactus Cat LLC
-# Cactus Cat LLC <jamesw@listenhearaudio.com>, 2025.
+# Cactus Cat LLC <jamesw@listenhearsmarthomes.com>, 2025.
 #
 #, fuzzy
 msgid ""

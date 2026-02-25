@@ -1,0 +1,10 @@
+{{ post.title }}
+{% if post.author_name %}By {{ post.author_name }}{% endif %}
+
+{{ post.body|striptags }}
+
+---
+Read on our website: {{ post_url }}
+
+You are receiving this because you subscribed to Listen Hear updates.
+Unsubscribe: {{ unsubscribe_url }}

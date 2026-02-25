@@ -72,18 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // ── NEWSLETTER FORM ───────────────────────────────────────
-  const newsletterForm = document.querySelector('.newsletter-form');
-  if (newsletterForm) {
-    newsletterForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-      const email = this.querySelector('input[type="email"]').value;
-      if (email) {
-        showNotification('Thank you for subscribing!', 'success');
-        this.reset();
-      }
-    });
-  }
 
   // ── CATALOG SIDEBAR NAV HIGHLIGHT ─────────────────────────
   const catNavObserver = new IntersectionObserver((entries) => {

@@ -1,225 +1,466 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Smart Home Builder Partnership - Listen Hear{% endblock %}
+{% block title %}Smart Home Builder Partnership – Listen Hear{% endblock %}
 
-{% block content %}
-<div class="builder-intro-container">
-    <!-- Hero Section -->
-    <section class="hero-section text-center py-5" style="background: var(--primary-blue); color: white;">
-        <div class="container">
-            <h1 class="display-2 fw-bold mb-4" style="color: white;">Transform Your Homes into Smart Homes</h1>
-            <p class="lead fs-3 mb-4" style="color: white;">Partner with Listen Hear to deliver cutting-edge smart home technology that buyers love</p>
-            <a href="#benefits" class="btn btn-light btn-lg px-5 py-3 mt-3">
-                <i class="bi bi-arrow-down-circle"></i> Discover the Benefits
-            </a>
+{% block main_wrapper %}
+
+  {# ── Hero ── #}
+  <section class="si-hero">
+    <div class="si-hero__glow"></div>
+    <div class="si-hero__overlay"></div>
+    <div class="si-container si-hero__content">
+      <p class="si-eyebrow si-eyebrow--light">The Smart Choice</p>
+      <h1 class="si-hero__headline">Transform Your Homes<br><span class="si-hero__accent">Into Smart Homes</span></h1>
+      <p class="si-hero__sub">Choosing Listen Hear to deliver cutting edge smart home technology, built into your construction, seamlessly integrated, and ready for the families and businesses who need the latest amenities.</p>
+      <a href="#showroom" class="si-btn si-btn--ghost mt-2">
+        <i class="bi bi-arrow-down"></i> Jump to Showroom
+      </a>
+    </div>
+  </section>
+
+  {# ── Benefits ── #}
+  <section id="benefits" class="si-section si-section--white">
+    <div class="si-container">
+
+      <div class="text-center mb-6">
+        <p class="si-eyebrow">Why It Matters</p>
+        <h2 class="si-title">Smart Home Features Sell Homes</h2>
+        <p class="si-sub">Buyers expect modern amenities. Projects that deliver them close faster, command higher prices, and build stronger reputations.</p>
+      </div>
+
+      <div class="si-benefit-grid">
+
+        <div class="si-benefit">
+          <div class="si-benefit__icon"><i class="bi bi-cash-stack"></i></div>
+          <div class="si-benefit__body">
+            <h3>Mortgage Friendly Financing</h3>
+            <p>Smart home features roll into the construction loan, spreading costs over 15–30 years instead of requiring an upfront outlay. Buyers get more home for the same payment.</p>
+            <ul class="si-check-list">
+              <li><i class="bi bi-check-circle-fill"></i> Included in construction loan at no extra upfront cost</li>
+              <li><i class="bi bi-check-circle-fill"></i> Smart homes command 3–5% higher resale value</li>
+              <li><i class="bi bi-check-circle-fill"></i> Clear market differentiation from competing builders</li>
+            </ul>
+          </div>
         </div>
-    </section>
 
-    <!-- Benefits Grid -->
-    <section id="benefits" class="benefits-section py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center display-4 fw-bold mb-5">Why Smart Home Features Matter</h2>
-
-            <div class="row g-4 mb-5">
-                <!-- Financial Benefits -->
-                <div class="col-md-6">
-                    <div class="card h-100 shadow-lg border-0">
-                        <div class="card-body p-5">
-                            <div class="text-center mb-4">
-                                <i class="bi bi-cash-stack text-success" style="font-size: 4rem;"></i>
-                            </div>
-                            <h3 class="card-title text-center mb-4">Mortgage-Friendly Financing</h3>
-                            <ul class="list-unstyled">
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    <strong>Roll Into Construction Loan:</strong> Smart home features can be included in the home's mortgage during construction
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    <strong>Affordable Monthly Payments:</strong> Spread costs over 15-30 years instead of paying upfront
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    <strong>Increased Home Value:</strong> Smart homes command 3-5% higher resale value
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    <strong>Market Differentiation:</strong> Stand out from competing builders with modern amenities
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Energy & State Benefits -->
-                <div class="col-md-6">
-                    <div class="card h-100 shadow-lg border-0">
-                        <div class="card-body p-5">
-                            <div class="text-center mb-4">
-                                <i class="bi bi-lightning-charge-fill text-warning" style="font-size: 4rem;"></i>
-                            </div>
-                            <h3 class="card-title text-center mb-4">Energy Savings & Incentives</h3>
-                            <ul class="list-unstyled">
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    <strong>Reduce Energy Bills:</strong> Smart thermostats, lighting, and automation cut energy costs by 10-30%
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    <strong>Federal Tax Credits:</strong> Qualify for energy efficiency tax incentives
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    <strong>State & Utility Rebates:</strong> Many states offer rebates for smart home installations
-                                </li>
-                                <li class="mb-3">
-                                    <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                    <strong>Environmental Impact:</strong> Help buyers reduce their carbon footprint
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Installation Timing -->
-            <div class="row mb-5">
-                <div class="col-12">
-                    <div class="card shadow-lg border-primary">
-                        <div class="card-body p-5">
-                            <div class="text-center mb-4">
-                                <i class="bi bi-calendar-check text-primary" style="font-size: 4rem;"></i>
-                            </div>
-                            <h3 class="card-title text-center mb-4">Done Right, Done Once</h3>
-                            <div class="row">
-                                <div class="col-md-4 text-center mb-3">
-                                    <h5 class="text-primary">During Construction</h5>
-                                    <p class="text-muted">Clean installation with hidden wiring, proper infrastructure planning, and seamless integration</p>
-                                </div>
-                                <div class="col-md-4 text-center mb-3">
-                                    <h5 class="text-danger">After Construction</h5>
-                                    <p class="text-muted">Exposed wires, patching drywall, limited placement options, and 2-3x higher costs</p>
-                                </div>
-                                <div class="col-md-4 text-center mb-3">
-                                    <h5 class="text-success">The Smart Choice</h5>
-                                    <p class="text-muted">Pre-wire during construction for future-ready homes that buyers appreciate</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="si-benefit">
+          <div class="si-benefit__icon"><i class="bi bi-lightning-charge-fill"></i></div>
+          <div class="si-benefit__body">
+            <h3>Energy Savings &amp; Incentives</h3>
+            <p>Smart thermostats, automated lighting, and integrated controls cut energy costs by 10–30%. Available federal tax credits and state utility rebates sweeten the deal further.</p>
+            <ul class="si-check-list">
+              <li><i class="bi bi-check-circle-fill"></i> 10–30% reduction in energy bills</li>
+              <li><i class="bi bi-check-circle-fill"></i> Federal & State tax credits may be available</li>
+              <li><i class="bi bi-check-circle-fill"></i> Use less resources and minimize your footprint</li>
+            </ul>
+          </div>
         </div>
-    </section>
 
-    <!-- Why Listen Hear Section -->
-    <section class="why-listenhear-section py-5">
-        <div class="container">
-            <h2 class="text-center display-4 fw-bold mb-5">Why Partner with Listen Hear?</h2>
+      </div>
+    </div>
+  </section>
 
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100 text-center border-0 shadow">
-                        <div class="card-body p-4">
-                            <i class="bi bi-award-fill text-primary mb-3" style="font-size: 3rem;"></i>
-                            <h4 class="card-title mb-3">Industry Expertise</h4>
-                            <p class="card-text text-muted">
-                                Years of experience installing smart home systems in new construction. We understand the building process and work seamlessly with your timeline.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+  {# ── Done Right, Done Once ── #}
+  <section class="si-section si-section--gray">
+    <div class="si-container">
 
-                <div class="col-md-4">
-                    <div class="card h-100 text-center border-0 shadow">
-                        <div class="card-body p-4">
-                            <i class="bi bi-tools text-primary mb-3" style="font-size: 3rem;"></i>
-                            <h4 class="card-title mb-3">Turnkey Solutions</h4>
-                            <p class="card-text text-muted">
-                                From initial consultation to final programming, we handle everything. Coordinated installations across all construction phases with minimal builder involvement.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+      <div class="text-center mb-6">
+        <p class="si-eyebrow">Timing Is Everything</p>
+        <h2 class="si-title">Done Right, Done Once</h2>
+        <p class="si-sub">Installing smart home technology during construction isn't just easier, it's the only way to do it properly.</p>
+      </div>
 
-                <div class="col-md-4">
-                    <div class="card h-100 text-center border-0 shadow">
-                        <div class="card-body p-4">
-                            <i class="bi bi-headset text-primary mb-3" style="font-size: 3rem;"></i>
-                            <h4 class="card-title mb-3">Dedicated Support</h4>
-                            <p class="card-text text-muted">
-                                White-glove service for your buyers. Professional installation, comprehensive training, and ongoing support that reflects positively on your brand.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+      <div class="si-timing-grid">
 
-                <div class="col-md-4">
-                    <div class="card h-100 text-center border-0 shadow">
-                        <div class="card-body p-4">
-                            <i class="bi bi-shield-check text-primary mb-3" style="font-size: 3rem;"></i>
-                            <h4 class="card-title mb-3">Quality Assurance</h4>
-                            <p class="card-text text-muted">
-                                Premium equipment from trusted brands, professional-grade installations, and thorough testing before handoff to homeowners.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card h-100 text-center border-0 shadow">
-                        <div class="card-body p-4">
-                            <i class="bi bi-graph-up-arrow text-primary mb-3" style="font-size: 3rem;"></i>
-                            <h4 class="card-title mb-3">Competitive Advantage</h4>
-                            <p class="card-text text-muted">
-                                Offer your buyers modern amenities that appeal to tech-savvy homeowners. Smart homes sell faster and command higher prices.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card h-100 text-center border-0 shadow">
-                        <div class="card-body p-4">
-                            <i class="bi bi-people-fill text-primary mb-3" style="font-size: 3rem;"></i>
-                            <h4 class="card-title mb-3">Builder-Friendly Process</h4>
-                            <p class="card-text text-muted">
-                                Clear communication, respect for your schedule, and seamless coordination with your trades. We make install easy, and your home more valuable.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="si-timing si-timing--during">
+          <div class="si-timing__label">During Construction</div>
+          <ul class="si-check-list">
+            <li><i class="bi bi-check-circle-fill"></i> Hidden wiring, clean infrastructure</li>
+            <li><i class="bi bi-check-circle-fill"></i> Optimal speaker &amp; device placement</li>
+            <li><i class="bi bi-check-circle-fill"></i> Seamless integration with your trades</li>
+            <li><i class="bi bi-check-circle-fill"></i> No patching, no drywall damage</li>
+          </ul>
         </div>
-    </section>
 
-    <!-- Call to Action -->
-    <section class="cta-section py-5 text-center" style="background: var(--primary-blue); color: white;">
-        <div class="container">
-            <h2 class="display-3 fw-bold mb-4" style="color: white;">Ready to Explore Smart Home Packages?</h2>
-            <p class="lead fs-4 mb-5" style="color: white;">
-                Let us guide you through our comprehensive catalog of smart home solutions.<br>
-                We'll walk you step-by-step through each category to help you find the perfect packages.
-            </p>
-
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-5">
-                    <div class="showroom-option-card p-5 bg-white rounded shadow-lg">
-                        <div class="text-center mb-4">
-                            <i class="bi bi-list-ol text-primary" style="font-size: 4rem;"></i>
-                        </div>
-                        <h3 class="text-dark mb-3">Guided Showroom Experience</h3>
-                        <p class="text-muted mb-4">Step-by-step journey through each category with detailed information and easy cart management</p>
-                        <a href="{% url 'builders:showroom_guided' %}" class="btn btn-primary btn-lg w-100 py-3">
-                            <i class="bi bi-arrow-right-circle-fill"></i> Enter Showroom
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <div class="si-timing si-timing--vs">
+          <span>vs</span>
         </div>
-    </section>
-</div>
 
-<!-- Styles moved to project.css -->
-{% endblock %}
+        <div class="si-timing si-timing--after">
+          <div class="si-timing__label">After Construction</div>
+          <ul class="si-x-list">
+            <li><i class="bi bi-x-circle-fill"></i> Exposed wires, visible conduit</li>
+            <li><i class="bi bi-x-circle-fill"></i> Limited placement options</li>
+            <li><i class="bi bi-x-circle-fill"></i> Disruptive retrofitting</li>
+            <li><i class="bi bi-x-circle-fill"></i> 2–3× higher installation cost</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <p class="si-timing__note">Prewiring during the build phase is the smart choice for your buyers, your brand, and everyone's bottom line.</p>
+
+    </div>
+  </section>
+
+  {# ── Why Listen Hear ── #}
+  <section class="si-section si-section--white">
+    <div class="si-container">
+
+      <div class="text-center mb-6">
+        <p class="si-eyebrow">The Listen Hear Difference</p>
+        <h2 class="si-title">Why Partner with Listen Hear?</h2>
+      </div>
+
+      <div class="si-feature-grid">
+
+        <div class="si-feature">
+          <div class="si-feature__icon"><i class="bi bi-award-fill"></i></div>
+          <h4>Industry Expertise</h4>
+          <p>Years of new construction experience means we understand build timelines, trade coordination, and rough in requirements.</p>
+        </div>
+
+        <div class="si-feature">
+          <div class="si-feature__icon"><i class="bi bi-tools"></i></div>
+          <h4>Turnkey Solutions</h4>
+          <p>From initial consultation through final programming and handoff. We manage every phase with minimal burden on your team.</p>
+        </div>
+
+        <div class="si-feature">
+          <div class="si-feature__icon"><i class="bi bi-headset"></i></div>
+          <h4>White Glove Support</h4>
+          <p>Professional installation, comprehensive buyer training, and ongoing support that reflects positively on your brand long after closing day.</p>
+        </div>
+
+        <div class="si-feature">
+          <div class="si-feature__icon"><i class="bi bi-patch-check-fill"></i></div>
+          <h4>Quality Assurance</h4>
+          <p>Premium equipment from trusted brands, professional grade installs, and thorough testing before every homeowner handoff.</p>
+        </div>
+
+        <div class="si-feature">
+          <div class="si-feature__icon"><i class="bi bi-graph-up-arrow"></i></div>
+          <h4>Competitive Advantage</h4>
+          <p>Smart homes sell faster and command higher prices. Give your buyers what they're already looking for before they look elsewhere.</p>
+        </div>
+
+        <div class="si-feature">
+          <div class="si-feature__icon"><i class="bi bi-people-fill"></i></div>
+          <h4>Builder Friendly Process</h4>
+          <p>Clear communication, respect for your schedule, and seamless coordination with your trades.  We make the install easy and your home more valuable.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  {# ── Enter Showroom CTA ── #}
+  <section class="si-cta" id="showroom">
+    <div class="si-cta__glow"></div>
+    <div class="si-cta__overlay"></div>
+    <div class="si-container si-cta__inner">
+      <div class="si-cta__split">
+        <div class="si-cta__text">
+          <p class="si-eyebrow si-eyebrow--light">Let's Build Something</p>
+          <h2 class="si-cta__headline">Ready to Build Your Smart Home?</h2>
+          <p class="si-cta__sub">Walk step by step through everything from the networking, audio, video, security, lighting, and more. So you can make move in day end in movie night.</p>
+          <a href="{% url 'builders:showroom_guided' %}" class="si-btn si-btn--primary si-btn--xl">
+            <i class="bi bi-arrow-right-circle-fill"></i> Enter the Showroom
+          </a>
+        </div>
+        <div class="si-cta__image-wrap">
+          <img src="{% static 'images/smarthome_builder.png' %}" alt="Listen Hear Smart Home Builder" class="si-cta__image">
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock main_wrapper %}
+
+{% block css %}
+{{ block.super }}
+<style>
+
+/* ── Shared container ─────────────────────────────────────────────── */
+.si-container {
+  width: 92%; max-width: 1200px; margin: 0 auto;
+  padding-left: 0; padding-right: 0;
+}
+@media (min-width: 768px)  { .si-container { width: 86%; } }
+@media (min-width: 1200px) { .si-container { width: 80%; } }
+
+.mb-6 { margin-bottom: 3.5rem; }
+
+/* ── Typography tokens ────────────────────────────────────────────── */
+.si-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--primary-blue); margin-bottom: 0.5rem;
+}
+.si-eyebrow--light { color: var(--primary-yellow); }
+
+.si-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.8rem, 3vw, 2.75rem); font-weight: 700;
+  color: var(--primary-dark); line-height: 1.15; margin-bottom: 1rem;
+}
+
+.si-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.1rem; color: #6c757d;
+  max-width: 600px; margin: 0 auto; line-height: 1.7;
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────── */
+.si-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700;
+  padding: 0.85rem 2rem; border-radius: 8px;
+  text-decoration: none; transition: all 0.2s ease;
+}
+.si-btn--primary {
+  background: var(--primary-yellow); color: var(--primary-dark);
+  border: 2px solid var(--primary-yellow);
+}
+.si-btn--primary:hover {
+  background: #fff; color: var(--primary-dark);
+  transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,255,0,0.3);
+}
+.si-btn--ghost {
+  background: transparent; color: white;
+  border: 2px solid rgba(255,255,255,0.5);
+}
+.si-btn--ghost:hover {
+  background: rgba(255,255,255,0.1); border-color: white; color: white;
+}
+
+/* ── Sections ─────────────────────────────────────────────────────── */
+.si-section { padding: 5rem 0; }
+.si-section--white { background: #fff; }
+.si-section--gray  { background: #f8f9fc; }
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.si-hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex; align-items: center;
+  background: var(--primary-blue);
+  overflow: hidden;
+  width: 100%;
+}
+.si-hero__glow {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 90% 100%, rgba(255,255,255,0.12) 0%, transparent 55%);
+  pointer-events: none;
+}
+.si-hero__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(1,8,128,0.45) 0%, transparent 70%);
+}
+.si-hero__content {
+  position: relative; z-index: 2;
+  padding: 5rem 0;
+  animation: siFadeUp 0.9s ease both;
+}
+.si-hero__headline {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.4rem, 5.5vw, 4.25rem); font-weight: 900;
+  color: white; line-height: 1.05; margin-bottom: 1.1rem;
+}
+.si-hero__accent { color: var(--primary-yellow); }
+.si-hero__sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+  color: rgba(255,255,255,0.82); line-height: 1.75;
+  max-width: 560px; margin-bottom: 2rem;
+}
+
+@keyframes siFadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Benefit two-column layout ────────────────────────────────────── */
+.si-benefit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem 4rem;
+}
+@media (max-width: 767px) { .si-benefit-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+.si-benefit { display: flex; gap: 1.5rem; }
+
+.si-benefit__icon {
+  flex-shrink: 0;
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: #eef0ff;
+  display: flex; align-items: center; justify-content: center;
+}
+.si-benefit__icon i { font-size: 1.5rem; color: var(--primary-blue); }
+
+.si-benefit__body h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.45rem; font-weight: 700;
+  color: var(--primary-dark); margin-bottom: 0.6rem; line-height: 1.2;
+}
+.si-benefit__body p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem; color: #555; line-height: 1.75; margin-bottom: 1rem;
+}
+
+/* ── Check / X lists ──────────────────────────────────────────────── */
+.si-check-list, .si-x-list {
+  list-style: none; padding: 0; margin: 0;
+}
+.si-check-list li, .si-x-list li {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; color: #555; line-height: 1.6;
+  padding: 0.3rem 0;
+  display: flex; align-items: flex-start; gap: 0.55rem;
+}
+.si-check-list li i { color: var(--primary-blue); flex-shrink: 0; margin-top: 0.15em; }
+.si-x-list   li i { color: #dc3545;              flex-shrink: 0; margin-top: 0.15em; }
+
+/* ── Timing comparison ────────────────────────────────────────────── */
+.si-timing-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 2rem;
+  align-items: start;
+  max-width: 860px; margin: 0 auto 2rem;
+}
+@media (max-width: 767px) {
+  .si-timing-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .si-timing--vs { display: none; }
+}
+
+.si-timing {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid #e4e8f4;
+}
+.si-timing--during { border-top: 3px solid var(--primary-blue); }
+.si-timing--after  { border-top: 3px solid #dc3545; }
+
+.si-timing__label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.si-timing--during .si-timing__label { color: var(--primary-blue); }
+.si-timing--after  .si-timing__label { color: #dc3545; }
+
+.si-timing--vs {
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none; padding: 0;
+}
+.si-timing--vs span {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.6rem; font-weight: 700;
+  color: #c0c5d8; line-height: 1;
+}
+
+.si-timing__note {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem; color: #6c757d;
+  text-align: center; max-width: 600px; margin: 0 auto;
+  font-style: italic;
+}
+
+/* ── Feature 3x2 grid ─────────────────────────────────────────────── */
+.si-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem 3rem;
+}
+@media (max-width: 991px) { .si-feature-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 575px) { .si-feature-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+.si-feature__icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: #eef0ff;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
+}
+.si-feature__icon i { font-size: 1.4rem; color: var(--primary-blue); }
+
+.si-feature h4 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.25rem; font-weight: 700;
+  color: var(--primary-dark); margin-bottom: 0.5rem; line-height: 1.2;
+}
+.si-feature p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.975rem; color: #666; line-height: 1.75; margin: 0;
+}
+
+/* ── CTA ──────────────────────────────────────────────────────────── */
+.si-cta {
+  position: relative;
+  background: var(--primary-blue);
+  overflow: hidden;
+  padding: 5rem 0;
+}
+.si-cta__glow {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 100% 100%, rgba(255,255,255,0.13) 0%, transparent 55%);
+  pointer-events: none;
+}
+.si-cta__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, rgba(1,8,128,0.5) 0%, transparent 65%);
+}
+.si-cta__inner { position: relative; z-index: 2; }
+
+.si-cta__split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+@media (max-width: 767px) {
+  .si-cta__split { grid-template-columns: 1fr; gap: 2.5rem; }
+  .si-cta__image-wrap { order: -1; }
+}
+
+.si-cta__text { padding: 1rem 0; }
+
+.si-cta__headline {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 700;
+  color: white; line-height: 1.1; margin-bottom: 1.25rem;
+}
+.si-cta__sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(1rem, 1.5vw, 1.1rem);
+  color: rgba(255,255,255,0.8); line-height: 1.75;
+  margin-bottom: 2.25rem;
+}
+
+.si-btn--xl {
+  font-size: 1.2rem;
+  padding: 1.15rem 2.75rem;
+  border-radius: 10px;
+}
+
+.si-cta__image-wrap {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  border: 3px solid rgba(255,255,255,0.15);
+}
+.si-cta__image {
+  width: 100%; display: block;
+  aspect-ratio: 4/3; object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.si-cta__image-wrap:hover .si-cta__image { transform: scale(1.03); }
+
+</style>
+{% endblock css %}
