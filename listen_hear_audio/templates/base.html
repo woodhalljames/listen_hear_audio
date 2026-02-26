@@ -212,6 +212,12 @@
     </div>
   </nav>
 
+  {% if business_info.banner_enabled and business_info.banner_text %}
+  <div class="site-banner" role="banner" aria-label="Site announcement">
+    <span>{{ business_info.banner_text }}</span>
+  </div>
+  {% endif %}
+
   <!-- Main Content -->
   {% block main_wrapper %}
   <div class="container my-4">

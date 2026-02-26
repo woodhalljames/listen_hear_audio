@@ -31,7 +31,7 @@ certificatesResolvers:
 http:
   routers:
     web-secure-router:
-      rule: 'Host(`listenhearsmarthomes.com`) || Host(`www.listenhearsmarthomes.com`)'
+      rule: 'Host(`listenhearsmarthomes.com`) || Host(`www.listenhearsmarthomes.com`) || Host(`listenhearsmarthomes.cloud`) || Host(`www.listenhearsmarthomes.cloud`)'
       entryPoints:
         - web-secure
       middlewares:
@@ -42,7 +42,7 @@ http:
         certResolver: letsencrypt
 
     flower-secure-router:
-      rule: 'Host(`listenhearsmarthomes.com`)'
+      rule: 'Host(`listenhearsmarthomes.com`) || Host(`listenhearsmarthomes.cloud`)'
       entryPoints:
         - flower
       service: flower
@@ -51,7 +51,7 @@ http:
         certResolver: letsencrypt
 
     web-media-router:
-      rule: '(Host(`listenhearsmarthomes.com`) || Host(`www.listenhearsmarthomes.com`)) && PathPrefix(`/media/`)'
+      rule: '(Host(`listenhearsmarthomes.com`) || Host(`www.listenhearsmarthomes.com`) || Host(`listenhearsmarthomes.cloud`) || Host(`www.listenhearsmarthomes.cloud`)) && PathPrefix(`/media/`)'
       entryPoints:
         - web-secure
       middlewares:

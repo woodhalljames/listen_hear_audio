@@ -54,6 +54,7 @@ coverage.xml
 # Django stuff:
 staticfiles/
 static/
+
 # Sphinx documentation
 docs/_build/
 
@@ -277,3 +278,5 @@ dump.rdb
 .envs/*
 !.envs/.local/
 env
+.envs/
+.claude/

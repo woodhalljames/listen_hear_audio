@@ -89,6 +89,13 @@ class ServiceRequestAdmin(admin.ModelAdmin):
 class SiteConfigurationAdmin(admin.ModelAdmin):
     fieldsets = (
         (
+            "Site Banner",
+            {
+                "fields": ("banner_enabled", "banner_text"),
+                "description": "Toggle a site-wide announcement bar shown above all pages.",
+            },
+        ),
+        (
             "Business Information",
             {
                 "fields": ("business_name", "phone", "email", "website", "logo"),

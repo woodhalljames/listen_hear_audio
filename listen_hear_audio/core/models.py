@@ -134,6 +134,16 @@ class SiteConfiguration(models.Model):
         help_text="Or provide an external URL to a video file (used if no upload)"
     )
 
+    # Site Banner
+    banner_enabled = models.BooleanField(
+        default=False,
+        help_text="Show a site-wide announcement banner at the top of every page",
+    )
+    banner_text = models.TextField(
+        blank=True,
+        help_text="Text to display in the banner (plain text only)",
+    )
+
     # Google Maps
     google_maps_embed_url = models.TextField(
         blank=True,

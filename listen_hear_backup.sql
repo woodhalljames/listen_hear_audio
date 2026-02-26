@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict stEul0aolx8puWiRlHAlJ5W8C40kCta2X9X3DUqRhFZr04ead5g26vZEVhooNDe
+\restrict udbsi9Z1fyZVuZe8RObrzy0kGNClZ6byzDVCAqFxJSaCjWyFfqWQY6FvKlWuXEI
 
 -- Dumped from database version 17.8 (Debian 17.8-1.pgdg13+1)
 -- Dumped by pg_dump version 17.8 (Debian 17.8-1.pgdg13+1)
@@ -557,7 +557,9 @@ CREATE TABLE public.core_siteconfiguration (
     created_at timestamp with time zone NOT NULL,
     updated_at timestamp with time zone NOT NULL,
     hero_video character varying(100),
-    hero_video_url character varying(200) NOT NULL
+    hero_video_url character varying(200) NOT NULL,
+    banner_enabled boolean NOT NULL,
+    banner_text character varying(300) NOT NULL
 );
 
 
@@ -1919,7 +1921,7 @@ COPY public.blog_blogpost (id, title, slug, body, created_at, updated_at, publis
 
 COPY public.builders_phaseinstallation (id, phase, status, requested_date, alternate_dates, builder_notes, confirmed_date, estimated_end_date, company_notes, completion_date, created_at, updated_at, property_id) FROM stdin;
 4	insulation_drywall	scheduled	2026-02-25	[]		2026-02-25	2026-02-28	Inside notes shared with you the builder, by the company.	\N	2026-02-17 19:19:08.669292+00	2026-02-25 22:16:17.258667+00	5
-3	rough_ins	pending	2026-03-03	[]		2026-03-03	2026-03-12	Company Notes Ex	\N	2026-02-17 19:19:08.663036+00	2026-02-25 22:17:38.639986+00	5
+3	rough_ins	requested	2026-02-27	[]	Make sure Hunter is there	2026-03-03	2026-03-12	Company Notes Ex	\N	2026-02-17 19:19:08.663036+00	2026-02-26 15:31:44.644435+00	5
 \.
 
 
@@ -1948,6 +1950,7 @@ COPY public.builders_property_builders (id, property_id, user_id) FROM stdin;
 COPY public.builders_propertynote (id, note_type, message, created_at, created_by_id, property_id, phase_installation_id) FROM stdin;
 9	date_request	Insulation & Drywall requested for 02/25/2026	2026-02-18 00:04:13.240604+00	2	5	4
 10	date_confirmation	Insulation & Drywall confirmed: 02/25/2026 - 02/28/2026	2026-02-18 00:06:32.322034+00	1	5	4
+11	date_request	Rough-Ins requested for 02/27/2026	2026-02-26 15:31:44.665991+00	2	5	3
 \.
 
 
@@ -2016,8 +2019,8 @@ COPY public.core_servicerequest (id, name, email, phone, street_address, city, s
 -- Data for Name: core_siteconfiguration; Type: TABLE DATA; Schema: public; Owner: debug
 --
 
-COPY public.core_siteconfiguration (id, business_name, phone, email, street_address, city, state, zip_code, monday_hours, tuesday_hours, wednesday_hours, thursday_hours, friday_hours, saturday_hours, sunday_hours, facebook_url, instagram_url, twitter_url, linkedin_url, website, logo, notification_emails, customer_email_subject, customer_email_message, quote_disclaimer, google_maps_embed_url, created_at, updated_at, hero_video, hero_video_url) FROM stdin;
-1	Listen Hear!	(412) 687-1131	info@listenhearaudio.com	818 SOUTH AIKEN AVE	Pittsburgh	PA	15212	9:00 AM - 5:00 PM	9:00 AM - 5:00 PM	9:00 AM - 5:00 PM	9:00 AM - 5:00 PM	9:00 AM - 5:00 PM	Appointment Only	Closed		https://www.instagram.com/listenhearpgh/			http://listenhearsmarthomes.com	site/listenhear.png	["info@listenhearsmarthomes.com"]	Your Listen Hear! Quote Request	Thank you for your quote request. We'll review your requirements and get back to you within 2-3 business days.	This is an estimate based on the packages selected. Final pricing will be determined after consultation and site evaluation.	https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3036.1232859316324!2d-79.9358821!3d40.45040819999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8834f210cc7d84ed%3A0xe32c2b3c8de12982!2s818%20S%20Aiken%20Ave%2C%20Pittsburgh%2C%20PA%2015232!5e0!3m2!1sen!2sus!4v1772058903575!5m2!1sen!2sus&key=AIzaSyDVHubUobUNeQkFeda8SdZxMswuoFTurus	2026-02-17 20:07:57.381228+00	2026-02-25 22:35:50.703781+00	site/video/Home_Automation_Section_1.mp4	
+COPY public.core_siteconfiguration (id, business_name, phone, email, street_address, city, state, zip_code, monday_hours, tuesday_hours, wednesday_hours, thursday_hours, friday_hours, saturday_hours, sunday_hours, facebook_url, instagram_url, twitter_url, linkedin_url, website, logo, notification_emails, customer_email_subject, customer_email_message, quote_disclaimer, google_maps_embed_url, created_at, updated_at, hero_video, hero_video_url, banner_enabled, banner_text) FROM stdin;
+1	Listen Hear!	(412) 687-1131	info@listenhearaudio.com	818 SOUTH AIKEN AVE	Pittsburgh	PA	15212	9:00 AM - 5:00 PM	9:00 AM - 5:00 PM	9:00 AM - 5:00 PM	9:00 AM - 5:00 PM	9:00 AM - 5:00 PM	Appointment Only	Closed		https://www.instagram.com/listenhearpgh/			http://listenhearsmarthomes.com	site/listenhear.png	["info@listenhearsmarthomes.com"]	Your Listen Hear! Quote Request	Thank you for your quote request. We'll review your requirements and get back to you within 2-3 business days.	This is an estimate based on the packages selected. Final pricing will be determined after consultation and site evaluation.	https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3036.1232859316324!2d-79.9358821!3d40.45040819999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8834f210cc7d84ed%3A0xe32c2b3c8de12982!2s818%20S%20Aiken%20Ave%2C%20Pittsburgh%2C%20PA%2015232!5e0!3m2!1sen!2sus!4v1772058903575!5m2!1sen!2sus&key=AIzaSyDVHubUobUNeQkFeda8SdZxMswuoFTurus	2026-02-17 20:07:57.381228+00	2026-02-26 20:53:42.11862+00	site/video/Home_Automation_Section_1.mp4		t	Beta Builder login: bobthebuilder@gmail.com password: canwefixit \r\n(Note: All emailed links will need to be redirect to .cloud instead of the .com manually in order to access.)
 \.
 
 
@@ -2726,11 +2729,13 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 698	2026-02-25 22:08:27.264861+00	1	Site Configuration (Listen Hear!)	2	[{"changed": {"fields": ["Google maps embed url"]}}]	47	1
 746	2026-02-25 23:16:15.140177+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"deleted": {"name": "Property Note", "object": "Date Request - Bob Builder - QR-20260217-57C1"}}]	29	1
 747	2026-02-25 23:50:15.287211+00	3	test	1	[{"added": {}}]	36	1
+750	2026-02-26 20:52:06.600618+00	1	Site Configuration (Listen Hear!)	2	[{"changed": {"fields": ["Banner enabled", "Banner text"]}}]	47	1
 666	2026-02-17 20:33:57.370946+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Rough-Ins", "fields": ["Confirmed date", "Estimated end date", "Company notes"]}}]	29	1
 675	2026-02-24 16:32:42.728346+00	1	Apple	1	[{"added": {}}]	49	1
 681	2026-02-25 19:15:40.349249+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Show in catalog"]}}]	21	1
 699	2026-02-25 22:12:07.529884+00	1	Site Configuration (Listen Hear!)	2	[]	47	1
 748	2026-02-25 23:50:28.414393+00	3	test	2	[{"changed": {"fields": ["Published"]}}]	36	1
+751	2026-02-26 20:53:42.12284+00	1	Site Configuration (Listen Hear!)	2	[{"changed": {"fields": ["Banner text"]}}]	47	1
 667	2026-02-17 20:34:15.900175+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Rough-Ins", "fields": ["Status"]}}]	29	1
 676	2026-02-24 16:33:09.213111+00	2	Control 4	1	[{"added": {}}]	49	1
 682	2026-02-25 19:17:39.86951+00	1	Albert Wurst - Owner, Senior Sales & Tech Specialist	2	[]	48	1
@@ -2786,7 +2791,7 @@ COPY public.django_celery_beat_intervalschedule (id, every, period) FROM stdin;
 --
 
 COPY public.django_celery_beat_periodictask (id, name, task, args, kwargs, queue, exchange, routing_key, expires, enabled, last_run_at, total_run_count, date_changed, description, crontab_id, interval_id, solar_id, one_off, start_time, priority, headers, clocked_id, expire_seconds) FROM stdin;
-1	celery.backend_cleanup	celery.backend_cleanup	[]	{}	\N	\N	\N	\N	t	2026-02-25 14:35:44.504646+00	30	2026-02-25 23:47:23.725299+00		1	\N	\N	f	\N	\N	{}	\N	43200
+1	celery.backend_cleanup	celery.backend_cleanup	[]	{}	\N	\N	\N	\N	t	2026-02-26 13:50:43.346311+00	31	2026-02-26 20:52:57.748618+00		1	\N	\N	f	\N	\N	{}	\N	43200
 \.
 
 
@@ -2795,7 +2800,7 @@ COPY public.django_celery_beat_periodictask (id, name, task, args, kwargs, queue
 --
 
 COPY public.django_celery_beat_periodictasks (ident, last_update) FROM stdin;
-1	2026-02-25 23:47:23.726582+00
+1	2026-02-26 20:52:57.751326+00
 \.
 
 
@@ -2997,6 +3002,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 125	blog	0002_blogpost_notified_at	2026-02-25 21:43:47.817953+00
 126	blog	0004_merge_20260225_1636	2026-02-25 21:43:47.820115+00
 127	subscribers	0001_initial	2026-02-25 21:43:47.839047+00
+128	core	0008_siteconfiguration_banner	2026-02-26 20:47:04.049501+00
 \.
 
 
@@ -3020,7 +3026,9 @@ a20tj2qsi93sn71nnib9fzlhnpnzs6sp	.eJxVkM1ugzAQhN9lzwjZwT-YU9V7n6Cq0NpeilOwI2yUVl
 7xnyu95wx2cx4nh7t8zl2k6bzpbswvee	.eJxVkMFuwyAQRP9lz5ZlCgbjU5V7v6CqrAXWNakNEWClVZR_r2lzyW2182Z2tDdAa-MeyoR7WSgUb7H4GKaNyhJdhvH9Bv8zjHDBnK8xOWgAC4xMKcalGgbZaq6F1roB2tCvB3rGjfL1dfW5UFgIE-7Ox9bGDe4fDfydm_ZMafI1mcHTzqD9olAFd8bwWX2hJG_airQPNbdv0dF6erBPAQvm5XAPbO7NYHrdI3Yze0Hljp6z0NKxrueScFBGIBfc8dlxcaBSoJIkpLCGYw3NlHP9CH1ffPqBsbv_AjTbZyg:1vsThn:PRgt4EQwZnT1MsSCmK29yaIetAuYhatWO1PVNB7fKgI	2026-03-03 22:38:07.085525+00
 93yrlqaasij76nsnp0ptad9i0c05zn69	.eJxVjDsOwjAQBe_iGlkxu_5R0nMGa-21cQA5UpxUiLuTSCmgfTPz3iLQutSw9jyHkcVFKHH63SKlZ2474Ae1-yTT1JZ5jHJX5EG7vE2cX9fD_Tuo1OtWO1V0dFF7TTQUdSbLHn1Bb1gNGkwmZyMSIDAUBtxUg2RNRoMpAonPF9nvN6o:1vubiC:RP_GWv4soBZiAUDjVwUfN3UDn6FWwULuBm_nHaKuoV4	2026-03-09 19:35:20.24003+00
 n2fm7zahtflvsc0srt99wswthlfhyg8a	.eJxVjDsOwjAQBe_iGlkxu_5R0nMGa-21cQA5UpxUiLuTSCmgfTPz3iLQutSw9jyHkcVFKHH63SKlZ2474Ae1-yTT1JZ5jHJX5EG7vE2cX9fD_Tuo1OtWO1V0dFF7TTQUdSbLHn1Bb1gNGkwmZyMSIDAUBtxUg2RNRoMpAonPF9nvN6o:1vvNrn:YSkqbCZNOaWChKzkyWfjc7UC-oM2Uue_fhYFJ-VeKVk	2026-03-11 23:00:27.741837+00
-6isd481n5gpidh5bv9awl3dj9cddnbwz	.eJxVkM1ugzAQhN9lzwiZNcaYU5V7n6CKkH-W4BbsCBulVZR3L25zyW01882sdu-grY17yKPe80whe6uzj2FcKc_RJRg-7vA_wwBXndItbg4q0BmGRkpkHfYca8EElxwroFX75UBNNEef2f3iaHu7FLW2cYXHuYK_XeOeaBt9qUV40Yy2XxSK4T51uMQjF_LmTV2Q-umm-j06Wk5P9qVg1mkuaY5KkRRta6RDxVhPQnCUxhicaJqcagRx7Ht3UMoZ1lKD1uq2laQ7olKaKKXyDvq--u3nOBmZ6hh7_AIAImdr:1vvOUa:2_xcytOlFsfkTMFabAsCQQ4fNNBNDvB8GOilPXfA-D4	2026-03-11 23:40:32.617643+00
+xe8ryxgx2h6o064vws4l8we2q84vq5u3	e30:1vvble:VyHffomtYG_B6v6l6VHyOGpv6T-4FLJEmeew6DzbVE8	2026-03-12 13:51:02.754728+00
+byxz0oycdxb2nbwmjqvic3kaexe64m2z	.eJxVkMFugzAQRP9lzwgZYzDmVOXeL6gitLaX4BbsyDZKqyj_Xtzmkttq5s2sdu-AxoTd5wn3vJDPzmB2wU8b5SXYBOPHHf5nGOGKKd1CtFABZhgbKXnTDELJuhdDJ3tZAW3o1gPVQR99enerpfh2KWptwgaPcwV_u6Y9UZxcqeXwomk0X-SLYT_RX8KR8zk6XRekfrqpfg-W1tOTfSlYMC0l3XKlSHZCaGm5Ymygrmu51FrzmebZqqajlg-DPShlNRPUcGNQCEnYE5XSRCmVd9D31cWf42TOVM_Y4xcZSGeG:1vvcyP:H4RCGYNOtXCCM1ZE--ZCxi-4buWCKIRn0UvE4mUytyI	2026-03-12 15:08:17.793908+00
+yd0039pfed1gr350l88dt4k2myhkybio	.eJxVkEFOxDAMRe_idVU1TkOarhB7ToBQ5SSeaaBNRk0qQKO5Ow3MZnbW9_vPkq9AzqU9lon2MnMswVEJKU4rlzn5DOPbFf5nGOFCOX-lzUMDVGAUWqOQphOyRamEQmyAVwrLgdpkD5_dw-J5ez7XtHVphdt7A3-3pj3zNoWqRXjILLlPjnXhPyie09GLZQu2rUh73-b2NXleXu7sg2CmPNe2RGNYq7632qPpuoGVkqittXji08kboVjiMPiDMt52PQt0jvpeMz0xV2nmnOs7-PsSth8Yu9svj-xmMA:1vviJJ:_pgT1DRPRJQO9J1M3W5FunyMIuOTWyve4-zG6he_cxA	2026-03-12 20:50:13.574397+00
 \.
 
 
@@ -3176,6 +3184,9 @@ COPY public.quotes_cart (id, session_key, created_at, updated_at, user_id, coupo
 21	prmdsa22jxwl5c7i89j9x7yo2ambture	2026-02-24 12:46:12.73784+00	2026-02-24 12:46:12.737853+00	\N	\N
 22	klhm9ihai84a6dfzmcrcuomz6v2ua1gh	2026-02-25 23:38:40.895994+00	2026-02-25 23:38:40.896012+00	\N	\N
 23	0e5czwk2zlldfqd8n5f8qo937ptyp6ix	2026-02-25 23:40:17.349933+00	2026-02-25 23:40:17.349949+00	\N	\N
+24	xe8ryxgx2h6o064vws4l8we2q84vq5u3	2026-02-26 13:51:02.527555+00	2026-02-26 13:51:02.527576+00	\N	\N
+25	imfys5p4tcaiqg7unbe14kgy1qix0602	2026-02-26 15:07:56.673814+00	2026-02-26 15:07:56.673823+00	\N	\N
+26	mobbqkb1bjrsuvlo39ox2hmh2gansowt	2026-02-26 20:50:00.182686+00	2026-02-26 20:50:00.182705+00	\N	\N
 \.
 
 
@@ -3190,13 +3201,13 @@ COPY public.quotes_cartitem (id, quantity, notes, added_at, cart_id, package_id)
 19	1		2025-12-10 14:05:42.562231+00	4	145
 20	1		2025-12-14 19:36:06.908613+00	4	136
 21	1		2025-12-14 19:36:09.113598+00	4	143
-143	1		2026-02-25 16:04:58.084037+00	2	133
 126	1		2026-02-18 00:07:51.960633+00	7	166
 127	1		2026-02-18 00:07:55.13673+00	7	167
 144	1		2026-02-25 20:17:02.881149+00	2	172
 145	1		2026-02-25 20:17:04.547391+00	2	170
 146	1		2026-02-25 20:17:05.606614+00	2	171
 147	1		2026-02-25 20:17:07.320152+00	2	168
+148	1		2026-02-26 15:20:37.86815+00	2	134
 \.
 
 
@@ -3310,7 +3321,7 @@ COPY public.taggit_taggeditem (id, object_id, content_type_id, tag_id) FROM stdi
 
 COPY public.users_user (id, password, last_login, is_superuser, email, is_staff, is_active, date_joined, name, is_builder, company_name, city, state, street, zip_code, phone, website) FROM stdin;
 1	argon2$argon2id$v=19$m=102400,t=2,p=8$cGNMQnIzaU9jUGl5VDNLVFVCcXdZcw$FPItGexgupjy7q3P/k2NhijUnL/Kkjd65qowWnQlAtk	2026-02-25 23:00:27.655947+00	t	jamesw@listenhearaudio.com	t	t	2025-12-05 21:19:43.029255+00	Jim	f	company name	Pitt	PA	123 Address	123456	123456789	https://www.web.com
-2	argon2$argon2id$v=19$m=102400,t=2,p=8$Q1hkVjhlNHZVamQyemxNcjBFdE5OUQ$LeonOOsih6GLzbAXXnoRj9A0ucgjmkhi1WeSYW+2KWo	2026-02-25 23:40:32.525262+00	f	bobthebuilder@gmail.com	f	t	2025-12-16 15:39:16.076896+00	Bob Builder	t	Bob's Builder	Pittsburgh	PA	ABCD 123	15229	123456789	https://www.website.com
+2	argon2$argon2id$v=19$m=102400,t=2,p=8$Q1hkVjhlNHZVamQyemxNcjBFdE5OUQ$LeonOOsih6GLzbAXXnoRj9A0ucgjmkhi1WeSYW+2KWo	2026-02-26 20:50:13.41739+00	f	bobthebuilder@gmail.com	f	t	2025-12-16 15:39:16.076896+00	Bob Builder	t	Bob's Builder	Pittsburgh	PA	ABCD 123	15229	123456789	https://www.website.com
 \.
 
 
@@ -3397,7 +3408,7 @@ SELECT pg_catalog.setval('public.builders_property_id_seq', 5, true);
 -- Name: builders_propertynote_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.builders_propertynote_id_seq', 10, true);
+SELECT pg_catalog.setval('public.builders_propertynote_id_seq', 11, true);
 
 
 --
@@ -3460,7 +3471,7 @@ SELECT pg_catalog.setval('public.core_teammember_id_seq', 2, true);
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 749, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 751, true);
 
 
 --
@@ -3509,7 +3520,7 @@ SELECT pg_catalog.setval('public.django_content_type_id_seq', 50, true);
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 127, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 128, true);
 
 
 --
@@ -3579,14 +3590,14 @@ SELECT pg_catalog.setval('public.products_subcategory_id_seq', 29, true);
 -- Name: quotes_cart_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.quotes_cart_id_seq', 23, true);
+SELECT pg_catalog.setval('public.quotes_cart_id_seq', 26, true);
 
 
 --
 -- Name: quotes_cartitem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.quotes_cartitem_id_seq', 147, true);
+SELECT pg_catalog.setval('public.quotes_cartitem_id_seq', 149, true);
 
 
 --
@@ -5240,5 +5251,5 @@ ALTER TABLE ONLY public.users_user_user_permissions
 -- PostgreSQL database dump complete
 --
 
-\unrestrict stEul0aolx8puWiRlHAlJ5W8C40kCta2X9X3DUqRhFZr04ead5g26vZEVhooNDe
+\unrestrict udbsi9Z1fyZVuZe8RObrzy0kGNClZ6byzDVCAqFxJSaCjWyFfqWQY6FvKlWuXEI
 
