@@ -65,7 +65,7 @@
               </p>
 
               <div class="bl-card__excerpt">
-                {{ post.body|truncatewords_html:37|safe }}
+                {{ post.body|striptags|truncatewords:37 }}
               </div>
 
               <a href="{{ post.get_absolute_url }}" class="bl-card__read-more">

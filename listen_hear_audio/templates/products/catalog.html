@@ -1,126 +1,142 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Product Packages - Listen Hear Audio{% endblock %}
+{% block title %}Product Catalog - Listen Hear Audio{% endblock %}
 
 {% block content %}
-<!-- Hidden CSRF token for AJAX requests -->
 {% csrf_token %}
-<div class="py-4">
-  <div class="row">
-    <!-- Sidebar Navigation -->
-    <div class="col-lg-3 mb-4">
-      <div class="catalog-sidebar">
-        <div class="sidebar-sticky">
-          <h5 class="sidebar-title">Browse Categories</h5>
-          <nav class="nav flex-column">
-            {% for category in categories %}
-              <a class="nav-link category-nav-link" href="#category-{{ category.slug }}">
-                {{ category.name }}
-              </a>
-            {% endfor %}
-          </nav>
-        </div>
+<div class="catalog-page py-4">
+
+  <!-- Page Header -->
+  <div class="catalog-header text-center mb-4">
+    <h1 class="display-4 fw-bold">Product Catalog</h1>
+    <p class="lead text-muted">Browse our comprehensive selection of smart home, audio and video solutions.<br>Hover or tap images to view key features</p>
+  </div>
+
+  <!-- Collapsible Category Nav -->
+  <div class="catalog-nav-wrap mb-5">
+    <button class="catalog-nav-toggle"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#residentialNav"
+            aria-expanded="false"
+            aria-controls="residentialNav">
+      <span class="catalog-nav-toggle__label">
+        <i class="bi bi-grid-3x3-gap-fill me-2"></i>Browse Categories
+      </span>
+      <i class="bi bi-chevron-down catalog-nav-toggle__chevron"></i>
+    </button>
+    <div class="collapse" id="residentialNav">
+      <div class="catalog-nav-links">
+        {% for category in categories %}
+          <a class="catalog-nav-link" href="#category-{{ category.slug }}">
+            {{ category.name }}
+          </a>
+        {% endfor %}
       </div>
     </div>
+  </div>
 
-    <!-- Main Content -->
-    <div class="col-lg-9">
-      <!-- Page Header -->
-      <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold">Product Packages</h1>
-        <p class="lead text-muted">Browse our comprehensive selection of smart home, audio and video solutions.<br>Hover or tap images to view key features</p>
+  <!-- Product Sections -->
+  {% for category in categories %}
+    <div class="mb-5" id="category-{{ category.slug }}">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="h4 mb-0 category-subtitle">{{ category.name }}</h3>
+        <a href="{% url 'products:category_detail' category.slug %}" class="btn btn-outline-primary btn-sm">
+          <i class="bi bi-info-circle"></i> Learn More
+        </a>
       </div>
 
-      {% for category in categories %}
-        <!-- Category Section -->
-        <div class="mb-5" id="category-{{ category.slug }}">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3 class="h4 mb-0 category-subtitle">
-              {{ category.name }}
-            </h3>
-            <a href="{% url 'products:category_detail' category.slug %}"
-               class="btn btn-outline-primary btn-sm">
-              <i class="bi bi-info-circle"></i> Learn More
-            </a>
-          </div>
-
-          {% if category.description %}
-            <div class="category-description-card mb-4">
-              <div class="card bg-light border-0">
-                <div class="card-body py-3">
-                  <p class="card-text text-muted mb-0">{{ category.description }}</p>
-                </div>
-              </div>
+      {% if category.description %}
+        <div class="category-description-card mb-4">
+          <div class="card bg-light border-0">
+            <div class="card-body py-3">
+              <p class="card-text text-muted mb-0">{{ category.description }}</p>
             </div>
-          {% endif %}
+          </div>
+        </div>
+      {% endif %}
 
-          {% if category.has_subcategories %}
-            <!-- Display by Subcategories -->
-            {% for subcategory in category.subcategories.all %}
-              {% if subcategory.is_active %}
-                <div class="mb-4">
-                  <h4 class="h5 mb-3 text-secondary">
-                    <i class="bi bi-tag-fill"></i> {{ subcategory.name }}
-                  </h4>
-
-                  {% if subcategory.description %}
-                    <div class="subcategory-description-card mb-3">
-                      <div class="alert alert-info py-2">
-                        <small>{{ subcategory.description }}</small>
-                      </div>
-                    </div>
-                  {% endif %}
-
-                  <div class="row g-4">
-                    {% for package in subcategory.packages.all %}
-                      {% if package.is_active %}
-                        <div class="col-lg-6 col-xl-4">
-                          {% include "products/partials/package_card.html" %}
-                        </div>
-                      {% endif %}
-                    {% endfor %}
+      {% if category.has_subcategories %}
+        {% for subcategory in category.subcategories.all %}
+          {% if subcategory.is_active %}
+            <div class="mb-4">
+              <h4 class="h5 mb-3 text-secondary">
+                <i class="bi bi-tag-fill"></i> {{ subcategory.name }}
+              </h4>
+              {% if subcategory.description %}
+                <div class="subcategory-description-card mb-3">
+                  <div class="alert alert-info py-2">
+                    <small>{{ subcategory.description }}</small>
                   </div>
                 </div>
               {% endif %}
-            {% endfor %}
-          {% else %}
-            <!-- Display Packages Directly -->
-            <div class="row g-4">
-              {% for package in category.packages.all %}
-                {% if package.is_active %}
-                  <div class="col-lg-6 col-xl-4">
-                    {% include "products/partials/package_card.html" %}
-                  </div>
-                {% endif %}
-              {% endfor %}
+              <div class="row g-4">
+                {% for package in subcategory.packages.all %}
+                  {% if package.is_active %}
+                    <div class="col-lg-6 col-xl-4">
+                      {% include "products/partials/package_card.html" %}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
             </div>
           {% endif %}
+        {% endfor %}
+      {% else %}
+        <div class="row g-4">
+          {% for package in category.packages.all %}
+            {% if package.is_active %}
+              <div class="col-lg-6 col-xl-4">
+                {% include "products/partials/package_card.html" %}
+              </div>
+            {% endif %}
+          {% endfor %}
         </div>
-
-      {% empty %}
-        <!-- No Products Message -->
-        <div class="text-center py-5">
-          <i class="bi bi-inbox display-1 text-muted"></i>
-          <h3 class="mt-3">No Products Available</h3>
-          <p class="text-muted">Please check back later for our product offerings.</p>
-        </div>
-      {% endfor %}
+      {% endif %}
     </div>
-  </div>
-</div>
 
+  {% empty %}
+    <div class="text-center py-5">
+      <i class="bi bi-inbox display-1 text-muted"></i>
+      <h3 class="mt-3">No Products Available</h3>
+      <p class="text-muted">Please check back later for our product offerings.</p>
+    </div>
+  {% endfor %}
+
+</div>
 {% endblock %}
 
 {% block inline_javascript %}
 <script>
   document.addEventListener('DOMContentLoaded', function() {
 
+    // Rotate chevron when nav opens/closes
+    const navToggle = document.querySelector('.catalog-nav-toggle');
+    const navCollapse = document.getElementById('residentialNav');
+    if (navToggle && navCollapse) {
+      navCollapse.addEventListener('show.bs.collapse', () => navToggle.setAttribute('aria-expanded', 'true'));
+      navCollapse.addEventListener('hide.bs.collapse', () => navToggle.setAttribute('aria-expanded', 'false'));
+    }
+
+    // Smooth-scroll to section when clicking nav link, then close the nav
+    document.querySelectorAll('.catalog-nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          bootstrap.Collapse.getInstance(navCollapse)?.hide();
+          setTimeout(() => {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 220);
+        }
+      });
+    });
+
     // Handle add to cart (AJAX)
     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
       button.addEventListener('click', function(e) {
         e.preventDefault();
-
         const packageId = this.dataset.packageId;
         const btn = this;
         const originalHTML = btn.innerHTML;
@@ -173,14 +189,11 @@
       if (tokenInput) return tokenInput.value;
       let cookieValue = null;
       if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].trim();
-          if (cookie.substring(0, 10) === 'csrftoken=') {
+        document.cookie.split(';').forEach(cookie => {
+          cookie = cookie.trim();
+          if (cookie.startsWith('csrftoken='))
             cookieValue = decodeURIComponent(cookie.substring(10));
-            break;
-          }
-        }
+        });
       }
       return cookieValue;
     }
@@ -188,12 +201,63 @@
 </script>
 
 <style>
-  .row.g-4 {
+  .row.g-4 { display: flex; flex-wrap: wrap; }
+  .row.g-4 > [class*="col-"] { display: flex; }
+
+  /* ---- Catalog nav toggle button ---- */
+  .catalog-nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+    background: var(--bs-body-bg, #fff);
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bs-body-color, #212529);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    text-align: left;
+  }
+  .catalog-nav-toggle:hover {
+    border-color: var(--primary-blue);
+    background: rgba(3, 17, 252, 0.04);
+  }
+  .catalog-nav-toggle__chevron {
+    font-size: 0.85rem;
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+  .catalog-nav-toggle[aria-expanded="true"] .catalog-nav-toggle__chevron {
+    transform: rotate(180deg);
+  }
+
+  /* ---- Nav links panel ---- */
+  .catalog-nav-links {
     display: flex;
     flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem 0.25rem 0.5rem;
   }
-  .row.g-4 > [class*="col-"] {
-    display: flex;
+  .catalog-nav-link {
+    display: inline-block;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--bs-body-color, #212529);
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .catalog-nav-link:hover {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: #fff;
   }
 </style>
 {% endblock %}

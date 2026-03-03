@@ -129,13 +129,19 @@
                     {% elif phase.installation.status == 'in_progress' %}
                     <div class="alert alert-info mb-0">
                         <i class="bi bi-gear-fill me-2"></i>
-                        <strong>In Progress</strong> - Started {{ phase.installation.confirmed_date|date:"M d, Y" }}
+                        <strong>In Progress</strong>{% if phase.installation.confirmed_date %} — Started {{ phase.installation.confirmed_date|date:"M d, Y" }}{% endif %}
+                        {% if phase.installation.company_notes %}
+                            <br><small>{{ phase.installation.company_notes }}</small>
+                        {% endif %}
                     </div>
 
                     {% elif phase.installation.status == 'completed' %}
                     <div class="alert alert-success mb-0">
                         <i class="bi bi-check-circle-fill me-2"></i>
                         <strong>Completed:</strong> {{ phase.installation.completion_date|date:"M d, Y" }}
+                        {% if phase.installation.company_notes %}
+                            <br><small>{{ phase.installation.company_notes }}</small>
+                        {% endif %}
                     </div>
                     {% endif %}
                 </div>

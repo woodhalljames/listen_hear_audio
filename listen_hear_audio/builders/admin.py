@@ -27,6 +27,13 @@ class PhaseInstallationInline(admin.StackedInline):
         'requested_date', 'builder_notes',
     )
 
+    def get_formset(self, request, obj=None, **kwargs):
+        formset = super().get_formset(request, obj, **kwargs)
+        formset.form.base_fields['confirmed_date'].help_text = (
+            'Note: Change status to Scheduled, select a date, add optional end date, then save at bottom to confirm.'
+        )
+        return formset
+
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(
             _phase_order=phase_order_annotation()
@@ -148,6 +155,56 @@ class PropertyAdmin(admin.ModelAdmin):
         if is_new and obj.builders.exists():
             send_property_creation_email.delay(obj.id)
 
+    def save_formset(self, request, form, formset, change):
+        """Detect status/date changes on PhaseInstallation inlines and log notes."""
+        if formset.model is not PhaseInstallation:
+            super().save_formset(request, form, formset, change)
+            return
+
+        email_phase_ids = []
+        instances = formset.save(commit=False)
+
+        for instance in instances:
+            if instance.pk:
+                try:
+                    original = PhaseInstallation.objects.get(pk=instance.pk)
+                except PhaseInstallation.DoesNotExist:
+                    instance.save()
+                    continue
+
+                date_changed = original.confirmed_date != instance.confirmed_date and instance.confirmed_date
+                status_explicitly_changed = original.status != instance.status
+
+                if date_changed and instance.status == 'requested':
+                    instance.status = 'scheduled'
+                    status_explicitly_changed = False
+
+                if date_changed:
+                    PropertyNote.objects.create(
+                        property=instance.property,
+                        phase_installation=instance,
+                        note_type='date_confirmation',
+                        message=f"{instance.get_phase_display()} install date updated: {instance.get_confirmed_dates_display()}",
+                        created_by=request.user,
+                    )
+                    email_phase_ids.append(instance.pk)
+
+                if status_explicitly_changed:
+                    PropertyNote.objects.create(
+                        property=instance.property,
+                        phase_installation=instance,
+                        note_type='status_change',
+                        message=f"{instance.get_phase_display()} status changed: {original.get_status_display()} → {instance.get_status_display()}",
+                        created_by=request.user,
+                    )
+
+            instance.save()
+
+        formset.save_m2m()
+
+        for phase_id in email_phase_ids:
+            send_date_confirmation_email.delay(phase_id)
+
 
 @admin.register(PhaseInstallation)
 class PhaseInstallationAdmin(admin.ModelAdmin):
@@ -162,7 +219,7 @@ class PhaseInstallationAdmin(admin.ModelAdmin):
         'packages_display', 'requested_date', 'alternate_dates_display',
         'builder_notes',
     )
-    actions = ['confirm_dates', 'mark_in_progress', 'mark_completed']
+    actions = ['confirm_dates', 'mark_in_progress', 'mark_completed', 'revert_to_scheduled', 'revert_to_in_progress']
 
     fieldsets = (
         (None, {
@@ -242,6 +299,13 @@ class PhaseInstallationAdmin(admin.ModelAdmin):
         return obj.get_confirmed_dates_display()
     confirmed_dates_display.short_description = 'Confirmed'
 
+    def get_form(self, request, obj=None, **kwargs):
+        form = super().get_form(request, obj, **kwargs)
+        form.base_fields['confirmed_date'].help_text = (
+            'Note: Change status to Scheduled, select a date, add optional end date, then save at bottom to confirm.'
+        )
+        return form
+
     def confirm_dates(self, request, queryset):
         """Confirm requested dates"""
         updated = 0
@@ -285,22 +349,71 @@ class PhaseInstallationAdmin(admin.ModelAdmin):
         self.message_user(request, f'{updated} phase(s) completed.')
     mark_completed.short_description = 'Mark Completed'
 
+    def revert_to_scheduled(self, request, queryset):
+        """Emergency revert: in_progress or completed → scheduled"""
+        updated = 0
+        for phase in queryset.filter(status__in=['in_progress', 'completed']):
+            old_display = phase.get_status_display()
+            phase.status = 'scheduled'
+            phase.save()
+            PropertyNote.objects.create(
+                property=phase.property,
+                phase_installation=phase,
+                note_type='status_change',
+                message=f"{phase.get_phase_display()} reverted from {old_display} to Scheduled",
+                created_by=request.user,
+            )
+            updated += 1
+        self.message_user(request, f'{updated} phase(s) reverted to Scheduled.')
+    revert_to_scheduled.short_description = 'Revert to Scheduled (emergency)'
+
+    def revert_to_in_progress(self, request, queryset):
+        """Emergency revert: completed → in_progress"""
+        updated = 0
+        for phase in queryset.filter(status='completed'):
+            phase.status = 'in_progress'
+            phase.save()
+            PropertyNote.objects.create(
+                property=phase.property,
+                phase_installation=phase,
+                note_type='status_change',
+                message=f"{phase.get_phase_display()} reverted from Completed to In Progress",
+                created_by=request.user,
+            )
+            updated += 1
+        self.message_user(request, f'{updated} phase(s) reverted to In Progress.')
+    revert_to_in_progress.short_description = 'Revert to In Progress (emergency)'
+
     def save_model(self, request, obj, form, change):
         if change:
             original = PhaseInstallation.objects.get(pk=obj.pk)
-            # If confirmed_date was just set, update status and send email
-            if original.confirmed_date != obj.confirmed_date and obj.confirmed_date:
-                if obj.status == 'requested':
-                    obj.status = 'scheduled'
 
+            date_changed = original.confirmed_date != obj.confirmed_date and obj.confirmed_date
+            status_explicitly_changed = original.status != obj.status
+
+            # Auto-promote to scheduled when date is set on a requested phase
+            if date_changed and obj.status == 'requested':
+                obj.status = 'scheduled'
+                status_explicitly_changed = False  # auto-promotion, not explicit
+
+            if date_changed:
                 PropertyNote.objects.create(
                     property=obj.property,
                     phase_installation=obj,
                     note_type='date_confirmation',
-                    message=f"{obj.get_phase_display()} confirmed: {obj.get_confirmed_dates_display()}",
-                    created_by=request.user
+                    message=f"{obj.get_phase_display()} install date updated: {obj.get_confirmed_dates_display()}",
+                    created_by=request.user,
                 )
                 send_date_confirmation_email.delay(obj.id)
+
+            if status_explicitly_changed:
+                PropertyNote.objects.create(
+                    property=obj.property,
+                    phase_installation=obj,
+                    note_type='status_change',
+                    message=f"{obj.get_phase_display()} status changed: {original.get_status_display()} → {obj.get_status_display()}",
+                    created_by=request.user,
+                )
 
         super().save_model(request, obj, form, change)
 

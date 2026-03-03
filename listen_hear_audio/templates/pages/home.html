@@ -98,26 +98,26 @@ From the moment your alarm goes off, your smart home automation system can set t
             <source src="{% static 'videos/lifestyle-morning.mp4' %}" type="video/mp4">
           </video>
           <div class="lhx-bento__cell-overlay">
-            <a href="{% url 'products:catalog' %}?category=motorized-blinds-shades" class="lhx-bento__cell-tag">
+            <a href="{% url 'products:catalog' %}" class="lhx-bento__cell-tag">
               <i class="bi bi-window-split"></i> Make your day
             </a>
             <h3 class="lhx-bento__cell-title">Wake up to a room that knows how to start your day</h3>
           </div>
         </div>
 
-        <div class="lhx-bento__cell lhx-bento__cell--stat lhx-bento__cell--blue lhx-animate-reveal" data-delay="100">
+        <a href="{% url 'products:category_detail' slug='surveillance' %}" class="lhx-bento__cell lhx-bento__cell--stat lhx-bento__cell--blue lhx-animate-reveal" data-delay="100">
           <img src="{% static 'images/SURVILLANCE_INDOOR_720x.webp' %}" alt="" class="lhx-bento__stat-bg" aria-hidden="true">
           <div class="lhx-bento__stat-overlay lhx-bento__stat-overlay--blue"></div>
           <i class="bi bi-camera-video-fill lhx-bento__cell-icon"></i>
           <div class="lhx-bento__cell-stat-num">4K</div>
           <div class="lhx-bento__cell-stat-label">Ultra HD<br>Surveillance</div>
-          <a href="{% url 'products:catalog' %}?category=surveillance" class="lhx-bento__cell-link">View Systems <i class="bi bi-arrow-right"></i></a>
-        </div>
+          <span class="lhx-bento__cell-link">View Systems <i class="bi bi-arrow-right"></i></span>
+        </a>
 
         <div class="lhx-bento__cell lhx-bento__cell--photo lhx-animate-reveal" data-delay="150">
           <img src="{% static 'images/networking_2_720x.webp' %}" alt="Smart home networking installation" class="lhx-bento__img" loading="lazy">
           <div class="lhx-bento__cell-overlay">
-            <a href="{% url 'products:catalog' %}?category=pre-wire-networking" class="lhx-bento__cell-tag">
+            <a href="{% url 'products:category_detail' slug='pre-wire-networking' %}" class="lhx-bento__cell-tag">
               <i class="bi bi-diagram-3-fill"></i> Networking
             </a>
             <h3 class="lhx-bento__cell-title">Enterprise-grade Wi-Fi, invisibly integrated</h3>
@@ -135,7 +135,7 @@ From the moment your alarm goes off, your smart home automation system can set t
         <div class="lhx-bento__cell lhx-bento__cell--photo lhx-animate-reveal" data-delay="250">
           <img src="{% static 'images/outdoor_image.webp' %}" alt="Outdoor living space with integrated audio and lighting" class="lhx-bento__img" loading="lazy">
           <div class="lhx-bento__cell-overlay">
-            <a href="{% url 'products:catalog' %}?category=home-audio" class="lhx-bento__cell-tag">
+            <a href="{% url 'products:category_detail' slug='outdoor-living' %}" class="lhx-bento__cell-tag">
               <i class="bi bi-tree-fill"></i> Outdoor Living
             </a>
             <h3 class="lhx-bento__cell-title">Your backyard, as connected as your living room</h3>
@@ -182,7 +182,7 @@ From the moment your alarm goes off, your smart home automation system can set t
             <source src="{% static 'videos/lifestyle-exterior-night.mp4' %}" type="video/mp4">
           </video>
           <div class="lhx-bento__cell-overlay lhx-bento__cell-overlay--strong">
-            <a href="{% url 'products:catalog' %}?category=security-access-control" class="lhx-bento__cell-tag lhx-bento__cell-tag--night">
+            <a href="{% url 'products:catalog' %}" class="lhx-bento__cell-tag lhx-bento__cell-tag--night">
               <i class="bi bi-gem"></i> Design &amp; Class
             </a>
             <h3 class="lhx-bento__cell-title">Customize Your Entertainment</h3>
@@ -190,19 +190,19 @@ From the moment your alarm goes off, your smart home automation system can set t
           </div>
         </div>
 
-        <div class="lhx-bento__cell lhx-bento__cell--stat lhx-bento__cell--dark-muted lhx-animate-reveal" data-delay="100">
+        <a href="{% url 'products:category_detail' slug='home-audio' %}" class="lhx-bento__cell lhx-bento__cell--stat lhx-bento__cell--dark-muted lhx-animate-reveal" data-delay="100">
           <img src="{% static 'images/audio_MultiPurpose_Room_plus_new_1944x.webp' %}" alt="" class="lhx-bento__stat-bg" aria-hidden="true">
           <div class="lhx-bento__stat-overlay lhx-bento__stat-overlay--dark"></div>
           <i class="bi bi-speaker-fill lhx-bento__cell-icon"></i>
           <div class="lhx-bento__cell-stat-num">12</div>
           <div class="lhx-bento__cell-stat-label">Audio Zones<br>One Home</div>
-          <a href="{% url 'products:catalog' %}?category=home-audio" class="lhx-bento__cell-link lhx-bento__cell-link--light">Explore Whole-Home Audio <i class="bi bi-arrow-right"></i></a>
-        </div>
+          <span class="lhx-bento__cell-link lhx-bento__cell-link--light">Explore Whole-Home Audio <i class="bi bi-arrow-right"></i></span>
+        </a>
 
         <div class="lhx-bento__cell lhx-bento__cell--photo lhx-bento__cell--dark lhx-animate-reveal" data-delay="150">
           <img src="{% static 'images/Home_theater_C4_Images_Video_7_1944x.webp' %}" alt="Custom home theater installation" class="lhx-bento__img" loading="lazy">
           <div class="lhx-bento__cell-overlay lhx-bento__cell-overlay--strong">
-            <a href="{% url 'products:catalog' %}?category=home-entertainment" class="lhx-bento__cell-tag lhx-bento__cell-tag--night">
+            <a href="{% url 'products:category_detail' slug='home-entertainment' %}" class="lhx-bento__cell-tag lhx-bento__cell-tag--night">
               <i class="bi bi-tv-fill"></i> Home Theater
             </a>
             <h3 class="lhx-bento__cell-title">Cinema without the commute</h3>
@@ -212,7 +212,7 @@ From the moment your alarm goes off, your smart home automation system can set t
         <div class="lhx-bento__cell lhx-bento__cell--photo lhx-bento__cell--dark lhx-animate-reveal" data-delay="200">
           <img src="{% static 'images/lighting_kitchen.jpg' %}" alt="Accent lighting in a modern kitchen" class="lhx-bento__img" loading="lazy">
           <div class="lhx-bento__cell-overlay lhx-bento__cell-overlay--strong">
-            <a href="{% url 'products:catalog' %}?category=accent-lighting" class="lhx-bento__cell-tag lhx-bento__cell-tag--night">
+            <a href="{% url 'products:category_detail' slug='accent-lighting' %}" class="lhx-bento__cell-tag lhx-bento__cell-tag--night">
               <i class="bi bi-lightbulb-fill"></i> Accent Lighting
             </a>
             <h3 class="lhx-bento__cell-title">Every mood, dialed in perfectly</h3>
@@ -284,56 +284,56 @@ From the moment your alarm goes off, your smart home automation system can set t
 
       <div class="lhx-catalog-grid">
 
-        <a href="{% url 'products:catalog' %}?category=accent-lighting" class="lhx-catalog-item lhx-animate-reveal" data-delay="0">
+        <a href="{% url 'products:category_detail' slug='accent-lighting' %}" class="lhx-catalog-item lhx-animate-reveal" data-delay="0">
           <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-lightbulb-fill"></i></div>
           <h3 class="lhx-catalog-item__label">Accent Lighting</h3>
           <p class="lhx-catalog-item__desc">LED strips, landscape &amp; custom mood lighting</p>
           <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
         </a>
 
-        <a href="{% url 'products:catalog' %}?category=pre-wire-networking" class="lhx-catalog-item lhx-animate-reveal" data-delay="60">
+        <a href="{% url 'products:category_detail' slug='pre-wire-networking' %}" class="lhx-catalog-item lhx-animate-reveal" data-delay="60">
           <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-diagram-3-fill"></i></div>
           <h3 class="lhx-catalog-item__label">Pre-wire &amp; Networking</h3>
           <p class="lhx-catalog-item__desc">Structured wiring, enterprise Wi-Fi, new construction</p>
           <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
         </a>
 
-        <a href="{% url 'products:catalog' %}?category=simulation-sport-rooms" class="lhx-catalog-item lhx-animate-reveal" data-delay="120">
+        <a href="{% url 'products:category_detail' slug='simulation-sport-rooms' %}" class="lhx-catalog-item lhx-animate-reveal" data-delay="120">
           <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-controller"></i></div>
           <h3 class="lhx-catalog-item__label">Simulation &amp; Sport</h3>
           <p class="lhx-catalog-item__desc">Golf simulators, gaming rooms, dedicated entertainment</p>
           <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
         </a>
 
-        <a href="{% url 'products:catalog' %}?category=surveillance" class="lhx-catalog-item lhx-animate-reveal" data-delay="180">
+        <a href="{% url 'products:category_detail' slug='surveillance' %}" class="lhx-catalog-item lhx-animate-reveal" data-delay="180">
           <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-camera-video-fill"></i></div>
           <h3 class="lhx-catalog-item__label">Surveillance</h3>
           <p class="lhx-catalog-item__desc">HD cameras, NVR recording, remote monitoring</p>
           <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
         </a>
 
-        <a href="{% url 'products:catalog' %}?category=home-audio" class="lhx-catalog-item lhx-animate-reveal" data-delay="240">
+        <a href="{% url 'products:category_detail' slug='home-audio' %}" class="lhx-catalog-item lhx-animate-reveal" data-delay="240">
           <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-speaker-fill"></i></div>
           <h3 class="lhx-catalog-item__label">Whole-Home Audio</h3>
           <p class="lhx-catalog-item__desc">Multi-zone audio, in-ceiling speakers, outdoor sound</p>
           <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
         </a>
 
-        <a href="{% url 'products:catalog' %}?category=security-access-control" class="lhx-catalog-item lhx-animate-reveal" data-delay="300">
+        <a href="{% url 'products:category_detail' slug='security-access-control' %}" class="lhx-catalog-item lhx-animate-reveal" data-delay="300">
           <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-shield-lock-fill"></i></div>
           <h3 class="lhx-catalog-item__label">Security &amp; Access</h3>
           <p class="lhx-catalog-item__desc">Smart locks, alarm systems, keyless entry</p>
           <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
         </a>
 
-        <a href="{% url 'products:catalog' %}?category=home-entertainment" class="lhx-catalog-item lhx-animate-reveal" data-delay="360">
+        <a href="{% url 'products:category_detail' slug='home-entertainment' %}" class="lhx-catalog-item lhx-animate-reveal" data-delay="360">
           <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-tv-fill"></i></div>
           <h3 class="lhx-catalog-item__label">Home Entertainment</h3>
           <p class="lhx-catalog-item__desc">4K/8K displays, motorized lifts, media rooms</p>
           <span class="lhx-catalog-item__arrow"><i class="bi bi-arrow-right"></i></span>
         </a>
 
-        <a href="{% url 'products:catalog' %}?category=motorized-blinds-shades" class="lhx-catalog-item lhx-animate-reveal" data-delay="420">
+        <a href="{% url 'products:category_detail' slug='motorized-blinds-shades' %}" class="lhx-catalog-item lhx-animate-reveal" data-delay="420">
           <div class="lhx-catalog-item__icon-wrap"><i class="bi bi-window-split"></i></div>
           <h3 class="lhx-catalog-item__label">Motorized Shades</h3>
           <p class="lhx-catalog-item__desc">Automated window treatments, app and voice control</p>
@@ -383,10 +383,10 @@ From the moment your alarm goes off, your smart home automation system can set t
             <li><i class="bi bi-check-circle-fill"></i><span>Manage multiple lots and projects from a single dashboard</span></li>
           </ul>
           <div class="d-flex gap-3 flex-wrap mt-4">
-            <a href="{% url 'builders:showroom' %}" class="lhx-btn lhx-btn--primary">
+            <a href="{% url 'users:redirect' %}" class="lhx-btn lhx-btn--primary">
               <i class="bi bi-calendar2-plus"></i> Schedule an Installation
             </a>
-            <a href="{% url 'about' %}" class="lhx-btn lhx-btn--outline">Learn More</a>
+            <a href="{% url 'blog:post_detail' slug='built-for-builders-designed-for-real-world-construction-timelines' %}" class="lhx-btn lhx-btn--outline">Learn More</a>
           </div>
         </div>
 
@@ -901,6 +901,7 @@ html, body {
   border-radius: 16px; overflow: hidden;
   border: 1px solid var(--dn-card-border); background: var(--dn-card-bg);
   transition: border-color 0.3s, background 0.3s, box-shadow 0.3s, transform 0.3s;
+  text-decoration: none; display: block;
 }
 .lhx-bento__cell:hover { box-shadow: 0 12px 40px var(--dn-shadow); transform: translateY(-4px); }
 .lhx-bento__cell--wide   { grid-column: span 2; }
@@ -936,6 +937,9 @@ html, body {
   font-family: 'DM Sans', sans-serif; font-size: 0.825rem; font-weight: 700;
   letter-spacing: 0.12em; text-transform: uppercase; color: #FFCC00; text-decoration: none;
   margin-bottom: 0.6rem; transition: color 0.2s;
+}
+.lhx-bento__cell-tag::after {
+  content: ''; position: absolute; inset: 0; cursor: pointer; z-index: 1;
 }
 .lhx-bento__cell-tag:hover        { color: #fff; }
 .lhx-bento__cell-tag--night       { color: #80aaff; }
@@ -986,9 +990,11 @@ html, body {
   color: rgba(255,255,255,0.9); text-decoration: none;
   display: flex; align-items: center; gap: 0.35rem; transition: gap 0.2s;
 }
-.lhx-bento__cell-link:hover       { gap: 0.65rem; color: #FFCC00; }
+.lhx-bento__cell-link:hover,
+a.lhx-bento__cell:hover .lhx-bento__cell-link       { gap: 0.65rem; color: #FFCC00; }
 .lhx-bento__cell-link--light      { color: rgba(180,200,255,0.85); }
-.lhx-bento__cell-link--light:hover { color: #fff; }
+.lhx-bento__cell-link--light:hover,
+a.lhx-bento__cell:hover .lhx-bento__cell-link--light { color: #fff; }
 
 .lhx-bento__cell--quote {
   padding: 2.5rem; display: flex; flex-direction: column; justify-content: center;
