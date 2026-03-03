@@ -28,7 +28,6 @@ CSRF_TRUSTED_ORIGINS = env.list(
         "https://www.listenhearsmarthomes.cloud",
     ],
 )
-
 # DATABASES
 # ------------------------------------------------------------------------------
 DATABASES["default"]["CONN_MAX_AGE"] = env.int("CONN_MAX_AGE", default=60)
@@ -149,11 +148,6 @@ LOGGING = {
     },
     "root": {"level": "INFO", "handlers": ["console"]},
     "loggers": {
-        "django.request": {
-            "level": "ERROR",
-            "handlers": ["console"],
-            "propagate": False,
-        },
         "django.db.backends": {
             "level": "ERROR",
             "handlers": ["console"],

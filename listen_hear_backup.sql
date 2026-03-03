@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
-\restrict udbsi9Z1fyZVuZe8RObrzy0kGNClZ6byzDVCAqFxJSaCjWyFfqWQY6FvKlWuXEI
+\restrict zAuvhknfRYceGLoIgm3uqADaPtewKHsPpjfmX9N2jfixV9SibFedORdU1y9lAwF
 
--- Dumped from database version 17.8 (Debian 17.8-1.pgdg13+1)
--- Dumped by pg_dump version 17.8 (Debian 17.8-1.pgdg13+1)
+-- Dumped from database version 17.9 (Debian 17.9-1.pgdg13+1)
+-- Dumped by pg_dump version 17.9 (Debian 17.9-1.pgdg13+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1912,6 +1912,7 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 COPY public.blog_blogpost (id, title, slug, body, created_at, updated_at, published, author_id, featured_image, author_name, notified_at) FROM stdin;
 2	Lighting Control Systems	lighting-control-systems	<div class="article__body rte rte--indented-images" style="margin-bottom: 40px; font-family: Jost, sans-serif; font-size: 17px; letter-spacing: 0.425px;"><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">Whether you’re building a new home or remodeling, the earlier you think about lighting design the better. A well-designed lighting plan requires some thought, so you don’t end up with poor lighting. The three-layered lighting method taken by most lighting designers includes ambient or overhead, task, and accent lighting. By layering these different types of light, you can create a variety of looks and feels in your home. A way to control all three layers of lighting is with&nbsp;<a href="https://listenhearsmarthomes.com/pages/smart-home-automation" title="smart home automation" style="background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; border-bottom: 2px solid rgba(255, 255, 255, 0.1); position: relative;">smart home automation.</a>&nbsp;Automating or presetting your lights gives you complete control over the ambiance in your home, eliminating the need to remember which lights to turn on or dim when you want a specific setting.</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="font-weight: 700; background-color: rgb(255, 255, 255);"><font color="#424242">Why use three layered lighting design?</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">Three-layered lighting is a versatile approach that can be used in any room of your home, whether it’s the living room, bedroom, or kitchen. Combining the three layers of lighting can create the perfect lighting for every lifestyle scenario. Let's take a look at each and how they work together with lighting control:</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="font-weight: 700; background-color: rgb(255, 255, 255);"><font color="#424242">Ambient Lighting</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">Ambient lighting is the first layer of lighting and is known as general or overhead lighting, which includes natural light coming into a room; recessed cans; track lights; flush-mounted fixtures; chandeliers; and sometimes lamps and cove lighting. This is the foundation for where you will add all other lighting.&nbsp; These lights will be left on most of the time to provide a safe space to move around while filling up a room with a soft glow.</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="font-weight: 700; background-color: rgb(255, 255, 255);"><font color="#424242">Task Lighting</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">Task Lighting is the second layer and provides focused lighting for getting specific tasks done. This type of lighting helps you with special activities such as reading or cooking and includes desk lamps, undercabinet lighting, and pendant lighting. It’s usually lighting that appears in the middle layer of a room, supporting ambient lighting to also eliminate shadows.</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="font-weight: 700; background-color: rgb(255, 255, 255);"><font color="#424242">Accent Lighting</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">Accent lighting further enhances the ambient lighting and is the third layer in lighting design.&nbsp;It’s used to highlight architectural features and special spaces or artwork. Some examples of accent lighting are strip lights and track lights. Some architectural spaces that accent lighting accentuates are tray ceilings, staircases, and entertainment areas such as bars.</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="font-weight: 700; background-color: rgb(255, 255, 255);"><font color="#424242">Dimmers &amp; Switches</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">If you’ve taken the three-layered approach to&nbsp;<a href="https://listenhearsmarthomes.com/pages/lighting" title="lighting design" style="background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; border-bottom: 2px solid rgba(255, 255, 255, 0.1); position: relative;">lighting design</a>, you will more than likely end up with a bank of switches and dimmers on a wall that can get very confusing, not to mention unsightly and inconvenient. Remembering which set of lights to dim and turn on together could become overwhelming. To make things easy, groups of lights can be programmed to one dimmer or switch. For example, all overhead lights can be controlled by one button. Or you can set “scenes,” where multiple groups of lights are preset and triggered by one button.&nbsp;An example of this would be pressing a button called, “theater” and watching several groups of lights adjust to this look. A good way to think about these preset scenes is by activity or time of day – morning, day, night, dining, party, and TV. Control of one group of lights can be hidden in a closet, so you can still override presets if needed. &nbsp;</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="font-weight: 700; background-color: rgb(255, 255, 255);"><font color="#424242">Lighting Control System</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">A good lighting control system will take your three-layered lighting plan to the next level.&nbsp;The lighting control systems that we design and install provide functionality, convenience, and flexibility.&nbsp;Think about one app that can help you control all your lighting from preprogramming lights to performing routine activities to setting different moods or scenes. These systems can utilize dimmers and sensors.&nbsp;Here’s an example: You arrive home, and some ambient light and task lighting turn on as you head to the kitchen. This is programmed as “welcome home." Some lighting systems allow you to include your shading, as it manages natural light.&nbsp;When the shades come down, maybe ambient lights go on. This is the beauty of lighting control.</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="font-weight: 700; background-color: rgb(255, 255, 255);"><font color="#424242">Lighting Integrated With Other Technologies</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">If you use a whole home automation system, you can connect your lights and shading to other technologies in the home. This is the highest level of lighting control as you are creating several different activities to occur at once to set&nbsp;a mood or scene. Imagine you’re throwing a party – press one button and ambient and task lights dim, while accent lighting is on full illumination, along with audio turning on with your favorite party playlist and temperature adjusts to accommodate the doors being open to the patio. Your lighting system can manage lighting and shading controls alone or you can use a whole home smart home automation system, utilizing one app and one operating station. These systems are available from tablets strategically placed around the home, from mobile devices and can be voice-activated.</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="font-weight: 700; background-color: rgb(255, 255, 255);"><font color="#424242">Tunable Lighting</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">Tunable lighting is a new technology in the world of lighting that is worth mentioning. This type of light can change its color temperature throughout the day, simulating the natural light outside. The idea behind it is that this will help your body adjust to different times of day and improve your sleeping habits. This technology is also available to highlight art, enhancing the beauty of the piece. Want to change the lighting to different colors for a more festive ambiance, such as holidays or a party? Tunable lighting technology allows you to do this as well.</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">As you can see, there are many ways to light up a room and each has its purpose. We hope this blog has inspired you to look at your lighting in a new way and possibly add some layers and lighting controls to create the perfect atmosphere in your home.</font></span></p><p style="letter-spacing: 0.425px; line-height: 1.6; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 0px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">A good lighting plan will take all of these elements into consideration. If you’re looking to upgrade your home’s lighting system, contact us today. Our company specializes in lighting design, lighting controls, and smart home automation. We would be happy to help you find the perfect solution for your needs. Please feel free to&nbsp;<a href="https://listenhearsmarthomes.com/pages/contact" title="contact us" style="background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; border-bottom: 2px solid rgba(255, 255, 255, 0.1); position: relative;">contact us</a>&nbsp;or stop by our Pittsburgh, PA showroom for a demo.</font></span></p></div>	2026-01-13 01:57:29.531544+00	2026-01-13 01:59:30.769094+00	t	1	blog/images/Blog_modular_lighting_1080x.webp		2026-02-25 23:35:37.091264+00
 1	Outdoor Living in Pittsburgh	outdoor-living-in-pittsburgh	<p><span style="background-color: rgb(255, 255, 255);"><font color="#424242"></font></span></p><p><span style="background-color: rgb(255, 255, 255);"><font color="#424242"><br></font></span></p><p style="font-family: Jost, sans-serif; letter-spacing: 0.425px; line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">How about an outdoor living room this summer in your Pittsburgh, PA home? Yes, you can now enjoy all the comforts of your indoor spaces outside, with amazing outdoor technologies that were made to not only stand up to the elements, but to perform at a high level making it a seamless transition from inside to outside. &nbsp;Hanging out in our backyards is nothing new, but these days the design certainly looks like one big family room, with full kitchens, dining areas and comfy seating completed with area rugs and entertainment setups. When building these outdoor spaces, many people want to stay outdoors without the inconvenience of going back and forth inside. We are excited to offer our design and installation services for outdoor audio, all-weather TVs, motorized shades, and lighting control. So, whether you’re entertaining, relaxing, or spending family time - doing it in your backyard or patio with all these incredible technologies will only enhance the experience. Here are some ideas for&nbsp;<a href="https://listenhearsmarthomes.com/pages/outdoor-living" target="_blank" title="outdoor living" rel="noopener noreferrer" class="js-no-transition" style="background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; border-bottom: 2px solid rgba(255, 255, 255, 0.1); position: relative;">outdoor living</a>&nbsp;with great home technologies:</font></span></p><p style="font-family: Jost, sans-serif; letter-spacing: 0.425px; line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="font-weight: 700; background-color: rgb(255, 255, 255);"><font color="#424242">Outdoor Audio Installation</font></span></p><p style="font-family: Jost, sans-serif; letter-spacing: 0.425px; line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">Weatherproof speakers are now available in many shapes and sizes, including rock speakers for better décor, however the most important thing about outdoor audio is that you need to have a well-balanced system to keep the music in your yard and not broadcasted to neighbors. &nbsp;In addition, without walls for sound to bounce off, sound waves scatter, making sound unclear, forcing you to turn up the volume, where it becomes too loud and a bit unclear. A subwoofer and the right placement of speakers can provide beautiful music, so that you can walk from inside to outside without noticing a quality change. We discreetly install wiring underground and work with landscape design to hide speakers.&nbsp; Décor and design are just as important as it is indoors, so we pay attention to these details. In addition to having audio in the outdoor living spaces, some people are also installing audio in the front of homes and along the path to the front door for holidays like Christmas and Halloween, when audio in these areas can add to the festivities.</font></span></p><p style="font-family: Jost, sans-serif; letter-spacing: 0.425px; line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="font-weight: 700; background-color: rgb(255, 255, 255);"><font color="#424242">All-weather TVs Become Center Stage</font></span></p><p style="font-family: Jost, sans-serif; letter-spacing: 0.425px; line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">Outdoor TVs have become one of the most purchased pieces of tech for backyards and patios in the last two years. Imagine watching sports, concerts, and movies on a beautiful high-quality screen outside this summer.&nbsp; TVs are available in different versions to ensure glare free watching, so understanding where the TV will go is important.&nbsp; Some of the screens are brighter than indoor TV screens and are available in 4K, along with matching soundbars and more, so that you can create a great movie theater like experience outdoors. &nbsp;Are indoor TVs safe for outdoor use? No, even if the screens are waterproof and made for bathrooms, they are not built to stand up to extreme hot and cold weather and can even cause a fire, not to mention voiding the warranty. Another option for a movie like experience in your very own backyard is a movie screen and projector. No matter what you decide, having a screen outdoors will keep everyone outside for longer periods, getting the most out of the warmer seasons and into the fall.</font></span></p><p style="font-family: Jost, sans-serif; letter-spacing: 0.425px; line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="font-weight: 700; background-color: rgb(255, 255, 255);"><font color="#424242">Landscape Lighting and Motorized Shading Gets An Upgrade</font></span></p><p style="font-family: Jost, sans-serif; letter-spacing: 0.425px; line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">Garden lighting has long played a part in backyard or patio design; however, lighting is now available in tunable colors and can be controlled by apps.&nbsp; This enables you to program lighting to turn into different colors, dim or go on and off at specific times. If you have a pool, what about changing the colors in it? Get the lights set up for a party, holidays and more with these new choices in color and forget worrying about changing those lights when the special occasions arrive. Lighting can be connected to surveillance systems, music and more.&nbsp;<a href="https://listenhearsmarthomes.com/pages/motorized-shades" target="_blank" title="Motorized shades" rel="noopener noreferrer" class="js-no-transition" style="background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; border-bottom: 2px solid rgba(255, 255, 255, 0.1); position: relative;">Motorized shading</a>&nbsp;can also be controlled by an app and is now available in a multitude of colors and materials depending on how much shading you need.&nbsp; Shades offer UV protection and keeps the bugs out. Like everything else, we are taking lighting design and motorized shades outdoors with the latest tech to ensure we continue to bring the comforts of the indoors outside. &nbsp;</font></span></p><p style="font-family: Jost, sans-serif; letter-spacing: 0.425px; line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><img src="/media/django-summernote/2026-01-12/897984b3-8444-474a-a819-12c76db7a54b.png" style="width: 100%;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242"><br></font></span></p><p style="font-family: Jost, sans-serif; letter-spacing: 0.425px; line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="font-weight: 700; background-color: rgb(255, 255, 255);"><font color="#424242">Smart Home Automation Extends To The Outdoors</font></span></p><p style="font-family: Jost, sans-serif; letter-spacing: 0.425px; line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">Outdoor audio, video, lighting, and shading can be controlled by ONE&nbsp;<a href="https://listenhearsmarthomes.com/pages/smart-home-automation" title="smart home automation" style="background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; border-bottom: 2px solid rgba(255, 255, 255, 0.1); position: relative;">smart home automation</a>&nbsp;app. By integrating all your outdoor technology into a smart home system, which you might already have installed in your home; you can activate every speaker, TV, shade, and lighting in and out of your home with the press of one button.&nbsp; You can also include your outdoor tech as part of your in-home GOOD NIGHT shut down routine, where with one touch or voice command your entire property goes to sleep, turning the right tech off and keeping the others on or adjusted for the night. Connecting your outdoor tech to a smart home automation system will provide lots of convenience and endless ways to create a more relaxing fun experience, where you can truly extend your life seamlessly to the outdoors. Another element to consider is your Wi-Fi network when building outdoor living spaces, as you take more tech outdoors.&nbsp; Most Wi-Fi networks are not built to accommodate all our wireless devices, so we always look to make sure there’s a well-built network available so that Wi-Fi isn’t interrupted. If needed, we can design and install one that will support all your technology outdoors.</font></span></p><p style="font-family: Jost, sans-serif; letter-spacing: 0.425px; line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased; text-size-adjust: 100%; text-rendering: optimizespeed; margin-bottom: 25px;"><span style="background-color: rgb(255, 255, 255);"><font color="#424242">Bringing your home technology outdoors will only enhance your outdoor living. It’s never too early to contact us, especially because we understand what it takes to maximize the tech side of things and can end up saving you money with the correct input early in a project. &nbsp;It may be time to take more of your life outdoors. Ready to learn more?&nbsp;<a href="https://listenhearsmarthomes.com/pages/contact" title="Contact us" style="background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; border-bottom: 2px solid rgba(255, 255, 255, 0.1); position: relative;">Contact us</a>&nbsp;or stop by the Listen Hear Smart Homes showroom to demo some of this incredible technology.</font></span></p>	2026-01-13 01:47:11.449617+00	2026-01-13 01:55:04.338781+00	t	1	blog/images/luca-micheli-ruWkmt3nU58-unsplash.jpg		2026-02-25 23:42:49.148739+00
+4	Built for builders. Designed for real-world construction timelines.	built-for-builders-designed-for-real-world-construction-timelines	<p data-start="319" data-end="630" class=""><span style="font-family: Arial;">New construction requires precision, coordination, </span><span style="font-family: Arial;">﻿</span><span style="font-family: Arial;">and timing. Smart home integration should support that process not complicate it. Our Builder Scheduler transforms a simple quote request into a fully managed property, giving builders and designers complete visibility from planning through final installation.</span></p><p data-start="632" data-end="781"><span style="font-family: Arial;">We built this system to work the way construction actually works. Multiple phases. Shifting schedules. Multiple decision makers. Clear communication.</span></p><p></p><hr data-start="783" data-end="786"><span style="font-family: Arial;">How the Process Works<br></span><span style="font-family: Arial;"><br>Builder Dashboard Overview</span><br><span style="font-family: Arial;">\r\n• Manageable properties</span><br><span style="font-family: Arial;">\r\n• Upcoming install dates</span><br><span style="font-family: Arial;">\r\n• Packages requested</span><br><span style="font-family: Arial;">\r\n• Packages scheduled</span><br><span style="font-family: Arial;">\r\n• Packages in progress</span><br><span style="font-family: Arial;">\r\n• Packages completed</span><hr data-start="1658" data-end="1661"><span style="font-family: Arial;">Schedule by Building Phase</span><br><span style="font-family: Arial;">\r\n• The ability to suggest multiple date options</span><br><span style="font-family: Arial;">\r\n• A section to enter work-site notes or coordination details</span><p></p><p data-start="815" data-end="834"><strong data-start="815" data-end="834"><span style="font-family: Arial;">Quote Requested</span></strong></p><p data-start="836" data-end="973"><span style="font-family: Arial;">A builder or client submits a quote request through our website. All project details and contact information are captured from the start.</span></p><p data-start="975" data-end="994"><strong data-start="975" data-end="994"><span style="font-family: Arial;">Scope Finalized</span></strong></p><p data-start="996" data-end="1102"><span style="font-family: Arial;">Listen Hear reviews the request, confirms details, refines package selections, and finalizes the proposal.</span></p><p data-start="1104" data-end="1132"><strong data-start="1104" data-end="1132"><span style="font-family: Arial;">Quote Becomes a Property</span></strong></p><p data-start="1134" data-end="1309"><span style="font-family: Arial;">Once approved, the finalized quote converts into a managed property on your Builder Dashboard. The project is now organized and ready to move through scheduled install phases.</span></p><p data-start="1348" data-end="1381"><span style="font-family: Arial;">From your builder dashboard you can view:</span></p><p data-start="1383" data-end="1558"><span style="font-family: Arial;">• Your quote request history</span><br data-start="1410" data-end="1413"></p><p data-start="1560" data-end="1656"><span style="font-family: Arial;">Everything is organized in one place, giving your team complete visibility across every property.</span></p><p data-start="1695" data-end="1782"><span style="font-family: Arial;">Inside each property you will see clearly defined building phases. Each phase includes:</span></p><p data-start="1784" data-end="1935"><span style="font-family: Arial;">• A calendar to request installation dates</span><br data-start="1826" data-end="1829"><br><img src="/media/django-summernote/2026-03-03/a57ae943-3a03-48cb-8647-4abd10bc42e5.png" style="width: 100%;"><br></p><p data-start="1937" data-end="2141"><span style="font-family: Arial;">When a date is requested, Listen Hear receives an email notification, checks availability, and confirms the install or suggests an alternate time. Allowing you to coordinate with other trades to keep the build moving smoothly.</span></p><p data-start="2143" data-end="2238"><span style="font-family: Arial;">From scheduled to in progress to finished, every property is professionally managed and tracked.</span></p><hr data-start="2240" data-end="2243"><h3 data-start="2245" data-end="2281"><span style="font-family: Arial;">Built for Builders in Pittsburgh</span></h3><p data-start="2283" data-end="2481"><span style="font-family: Arial;">Our system supports multiple accounts so project managers, designers, and team members can stay aligned. We understand construction timelines, trade coordination, and the realities of job site changes.</span></p><p data-start="2483" data-end="2596"><span style="font-family: Arial;">Smart home installation should be organized, predictable, and easy to work with. That is exactly what we deliver.</span></p><p><span style="font-family: Arial;">\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n</span></p><p data-start="2598" data-end="2724"><span style="font-family: Arial;">Listen Hear is built to be the easiest smart home company in Pittsburgh to partner with from first quote to final install.</span></p>	2026-03-03 15:30:03.738692+00	2026-03-03 16:14:14.373295+00	t	1	blog/images/New_Project2.png	James	2026-03-03 15:38:06.456238+00
 \.
 
 
@@ -1920,8 +1921,9 @@ COPY public.blog_blogpost (id, title, slug, body, created_at, updated_at, publis
 --
 
 COPY public.builders_phaseinstallation (id, phase, status, requested_date, alternate_dates, builder_notes, confirmed_date, estimated_end_date, company_notes, completion_date, created_at, updated_at, property_id) FROM stdin;
-4	insulation_drywall	scheduled	2026-02-25	[]		2026-02-25	2026-02-28	Inside notes shared with you the builder, by the company.	\N	2026-02-17 19:19:08.669292+00	2026-02-25 22:16:17.258667+00	5
-3	rough_ins	requested	2026-02-27	[]	Make sure Hunter is there	2026-03-03	2026-03-12	Company Notes Ex	\N	2026-02-17 19:19:08.663036+00	2026-02-26 15:31:44.644435+00	5
+4	insulation_drywall	completed	2026-02-25	[]		2026-02-25	2026-02-28	Inside notes shared with you the builder, by the company.	\N	2026-02-17 19:19:08.669292+00	2026-03-03 14:57:51.888842+00	5
+5	trim_finishes	pending	\N	[]		\N	\N		\N	2026-03-03 15:26:41.648032+00	2026-03-03 15:26:41.648043+00	6
+3	rough_ins	scheduled	2026-03-10	[]		2026-03-18	2026-03-12	Company Notes Ex	\N	2026-02-17 19:19:08.663036+00	2026-03-03 16:12:55.35075+00	5
 \.
 
 
@@ -1930,7 +1932,8 @@ COPY public.builders_phaseinstallation (id, phase, status, requested_date, alter
 --
 
 COPY public.builders_property (id, name, address, property_type, created_at, updated_at, quote_request_id) FROM stdin;
-5	Bob Builder - QR-20260217-57C1	818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212		2026-02-17 19:18:52.620071+00	2026-02-25 23:16:15.134607+00	6
+6	Bob Builder - QR-20260303-5574	Pittsburgh, PA, 15212		2026-03-03 15:26:32.90937+00	2026-03-03 15:26:32.909378+00	8
+5	Bob Builder - QR-20260217-57C1	818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212		2026-02-17 19:18:52.620071+00	2026-03-03 16:12:55.345866+00	6
 \.
 
 
@@ -1940,6 +1943,7 @@ COPY public.builders_property (id, name, address, property_type, created_at, upd
 
 COPY public.builders_property_builders (id, property_id, user_id) FROM stdin;
 4	5	2
+5	6	2
 \.
 
 
@@ -1951,6 +1955,10 @@ COPY public.builders_propertynote (id, note_type, message, created_at, created_b
 9	date_request	Insulation & Drywall requested for 02/25/2026	2026-02-18 00:04:13.240604+00	2	5	4
 10	date_confirmation	Insulation & Drywall confirmed: 02/25/2026 - 02/28/2026	2026-02-18 00:06:32.322034+00	1	5	4
 11	date_request	Rough-Ins requested for 02/27/2026	2026-02-26 15:31:44.665991+00	2	5	3
+12	status_change	Rough-Ins status changed: Scheduled → Pending	2026-03-03 15:49:49.884392+00	1	5	3
+13	date_request	Rough-Ins requested for 03/10/2026	2026-03-03 15:50:26.44236+00	2	5	3
+14	date_confirmation	Rough-Ins install date updated: 03/18/2026 - 03/12/2026	2026-03-03 16:12:55.34888+00	1	5	3
+15	status_change	Rough-Ins status changed: Date Requested → Scheduled	2026-03-03 16:12:55.350153+00	1	5	3
 \.
 
 
@@ -1963,6 +1971,9 @@ COPY public.builders_purchasedpackage (id, package_name, package_description, pr
 18	Whole-Home Protection	A fully integrated security experience that actively responds to your home and lifestyle.	3490.00	1	2026-02-17 19:18:52.631225+00	2026-02-17 19:18:52.631233+00	161	5	rough_ins	Security & Access Control
 19	Whole-Home Audio	A fully integrated audio system designed for performance, elegance, and flexibility.	33099.00	1	2026-02-17 19:18:52.633213+00	2026-02-17 19:18:52.633221+00	141	5	insulation_drywall	Home Audio
 20	Whole-Home Illumination	A fully integrated lighting experience that highlights every indoor room and outdoor area with precision and style.	49000.00	1	2026-02-17 19:18:52.635085+00	2026-02-17 19:18:52.635092+00	173	5	rough_ins	Accent Lighting
+21	Racing Simulator	Experience high-speed racing with immersive visuals and realistic controls.	9000.00	1	2026-03-03 15:26:32.925899+00	2026-03-03 15:26:32.92591+00	166	6	trim_finishes	Simulation & Sport Rooms
+22	Premium Golf Simulator	Train with precision and safety. A safe, controlled environment for firearms, tactical, or skill-based simulation.	29999.00	1	2026-03-03 15:26:32.928517+00	2026-03-03 15:26:32.928525+00	167	6	trim_finishes	Simulation & Sport Rooms
+23	Premium Accent Lights	Expanded accent lighting to highlight multiple spaces, with seamless indoor/outdoor integration.	21549.00	1	2026-03-03 15:26:32.93114+00	2026-03-03 15:26:32.931149+00	172	6	trim_finishes	Accent Lighting
 \.
 
 
@@ -2723,6 +2734,8 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 743	2026-02-25 23:12:45.846681+00	3	Quote QR-20251229-FC9F - James P Woodhall	3		26	1
 744	2026-02-25 23:12:45.84672+00	2	Quote QR-20251216-713B - Jim	3		26	1
 745	2026-02-25 23:12:45.846754+00	1	Quote QR-20251210-D331 - Santa Claus	3		26	1
+760	2026-03-03 15:33:09.464129+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Body"]}}]	36	1
+769	2026-03-03 16:00:51.569755+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Body"]}}]	36	1
 665	2026-02-17 20:32:08.447451+00	1	listenhearsmarthomes.com	2	[{"changed": {"fields": ["Domain name", "Display name"]}}]	5	1
 674	2026-02-23 21:08:14.490298+00	1	Site Configuration (Listen Hear!)	2	[{"changed": {"fields": ["Hero video"]}}]	47	1
 680	2026-02-25 16:47:06.817081+00	1	Albert Wurst - Owner, Senior Sales & Tech Specialist	2	[{"changed": {"fields": ["Display order"]}}]	48	1
@@ -2730,12 +2743,18 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 746	2026-02-25 23:16:15.140177+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"deleted": {"name": "Property Note", "object": "Date Request - Bob Builder - QR-20260217-57C1"}}]	29	1
 747	2026-02-25 23:50:15.287211+00	3	test	1	[{"added": {}}]	36	1
 750	2026-02-26 20:52:06.600618+00	1	Site Configuration (Listen Hear!)	2	[{"changed": {"fields": ["Banner enabled", "Banner text"]}}]	47	1
+752	2026-03-03 01:33:52.603713+00	39	Outdoor Living	1	[{"added": {}}]	21	1
+761	2026-03-03 15:34:03.266048+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Body"]}}]	36	1
+770	2026-03-03 16:05:20.378265+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Body"]}}]	36	1
 666	2026-02-17 20:33:57.370946+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Rough-Ins", "fields": ["Confirmed date", "Estimated end date", "Company notes"]}}]	29	1
 675	2026-02-24 16:32:42.728346+00	1	Apple	1	[{"added": {}}]	49	1
 681	2026-02-25 19:15:40.349249+00	26	Residential - Pre-wire & Networking	2	[{"changed": {"fields": ["Show in catalog"]}}]	21	1
 699	2026-02-25 22:12:07.529884+00	1	Site Configuration (Listen Hear!)	2	[]	47	1
 748	2026-02-25 23:50:28.414393+00	3	test	2	[{"changed": {"fields": ["Published"]}}]	36	1
 751	2026-02-26 20:53:42.12284+00	1	Site Configuration (Listen Hear!)	2	[{"changed": {"fields": ["Banner text"]}}]	47	1
+753	2026-03-03 14:57:51.891444+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Insulation & Drywall", "fields": ["Status"]}}]	29	1
+762	2026-03-03 15:34:18.304222+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Body"]}}]	36	1
+771	2026-03-03 16:06:46.745647+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Body"]}}]	36	1
 667	2026-02-17 20:34:15.900175+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Rough-Ins", "fields": ["Status"]}}]	29	1
 676	2026-02-24 16:33:09.213111+00	2	Control 4	1	[{"added": {}}]	49	1
 682	2026-02-25 19:17:39.86951+00	1	Albert Wurst - Owner, Senior Sales & Tech Specialist	2	[]	48	1
@@ -2743,21 +2762,38 @@ COPY public.django_admin_log (id, action_time, object_id, object_repr, action_fl
 701	2026-02-25 22:14:33.996154+00	3	Bob Builder - QR-20260115-A7F1 - ABC 123, Pittsburgh, PA, 16229	3		29	1
 702	2026-02-25 22:14:33.996189+00	1	Property 1 - 123 Sample Dr, Pittsburgh PA 15212	3		29	1
 749	2026-02-25 23:51:13.222786+00	3	test	3		36	1
+754	2026-03-03 14:58:20.75348+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Rough-Ins", "fields": ["Status"]}}]	29	1
+763	2026-03-03 15:37:36.148883+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Body"]}}]	36	1
+772	2026-03-03 16:08:37.425546+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Featured image"]}}]	36	1
 668	2026-02-17 20:34:48.888121+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Rough-Ins", "fields": ["Status"]}}]	29	1
 683	2026-02-25 19:20:54.964956+00	2	Leslie Wurst - Marketing, Customer, Vendor & Staff Relations	1	[{"added": {}}]	48	1
 703	2026-02-25 22:16:17.260407+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Rough-Ins", "fields": ["Company notes"]}}, {"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Insulation & Drywall", "fields": ["Company notes"]}}]	29	1
+755	2026-03-03 15:30:03.80126+00	4	Built for builders. Designed for real-world construction timelines.	1	[{"added": {}}]	36	1
+764	2026-03-03 15:37:51.197485+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Published", "Tags"]}}]	36	1
+773	2026-03-03 16:11:20.657491+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Featured image"]}}]	36	1
 669	2026-02-17 20:35:09.885427+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Rough-Ins", "fields": ["Status"]}}]	29	1
 684	2026-02-25 19:21:01.087513+00	2	Leslie Wurst - Marketing, Customer, Vendor & Staff Relations	2	[{"changed": {"fields": ["Display order"]}}]	48	1
 685	2026-02-25 19:21:01.089083+00	1	Albert Wurst - Owner, Senior Sales & Tech Specialist	2	[{"changed": {"fields": ["Display order"]}}]	48	1
 704	2026-02-25 22:17:14.113372+00	4	Jim - QR-20260204-2B8E - pitt, 15212	3		29	1
+756	2026-03-03 15:30:16.215668+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Featured image"]}}]	36	1
+765	2026-03-03 15:38:42.244136+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Body"]}}]	36	1
+774	2026-03-03 16:11:56.667711+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Featured image"]}}]	36	1
 670	2026-02-17 23:20:25.156487+00	1	Site Configuration (Listen Hear!)	2	[{"changed": {"fields": ["Saturday hours"]}}]	47	1
 686	2026-02-25 19:30:57.50919+00	1	Smart Home Programmer	2	[{"changed": {"fields": ["Title", "Slug"]}}]	37	1
 705	2026-02-25 22:17:38.642902+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Rough-Ins", "fields": ["Status"]}}]	29	1
+757	2026-03-03 15:31:08.809442+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Body"]}}]	36	1
+766	2026-03-03 15:39:14.804819+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Body"]}}]	36	1
+775	2026-03-03 16:12:56.830149+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Rough-Ins", "fields": ["Status", "Confirmed date"]}}]	29	1
 671	2026-02-17 23:22:30.881893+00	1	Albert Wurst - Owner, Senior Sales & Tech Specialist	1	[{"added": {}}]	48	1
 687	2026-02-25 20:00:27.70304+00	26	Residential, Commercial - Pre-wire & Networking	2	[{"changed": {"fields": ["Property types"]}}]	21	1
 706	2026-02-25 22:31:27.813404+00	1	Site Configuration (Listen Hear!)	2	[{"changed": {"fields": ["Google maps embed url"]}}]	47	1
+758	2026-03-03 15:31:33.801201+00	4	Built for builders. Designed for real-world construction timelines.	2	[]	36	1
+767	2026-03-03 15:42:07.332606+00	4	Built for builders. Designed for real-world construction timelines.	2	[]	36	1
+776	2026-03-03 16:14:14.378111+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Featured image"]}}]	36	1
 672	2026-02-18 00:06:32.935555+00	4	Bob Builder - QR-20260217-57C1 - Insulation & Drywall	2	[{"changed": {"fields": ["Confirmed date", "Estimated end date", "Company notes"]}}]	44	1
 707	2026-02-25 22:34:02.608112+00	1	Site Configuration (Listen Hear!)	2	[{"changed": {"fields": ["Google maps embed url"]}}]	47	1
+759	2026-03-03 15:32:01.51153+00	4	Built for builders. Designed for real-world construction timelines.	2	[{"changed": {"fields": ["Body"]}}]	36	1
+768	2026-03-03 15:49:49.887511+00	5	Bob Builder - QR-20260217-57C1 - 818 SOUTH AIKEN AVE, Pittsburgh, PA, 15212	2	[{"changed": {"name": "Installation", "object": "Bob Builder - QR-20260217-57C1 - Rough-Ins", "fields": ["Status"]}}]	29	1
 \.
 
 
@@ -2791,7 +2827,7 @@ COPY public.django_celery_beat_intervalschedule (id, every, period) FROM stdin;
 --
 
 COPY public.django_celery_beat_periodictask (id, name, task, args, kwargs, queue, exchange, routing_key, expires, enabled, last_run_at, total_run_count, date_changed, description, crontab_id, interval_id, solar_id, one_off, start_time, priority, headers, clocked_id, expire_seconds) FROM stdin;
-1	celery.backend_cleanup	celery.backend_cleanup	[]	{}	\N	\N	\N	\N	t	2026-02-26 13:50:43.346311+00	31	2026-02-26 20:52:57.748618+00		1	\N	\N	f	\N	\N	{}	\N	43200
+1	celery.backend_cleanup	celery.backend_cleanup	[]	{}	\N	\N	\N	\N	t	2026-03-03 09:00:00.01098+00	33	2026-03-03 16:33:57.490934+00		1	\N	\N	f	\N	\N	{}	\N	43200
 \.
 
 
@@ -2800,7 +2836,7 @@ COPY public.django_celery_beat_periodictask (id, name, task, args, kwargs, queue
 --
 
 COPY public.django_celery_beat_periodictasks (ident, last_update) FROM stdin;
-1	2026-02-26 20:52:57.751326+00
+1	2026-03-03 16:33:57.491644+00
 \.
 
 
@@ -3028,7 +3064,8 @@ a20tj2qsi93sn71nnib9fzlhnpnzs6sp	.eJxVkM1ugzAQhN9lzwjZwT-YU9V7n6Cq0NpeilOwI2yUVl
 n2fm7zahtflvsc0srt99wswthlfhyg8a	.eJxVjDsOwjAQBe_iGlkxu_5R0nMGa-21cQA5UpxUiLuTSCmgfTPz3iLQutSw9jyHkcVFKHH63SKlZ2474Ae1-yTT1JZ5jHJX5EG7vE2cX9fD_Tuo1OtWO1V0dFF7TTQUdSbLHn1Bb1gNGkwmZyMSIDAUBtxUg2RNRoMpAonPF9nvN6o:1vvNrn:YSkqbCZNOaWChKzkyWfjc7UC-oM2Uue_fhYFJ-VeKVk	2026-03-11 23:00:27.741837+00
 xe8ryxgx2h6o064vws4l8we2q84vq5u3	e30:1vvble:VyHffomtYG_B6v6l6VHyOGpv6T-4FLJEmeew6DzbVE8	2026-03-12 13:51:02.754728+00
 byxz0oycdxb2nbwmjqvic3kaexe64m2z	.eJxVkMFugzAQRP9lzwgZYzDmVOXeL6gitLaX4BbsyDZKqyj_Xtzmkttq5s2sdu-AxoTd5wn3vJDPzmB2wU8b5SXYBOPHHf5nGOGKKd1CtFABZhgbKXnTDELJuhdDJ3tZAW3o1gPVQR99enerpfh2KWptwgaPcwV_u6Y9UZxcqeXwomk0X-SLYT_RX8KR8zk6XRekfrqpfg-W1tOTfSlYMC0l3XKlSHZCaGm5Ymygrmu51FrzmebZqqajlg-DPShlNRPUcGNQCEnYE5XSRCmVd9D31cWf42TOVM_Y4xcZSGeG:1vvcyP:H4RCGYNOtXCCM1ZE--ZCxi-4buWCKIRn0UvE4mUytyI	2026-03-12 15:08:17.793908+00
-yd0039pfed1gr350l88dt4k2myhkybio	.eJxVkEFOxDAMRe_idVU1TkOarhB7ToBQ5SSeaaBNRk0qQKO5Ow3MZnbW9_vPkq9AzqU9lon2MnMswVEJKU4rlzn5DOPbFf5nGOFCOX-lzUMDVGAUWqOQphOyRamEQmyAVwrLgdpkD5_dw-J5ez7XtHVphdt7A3-3pj3zNoWqRXjILLlPjnXhPyie09GLZQu2rUh73-b2NXleXu7sg2CmPNe2RGNYq7632qPpuoGVkqittXji08kboVjiMPiDMt52PQt0jvpeMz0xV2nmnOs7-PsSth8Yu9svj-xmMA:1vviJJ:_pgT1DRPRJQO9J1M3W5FunyMIuOTWyve4-zG6he_cxA	2026-03-12 20:50:13.574397+00
+5z7vbop88hhowu9vq9dh3n56laysh6es	.eJxVkMFugzAQRP9lzwiBsTHmVOXeL6gitLaX4BbsyDZKqyj_Xtzmkttq5s3sau-AxoTd5wn3vJDPzmB2wU8b5SXYBOPHHf5nGOGKKd1CtFABZhhbKVnLBe_7mg2DEnKogDZ064HqoI8-vbvVUny7FLU2YYPHuYK_XdOeKE6u1DJ40TSaL_LFsJ_oL-HI-RydrgtSP91UvwdL6-nJvhQsmJaS7phSJAXnWlqmmmYgITomtdZspnm2qhXUHZfbg1JWN5xaZgxyLgl7olKaKKXyDvq-uvgDY_P4BbCLZlQ:1vvjzO:QHAfnnhszmU_VMwC8SFngMLUrPu9tS6TCePxGKZLVE0	2026-03-12 22:37:46.434+00
+iw0aaowkr8ielft3fc1bgrkssoui9xad	.eJxVkE1uwyAQhe8ya8vCGILxqsq-J6gqa4BxTGtDBFhtFeXuNW022T29n2-kuQFaG_dQJtzLQqF4i8XHMG1UlugyjG83-NcwwhVz_orJQQNYYOyU4lJoxXXLlDwdugHa0K9H1URz8MzuV0fp5VLd1sYN7u8N_N2a9kxp8hXL4ckzaD8p1MB9YLjEYxdK8qatlfaR5vY1OlrPj-4TYMG81HXPtSYlhTDKcc3YQFL2XBlj-Ezz7HQnqefD4I6WdoYJ6ri1KIQiPBFVaKac6zvo--rTD4zs_gupr2ZM:1vxR9l:YTGa-K_3eN_CXzT7bnlJShR8mSfgWJu0S-G2uPHh-6s	2026-03-17 14:55:29.250847+00
 \.
 
 
@@ -3049,6 +3086,8 @@ COPY public.django_summernote_attachment (id, name, file, uploaded) FROM stdin;
 1	Gemini_Generated_Image_3at9ut3at9ut3at9.png	django-summernote/2025-12-16/263dadb9-bc99-48cf-af4e-fb422dc815cb.png	2025-12-16 21:11:22.078156+00
 2	image.png	django-summernote/2026-01-12/ba313bf0-9c0c-4383-b34c-d9c37e244a11.png	2026-01-13 01:43:46.900552+00
 3	image.png	django-summernote/2026-01-12/897984b3-8444-474a-a819-12c76db7a54b.png	2026-01-13 01:45:43.752991+00
+4	Untitled(1).png	django-summernote/2026-03-03/240bc1f1-dcc2-494b-ad85-2cbc76d99305.png	2026-03-03 15:29:42.174456+00
+5	Untitled(2).png	django-summernote/2026-03-03/a57ae943-3a03-48cb-8647-4abd10bc42e5.png	2026-03-03 16:06:41.31193+00
 \.
 
 
@@ -3085,6 +3124,7 @@ COPY public.products_category (id, name, slug, description, image, display_order
 26	Pre-wire & Networking	pre-wire-networking	Pre-wire & Networking is the infrastructure or backbone of a modern smart home. During the rough-in stage of construction, structured low-voltage wiring is installed behind the walls to ensure fast, secure, and reliable connectivity throughout the home. This infrastructure is required to support whole-home Wi-Fi, smart devices, streaming, security, and future technology without relying solely on vulnerable wireless signals.	categories/dsc04898-100716671-orig.webp	11	t	2025-12-08 01:37:40.410173+00	2026-02-25 21:30:34.34957+00	https://youtu.be/RxtBI570TaQ?si=389FN6JFv1vSS_EB	Wi-Fi alone isn’t enough for today’s connected homes. Hardwired connections provide:\r\n\r\nFaster speeds and lower latency\r\n\r\nGreater reliability than wireless-only setups\r\n\r\nImproved security and network stability\r\n\r\nClean installs with no visible cables later\r\n\r\nLong-term flexibility as technology evolves\r\n\r\nInstalling this wiring during construction is significantly more cost-effective and cleaner than retrofitting after the home is finished.	pre_wire	f	
 30	Home Theater	home-theater	Home Theater transforms a dedicated space into an immersive cinematic environment. Integrated with Control4, your video, audio, lighting, and climate works together seamlessly. With one touch, the room prepares itself for the perfect movie, sports, or gaming experience.	categories/Listen_Hear_Home_Automation_0fzT1Xm.avif	6	t	2025-12-08 02:28:14.580318+00	2026-02-25 21:30:34.357127+00		Optimized Home Entertainment Experience. \r\n\r\nExperience the best of TVs, Projectors, and other high-end devices. \r\n\r\nDETAILS	entertainment_audio	t	
 32	Motorized Blinds & Shades	motorized-blinds-shades	Motorized blinds and shades add elegance, convenience, and efficiency to your home. Integrated with Control4, shades respond automatically to time of day, sunlight, or touch scenes.	categories/ChatGPT_Image_Dec_29_2025_04_00_51_PM.png	7	t	2026-01-20 15:39:57.855925+00	2026-02-25 21:30:34.359452+00			automations	t	
+39	Outdoor Living	outdoor-living	Outdoor living description		0	t	2026-03-03 01:33:52.592537+00	2026-03-03 01:33:52.59255+00		Details Details		t	
 \.
 
 
@@ -3177,7 +3217,6 @@ COPY public.quotes_cart (id, session_key, created_at, updated_at, user_id, coupo
 16	6babjnaan7v05ahhl9kmw0lf029byj44	2026-01-21 19:43:34.120218+00	2026-01-21 19:43:34.120229+00	\N	\N
 17	3qjerkxmcd2tmo11y0a68363b09ny71d	2026-02-03 21:50:04.877513+00	2026-02-03 21:50:04.877524+00	\N	\N
 18	uy2a7l3izdplykwpnrxxpxzxshwc8823	2026-02-13 16:11:49.441979+00	2026-02-13 16:11:49.441988+00	\N	\N
-7	\N	2025-12-16 15:39:43.480519+00	2026-02-17 19:13:43.800125+00	2	\N
 19	k69xno8qzpsjw0q5xl6mvsy3bfucl2oy	2026-02-17 22:34:57.364297+00	2026-02-17 22:34:57.364307+00	\N	\N
 2	\N	2025-12-08 19:16:36.502041+00	2026-02-17 22:40:27.418956+00	1	\N
 20	g4bkcggzjqsnw0bxm6020zkj2k4xokyq	2026-02-23 19:32:54.790857+00	2026-02-23 19:32:54.790877+00	\N	\N
@@ -3187,6 +3226,9 @@ COPY public.quotes_cart (id, session_key, created_at, updated_at, user_id, coupo
 24	xe8ryxgx2h6o064vws4l8we2q84vq5u3	2026-02-26 13:51:02.527555+00	2026-02-26 13:51:02.527576+00	\N	\N
 25	imfys5p4tcaiqg7unbe14kgy1qix0602	2026-02-26 15:07:56.673814+00	2026-02-26 15:07:56.673823+00	\N	\N
 26	mobbqkb1bjrsuvlo39ox2hmh2gansowt	2026-02-26 20:50:00.182686+00	2026-02-26 20:50:00.182705+00	\N	\N
+27	mfy43luki3q83wo2kimyciye3t84hmv6	2026-02-26 22:35:57.940773+00	2026-02-26 22:35:57.940782+00	\N	\N
+28	h63veduuguu3ibcyrgkxfe7izc0mxyvo	2026-03-03 14:55:21.259539+00	2026-03-03 14:55:21.259552+00	\N	\N
+7	\N	2025-12-16 15:39:43.480519+00	2026-03-03 15:25:39.476332+00	2	\N
 \.
 
 
@@ -3201,13 +3243,11 @@ COPY public.quotes_cartitem (id, quantity, notes, added_at, cart_id, package_id)
 19	1		2025-12-10 14:05:42.562231+00	4	145
 20	1		2025-12-14 19:36:06.908613+00	4	136
 21	1		2025-12-14 19:36:09.113598+00	4	143
-126	1		2026-02-18 00:07:51.960633+00	7	166
-127	1		2026-02-18 00:07:55.13673+00	7	167
-144	1		2026-02-25 20:17:02.881149+00	2	172
 145	1		2026-02-25 20:17:04.547391+00	2	170
-146	1		2026-02-25 20:17:05.606614+00	2	171
 147	1		2026-02-25 20:17:07.320152+00	2	168
 148	1		2026-02-26 15:20:37.86815+00	2	134
+146	2		2026-02-25 20:17:05.606614+00	2	171
+144	2		2026-02-25 20:17:02.881149+00	2	172
 \.
 
 
@@ -3226,6 +3266,7 @@ COPY public.quotes_coupon (id, code, description, discount_type, discount_value,
 COPY public.quotes_quoterequest (id, quote_number, contact_person, email, phone, zip_code, website, notes, status, estimated_total, pdf_path, created_at, updated_at, user_id, city, street, state, admin_notes, final_total, finalized_at, finalized_by_id, email_recipients, builder_email) FROM stdin;
 4	QR-20260115-A7F1	Bob Builder	bobthebuilder@gmail.com	123456789	16229	https://www.google.com	Want to get a specific shade count.	quoted	121582.00	quotes/quote_QR-20260115-A7F1.pdf	2026-01-15 19:19:43.263353+00	2026-01-15 19:31:36.531686+00	2	Pittsburgh	ABC 123	PA		\N	2026-01-15 19:31:36.527123+00	1	bobthebuilder@gmail.com	
 6	QR-20260217-57C1	Bob Builder	info@listenhearaudio.com	14126871131	15212			quoted	102538.00	quotes/quote_QR-20260217-57C1_7mX8ikG.pdf	2026-02-17 19:13:43.788971+00	2026-02-17 19:19:34.362712+00	2	Pittsburgh	818 SOUTH AIKEN AVE	PA		\N	2026-02-17 19:19:33.529087+00	1	info@listenhearaudio.com	
+8	QR-20260303-5574	Bob Builder	bobthebuilder@gmail.com	123456789	15212			accepted	60548.00	quotes/quote_QR-20260303-5574.pdf	2026-03-03 15:25:39.467294+00	2026-03-03 15:26:33.469517+00	2	Pittsburgh		PA		\N	\N	\N	bobthebuilder@gmail.com	
 \.
 
 
@@ -3245,6 +3286,9 @@ COPY public.quotes_quoterequestitem (id, package_name, package_description, pric
 34	Whole-Home Protection	A fully integrated security experience that actively responds to your home and lifestyle.	3490.00	1		161	6	rough_ins
 35	Whole-Home Audio	A fully integrated audio system designed for performance, elegance, and flexibility.	33099.00	1		141	6	insulation_drywall
 36	Whole-Home Illumination	A fully integrated lighting experience that highlights every indoor room and outdoor area with precision and style.	49000.00	1		173	6	rough_ins
+39	Racing Simulator	Experience high-speed racing with immersive visuals and realistic controls.	9000.00	1		166	8	trim_finishes
+40	Premium Golf Simulator	Train with precision and safety. A safe, controlled environment for firearms, tactical, or skill-based simulation.	29999.00	1		167	8	trim_finishes
+41	Premium Accent Lights	Expanded accent lighting to highlight multiple spaces, with seamless indoor/outdoor integration.	21549.00	1		172	8	trim_finishes
 \.
 
 
@@ -3302,6 +3346,8 @@ COPY public.taggit_tag (id, name, slug) FROM stdin;
 5	outdoor	outdoor
 6	Lighting	lighting
 8	Outdoor	outdoor_1
+9	Builders	builders
+10	Designers	designers
 \.
 
 
@@ -3312,6 +3358,8 @@ COPY public.taggit_tag (id, name, slug) FROM stdin;
 COPY public.taggit_taggeditem (id, object_id, content_type_id, tag_id) FROM stdin;
 8	1	36	5
 9	2	36	6
+12	4	36	9
+13	4	36	10
 \.
 
 
@@ -3321,7 +3369,7 @@ COPY public.taggit_taggeditem (id, object_id, content_type_id, tag_id) FROM stdi
 
 COPY public.users_user (id, password, last_login, is_superuser, email, is_staff, is_active, date_joined, name, is_builder, company_name, city, state, street, zip_code, phone, website) FROM stdin;
 1	argon2$argon2id$v=19$m=102400,t=2,p=8$cGNMQnIzaU9jUGl5VDNLVFVCcXdZcw$FPItGexgupjy7q3P/k2NhijUnL/Kkjd65qowWnQlAtk	2026-02-25 23:00:27.655947+00	t	jamesw@listenhearaudio.com	t	t	2025-12-05 21:19:43.029255+00	Jim	f	company name	Pitt	PA	123 Address	123456	123456789	https://www.web.com
-2	argon2$argon2id$v=19$m=102400,t=2,p=8$Q1hkVjhlNHZVamQyemxNcjBFdE5OUQ$LeonOOsih6GLzbAXXnoRj9A0ucgjmkhi1WeSYW+2KWo	2026-02-26 20:50:13.41739+00	f	bobthebuilder@gmail.com	f	t	2025-12-16 15:39:16.076896+00	Bob Builder	t	Bob's Builder	Pittsburgh	PA	ABCD 123	15229	123456789	https://www.website.com
+2	argon2$argon2id$v=19$m=102400,t=2,p=8$Q1hkVjhlNHZVamQyemxNcjBFdE5OUQ$LeonOOsih6GLzbAXXnoRj9A0ucgjmkhi1WeSYW+2KWo	2026-03-03 14:55:29.190174+00	f	bobthebuilder@gmail.com	f	t	2025-12-16 15:39:16.076896+00	Bob Builder	t	Bob's Builder	Pittsburgh	PA	ABCD 123	15229	123456789	https://www.website.com
 \.
 
 
@@ -3380,42 +3428,42 @@ SELECT pg_catalog.setval('public.auth_permission_id_seq', 200, true);
 -- Name: blog_blogpost_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.blog_blogpost_id_seq', 3, true);
+SELECT pg_catalog.setval('public.blog_blogpost_id_seq', 4, true);
 
 
 --
 -- Name: builders_phaseinstallation_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.builders_phaseinstallation_id_seq', 4, true);
+SELECT pg_catalog.setval('public.builders_phaseinstallation_id_seq', 5, true);
 
 
 --
 -- Name: builders_property_builders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.builders_property_builders_id_seq', 4, true);
+SELECT pg_catalog.setval('public.builders_property_builders_id_seq', 5, true);
 
 
 --
 -- Name: builders_property_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.builders_property_id_seq', 5, true);
+SELECT pg_catalog.setval('public.builders_property_id_seq', 6, true);
 
 
 --
 -- Name: builders_propertynote_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.builders_propertynote_id_seq', 11, true);
+SELECT pg_catalog.setval('public.builders_propertynote_id_seq', 15, true);
 
 
 --
 -- Name: builders_purchasedpackage_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.builders_purchasedpackage_id_seq', 20, true);
+SELECT pg_catalog.setval('public.builders_purchasedpackage_id_seq', 23, true);
 
 
 --
@@ -3471,7 +3519,7 @@ SELECT pg_catalog.setval('public.core_teammember_id_seq', 2, true);
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.django_admin_log_id_seq', 751, true);
+SELECT pg_catalog.setval('public.django_admin_log_id_seq', 776, true);
 
 
 --
@@ -3534,7 +3582,7 @@ SELECT pg_catalog.setval('public.django_site_id_seq', 2, false);
 -- Name: django_summernote_attachment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.django_summernote_attachment_id_seq', 3, true);
+SELECT pg_catalog.setval('public.django_summernote_attachment_id_seq', 5, true);
 
 
 --
@@ -3555,7 +3603,7 @@ SELECT pg_catalog.setval('public.mfa_authenticator_id_seq', 1, false);
 -- Name: products_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.products_category_id_seq', 38, true);
+SELECT pg_catalog.setval('public.products_category_id_seq', 39, true);
 
 
 --
@@ -3590,14 +3638,14 @@ SELECT pg_catalog.setval('public.products_subcategory_id_seq', 29, true);
 -- Name: quotes_cart_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.quotes_cart_id_seq', 26, true);
+SELECT pg_catalog.setval('public.quotes_cart_id_seq', 28, true);
 
 
 --
 -- Name: quotes_cartitem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.quotes_cartitem_id_seq', 149, true);
+SELECT pg_catalog.setval('public.quotes_cartitem_id_seq', 150, true);
 
 
 --
@@ -3611,14 +3659,14 @@ SELECT pg_catalog.setval('public.quotes_coupon_id_seq', 1, false);
 -- Name: quotes_quoterequest_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.quotes_quoterequest_id_seq', 7, true);
+SELECT pg_catalog.setval('public.quotes_quoterequest_id_seq', 8, true);
 
 
 --
 -- Name: quotes_quoterequestitem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.quotes_quoterequestitem_id_seq', 38, true);
+SELECT pg_catalog.setval('public.quotes_quoterequestitem_id_seq', 41, true);
 
 
 --
@@ -3660,14 +3708,14 @@ SELECT pg_catalog.setval('public.subscribers_subscriber_id_seq', 2, true);
 -- Name: taggit_tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.taggit_tag_id_seq', 8, true);
+SELECT pg_catalog.setval('public.taggit_tag_id_seq', 10, true);
 
 
 --
 -- Name: taggit_taggeditem_id_seq; Type: SEQUENCE SET; Schema: public; Owner: debug
 --
 
-SELECT pg_catalog.setval('public.taggit_taggeditem_id_seq', 11, true);
+SELECT pg_catalog.setval('public.taggit_taggeditem_id_seq', 13, true);
 
 
 --
@@ -5251,5 +5299,5 @@ ALTER TABLE ONLY public.users_user_user_permissions
 -- PostgreSQL database dump complete
 --
 
-\unrestrict udbsi9Z1fyZVuZe8RObrzy0kGNClZ6byzDVCAqFxJSaCjWyFfqWQY6FvKlWuXEI
+\unrestrict zAuvhknfRYceGLoIgm3uqADaPtewKHsPpjfmX9N2jfixV9SibFedORdU1y9lAwF
 
