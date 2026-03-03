@@ -18,25 +18,7 @@ from .base import env
 # https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env.list(
-    "DJANGO_ALLOWED_HOSTS",
-    default=[
-        "listenhearsmarthomes.com",
-        "www.listenhearsmarthomes.com",
-        "listenhearsmarthomes.cloud",
-        "www.listenhearsmarthomes.cloud",
-    ],
-)
-# https://docs.djangoproject.com/en/dev/ref/settings/#csrf-trusted-origins
-CSRF_TRUSTED_ORIGINS = env.list(
-    "DJANGO_CSRF_TRUSTED_ORIGINS",
-    default=[
-        "https://listenhearsmarthomes.com",
-        "https://www.listenhearsmarthomes.com",
-        "https://listenhearsmarthomes.cloud",
-        "https://www.listenhearsmarthomes.cloud",
-    ],
-)
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=["listenhearsmarthomes.com"])
 
 # DATABASES
 # ------------------------------------------------------------------------------
