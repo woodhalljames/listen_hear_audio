@@ -93,8 +93,8 @@ From the moment your alarm goes off, your smart home automation system can set t
       <div class="lhx-bento">
 
         <div class="lhx-bento__cell lhx-bento__cell--wide lhx-bento__cell--photo lhx-animate-reveal" data-delay="0">
-          <video class="lhx-bento__video" autoplay muted loop playsinline aria-hidden="true">
-            <source src="{% static 'videos/lifestyle-morning.mp4' %}" type="video/mp4">
+          <video class="lhx-bento__video" autoplay muted loop playsinline aria-hidden="true" preload="none" data-lazy-video>
+            <source data-src="{% static 'videos/lifestyle-morning.mp4' %}" type="video/mp4">
           </video>
           <div class="lhx-bento__cell-overlay">
             <a href="{% url 'products:catalog' %}" class="lhx-bento__cell-tag">
@@ -147,8 +147,8 @@ From the moment your alarm goes off, your smart home automation system can set t
 
   <section class="lhx-bridge lhx-section" data-dn-phase="0.45" aria-label="Smart Home Day to Night Transition">
     <div class="lhx-bridge__video-wrap" aria-hidden="true">
-      <video class="lhx-bridge__video" autoplay muted loop playsinline>
-        <source src="{% static 'videos/lighting-sequence-05.mp4' %}" type="video/mp4">
+      <video class="lhx-bridge__video" autoplay muted loop playsinline preload="none" data-lazy-video>
+        <source data-src="{% static 'videos/lighting-sequence-05.mp4' %}" type="video/mp4">
       </video>
     </div>
     <div class="lhx-bridge__overlay"></div>
@@ -177,8 +177,8 @@ From the moment your alarm goes off, your smart home automation system can set t
       <div class="lhx-bento lhx-bento--dark">
 
         <div class="lhx-bento__cell lhx-bento__cell--wide lhx-bento__cell--photo lhx-bento__cell--dark lhx-animate-reveal" data-delay="0">
-          <video class="lhx-bento__video" autoplay muted loop playsinline aria-hidden="true">
-            <source src="{% static 'videos/lifestyle-exterior-night.mp4' %}" type="video/mp4">
+          <video class="lhx-bento__video" autoplay muted loop playsinline aria-hidden="true" preload="none" data-lazy-video>
+            <source data-src="{% static 'videos/lifestyle-exterior-night.mp4' %}" type="video/mp4">
           </video>
           <div class="lhx-bento__cell-overlay lhx-bento__cell-overlay--strong">
             <a href="{% url 'products:catalog' %}" class="lhx-bento__cell-tag lhx-bento__cell-tag--night">
@@ -240,7 +240,7 @@ From the moment your alarm goes off, your smart home automation system can set t
 
         <div class="col-lg-6 lhx-animate-reveal" data-delay="0">
           <div class="lhx-builder__visual">
-            <img src="{% static 'images/smarthome_builder.png' %}" alt="Smart Home Builder room selection tool" class="lhx-builder__img" loading="lazy">
+            <img src="{% static 'images/smarthome_builder.png' %}" alt="Smart Home Builder room selection tool" class="lhx-builder__img" loading="lazy" decoding="async">
           </div>
         </div>
 
@@ -621,6 +621,20 @@ From the moment your alarm goes off, your smart home automation system can set t
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
   document.querySelectorAll('.lhx-animate-reveal').forEach(el => revealObs.observe(el));
+
+  // ── LAZY VIDEO LOADING ───────────────────────────────────────
+  const videoObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const video = e.target;
+      video.querySelectorAll('source[data-src]').forEach(s => { s.src = s.dataset.src; });
+      video.load();
+      video.play().catch(() => {});
+      videoObs.unobserve(video);
+    });
+  }, { rootMargin: '300px 0px' });
+
+  document.querySelectorAll('video[data-lazy-video]').forEach(v => videoObs.observe(v));
 
   // ── CATALOG SIDEBAR HIGHLIGHT (project.js companion) ────────
   const catObs = new IntersectionObserver((entries) => {
