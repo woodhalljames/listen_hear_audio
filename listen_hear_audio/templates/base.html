@@ -11,9 +11,20 @@
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
-        content="Professional smart home audio and video installation services. Custom packages for residential, commercial, and industrial properties." />
+        content="{% block meta_description %}Professional smart home audio and video installation services in Pittsburgh PA. Custom packages for residential and commercial properties.{% endblock %}" />
   <meta name="author"
         content="Cactus Cat LLC" />
+  <link rel="canonical" href="{{ request.build_absolute_uri }}" />
+  <meta property="og:site_name" content="Listen Hear!" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{% block og_title %}Listen Hear! - Pittsburgh's Premier Smart Home Installation{% endblock %}" />
+  <meta property="og:description" content="{% block og_description %}Professional smart home audio and video installation services in Pittsburgh PA. Custom packages for residential and commercial properties.{% endblock %}" />
+  <meta property="og:image" content="{% block og_image %}{% static 'images/listenhear.png' %}{% endblock %}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/listenhear.png' %}{% endblock %}" />
   {% block meta %}{% endblock meta %}
   <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
   

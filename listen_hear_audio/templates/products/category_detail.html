@@ -3,6 +3,11 @@
 
 {% block title %}{{ category.name }} - Listen Hear Audio{% endblock %}
 
+{% block meta_description %}{{ category.description|default:category.name }} - Smart home installation by Listen Hear! Pittsburgh PA.{% endblock %}
+{% block og_title %}{{ category.name }} - Listen Hear!{% endblock %}
+{% block og_description %}{{ category.description|default:"Smart home installation services in Pittsburgh PA by Listen Hear!" }}{% endblock %}
+{% if category.image %}{% block og_image %}{{ category.image.url }}{% endblock %}{% block twitter_image %}{{ category.image.url }}{% endblock %}{% endif %}
+
 {% block content %}
 <!-- Hidden CSRF token for AJAX requests -->
 {% csrf_token %}
@@ -179,7 +184,7 @@
                 <div class="carousel-inner rounded shadow">
                     {% for img in gallery_images %}
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ img.image.url }}" class="d-block w-100 category-slideshow-img" alt="{{ img.caption|default:category.name }}">
+                        <img src="{{ img.image.url }}" class="d-block w-100 category-slideshow-img" alt="{{ img.caption|default:category.name }}"{% if not forloop.first %} loading="lazy"{% endif %}>
                         {% if img.caption %}
                         <div class="carousel-caption d-none d-md-block">
                             <p class="mb-0">{{ img.caption }}</p>

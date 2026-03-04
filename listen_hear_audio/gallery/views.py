@@ -14,7 +14,7 @@ class GalleryView(ListView):
 
     def get_queryset(self):
         """Get all images ordered chronologically"""
-        return GalleryImage.objects.all().prefetch_related('tags').select_related()
+        return GalleryImage.objects.all().prefetch_related('tags')
 
     def get_context_data(self, **kwargs):
         """Add all tags to context for filter buttons"""

@@ -1,12 +1,14 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import include
 from django.urls import path
 from django.views import defaults as default_views
 from django.views.generic import TemplateView
 
 from listen_hear_audio.core.views import AboutView, ContactView, HomeView
+from listen_hear_audio.sitemaps import sitemaps
 
 # Customize admin site
 admin.site.site_header = "Listen Hear Administration"
@@ -17,6 +19,8 @@ urlpatterns = [
     path("", HomeView.as_view(), name="home"),
     path("about/", AboutView.as_view(), name="about"),
     path("contact/", ContactView.as_view(), name="contact"),
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps}, name="django.contrib.sitemaps.views.sitemap"),
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management

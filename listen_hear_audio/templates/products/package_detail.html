@@ -22,9 +22,10 @@
     <!-- Product Image -->
     <div class="col-lg-6 mb-4">
       {% if package.image %}
-        <img src="{{ package.image.url }}" 
-             class="package-detail-image shadow" 
-             alt="{{ package.name }}">
+        <img src="{{ package.image.url }}"
+             class="package-detail-image shadow"
+             alt="{{ package.name }}"
+             loading="lazy">
       {% else %}
         <div class="package-detail-image bg-light d-flex align-items-center justify-content-center shadow">
           <i class="bi bi-image text-muted" style="font-size: 5rem;"></i>

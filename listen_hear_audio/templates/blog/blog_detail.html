@@ -3,6 +3,11 @@
 
 {% block title %}{{ post.title }} - Blog - Listen Hear Smart Homes{% endblock %}
 
+{% block meta_description %}{{ post.body|striptags|truncatechars:160 }}{% endblock %}
+{% block og_title %}{{ post.title }} - Listen Hear!{% endblock %}
+{% block og_description %}{{ post.body|striptags|truncatechars:160 }}{% endblock %}
+{% if post.featured_image %}{% block og_image %}{{ post.featured_image.url }}{% endblock %}{% block twitter_image %}{{ post.featured_image.url }}{% endblock %}{% endif %}
+
 {% block content %}
 <div class="row">
   <div class="col-lg-10 mx-auto">
