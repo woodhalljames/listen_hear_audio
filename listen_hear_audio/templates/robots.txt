@@ -1,7 +1,5 @@
+# TEMP: blocking all crawlers during pre-launch development
 User-agent: *
-Allow: /
-Disallow: /shadycorvette/
-Disallow: /accounts/
-Disallow: /quote/checkout/
+Disallow: /
 
-Sitemap: https://listenhearsmarthomes.com/sitemap.xml
+# Sitemap: https://listenhearsmarthomes.com/sitemap.xml
