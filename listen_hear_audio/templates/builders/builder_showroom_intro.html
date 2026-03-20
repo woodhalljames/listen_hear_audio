@@ -212,14 +212,14 @@
 
       <div class="modal-body" style="padding: 1.75rem 2rem;">
         <p style="font-family:'DM Sans',sans-serif; font-size:1rem; color:#555; line-height:1.75; margin-bottom:1.25rem;">
-          The Builder Showroom is an exclusive space for verified builders and designers working with Listen Hear Audio. It's where you configure smart home packages for your projects and request quotes.
+          The Builder Showroom is exclusive to verified builders and designers working with Listen Hear! It's here where we give clients a guided tour of smart home packages tailored with new-home construction in mind.
         </p>
         <p style="font-family:'DM Sans',sans-serif; font-size:1rem; color:#555; line-height:1.75; margin-bottom:1.5rem;">
           If you're a builder or designer interested in partnering with us, reach out and we'll get your account set up.
         </p>
 
         <div class="d-flex flex-column gap-3">
-          <a href="mailto:{{ business_info.email }}?subject=Builder%20Account%20Request&body=Hi%20Listen%20Hear%2C%0A%0AI%20am%20a%20builder%2Fdesigner%20interested%20in%20accessing%20the%20Builder%20Showroom.%0A%0AName%3A%20%0ACompany%3A%20%0APhone%3A%20%0A"
+          <a href="{% url 'contact' %}"
              class="si-btn si-btn--primary"
              style="justify-content: center; font-size: 1rem;">
             <i class="bi bi-envelope-fill"></i> Request Builder Access
@@ -228,7 +228,7 @@
           <a href="{% url 'account_login' %}?next={% url 'builders:showroom_guided' %}"
              class="si-btn"
              style="justify-content:center; border:2px solid #d0d5e8; color:#444; background:transparent; font-size:1rem;">
-            <i class="bi bi-box-arrow-in-right"></i> Log In to Existing Builder Account
+            <i class="bi bi-box-arrow-in-right"></i> Log In to Existing Builder Profile
           </a>
           {% endif %}
         </div>

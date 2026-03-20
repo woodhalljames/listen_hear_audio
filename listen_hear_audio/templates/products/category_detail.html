@@ -214,12 +214,9 @@
         <div class="category-cta-section text-center">
             <h3 class="fw-bold mb-3">Explore More</h3>
             <p class="text-muted mb-4">Browse our full catalog or see how these packages fit into a new build.</p>
-            <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <div class="d-flex justify-content-center">
                 <a href="{% url 'products:catalog' %}#category-{{ category.slug }}" class="btn btn-primary btn-lg px-4">
                     <i class="bi bi-grid-3x3-gap"></i> View in Catalog
-                </a>
-                <a href="{% url 'builders:showroom' %}" class="btn btn-outline-primary btn-lg px-4">
-                    <i class="bi bi-house-door"></i> Builder Showroom
                 </a>
             </div>
         </div>
