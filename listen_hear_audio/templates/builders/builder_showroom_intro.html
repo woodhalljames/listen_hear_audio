@@ -7,62 +7,24 @@
 
   {# ── Hero ── #}
   <section class="si-hero">
-    <div class="si-hero__glow"></div>
+    {% if business_info.hero_video_src %}
+      <video class="si-hero__video" autoplay muted loop playsinline preload="none" aria-hidden="true">
+        <source src="{{ business_info.hero_video_src }}" type="video/mp4">
+      </video>
+    {% endif %}
     <div class="si-hero__overlay"></div>
     <div class="si-container si-hero__content">
       <p class="si-eyebrow si-eyebrow--light">The Smart Choice</p>
-      <h1 class="si-hero__headline">Transform Your Homes<br><span class="si-hero__accent">Into Smart Homes</span></h1>
-      <p class="si-hero__sub">Choosing Listen Hear to deliver cutting edge smart home technology into the construction of your home makes the install seamlessly integrated, and ready for the families and businesses who live best with tech.</p>
+      <h1 class="si-hero__headline">Transform Your Home<br><span class="si-hero__accent">Into a Smart Home</span></h1>
+      <p class="si-hero__sub">Smart home technology works best implemented during construction, not bolted on after. Seamlessly integrated, ready for the families and businesses who live their best with tech.</p>
       <a href="#showroom" class="si-btn si-btn--ghost mt-2">
         <i class="bi bi-arrow-down"></i> Jump to Showroom
       </a>
     </div>
   </section>
 
-  {# ── Benefits ── #}
-  <section id="benefits" class="si-section si-section--white">
-    <div class="si-container">
-
-      <div class="text-center mb-6">
-        <p class="si-eyebrow">Why It Matters</p>
-        <h2 class="si-title">Smart Home Features Sell Homes</h2>
-        <p class="si-sub">Buyers expect modern amenities, homes that command higher prices, and build stronger reputations.</p>
-      </div>
-
-      <div class="si-benefit-grid">
-
-        <div class="si-benefit">
-          <div class="si-benefit__icon"><i class="bi bi-cash-stack"></i></div>
-          <div class="si-benefit__body">
-            <h3>Mortgage Friendly Financing</h3>
-            <p>Smart home features roll into the construction loan, spreading costs over 15–30 years instead of requiring an upfront outlay. Buyers get more home for the same payment.</p>
-            <ul class="si-check-list">
-              <li><i class="bi bi-check-circle-fill"></i> Included in construction loan at no extra upfront cost</li>
-              <li><i class="bi bi-check-circle-fill"></i> Smart homes command 3–5% higher resale value</li>
-              <li><i class="bi bi-check-circle-fill"></i> Clear market differentiation from competing builders</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="si-benefit">
-          <div class="si-benefit__icon"><i class="bi bi-lightning-charge-fill"></i></div>
-          <div class="si-benefit__body">
-            <h3>Energy Savings &amp; Incentives</h3>
-            <p>Smart thermostats, automated lighting, and integrated controls cut energy costs by 10–30%. Available federal tax credits and state utility rebates sweeten the deal further.</p>
-            <ul class="si-check-list">
-              <li><i class="bi bi-check-circle-fill"></i> 10–30% reduction in energy bills</li>
-              <li><i class="bi bi-check-circle-fill"></i> Federal & State tax credits may be available</li>
-              <li><i class="bi bi-check-circle-fill"></i> Use less resources and minimize your footprint</li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  {# ── Done Right, Done Once ── #}
-  <section class="si-section si-section--gray">
+  {# ── Done Right, Done Once → flows into Scheduler ── #}
+  <section class="si-section si-section--gray" id="scheduler">
     <div class="si-container">
 
       <div class="text-center mb-6">
@@ -104,51 +66,96 @@
     </div>
   </section>
 
-  {# ── Why Listen Hear ── #}
-  <section class="si-section si-section--white">
+
+
+  {# ── Benefits ── #}
+  <section id="benefits" class="si-section si-section--white">
     <div class="si-container">
 
       <div class="text-center mb-6">
-        <p class="si-eyebrow">The Listen Hear Difference</p>
-        <h2 class="si-title">Why Partner with Listen Hear?</h2>
+        <p class="si-eyebrow">Why It Matters</p>
+        <h2 class="si-title">Smart Home Features Sell</h2>
+        <p class="si-sub">Fully intgrated smart homes provide the highest level of security, comfort and return on home investment.</p>
       </div>
 
-      <div class="si-feature-grid">
+      <div class="si-benefit-grid">
 
-        <div class="si-feature">
-          <div class="si-feature__icon"><i class="bi bi-award-fill"></i></div>
-          <h4>Industry Expertise</h4>
-          <p>Years of new construction experience means we understand build timelines, trade coordination, and rough in requirements.</p>
+        <div class="si-benefit">
+          <div class="si-benefit__icon"><i class="bi bi-cash-stack"></i></div>
+          <div class="si-benefit__body">
+            <h3>Mortgage Friendly Financing</h3>
+            <p>Smart home features roll into the construction loan, spreading costs over 15–30 years. Buyers get more home and a better lived experience for negligible impact to their monthly payment.</p>
+            <ul class="si-check-list">
+              <li><i class="bi bi-check-circle-fill"></i> Included in construction loan at no extra upfront cost</li>
+              <li><i class="bi bi-check-circle-fill"></i> Smart homes command 3–5% higher resale value</li>
+              <li><i class="bi bi-check-circle-fill"></i> Clear market differentiation from competing builders</li>
+                   <li><i class="bi bi-check-circle-fill"></i>Offer today's ametities expected from modern home buyers</li>
+            </ul>
+          </div>
         </div>
 
-        <div class="si-feature">
-          <div class="si-feature__icon"><i class="bi bi-tools"></i></div>
-          <h4>Turnkey Solutions</h4>
-          <p>From initial consultation through final programming and handoff. We manage every phase with minimal burden on your team.</p>
+        <div class="si-benefit">
+          <div class="si-benefit__icon"><i class="bi bi-lightning-charge-fill"></i></div>
+          <div class="si-benefit__body">
+            <h3>Energy Savings &amp; Incentives</h3>
+            <p>Smart thermostats, automated lighting, and integrated controls cut energy costs. Available federal tax credits and state utility rebates sweeten the deal further when available.</p>
+            <ul class="si-check-list">
+              <li><i class="bi bi-check-circle-fill"></i> 10–30% reduction in energy bills</li>
+              <li><i class="bi bi-check-circle-fill"></i> Federal & State tax credits may be available</li>
+              <li><i class="bi bi-check-circle-fill"></i> Use less resources and minimize your home's footprint</li>
+              
+            </ul>
+          </div>
         </div>
 
-        <div class="si-feature">
-          <div class="si-feature__icon"><i class="bi bi-headset"></i></div>
-          <h4>White Glove Support</h4>
-          <p>Professional installation, comprehensive buyer training, and ongoing support that reflects positively on your brand long after closing day.</p>
+      </div>
+    </div>
+  </section>
+
+
+  {# ── Builder Scheduler ── #}
+  <section class="si-section si-section--white">
+    <div class="si-container">
+      <div class="si-scheduler-grid">
+
+        <div class="si-scheduler__cards">
+          <div class="si-scheduler__card si-scheduler__card--1">
+            <i class="bi bi-calendar2-check-fill"></i>
+            <div><strong>Installation Confirmed</strong><span>March 18 — March 27</span></div>
+          </div>
+          <div class="si-scheduler__card si-scheduler__card--2">
+            <i class="bi bi-geo-alt-fill"></i>
+            <div><strong>Site: Hartwood Estates Lot 14</strong><span>Pre-wire &amp; AV rough-in</span></div>
+          </div>
+          <div class="si-scheduler__card si-scheduler__card--3">
+            <i class="bi bi-people-fill"></i>
+            <div><strong>Crew Assigned</strong><span>2 certified technicians</span></div>
+          </div>
+          <div class="si-scheduler__card si-scheduler__card--4">
+            <i class="bi bi-graph-up-arrow"></i>
+            <div><strong>3 Properties Active</strong><span>Managed from one dashboard</span></div>
+          </div>
         </div>
 
-        <div class="si-feature">
-          <div class="si-feature__icon"><i class="bi bi-patch-check-fill"></i></div>
-          <h4>Quality Assurance</h4>
-          <p>Premium equipment from trusted brands, professional grade installs, and thorough testing before every homeowner handoff.</p>
-        </div>
-
-        <div class="si-feature">
-          <div class="si-feature__icon"><i class="bi bi-graph-up-arrow"></i></div>
-          <h4>Competitive Advantage</h4>
-          <p>Smart homes sell faster and command higher prices. Give your buyers what they're already looking for before they look elsewhere.</p>
-        </div>
-
-        <div class="si-feature">
-          <div class="si-feature__icon"><i class="bi bi-people-fill"></i></div>
-          <h4>Builder Friendly Process</h4>
-          <p>Clear communication, respect for your schedule, and seamless coordination with your trades.  We make the install easy and your home more valuable.</p>
+        <div class="si-scheduler__body">
+          <p class="si-eyebrow">For Builders &amp; Designers</p>
+          <h2 class="si-title">Schedule Installations<br>Without the Back-and-Forth</h2>
+          <p class="si-sub" style="text-align:left; margin:0 0 1.5rem;">
+            Building a development or managing multiple projects with us? Our Builder Scheduler
+            lets you book smart home installation appointments directly coordinated
+            to your construction timeline, not ours. No phone tag. No delays.
+          </p>
+          <ul class="si-check-list" style="margin-bottom:2rem;">
+            <li><i class="bi bi-check-circle-fill"></i> Schedule pre-wire, rough-in, and trim-out visits in one place</li>
+            <li><i class="bi bi-check-circle-fill"></i> Sync schedules with your other trades and get notified in real time</li>
+            <li><i class="bi bi-check-circle-fill"></i> Manage multiple lots and projects from a single dashboard with ease</li>
+          </ul>
+          <div class="d-flex gap-3 flex-wrap">
+            <a href="{% url 'users:redirect' %}" class="si-btn si-btn--primary">
+              <i class="bi bi-calendar2-plus"></i> Schedule an Installation
+            </a>
+            <a href="{% url 'blog:post_detail' slug='built-for-builders-designed-for-real-world-construction-timelines' %}" class="si-btn si-btn--ghost" style="border-color: var(--primary-blue); color: var(--primary-blue);">Learn More</a>
+          </div>
         </div>
 
       </div>
@@ -164,19 +171,85 @@
         <div class="si-cta__text">
           <p class="si-eyebrow si-eyebrow--light">Let's Build Something</p>
           <h2 class="si-cta__headline">Ready to Build Your Smart Home?</h2>
-          <p class="si-cta__sub">Walk step by step through everything from the networking, audio, video, security, lighting, and more. So you can make move in day end in movie night.</p>
+          <p class="si-cta__sub">Walk step by step through everything from home networking, audio, video, security, lighting, and more!</p>
+          {% if user.is_authenticated and user.is_builder %}
           <a href="{% url 'builders:showroom_guided' %}" class="si-btn si-btn--primary si-btn--xl">
             <i class="bi bi-arrow-right-circle-fill"></i> Enter the Showroom
           </a>
+          {% else %}
+          <button type="button" class="si-btn si-btn--primary si-btn--xl" data-bs-toggle="modal" data-bs-target="#builderRequiredModal">
+            <i class="bi bi-arrow-right-circle-fill"></i> Enter the Showroom
+          </button>
+          {% endif %}
         </div>
         <div class="si-cta__image-wrap">
-          <img src="{% static 'images/smarthome_builder.png' %}" alt="Listen Hear Smart Home Builder" class="si-cta__image">
+          <img src="{% static 'images/smarthome_builder.png' %}" alt="Listen Hear Smart Home Builder" class="si-cta__image" loading="lazy" decoding="async">
         </div>
       </div>
     </div>
   </section>
 
 {% endblock main_wrapper %}
+
+{# ── Builder Required Modal ── #}
+{% block modal %}
+<div class="modal fade" id="builderRequiredModal" tabindex="-1" aria-labelledby="builderRequiredModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 16px; border: none; overflow: hidden;">
+
+      <div class="modal-header" style="background: var(--primary-blue); border: none; padding: 2rem 2rem 1.25rem;">
+        <div>
+          <p style="font-family:'DM Sans',sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--primary-yellow); margin:0 0 0.4rem;">
+            Builder Access Required
+          </p>
+          <h5 class="modal-title" id="builderRequiredModalLabel"
+              style="font-family:'Cormorant Garamond',Georgia,serif; font-size:1.75rem; font-weight:700; color:#fff; margin:0; line-height:1.15;">
+            This Showroom Is for<br>Builders &amp; Designers
+          </h5>
+        </div>
+        <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close" style="margin-top:-1.5rem;"></button>
+      </div>
+
+      <div class="modal-body" style="padding: 1.75rem 2rem;">
+        <p style="font-family:'DM Sans',sans-serif; font-size:1rem; color:#555; line-height:1.75; margin-bottom:1.25rem;">
+          The Builder Showroom is an exclusive space for verified builders and designers working with Listen Hear Audio. It's where you configure smart home packages for your projects and request quotes.
+        </p>
+        <p style="font-family:'DM Sans',sans-serif; font-size:1rem; color:#555; line-height:1.75; margin-bottom:1.5rem;">
+          If you're a builder or designer interested in partnering with us, reach out and we'll get your account set up.
+        </p>
+
+        <div class="d-flex flex-column gap-3">
+          <a href="mailto:{{ business_info.email }}?subject=Builder%20Account%20Request&body=Hi%20Listen%20Hear%2C%0A%0AI%20am%20a%20builder%2Fdesigner%20interested%20in%20accessing%20the%20Builder%20Showroom.%0A%0AName%3A%20%0ACompany%3A%20%0APhone%3A%20%0A"
+             class="si-btn si-btn--primary"
+             style="justify-content: center; font-size: 1rem;">
+            <i class="bi bi-envelope-fill"></i> Request Builder Access
+          </a>
+          {% if not user.is_authenticated %}
+          <a href="{% url 'account_login' %}?next={% url 'builders:showroom_guided' %}"
+             class="si-btn"
+             style="justify-content:center; border:2px solid #d0d5e8; color:#444; background:transparent; font-size:1rem;">
+            <i class="bi bi-box-arrow-in-right"></i> Log In to Existing Builder Account
+          </a>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock modal %}
+
+{% block inline_javascript %}
+<script>
+  // Auto-open modal if redirected back from a restricted showroom page
+  document.addEventListener('DOMContentLoaded', function () {
+    if (new URLSearchParams(window.location.search).get('builder_required') === '1') {
+      var modal = new bootstrap.Modal(document.getElementById('builderRequiredModal'));
+      modal.show();
+    }
+  });
+</script>
+{% endblock inline_javascript %}
 
 {% block css %}
 {{ block.super }}
@@ -244,20 +317,23 @@
 /* ── Hero ─────────────────────────────────────────────────────────── */
 .si-hero {
   position: relative;
-  min-height: 60vh;
+  min-height: 80vh;
   display: flex; align-items: center;
-  background: var(--primary-blue);
+  background-color: #060818;
   overflow: hidden;
   width: 100%;
 }
-.si-hero__glow {
+.si-hero__video {
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 90% 100%, rgba(255,255,255,0.12) 0%, transparent 55%);
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
   pointer-events: none;
 }
 .si-hero__overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to right, rgba(1,8,128,0.45) 0%, transparent 70%);
+  background: linear-gradient(to bottom, rgba(5,8,24,0.25) 0%, rgba(5,8,24,0.1) 40%, rgba(5,8,24,0.7) 80%, rgba(5,8,24,0.95) 100%);
+  z-index: 1;
 }
 .si-hero__content {
   position: relative; z-index: 2;
@@ -461,6 +537,36 @@
   transition: transform 0.4s ease;
 }
 .si-cta__image-wrap:hover .si-cta__image { transform: scale(1.03); }
+
+/* ── Scheduler ────────────────────────────────────────────────── */
+.si-scheduler-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+@media (max-width: 767px) { .si-scheduler-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+.si-scheduler__cards { position: relative; padding: 1rem; }
+
+.si-scheduler__card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 1rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border-left: 4px solid var(--primary-blue);
+  font-family: 'DM Sans', sans-serif;
+}
+.si-scheduler__card--2 { margin-left: 2rem;   border-left-color: #FFCC00; }
+.si-scheduler__card--3 { margin-left: 1rem; }
+.si-scheduler__card--4 { margin-left: 2.5rem; border-left-color: #2ECC71; }
+.si-scheduler__card i  { font-size: 1.3rem; color: var(--primary-blue); flex-shrink: 0; }
+.si-scheduler__card--2 i { color: #b8a000; }
+.si-scheduler__card--4 i { color: #2ECC71; }
+.si-scheduler__card strong { display: block; font-size: 0.9rem; color: var(--primary-dark); }
+.si-scheduler__card span   { font-size: 0.8rem; color: #888; }
 
 </style>
 {% endblock css %}

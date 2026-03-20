@@ -31,7 +31,7 @@
       <!-- Form Card -->
       <div class="card shadow-sm">
         <div class="card-body p-4">
-          <form method="post">
+          <form method="post"{% if request.user.is_authenticated and request.user.is_builder %} autocomplete="off"{% endif %}>
             {% csrf_token %}
 
             <!-- Contact Information -->
@@ -122,7 +122,7 @@
 
             <!-- Action Buttons -->
             <div class="d-flex gap-2 justify-content-end mt-4">
-              <a href="{% if request.user.is_authenticated %}{% url 'users:detail' request.user.pk %}{% else %}{% url 'home' %}{% endif %}" class="btn btn-secondary btn-lg">
+              <a href="{% if request.user.is_authenticated %}{% url 'users:detail' request.user.public_id %}{% else %}{% url 'home' %}{% endif %}" class="btn btn-secondary btn-lg">
                 <i class="bi bi-x-circle me-1"></i>Cancel
               </a>
               <button type="submit" class="btn btn-success btn-lg">

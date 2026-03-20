@@ -184,6 +184,13 @@
       });
     });
 
+    // Back to top button
+    const topBtn = document.getElementById('catalog-top-btn');
+    window.addEventListener('scroll', () => {
+      topBtn.classList.toggle('catalog-top-btn--visible', window.scrollY > 400);
+    }, { passive: true });
+    topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
     function getCSRFToken() {
       const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
       if (tokenInput) return tokenInput.value;
@@ -259,5 +266,27 @@
     border-color: var(--primary-blue);
     color: #fff;
   }
+
+  /* ---- Back to top ---- */
+  #catalog-top-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    transform: scale(0.875);
+    transform-origin: bottom left;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  #catalog-top-btn.catalog-top-btn--visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
 </style>
+
+<button id="catalog-top-btn" class="btn btn-primary btn-lg shadow-lg" aria-label="Back to top">
+  <i class="bi bi-arrow-up"></i>
+</button>
+
 {% endblock %}

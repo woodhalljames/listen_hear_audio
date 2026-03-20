@@ -47,14 +47,6 @@
            Expertly integrated for residential,
           commercial, and new construction across the greater Pittsburgh area.
         </p>
-        <div class="lhx-hero__ctas">
-          <a href="{% url 'products:catalog' %}" class="lhx-btn lhx-btn--primary">
-            <i class="bi bi-grid-3x3-gap"></i> Browse Our Catalog
-          </a>
-          <a href="{% url 'builders:showroom' %}" class="lhx-btn lhx-btn--ghost">
-            <i class="bi bi-house"></i> Build Your Smart Home
-          </a>
-        </div>
         <div class="lhx-hero__stats">
           <div class="lhx-hero__stat">
             <span class="lhx-hero__stat-num">30+</span>
@@ -87,7 +79,7 @@
         <p class="lhx-eyebrow">The Smart Home Experience</p>
         <h2 class="lhx-section-title">Your Home,<br><em>Anticipating Your Every Need</em></h2>
         <p class="lhx-section-sub">
-From the moment your alarm goes off, your smart home automation system can set the mood. Soft lighting fades in, motorized shades rise to greet the morning sun, and your integrated home surveillance system keeps watch with smart security cameras and motion detection as you go about your day. Your smart thermostat adjusts automatically, ensuring every room is comfortable or efficient as your home transitions seamlessly from night to morning.      </p>
+From the moment your alarm goes off, your smart home automation system can set the mood. Soft lighting fades in, motorized shades rise to greet the morning sun, and your integrated home surveillance system keeps watch with smart security. Your thermostat adjusts automatically, ensuring every room is comfortable or efficient as your home transitions seamlessly to welcome the day.      </p>
       </div>
 
       <div class="lhx-bento">
@@ -163,7 +155,7 @@ From the moment your alarm goes off, your smart home automation system can set t
     </div>
   </section>
 
-  <section class="lhx-evening lhx-section" data-dn-phase="1.0" id="evening" aria-label="Smart Home Evening Features">
+  <section class="lhx-evening lhx-section" data-dn-phase="1.0" data-dn-blend-start="0.1" id="evening" aria-label="Smart Home Evening Features">
     <div class="container-fluid">
 
       <div class="lhx-section-header lhx-section-header--aside">
@@ -234,41 +226,7 @@ From the moment your alarm goes off, your smart home automation system can set t
     </div>
   </section>
 
-  <section class="lhx-builder lhx-builder--transitional lhx-section" data-dn-phase="0.62" id="showroom" aria-label="Smart Home Builder Tool">
-    <div class="container-fluid">
-      <div class="row align-items-center g-5">
-
-        <div class="col-lg-6 lhx-animate-reveal" data-delay="0">
-          <div class="lhx-builder__visual">
-            <img src="{% static 'images/smarthome_builder.png' %}" alt="Smart Home Builder room selection tool" class="lhx-builder__img" loading="lazy" decoding="async">
-          </div>
-        </div>
-
-        <div class="col-lg-6 lhx-animate-reveal" data-delay="100">
-          <p class="lhx-eyebrow lhx-eyebrow--transitional">Smart Home Showroom</p>
-          <h2 class="lhx-section-title lhx-section-title--transitional">Build Your Dream Home,<br><em>Your Way</em></h2>
-          <p class="lhx-builder__text lhx-builder__text--transitional">
-            Our Smart Home Builder Showroom puts you in the driver's seat.
-            Browse curated packages, match technologies
-            that fit your lifestyle & budget; see exactly what your home looks like, smart.
-            
-          </p>
-          <ul class="lhx-feature-list lhx-feature-list--transitional">
-            <li><i class="bi bi-check-circle-fill"></i><span>Customization across nearly your entire floor plan</span></li>
-            <li><i class="bi bi-check-circle-fill"></i><span>Build packages that roll seamlessly into new construction financing</span></li>
-            <li><i class="bi bi-check-circle-fill"></i><span>Transparent pricing; no surprises, no pressure</span></li>
-            <li><i class="bi bi-check-circle-fill"></i><span>Finalize your selections and share with your builder or designer</span></li>
-          </ul>
-          <a href="{% url 'builders:showroom' %}" class="lhx-btn lhx-btn--primary">
-            <i class="bi bi-house"></i> Open Smart Home Showroom
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <section class="lhx-catalog-strip lhx-section" data-dn-phase="0.15" id="services" aria-label="Smart Home Services Catalog Pittsburgh">
+  <section class="lhx-catalog-strip lhx-section" data-dn-phase="0.0" id="services" aria-label="Smart Home Services Catalog Pittsburgh">
     <div class="container-fluid">
 
       <div class="lhx-section-header lhx-section-header--split">
@@ -343,50 +301,33 @@ From the moment your alarm goes off, your smart home automation system can set t
     </div>
   </section>
 
-  <section class="lhx-scheduler lhx-section" data-dn-phase="0.08" id="scheduler" aria-label="Builder Installation Scheduling">
+  <section class="lhx-builder lhx-section" data-dn-phase="0.05" id="showroom" aria-label="Smart Home Builder Showroom">
     <div class="container-fluid">
       <div class="row align-items-center g-5">
 
-        <div class="col-lg-6 order-lg-2">
-          <div class="lhx-scheduler__cards">
-            <div class="lhx-scheduler__card lhx-scheduler__card--1 lhx-animate-reveal" data-delay="0">
-              <i class="bi bi-calendar2-check-fill"></i>
-              <div><strong>Installation Confirmed</strong><span>March 18 — March 27</span></div>
-            </div>
-            <div class="lhx-scheduler__card lhx-scheduler__card--2 lhx-animate-reveal" data-delay="120">
-              <i class="bi bi-geo-alt-fill"></i>
-              <div><strong>Site: Hartwood Estates Lot 14</strong><span>Pre-wire &amp; AV rough-in</span></div>
-            </div>
-            <div class="lhx-scheduler__card lhx-scheduler__card--3 lhx-animate-reveal" data-delay="240">
-              <i class="bi bi-people-fill"></i>
-              <div><strong>Crew Assigned</strong><span>2 certified technicians</span></div>
-            </div>
-            <div class="lhx-scheduler__card lhx-scheduler__card--4 lhx-animate-reveal" data-delay="360">
-              <i class="bi bi-graph-up-arrow"></i>
-              <div><strong>3 Properties Active</strong><span>Managed from one dashboard</span></div>
-            </div>
+        <div class="col-lg-6 lhx-animate-reveal" data-delay="0">
+          <div class="lhx-builder__visual">
+            <img src="{% static 'images/smarthome_builder.png' %}" alt="Smart Home Builder room selection tool" class="lhx-builder__img" loading="lazy" decoding="async">
           </div>
         </div>
 
-        <div class="col-lg-6 order-lg-1 lhx-animate-reveal" data-delay="60">
-          <p class="lhx-eyebrow">For Builders &amp; Designers</p>
-          <h2 class="lhx-section-title">Schedule Installations<br>Without the Back-and-Forth</h2>
+        <div class="col-lg-6 lhx-animate-reveal" data-delay="100">
+          <p class="lhx-eyebrow">Smart Home Showroom</p>
+          <h2 class="lhx-section-title">Build Your Dream Home,<br><em>Your Way</em></h2>
           <p class="lhx-builder__text">
-            Building a development or managing multiple projects? Our Builder Scheduler
-            lets you book smart home installation appointments directly coordinated
-            to your construction timeline, not ours. No phone tag. No delays.
+            Our Smart Home Builder Showroom puts you in the driver's seat.
+            Browse curated packages, match technologies that fit your lifestyle &amp; budget;
+            see exactly what your finished home construction looks like, smart. 
           </p>
           <ul class="lhx-feature-list">
-            <li><i class="bi bi-check-circle-fill"></i><span>Schedule pre-wire, rough-in, and trim-out visits in one place</span></li>
-            <li><i class="bi bi-check-circle-fill"></i><span>Sync schedules and get notified in real time</span></li>
-            <li><i class="bi bi-check-circle-fill"></i><span>Manage multiple lots and projects from a single dashboard</span></li>
+            <li><i class="bi bi-check-circle-fill"></i><span>Customization across nearly your entire floor plan</span></li>
+            <li><i class="bi bi-check-circle-fill"></i><span>Build packages that roll seamlessly into new construction financing</span></li>
+            <li><i class="bi bi-check-circle-fill"></i><span>Transparent pricing; no surprises, no pressure</span></li>
+            <li><i class="bi bi-check-circle-fill"></i><span>Finalize your selections and share with your builder or designer</span></li>
           </ul>
-          <div class="d-flex gap-3 flex-wrap mt-4">
-            <a href="{% url 'users:redirect' %}" class="lhx-btn lhx-btn--primary">
-              <i class="bi bi-calendar2-plus"></i> Schedule an Installation
-            </a>
-            <a href="{% url 'blog:post_detail' slug='built-for-builders-designed-for-real-world-construction-timelines' %}" class="lhx-btn lhx-btn--outline">Learn More</a>
-          </div>
+          <a href="{% url 'builders:showroom' %}" class="lhx-btn lhx-btn--primary">
+            <i class="bi bi-house"></i> Open Smart Home Showroom
+          </a>
         </div>
 
       </div>
@@ -442,7 +383,7 @@ From the moment your alarm goes off, your smart home automation system can set t
                   No runaround, no third parties. Just your trusted home technology team.
                 </p>
                 {% if request.user.is_authenticated %}
-                  <a href="{% url 'users:detail' request.user.pk %}" class="lhx-btn lhx-btn--primary">
+                  <a href="{% url 'users:detail' request.user.public_id %}" class="lhx-btn lhx-btn--primary">
                     <i class="bi bi-tools"></i> Request Service
                   </a>
                 {% else %}
@@ -467,16 +408,13 @@ From the moment your alarm goes off, your smart home automation system can set t
                 Start Your Relationship<br>With Listen Hear Today.
               </h3>
               <p class="lhx-closer__cta-text">
-                Visit our Pittsburgh showroom, design your home online, or talk to
-                a certified technician.  Start the first of many conversations we hope
+                Visit our Pittsburgh showroom or talk to a certified technician.
+                Start the first of many conversations we hope
                 to have with you over the life of your home.
               </p>
               <div class="d-flex flex-column gap-3">
                 <a href="{% url 'contact' %}" class="lhx-btn lhx-btn--primary lhx-btn--full">
                   <i class="bi bi-chat-dots"></i> Talk to an Expert
-                </a>
-                <a href="{% url 'builders:showroom' %}" class="lhx-btn lhx-btn--ghost lhx-btn--full">
-                  <i class="bi bi-house"></i> Open Smart Home Builder
                 </a>
               </div>
             </div>
@@ -732,7 +670,6 @@ html, body {
 /* Day-tracking sections */
 /* Day-tracking sections — background interpolates with scroll */
 .lhx-morning,
-.lhx-scheduler,
 .lhx-brands           { background-color: var(--dn-section-bg); transition: background-color 0.1s linear; }
 
 /* Closer manages its own two-zone backgrounds (see __upper / __lower) */
@@ -1123,30 +1060,7 @@ a.lhx-bento__cell:hover .lhx-bento__cell-link--light { color: #fff; }
 
 
 /* ══════════════════════════════════════════════════════════════
-   7. SCHEDULER
-   ══════════════════════════════════════════════════════════════ */
-.lhx-scheduler__cards { position: relative; padding: 1rem; }
-.lhx-scheduler__card {
-  background: var(--dn-card-bg); border: 1px solid var(--dn-card-border);
-  border-left: 4px solid var(--primary-blue); border-radius: 12px;
-  padding: 1.1rem 1.35rem; display: flex; align-items: center; gap: 1rem;
-  box-shadow: 0 2px 16px var(--dn-shadow); margin-bottom: 1rem;
-  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, opacity 0.45s ease, transform 0.45s ease;
-}
-.lhx-scheduler__card--1 { margin-left: 0; }
-.lhx-scheduler__card--2 { margin-left: 2rem;   border-left-color: #FFCC00; }
-.lhx-scheduler__card--3 { margin-left: 1rem; }
-.lhx-scheduler__card--4 { margin-left: 2.5rem; border-left-color: #2ECC71; }
-.lhx-scheduler__card i  { font-size: 1.6rem; color: var(--primary-blue); flex-shrink: 0; }
-.lhx-scheduler__card--2 i { color: #c89e00; }
-.lhx-scheduler__card--4 i { color: #27ae60; }
-.lhx-scheduler__card div  { display: flex; flex-direction: column; gap: 0.15rem; }
-.lhx-scheduler__card strong { font-family: 'DM Sans', sans-serif; font-size: 1.025rem; font-weight: 700; color: var(--dn-title); transition: color 0.3s; }
-.lhx-scheduler__card span   { font-family: 'DM Sans', sans-serif; font-size: 0.925rem; color: var(--dn-sub); transition: color 0.3s; }
-
-
-/* ══════════════════════════════════════════════════════════════
-   8. BRANDS
+   7. BRANDS
    ══════════════════════════════════════════════════════════════ */
 .lhx-brands-grid {
   display: grid; grid-template-columns: repeat(6, 1fr);
@@ -1335,8 +1249,6 @@ a.lhx-bento__cell:hover .lhx-bento__cell-link--light { color: #fff; }
    ══════════════════════════════════════════════════════════════ */
 .lhx-animate-reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .lhx-animate-reveal.lhx-revealed { opacity: 1; transform: translateY(0); }
-.lhx-scheduler__card.lhx-animate-reveal { transform: translateX(28px); }
-.lhx-scheduler__card.lhx-revealed       { transform: translateX(0); }
 
 
 /* ══════════════════════════════════════════════════════════════

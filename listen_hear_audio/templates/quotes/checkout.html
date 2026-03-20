@@ -45,7 +45,7 @@
             Please provide your contact information so we can prepare your custom quote.
           </p>
 
-          <form method="post" action="{% url 'quotes:checkout' %}">
+          <form method="post" action="{% url 'quotes:checkout' %}"{% if request.user.is_authenticated and request.user.is_builder %} autocomplete="off"{% endif %}>
             {% csrf_token %}
             
             <!-- Contact Person -->
@@ -180,7 +180,8 @@
           <h5 class="mb-0">Order Summary</h5>
         </div>
         <div class="card-body">
-          <!-- Category Summary -->
+          <!-- Category breakdown — totals already include builder markup via CartItem.get_subtotal() -->
+          {% if category_summary %}
           <div class="mb-3">
             {% for category_name, data in category_summary.items %}
               <div class="d-flex justify-content-between mb-2">
@@ -197,8 +198,8 @@
               </div>
             {% endfor %}
           </div>
-          
           <hr>
+          {% endif %}
 
           <div class="d-flex justify-content-between mb-3">
             <span>Estimated Total:</span>

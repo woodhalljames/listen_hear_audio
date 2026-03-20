@@ -81,6 +81,13 @@ class CartItem(models.Model):
         default=1,
         validators=[MinValueValidator(1)]
     )
+    unit_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text="Price per unit at time of adding to cart (includes builder markup if applicable)"
+    )
     notes = models.TextField(
         blank=True,
         help_text="Customer notes for this specific package"
@@ -97,8 +104,9 @@ class CartItem(models.Model):
         return f"{self.quantity}x {self.package.name}"
 
     def get_subtotal(self):
-        """Get subtotal for this item based on starting price"""
-        return self.package.starting_price * self.quantity
+        """Get subtotal for this item, using unit_price snapshot if available"""
+        price = self.unit_price if self.unit_price is not None else self.package.starting_price
+        return price * self.quantity
 
 
 class QuoteRequest(models.Model):

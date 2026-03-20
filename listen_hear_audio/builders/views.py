@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.shortcuts import redirect, get_object_or_404, render
+from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
@@ -233,7 +234,10 @@ def _get_phase_icon(phase):
 
 
 def builder_showroom(request, step=1):
-    """Guided step-by-step builder showroom experience."""
+    """Guided step-by-step builder showroom experience. Restricted to builder accounts."""
+    if not request.user.is_authenticated or not request.user.is_builder:
+        return redirect(f"{reverse('builders:showroom')}?builder_required=1")
+
     from listen_hear_audio.quotes.cart import get_or_create_cart
 
     cart = get_or_create_cart(request)
@@ -268,6 +272,8 @@ def builder_showroom(request, step=1):
         messages.error(request, 'Invalid step')
         return redirect('builders:showroom_guided')
 
+    markup_pct = request.user.showroom_markup_pct or 0
+
     context = {
         'current_step': step,
         'total_steps': total_steps,
@@ -276,6 +282,7 @@ def builder_showroom(request, step=1):
         'has_next': step < total_steps,
         'cart_count': cart.get_total_items(),
         'cart_package_ids': cart_package_ids,
+        'markup_pct': markup_pct,
     }
 
     return render(request, 'builders/builder_showroom_guided.html', context)

@@ -1,53 +1,100 @@
-{% extends "account/base_entrance.html" %}
+{% extends "base.html" %}
 {% load i18n %}
 {% load allauth %}
-{% load crispy_forms_tags %}
 
-{% block head_title %}
-  {% trans "Sign Up" %}
-{% endblock head_title %}
+{% block title %}Create Account – Listen Hear!{% endblock %}
 
-{% block content %}
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-10 col-lg-8">
-        <h1 class="mb-4">{% trans "Sign Up" %}</h1>
-        <p>
-          {% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
-        </p>
-        <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-          {% csrf_token %}
-          {{ form|crispy }}
-          {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-          {% endif %}
-          <button class="btn btn-primary w-100" type="submit">{% trans "Sign Up" %}</button>
-        </form>
-      </div>
+{% block main_wrapper %}
+<div class="auth-page">
+  <div class="auth-page__inner">
+
+    <div class="auth-card">
+
+      <h1 class="auth-card__title">Create your account</h1>
+      <p class="auth-card__sub">
+        {% blocktrans %}Already have an account? <a href="{{ login_url }}">Sign in</a>.{% endblocktrans %}
+      </p>
+
+      <form class="auth-form" id="signup_form" method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger py-2 small">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="auth-field">
+          <label for="{{ form.email.id_for_label }}" class="auth-label">Email address</label>
+          {{ form.email }}
+          {% if form.email.errors %}<div class="auth-error">{{ form.email.errors }}</div>{% endif %}
+        </div>
+
+        <div class="auth-field">
+          <label for="{{ form.password1.id_for_label }}" class="auth-label">Password</label>
+          {{ form.password1 }}
+          {% if form.password1.errors %}<div class="auth-error">{{ form.password1.errors }}</div>{% endif %}
+          {% if form.password1.help_text %}<div class="auth-hint">{{ form.password1.help_text }}</div>{% endif %}
+        </div>
+
+        <div class="auth-field">
+          <label for="{{ form.password2.id_for_label }}" class="auth-label">Confirm password</label>
+          {{ form.password2 }}
+          {% if form.password2.errors %}<div class="auth-error">{{ form.password2.errors }}</div>{% endif %}
+        </div>
+
+        <div class="auth-check">
+          {{ form.subscribe_to_newsletter }}
+          <div>
+            <label class="auth-check__label" for="{{ form.subscribe_to_newsletter.id_for_label }}">{{ form.subscribe_to_newsletter.label }}</label>
+            {% if form.subscribe_to_newsletter.help_text %}<div class="auth-hint">{{ form.subscribe_to_newsletter.help_text }}</div>{% endif %}
+          </div>
+        </div>
+
+        <button type="submit" class="auth-btn">Create Account</button>
+
+        <div class="auth-divider"><span>Builder or Contractor?</span></div>
+
+        <div class="auth-check">
+          {{ form.is_builder }}
+          <div>
+            <label class="auth-check__label" for="{{ form.is_builder.id_for_label }}">{{ form.is_builder.label }}</label>
+            {% if form.is_builder.help_text %}<div class="auth-hint">{{ form.is_builder.help_text }}</div>{% endif %}
+          </div>
+        </div>
+        {% if form.is_builder.errors %}<div class="auth-error">{{ form.is_builder.errors }}</div>{% endif %}
+
+        <div id="div_id_company_name" class="auth-field" style="display: none;">
+          <label for="{{ form.company_name.id_for_label }}" class="auth-label">{{ form.company_name.label }}</label>
+          {{ form.company_name }}
+          {% if form.company_name.help_text %}<div class="auth-hint">{{ form.company_name.help_text }}</div>{% endif %}
+          {% if form.company_name.errors %}<div class="auth-error">{{ form.company_name.errors }}</div>{% endif %}
+        </div>
+
+      </form>
     </div>
   </div>
+</div>
+{% endblock main_wrapper %}
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const builderCheckbox = document.getElementById('id_is_builder');
-      const companyNameField = document.getElementById('div_id_company_name');
+{% block css %}
+{{ block.super }}
+{% include "account/_auth_styles.html" %}
+{% endblock css %}
 
-      if (builderCheckbox && companyNameField) {
-        // Function to toggle company name field visibility
-        function toggleCompanyName() {
-          if (builderCheckbox.checked) {
-            companyNameField.style.display = 'block';
-          } else {
-            companyNameField.style.display = 'none';
-          }
-        }
-
-        // Initial state - hide company name field
-        toggleCompanyName();
-
-        // Add event listener for checkbox changes
-        builderCheckbox.addEventListener('change', toggleCompanyName);
+{% block inline_javascript %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const builderCheckbox = document.getElementById('{{ form.is_builder.id_for_label }}');
+    const companyNameField = document.getElementById('div_id_company_name');
+    if (builderCheckbox && companyNameField) {
+      function toggleCompanyName() {
+        companyNameField.style.display = builderCheckbox.checked ? 'block' : 'none';
       }
-    });
-  </script>
-{% endblock content %}
+      toggleCompanyName();
+      builderCheckbox.addEventListener('change', toggleCompanyName);
+    }
+  });
+</script>
+{% endblock inline_javascript %}

@@ -21,7 +21,7 @@
       <!-- Action Buttons -->
       <div class="d-flex gap-3 justify-content-center flex-wrap">
         {% if request.user.is_authenticated %}
-          <a href="{% url 'users:detail' request.user.pk %}" class="btn btn-primary btn-lg">
+          <a href="{% url 'users:detail' request.user.public_id %}" class="btn btn-primary btn-lg">
             <i class="bi bi-person-circle me-2"></i>Back to My Profile
           </a>
         {% endif %}

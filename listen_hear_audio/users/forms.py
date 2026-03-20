@@ -36,15 +36,22 @@ class UserSignupForm(SignupForm):
     Check UserSocialSignupForm for accounts created from social.
     """
 
+    subscribe_to_newsletter = BooleanField(
+        label=_("Subscribe to our newsletter"),
+        required=False,
+        initial=True,
+        help_text=_("Receive occasional updates, tips, and offers from Listen Hear.")
+    )
+
     is_builder = BooleanField(
-        label=_("I am a Builder/Contractor/Designer"),
+        label=_("I am a Builder / Contractor / Designer"),
         required=False,
         help_text=_("Check this box if you are registering as a builder.")
     )
 
     company_name = CharField(
         max_length=255,
-        label=_("Company Name/Website"),
+        label=_("Company Name"),
         required=False,
         help_text=_("Required if you are a builder/contractor/designer.")
     )
@@ -54,7 +61,6 @@ class UserSignupForm(SignupForm):
         is_builder = cleaned_data.get('is_builder', False)
         company_name = cleaned_data.get('company_name', '')
 
-        # Require company name if user is a builder
         if is_builder and not company_name:
             self.add_error('company_name', _('Company name is required for builders/contractors/designers.'))
 
@@ -62,6 +68,7 @@ class UserSignupForm(SignupForm):
 
     def save(self, request):
         user = super().save(request)
+        user.subscribe_to_newsletter = self.cleaned_data.get('subscribe_to_newsletter', False)
         user.is_builder = self.cleaned_data.get('is_builder', False)
         user.company_name = self.cleaned_data.get('company_name', '')
         user.save()

@@ -10,8 +10,8 @@ from listen_hear_audio.users.models import User
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
-    slug_field = "id"
-    slug_url_kwarg = "id"
+    slug_field = "public_id"
+    slug_url_kwarg = "public_id"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -48,7 +48,9 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
     permanent = False
 
     def get_redirect_url(self) -> str:
-        return reverse("users:detail", kwargs={"pk": self.request.user.pk})
+        if self.request.user.is_builder:
+            return reverse("builders:showroom")
+        return reverse("users:detail", kwargs={"public_id": self.request.user.public_id})
 
 
 user_redirect_view = UserRedirectView.as_view()

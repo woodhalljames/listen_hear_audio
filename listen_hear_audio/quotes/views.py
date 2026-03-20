@@ -25,7 +25,12 @@ def add_to_cart_view(request, package_id):
     quantity = int(request.POST.get('quantity', 1))
     notes = request.POST.get('notes', '')
     
-    cart_item = add_to_cart(cart, package_id, quantity, notes)
+    markup_pct = None
+    if request.user.is_authenticated and getattr(request.user, 'is_builder', False):
+        pct = getattr(request.user, 'showroom_markup_pct', None)
+        if pct:
+            markup_pct = pct
+    cart_item = add_to_cart(cart, package_id, quantity, notes, markup_pct=markup_pct)
     
     if cart_item:
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -175,7 +180,7 @@ def checkout_view(request):
                     package_name=cart_item.package.name,
                     package_description=cart_item.package.short_description,
                     installation_phase_snapshot=cart_item.package.installation_phase,
-                    price_snapshot=cart_item.package.starting_price,
+                    price_snapshot=cart_item.unit_price if cart_item.unit_price is not None else cart_item.package.starting_price,
                     quantity=cart_item.quantity,
                     notes=cart_item.notes
                 )
@@ -195,9 +200,9 @@ def checkout_view(request):
             # Redirect to confirmation
             return redirect('quotes:quote_confirmation', quote_number=quote_request.quote_number)
     else:
-        # Pre-fill form for authenticated users
+        # Pre-fill form for authenticated non-builder users only
         initial_data = {}
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and not request.user.is_builder:
             initial_data = {
                 'contact_person': request.user.name,
                 'email': request.user.email,

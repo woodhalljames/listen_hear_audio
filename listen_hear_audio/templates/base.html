@@ -89,10 +89,7 @@
             {% if request.user.is_builder %}
               {# Simplified nav for builders #}
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'products:catalog' %}">Catalog</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'gallery:gallery' %}">Gallery</a>
+                <a class="nav-link" href="{% url 'contact' %}">Contact</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'builders:showroom' %}">
@@ -118,7 +115,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                   <li>
-                    <a class="dropdown-item" href="{% url 'users:detail' request.user.pk %}">
+                    <a class="dropdown-item" href="{% url 'users:detail' request.user.public_id %}">
                       {% translate "My Profile" %}
                     </a>
                   </li>
@@ -135,11 +132,18 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'home' %}">Home</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'products:catalog' %}">Catalog</a>
+              <li class="nav-item nav-catalog">
+                <a class="nav-link" href="{% url 'products:catalog' %}">Catalog <i class="bi bi-chevron-down nav-catalog__caret"></i></a>
+                <ul class="nav-catalog__menu">
+                  {% for category in nav_categories %}
+                    <li><a class="dropdown-item" href="{% url 'products:category_detail' slug=category.slug %}">{{ category.name }}</a></li>
+                  {% endfor %}
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'products:catalog' %}"><i class="bi bi-grid-3x3-gap me-1"></i> View All</a></li>
+                </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'gallery:gallery' %}">Gallery</a>
+                <a class="nav-link" href="{% url 'contact' %}">Contact</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'blog:post_list' %}">Blog</a>
@@ -176,7 +180,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                   <li>
-                    <a class="dropdown-item" href="{% url 'users:detail' request.user.pk %}">
+                    <a class="dropdown-item" href="{% url 'users:detail' request.user.public_id %}">
                       {% translate "My Profile" %}
                     </a>
                   </li>
@@ -190,11 +194,18 @@
               </li>
             {% endif %}
           {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'products:catalog' %}">Catalog</a>
+            <li class="nav-item nav-catalog">
+              <a class="nav-link" href="{% url 'products:catalog' %}">Catalog <i class="bi bi-chevron-down nav-catalog__caret"></i></a>
+              <ul class="nav-catalog__menu">
+                {% for category in nav_categories %}
+                  <li><a class="dropdown-item" href="{% url 'products:category_detail' slug=category.slug %}">{{ category.name }}</a></li>
+                {% endfor %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'products:catalog' %}"><i class="bi bi-grid-3x3-gap me-1"></i> View All</a></li>
+              </ul>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'gallery:gallery' %}">Gallery</a>
+              <a class="nav-link" href="{% url 'contact' %}">Contact</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'blog:post_list' %}">Blog</a>
@@ -298,6 +309,7 @@
           <ul class="footer-links">
             <li><a href="{% url 'products:catalog' %}">Browse Catalog</a></li>
             <li><a href="{% url 'quotes:cart' %}">View Cart</a></li>
+            <li><a href="{% url 'gallery:gallery' %}">Gallery</a></li>
             <li><a href="{% url 'blog:post_list' %}">Blog</a></li>
           </ul>
         </div>

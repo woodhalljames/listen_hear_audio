@@ -6,7 +6,8 @@
 {% block meta_description %}{{ category.description|default:category.name }} - Smart home installation by Listen Hear! Pittsburgh PA.{% endblock %}
 {% block og_title %}{{ category.name }} - Listen Hear!{% endblock %}
 {% block og_description %}{{ category.description|default:"Smart home installation services in Pittsburgh PA by Listen Hear!" }}{% endblock %}
-{% if category.image %}{% block og_image %}{{ category.image.url }}{% endblock %}{% block twitter_image %}{{ category.image.url }}{% endblock %}{% endif %}
+{% block og_image %}{% if category.image %}{{ category.image.url }}{% else %}{% load static %}{% static 'images/listenhear.png' %}{% endif %}{% endblock %}
+{% block twitter_image %}{% if category.image %}{{ category.image.url }}{% else %}{% load static %}{% static 'images/listenhear.png' %}{% endif %}{% endblock %}
 
 {% block content %}
 <!-- Hidden CSRF token for AJAX requests -->

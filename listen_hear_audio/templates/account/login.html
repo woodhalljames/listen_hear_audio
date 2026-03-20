@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load allauth %}
+
+{% block title %}Sign In – Listen Hear!{% endblock %}
+
+{% block main_wrapper %}
+<div class="auth-page">
+  <div class="auth-page__inner">
+
+    <div class="auth-card">
+
+      <h1 class="auth-card__title">Welcome back</h1>
+      <p class="auth-card__sub">
+        {% blocktrans %}No account? <a href="{{ signup_url }}">Create one free</a>.{% endblocktrans %}
+      </p>
+
+      <form method="post" action="{% url 'account_login' %}" class="auth-form">
+        {% csrf_token %}
+        {{ redirect_field }}
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger py-2 small">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="auth-field">
+          <label for="{{ form.login.id_for_label }}" class="auth-label">Email address</label>
+          {{ form.login }}
+          {% if form.login.errors %}<div class="auth-error">{{ form.login.errors }}</div>{% endif %}
+        </div>
+
+        <div class="auth-field">
+          <div class="auth-label-row">
+            <label for="{{ form.password.id_for_label }}" class="auth-label">Password</label>
+            <a href="{% url 'account_reset_password' %}" class="auth-forgot">Forgot password?</a>
+          </div>
+          {{ form.password }}
+          {% if form.password.errors %}<div class="auth-error">{{ form.password.errors }}</div>{% endif %}
+        </div>
+
+        <button type="submit" class="auth-btn">Sign In</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock main_wrapper %}
+
+{% block css %}
+{{ block.super }}
+{% include "account/_auth_styles.html" %}
+{% endblock css %}

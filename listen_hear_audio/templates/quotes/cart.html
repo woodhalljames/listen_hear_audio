@@ -110,7 +110,7 @@
                             </form>
                           </td>
                           <td class="text-end align-middle">
-                            ${{ item.package.starting_price|floatformat:2 }}
+                            ${% if item.unit_price is not None %}{{ item.unit_price|floatformat:2 }}{% else %}{{ item.package.starting_price|floatformat:2 }}{% endif %}
                             {% if item.package.is_custom %}
                               <div class="small text-muted">Custom</div>
                             {% endif %}

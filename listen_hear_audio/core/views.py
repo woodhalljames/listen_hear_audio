@@ -63,9 +63,9 @@ class ServiceRequestView(CreateView):
     success_url = reverse_lazy("core:service_request_success")
 
     def get_initial(self):
-        """Pre-fill form with user data if logged in."""
+        """Pre-fill form with user data if logged in as a regular (non-builder) account."""
         initial = super().get_initial()
-        if self.request.user.is_authenticated:
+        if self.request.user.is_authenticated and not self.request.user.is_builder:
             user = self.request.user
             initial.update({
                 "name": user.name,

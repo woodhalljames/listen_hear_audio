@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static builders_extras %}
 
 {% block title %}Smart Home Builder Showroom - Step {{ current_step }} of {{ total_steps }} - Listen Hear{% endblock %}
 
@@ -110,7 +110,7 @@
                                 <!-- Image with Features Overlay -->
                                 <div class="package-image-container position-relative">
                                     {% if package.image %}
-                                    <img src="{{ package.image.url }}" class="card-img-top package-image" alt="{{ package.name }}">
+                                    <img src="{{ package.image.url }}" class="card-img-top package-image" alt="{{ package.name }}" loading="lazy" decoding="async">
                                     {% else %}
                                     <div class="card-img-top package-image bg-light d-flex align-items-center justify-content-center">
                                         <i class="bi bi-box-seam text-muted" style="font-size: 2rem;"></i>
@@ -154,8 +154,11 @@
                                         <div class="mb-2">
                                             {% if package.is_custom %}
                                               <small class="text-primary fw-bold d-block">{{ package.get_custom_label }}</small>
+                                            {% elif markup_pct %}
+                                              <small class="text-primary fw-bold">Starting at ${{ package.starting_price|apply_markup:markup_pct|floatformat:2 }}</small>
+                                            {% else %}
+                                              <small class="text-primary fw-bold">{{ package.get_price_display }}</small>
                                             {% endif %}
-                                            <small class="text-primary fw-bold">{{ package.get_price_display }}</small>
                                         </div>
 
                                         <button type="button"

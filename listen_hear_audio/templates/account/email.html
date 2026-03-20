@@ -74,7 +74,7 @@
   {% endif %}
 
   <div class="mt-4">
-    <a href="{% url 'users:detail' request.user.pk %}" class="btn btn-outline-secondary">
+    <a href="{% url 'users:detail' request.user.public_id %}" class="btn btn-outline-secondary">
       <i class="bi bi-arrow-left me-1"></i>{% trans "Back to Profile" %}
     </a>
   </div>
