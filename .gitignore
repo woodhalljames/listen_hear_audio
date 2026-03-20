@@ -53,7 +53,6 @@ coverage.xml
 *.mov
 # Django stuff:
 staticfiles/
-static/
 media/
 # Sphinx documentation
 docs/_build/
