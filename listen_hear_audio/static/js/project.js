@@ -73,6 +73,32 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
 
+  // ── CATALOG MOBILE DROPDOWN ───────────────────────────────
+  const navbarToggler = document.querySelector('.navbar-toggler');
+  const isMobileNav = () => navbarToggler && window.getComputedStyle(navbarToggler).display !== 'none';
+
+  document.querySelectorAll('.nav-catalog > a.nav-link').forEach(link => {
+    link.addEventListener('click', function (e) {
+      if (isMobileNav()) {
+        e.preventDefault();
+        this.closest('.nav-catalog').classList.toggle('nav-catalog--open');
+      }
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.nav-catalog')) {
+      document.querySelectorAll('.nav-catalog--open').forEach(el => el.classList.remove('nav-catalog--open'));
+    }
+  });
+
+  const navbarCollapse = document.getElementById('navbarMain');
+  if (navbarCollapse) {
+    navbarCollapse.addEventListener('hidden.bs.collapse', function () {
+      document.querySelectorAll('.nav-catalog--open').forEach(el => el.classList.remove('nav-catalog--open'));
+    });
+  }
+
   // ── CATALOG SIDEBAR NAV HIGHLIGHT ─────────────────────────
   const catNavObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

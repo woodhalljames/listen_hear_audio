@@ -169,9 +169,24 @@ h1, h2, h3, h4, h5, h6 {
   list-style: none;
   margin: 0;
 }
-.nav-catalog:hover .nav-catalog__menu {
+.nav-catalog:hover .nav-catalog__menu,
+.nav-catalog--open .nav-catalog__menu {
   display: block;
   animation: navDropFadeIn 0.15s ease;
+}
+.nav-catalog--open .nav-catalog__caret { transform: rotate(180deg); }
+
+@media (max-width: 991.98px) {
+  .nav-catalog__menu {
+    position: static;
+    box-shadow: none;
+    border-radius: 0;
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    min-width: 100%;
+    background: rgba(0,0,0,0.2);
+    padding-left: 0.5rem;
+  }
 }
 .nav-catalog__menu .dropdown-item {
   color: rgba(255,255,255,0.85);
