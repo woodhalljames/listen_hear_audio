@@ -31,10 +31,11 @@
                     <p class="lead text-muted">{{ category.description }}</p>
                     {% endif %}
                     {% if package_count > 0 %}
-                    <div class="d-flex align-items-center gap-2 mt-3">
+                    <a href="#packages-section" class="d-flex align-items-center gap-2 mt-3 text-decoration-none text-body">
                         <i class="bi bi-box-seam text-primary fs-5"></i>
                         <span><strong>{{ package_count }}</strong> package{{ package_count|pluralize }} available</span>
-                    </div>
+                        <i class="bi bi-arrow-down-circle text-primary"></i>
+                    </a>
                     {% endif %}
                 </div>
                 {% if category.image %}
@@ -125,7 +126,7 @@
 
     <!-- Section: Packages -->
     {% if packages %}
-    <div class="category-packages-section py-5" style="background: var(--light-grey);">
+    <div id="packages-section" class="category-packages-section py-5" style="background: var(--light-grey);">
         <div class="container">
             <div class="mb-4">
                 <h2 class="fw-bold mb-0">
@@ -252,55 +253,99 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const btn = this;
             const packageId = btn.dataset.packageId;
-            const originalHTML = btn.innerHTML;
+            const inCart = btn.dataset.inCart === 'true';
 
-            btn.classList.add('loading');
-            btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Adding...';
             btn.disabled = true;
 
-            fetch('/quote/cart/add/' + packageId + '/', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': getCSRFToken(),
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                credentials: 'same-origin'
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('HTTP error! status: ' + response.status);
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    const packageCard = btn.closest('.product-card');
-                    if (packageCard) packageCard.classList.add('in-cart');
+            if (inCart) {
+                // Remove from cart
+                btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Removing...';
+                fetch('/quote/cart/remove/' + packageId + '/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCSRFToken(),
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('HTTP error! status: ' + response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        const packageCard = btn.closest('.product-card');
+                        if (packageCard) packageCard.classList.remove('in-cart');
 
-                    // Update cart badges
-                    document.querySelectorAll('.cart-count').forEach(el => {
-                        el.textContent = data.cart_count;
-                    });
-                    const floatingBadge = document.querySelector('.floating-cart-badge .badge');
-                    if (floatingBadge) floatingBadge.textContent = data.cart_count;
+                        document.querySelectorAll('.cart-count').forEach(el => {
+                            el.textContent = data.cart_count;
+                        });
+                        const floatingBadge = document.querySelector('.floating-cart-badge .badge');
+                        if (floatingBadge) floatingBadge.textContent = data.cart_count;
 
-                    btn.classList.remove('loading');
+                        btn.dataset.inCart = 'false';
+                        btn.classList.remove('btn-success');
+                        btn.classList.add('btn-primary');
+                        btn.innerHTML = '<i class="bi bi-cart-plus"></i> Add to Cart';
+                        btn.disabled = false;
+                    } else {
+                        throw new Error(data.error || 'Failed to remove from cart');
+                    }
+                })
+                .catch(function() {
                     btn.classList.add('btn-success');
                     btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Cart';
                     btn.disabled = false;
-                } else {
-                    throw new Error(data.error || 'Failed to add to cart');
-                }
-            })
-            .catch(function() {
-                btn.classList.remove('loading');
-                btn.classList.add('btn-danger');
-                btn.innerHTML = '<i class="bi bi-x-circle"></i> Error';
-                setTimeout(function() {
-                    btn.classList.remove('btn-danger');
-                    btn.innerHTML = originalHTML;
-                    btn.disabled = false;
-                }, 2000);
-            });
+                });
+            } else {
+                // Add to cart
+                btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Adding...';
+                fetch('/quote/cart/add/' + packageId + '/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCSRFToken(),
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    credentials: 'same-origin'
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('HTTP error! status: ' + response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        const packageCard = btn.closest('.product-card');
+                        if (packageCard) packageCard.classList.add('in-cart');
+
+                        document.querySelectorAll('.cart-count').forEach(el => {
+                            el.textContent = data.cart_count;
+                        });
+                        const floatingBadge = document.querySelector('.floating-cart-badge .badge');
+                        if (floatingBadge) floatingBadge.textContent = data.cart_count;
+
+                        btn.dataset.inCart = 'true';
+                        btn.classList.remove('btn-primary', 'loading');
+                        btn.classList.add('btn-success');
+                        btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Cart';
+                        btn.disabled = false;
+                    } else {
+                        throw new Error(data.error || 'Failed to add to cart');
+                    }
+                })
+                .catch(function() {
+                    btn.classList.remove('loading', 'btn-success');
+                    btn.classList.add('btn-danger');
+                    btn.innerHTML = '<i class="bi bi-x-circle"></i> Error';
+                    setTimeout(function() {
+                        btn.classList.remove('btn-danger');
+                        btn.classList.add('btn-primary');
+                        btn.innerHTML = '<i class="bi bi-cart-plus"></i> Add to Cart';
+                        btn.disabled = false;
+                    }, 2000);
+                });
+            }
         });
     });
 });
