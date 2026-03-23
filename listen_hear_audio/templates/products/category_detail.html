@@ -229,7 +229,24 @@
 
 {% block inline_javascript %}
 <script>
+// Package IDs currently in cart (server-rendered for initial state)
+var cartPackageIds = new Set([{% for item in cart.items.all %}{{ item.package_id }},{% endfor %}]);
+
 document.addEventListener('DOMContentLoaded', function() {
+
+    // ===== Initialize in-cart state on page load =====
+    document.querySelectorAll('.add-to-cart-btn').forEach(function(btn) {
+        var packageId = parseInt(btn.dataset.packageId);
+        if (cartPackageIds.has(packageId)) {
+            btn.dataset.inCart = 'true';
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-success');
+            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> In Cart';
+            var card = btn.closest('.product-card');
+            if (card) card.classList.add('in-cart');
+        }
+    });
+
     // ===== AJAX Add to Cart =====
     function getCSRFToken() {
         const tokenInput = document.querySelector('[name=csrfmiddlewaretoken]');
@@ -278,11 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const packageCard = btn.closest('.product-card');
                         if (packageCard) packageCard.classList.remove('in-cart');
 
-                        document.querySelectorAll('.cart-count').forEach(el => {
-                            el.textContent = data.cart_count;
-                        });
-                        const floatingBadge = document.querySelector('.floating-cart-badge .badge');
-                        if (floatingBadge) floatingBadge.textContent = data.cart_count;
+                        updateCartCount(data.cart_count);
 
                         btn.dataset.inCart = 'false';
                         btn.classList.remove('btn-success');
@@ -319,11 +332,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const packageCard = btn.closest('.product-card');
                         if (packageCard) packageCard.classList.add('in-cart');
 
-                        document.querySelectorAll('.cart-count').forEach(el => {
-                            el.textContent = data.cart_count;
-                        });
-                        const floatingBadge = document.querySelector('.floating-cart-badge .badge');
-                        if (floatingBadge) floatingBadge.textContent = data.cart_count;
+                        updateCartCount(data.cart_count);
 
                         btn.dataset.inCart = 'true';
                         btn.classList.remove('btn-primary', 'loading');
