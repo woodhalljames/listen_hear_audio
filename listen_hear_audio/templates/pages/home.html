@@ -12,27 +12,29 @@
 
 {% block main_wrapper %}
 
-  {% if messages %}
-    <div class="container-fluid">
-      {% for message in messages %}
-        <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %} mt-3">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-
   <section class="lhx-hero" data-dn-phase="0.05" aria-label="Listen Hear Smart Home Installation Pittsburgh">
     {% if business_info.hero_video_src %}
       <video class="lhx-hero__video" autoplay muted loop playsinline aria-hidden="true">
         <source src="{{ business_info.hero_video_src }}" type="video/mp4">
       </video>
     {% else %}
-    
+
       <div class="lhx-hero__video-placeholder" aria-hidden="true"></div>
     {% endif %}
     <div class="lhx-hero__overlay"></div>
+
+    {% if messages %}
+    <div style="position: absolute; top: 80px; left: 0; right: 0; z-index: 20; padding: 0 1rem;">
+      <div class="container">
+        {% for message in messages %}
+          <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %} shadow">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
 
     <div class="lhx-hero__content container-fluid">
       <div class="lhx-hero__inner">
@@ -90,9 +92,9 @@ From the moment your alarm goes off, your smart home automation system can set t
           </video>
           <div class="lhx-bento__cell-overlay">
             <a href="{% url 'products:catalog' %}" class="lhx-bento__cell-tag">
-              <i class="bi bi-window-split"></i> Make your day
+              <i class="bi bi-window-split"></i> Custimize Everything
             </a>
-            <h3 class="lhx-bento__cell-title">Wake up to a room that knows how to start your day</h3>
+            <h3 class="lhx-bento__cell-title">Rooms that knows how you start your day</h3>
           </div>
         </div>
 
@@ -111,7 +113,7 @@ From the moment your alarm goes off, your smart home automation system can set t
             <a href="{% url 'products:category_detail' slug='pre-wire-networking' %}" class="lhx-bento__cell-tag">
               <i class="bi bi-diagram-3-fill"></i> Networking
             </a>
-            <h3 class="lhx-bento__cell-title">Enterprise-grade Wi-Fi, invisibly integrated</h3>
+            <h3 class="lhx-bento__cell-title">Enterprise-grade Wi-Fi</h3>
           </div>
         </div>
 
@@ -129,7 +131,7 @@ From the moment your alarm goes off, your smart home automation system can set t
             <a href="{% url 'products:category_detail' slug='outdoor-living' %}" class="lhx-bento__cell-tag">
               <i class="bi bi-tree-fill"></i> Outdoor Living
             </a>
-            <h3 class="lhx-bento__cell-title">Your backyard, as connected as your living room</h3>
+            <h3 class="lhx-bento__cell-title">Connect Outside</h3>
           </div>
         </div>
 
@@ -226,15 +228,15 @@ From the moment your alarm goes off, your smart home automation system can set t
     </div>
   </section>
 
-  <section class="lhx-catalog-strip lhx-section" data-dn-phase="0.0" id="services" aria-label="Smart Home Services Catalog Pittsburgh">
+  <section class="lhx-catalog-strip lhx-section" data-dn-phase="0.0" id="services" aria-label="Smart Home Solutions Pittsburgh">
     <div class="container-fluid">
 
       <div class="lhx-section-header lhx-section-header--split">
         <p class="lhx-eyebrow">What We Do</p>
         <h2 class="lhx-section-title lhx-section-title--left">Complete Smart Home<br>Solutions</h2>
         <div class="lhx-catalog-strip__cta-wrap">
-          <a href="{% url 'products:catalog' %}" class="lhx-btn lhx-btn--primary" style="flex-shrink:0;">
-            <i class="bi bi-grid-3x3-gap"></i> View Full Catalog
+          <a href="{% url 'products:catalog' %}" class="lhx-btn lhx-btn--primary" style="flex-shrink:0; background: var(--ui-accent); color: #fff; border-color: var(--ui-accent);">
+            <i class="bi bi-grid-3x3-gap"></i> View All Solutions
           </a>
         </div>
       </div>
@@ -325,7 +327,7 @@ From the moment your alarm goes off, your smart home automation system can set t
             <li><i class="bi bi-check-circle-fill"></i><span>Transparent pricing; no surprises, no pressure</span></li>
             <li><i class="bi bi-check-circle-fill"></i><span>Designed to work with your builder or designer</span></li>
           </ul>
-          <a href="{% url 'builders:showroom' %}" class="lhx-btn lhx-btn--primary">
+          <a href="{% url 'builders:showroom' %}" class="lhx-btn lhx-btn--primary" style="background: var(--ui-accent); color: #fff; border-color: var(--ui-accent);">
             <i class="bi bi-house"></i> Open Smart Home Showroom
           </a>
         </div>

@@ -9,7 +9,7 @@
   <nav aria-label="breadcrumb" class="mb-4">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-      <li class="breadcrumb-item"><a href="{% url 'products:catalog' %}">Catalog</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'products:catalog' %}">Solutions</a></li>
       <li class="breadcrumb-item"><a href="{% url 'products:catalog' %}#category-{{ package.category.slug }}">{{ package.category.name }}</a></li>
       {% if package.subcategory %}
         <li class="breadcrumb-item">{{ package.subcategory.name }}</li>
@@ -41,7 +41,7 @@
         
         <div class="mb-3">
           {% if package.is_featured %}
-            <span class="badge bg-warning text-dark me-2">
+            <span class="badge bg-warning me-2" style="color: #111;">
               <i class="bi bi-star-fill"></i> Featured
             </span>
           {% endif %}
@@ -106,7 +106,7 @@
             <i class="bi bi-cart-plus"></i> Add to Quote
           </button>
           <a href="{% url 'products:catalog' %}" class="btn btn-outline-custom btn-lg">
-            <i class="bi bi-arrow-left"></i> Back to Catalog
+            <i class="bi bi-arrow-left"></i> Back to Solutions
           </a>
         </div>
       </form>

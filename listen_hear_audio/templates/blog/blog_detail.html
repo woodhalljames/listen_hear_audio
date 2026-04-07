@@ -81,7 +81,7 @@
         <a href="mailto:?subject={{ post.title|urlencode }}&body=Check out this article: {{ request.build_absolute_uri }}" class="btn btn-sm btn-outline-secondary me-2" title="Share via Email">
           <i class="bi bi-envelope"></i> Email
         </a>
-        <button onclick="navigator.clipboard.writeText('{{ request.build_absolute_uri }}'); alert('Link copied to clipboard!');" class="btn btn-sm btn-outline-dark" title="Copy Link">
+        <button onclick="navigator.clipboard.writeText('{{ request.build_absolute_uri }}'); alert('Link copied to clipboard!');" class="btn btn-sm btn-outline-secondary" title="Copy Link">
           <i class="bi bi-link-45deg"></i> Copy Link
         </button>
       </div>

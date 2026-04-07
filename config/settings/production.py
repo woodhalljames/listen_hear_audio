@@ -78,16 +78,37 @@ SECURE_CONTENT_TYPE_NOSNIFF = env.bool(
     default=True,
 )
 
-# STATIC & MEDIA
+# STATIC & MEDIA — Cloudflare R2
 # ------------------------
+# Credentials & bucket — set these in your production .envs/.production/django
+CLOUDFLARE_R2_ACCOUNT_ID = env("CLOUDFLARE_R2_ACCOUNT_ID")
+AWS_ACCESS_KEY_ID = env("CLOUDFLARE_R2_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("CLOUDFLARE_R2_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = env("CLOUDFLARE_R2_BUCKET_NAME")
+# R2 public URL — either your custom domain (media.listenhearsmarthomes.com)
+# or the R2.dev subdomain (pub-xxxx.r2.dev). No trailing slash.
+AWS_S3_CUSTOM_DOMAIN = env("CLOUDFLARE_R2_CUSTOM_DOMAIN")
+
+# R2-specific S3-compatible settings
+AWS_S3_ENDPOINT_URL = f"https://{CLOUDFLARE_R2_ACCOUNT_ID}.r2.cloudflarestorage.com"
+AWS_S3_REGION_NAME = "auto"
+AWS_S3_SIGNATURE_VERSION = "s3v4"
+AWS_DEFAULT_ACL = None  # R2 uses bucket-level public access, not per-object ACLs
+AWS_QUERYSTRING_AUTH = False  # serve files via plain public URLs
+AWS_S3_FILE_OVERWRITE = False  # preserve files if same name uploaded twice
+AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}  # 1-day CDN cache
+
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+# All ImageField/FileField .url calls will resolve to https://<custom_domain>/<key>
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
 
 # EMAIL
 # ------------------------------------------------------------------------------

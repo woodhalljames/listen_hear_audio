@@ -138,7 +138,7 @@
           </div>
           <div class="col-lg-5 text-lg-end d-flex flex-column gap-3 align-items-lg-end">
             <a href="{% url 'products:catalog' %}" class="btn btn-primary btn-lg px-5">
-              <i class="bi bi-grid-3x3-gap me-2"></i>Shop Our Catalog
+              <i class="bi bi-grid-3x3-gap me-2"></i>Explore Our Solutions
             </a>
           </div>
         </div>
@@ -174,13 +174,13 @@
 .ab-title {
   font-size: clamp(1.7rem, 2.8vw, 2.4rem);
   font-weight: 800;
-  color: var(--primary-dark);
+  color: var(--text-color);
   line-height: 1.2;
   margin-bottom: 1.25rem;
 }
 
 .ab-sub {
-  color: #6c757d;
+  color: var(--text-muted);
   font-size: 1.175rem;
   max-width: 580px;
   margin: 0 auto;
@@ -188,7 +188,7 @@
 }
 
 /* ---- Story Image ---- */
-.ab-section { background: white; }
+.ab-section { background: var(--bg-color); }
 
 .ab-image-block {
   position: relative;
@@ -196,19 +196,19 @@
 
 .ab-image-placeholder {
   aspect-ratio: 4/3;
-  background: #f0f2ff;
-  border: 2px dashed #c5caff;
+  background: var(--card-bg);
+  border: 2px dashed var(--border-color);
   border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  color: #aab0ff;
+  color: var(--text-muted);
 }
 
-.ab-image-placeholder i { font-size: 3.5rem; color: var(--primary-blue); opacity: 0.4; }
-.ab-image-placeholder span { font-weight: 600; font-size: 1.075rem; color: #6c757d; }
+.ab-image-placeholder i { font-size: 3.5rem; color: var(--ui-accent); opacity: 0.4; }
+.ab-image-placeholder span { font-weight: 600; font-size: 1.075rem; color: var(--text-muted); }
 
 .ab-image {
   width: 100%;
@@ -218,17 +218,17 @@
 }
 
 .ab-story-text p {
-  color: #555;
+  color: var(--text-muted);
   line-height: 1.8;
   margin-bottom: 1.1rem;
   font-size: 1.125rem;
 }
 
 .ab-story-text p:last-child { margin-bottom: 0; }
-.ab-story-text em { color: var(--primary-blue); font-style: italic; }
+.ab-story-text em { color: var(--ui-accent); font-style: italic; }
 
 /* ---- Founders ---- */
-.ab-founders { background: #f8f9fa; }
+.ab-founders { background: var(--card-bg); }
 
 .ab-founders__portrait-grid {
   display: flex;
@@ -240,18 +240,18 @@
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  background: white;
+  background: var(--card-bg-elevated);
   border-radius: 14px;
   padding: 1.25rem;
-  border: 1px solid #e8ecf0;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
   transition: all 0.3s ease;
 }
 
 .ab-member-row:hover {
-  box-shadow: 0 6px 20px rgba(3,17,252,0.1);
+  box-shadow: 0 6px 20px rgba(133,140,248,0.15);
   transform: translateY(-3px);
-  border-color: var(--primary-blue);
+  border-color: var(--ui-accent);
 }
 
 .ab-member-row__photo-wrap { flex-shrink: 0; }
@@ -287,17 +287,17 @@
 .ab-member-row__info strong {
   font-size: 1.175rem;
   font-weight: 800;
-  color: var(--primary-dark);
+  color: var(--text-color);
 }
 
 .ab-member-row__info span {
   font-size: 0.975rem;
-  color: #6c757d;
+  color: var(--text-muted);
   line-height: 1.4;
 }
 
 /* ---- Team (alternating rows) ---- */
-.ab-team { background: #f8f9fa; }
+.ab-team { background: var(--card-bg); }
 
 .ab-team__list {
   display: flex;
@@ -311,18 +311,18 @@
   display: flex;
   align-items: center;
   gap: 2.5rem;
-  background: white;
+  background: var(--card-bg-elevated);
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid #e8ecf0;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
   transition: all 0.3s ease;
 }
 
 .ab-member:hover {
-  box-shadow: 0 8px 28px rgba(3,17,252,0.1);
+  box-shadow: 0 8px 28px rgba(133,140,248,0.15);
   transform: translateY(-4px);
-  border-color: var(--primary-blue);
+  border-color: var(--ui-accent);
 }
 
 .ab-member--flip {
@@ -384,7 +384,7 @@
 .ab-member__name {
   font-size: 1.3rem;
   font-weight: 800;
-  color: var(--primary-dark);
+  color: var(--text-color);
   margin: 0 0 0.25rem;
   line-height: 1.3;
 }
@@ -393,20 +393,20 @@
   display: block;
   font-size: 1rem;
   font-weight: 600;
-  color: var(--primary-blue);
+  color: var(--ui-accent);
   margin-bottom: 0.75rem;
   letter-spacing: 0.02em;
 }
 
 .ab-member__bio {
-  color: #6c757d;
+  color: var(--text-muted);
   font-size: 1.045rem;
   line-height: 1.7;
   margin: 0;
 }
 
 /* ---- Contact CTA ---- */
-.ab-contact-cta { background: #fff; border-top: 1px solid #e8ecf4; }
+.ab-contact-cta { background: var(--bg-color); border-top: 1px solid var(--border-color); }
 
 .ab-contact-cta__inner { /* plain, no card */ }
 
@@ -414,13 +414,13 @@
 .ab-contact-cta__title {
   font-size: clamp(1.7rem, 2.5vw, 2.2rem);
   font-weight: 900;
-  color: var(--primary-dark);
+  color: var(--text-color);
   line-height: 1.2;
   margin-bottom: 0.75rem;
 }
 
 .ab-contact-cta__sub {
-  color: #6c757d;
+  color: var(--text-muted);
   font-size: 1.125rem;
   line-height: 1.7;
   margin-bottom: 0;
@@ -436,17 +436,17 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: var(--primary-dark);
+  color: var(--text-color);
   text-decoration: none;
   font-size: 1.075rem;
   transition: color 0.2s ease;
 }
 
-.ab-contact-detail:hover { color: var(--primary-blue); }
+.ab-contact-detail:hover { color: var(--ui-accent); }
 
 .ab-contact-detail i {
   font-size: 1rem;
-  color: var(--primary-blue);
+  color: var(--ui-accent);
   width: 20px;
   text-align: center;
 }

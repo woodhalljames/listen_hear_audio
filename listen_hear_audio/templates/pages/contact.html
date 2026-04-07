@@ -56,7 +56,7 @@
   {# ── Visit Us / Map ── #}
   <section class="ct-map-section">
     <div class="ct-container">
-      <p class="ct-eyebrow ct-eyebrow--blue">Visit Us</p>
+      <p class="ct-eyebrow ct-eyebrow">Visit Us</p>
       <h2 class="ct-section-title">Servicing Greater Pittsburgh</h2>
       {% if business_info.full_address %}
       <p class="ct-map-address">
@@ -91,7 +91,7 @@
   {# ── Project types ── #}
   <section class="ct-types-section">
     <div class="ct-container">
-      <p class="ct-eyebrow ct-eyebrow--blue">What We Do</p>
+      <p class="ct-eyebrow ct-eyebrow">What We Do</p>
       <h2 class="ct-section-title">Professional Solutions for Every Property</h2>
       <div class="ct-types-grid">
 
@@ -114,11 +114,10 @@
   {# ── CTA ── #}
   <section class="ct-cta-section">
     <div class="ct-container">
-      <p class="ct-eyebrow ct-eyebrow--blue">Ready to Start?</p>
-      <h2 class="ct-section-title">Explore What's Possible</h2>
-      <p class="ct-section-sub">Browse the full catalog of packages we offer to Pittsburgh and the surrounding area.</p>
+   <h2 class="ct-section-title">Explore What's Possible</h2>
+      <p class="ct-section-sub">Browse the full solutions we offer to Pittsburgh and the surrounding area.</p>
       <a href="{% url 'products:catalog' %}" class="btn btn-primary btn-lg px-5 mt-4">
-        <i class="bi bi-grid-3x3-gap me-2"></i>Browse Catalog
+        <i class="bi bi-grid-3x3-gap me-2"></i>Browse Solutions
       </a>
     </div>
   </section>
@@ -147,70 +146,70 @@
 .ct-section-title {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
-  line-height: 1.1; margin-bottom: 1rem; color: var(--primary-dark);
+  line-height: 1.1; margin-bottom: 1rem; color: var(--text-color);
 }
 
 .ct-section-sub {
   font-family: 'DM Sans', sans-serif;
   font-size: 1.175rem; line-height: 1.75;
-  color: #555; max-width: 680px;
+  color: var(--text-muted); max-width: 680px;
 }
 
 /* ── Contact info list ─────────────────────────────────────────── */
 .ct-page-title {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 700;
-  color: var(--primary-dark); margin-bottom: 2rem;
+  color: var(--text-color); margin-bottom: 2rem;
 }
-.ct-info-section { padding: 2.5rem 0 3rem; background: #fff; }
+.ct-info-section { padding: 2.5rem 0 3rem; background: var(--bg-color); }
 
 .ct-info-list { max-width: 560px; }
 
 .ct-info-row {
   display: flex; align-items: center; gap: 1.5rem;
   padding: 1.5rem 0;
-  border-bottom: 1px solid #eef0f8;
+  border-bottom: 1px solid var(--border-color);
 }
-.ct-info-row:first-child { border-top: 1px solid #eef0f8; }
+.ct-info-row:first-child { border-top: 1px solid var(--border-color); }
 .ct-info-row--top { align-items: flex-start; }
 
-.ct-info-icon { font-size: 1.1rem; color: var(--primary-blue); flex-shrink: 0; width: 18px; text-align: center; }
+.ct-info-icon { font-size: 1.1rem; color: var(--ui-accent); flex-shrink: 0; width: 18px; text-align: center; }
 
 .ct-info-label {
   font-family: 'DM Sans', sans-serif;
   font-size: 0.7rem; font-weight: 700;
   letter-spacing: 0.14em; text-transform: uppercase;
-  color: #aab0c6; margin-bottom: 0.2rem;
+  color: var(--text-muted); margin-bottom: 0.2rem;
 }
 
 .ct-info-value {
   font-family: 'DM Sans', sans-serif;
   font-size: 1.075rem; font-weight: 500;
-  color: var(--primary-dark); text-decoration: none; line-height: 1.4;
+  color: var(--text-color); text-decoration: none; line-height: 1.4;
 }
-a.ct-info-value:hover { color: var(--primary-blue); }
+a.ct-info-value:hover { color: var(--ui-accent); }
 
 .ct-hours-list {
   display: grid; grid-template-columns: auto 1fr;
   gap: 0.2rem 2rem;
   font-family: 'DM Sans', sans-serif; font-size: 1rem;
 }
-.ct-hours-list span:nth-child(odd)  { font-weight: 500; color: var(--primary-dark); }
-.ct-hours-list span:nth-child(even) { color: #6c757d; }
+.ct-hours-list span:nth-child(odd)  { font-weight: 500; color: var(--text-color); }
+.ct-hours-list span:nth-child(even) { color: var(--text-muted); }
 
 /* ── Map section ───────────────────────────────────────────────── */
-.ct-map-section { padding: 3rem 0 0; background: #f4f6ff; border-top: 1px solid #e0e4f4; }
-.ct-map-section .ct-section-title { color: var(--primary-dark); }
+.ct-map-section { padding: 3rem 0 0; background: var(--card-bg); border-top: 1px solid var(--border-color); }
+.ct-map-section .ct-section-title { color: var(--text-color); }
 
 .ct-map-address {
   font-family: 'DM Sans', sans-serif;
-  font-size: 1rem; color: #555;
+  font-size: 1rem; color: var(--text-muted);
   display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
   margin-bottom: 0.75rem;
 }
-.ct-map-address i { color: var(--primary-blue); }
+.ct-map-address i { color: var(--ui-accent); }
 .ct-map-address a {
-  font-weight: 600; color: var(--primary-blue); text-decoration: none;
+  font-weight: 600; color: var(--ui-accent); text-decoration: none;
   display: inline-flex; align-items: center; gap: 0.25rem;
 }
 .ct-map-address a:hover { text-decoration: underline; }
@@ -219,13 +218,13 @@ a.ct-info-value:hover { color: var(--primary-blue); }
 
 .ct-map-card {
   margin-top: 0;
-  border-top: 1px solid #e8ecf4;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  border-top: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 .ct-map-card iframe { display: block; }
 
 /* ── Project types ────────────────────────────────────────────── */
-.ct-types-section { padding: 3rem 0; background: #f4f6ff; border-top: 1px solid #e0e4f4; }
+.ct-types-section { padding: 3rem 0; background: var(--card-bg); border-top: 1px solid var(--border-color); }
 .ct-types-section .ct-section-title { margin-bottom: 2rem; }
 
 .ct-types-grid {
@@ -236,25 +235,25 @@ a.ct-info-value:hover { color: var(--primary-blue); }
 
 .ct-type-card {
   padding: 2.25rem 2rem; border-radius: 16px;
-  background: #fff; border: 1px solid #e8ecf4;
+  background: var(--card-bg-elevated); border: 1px solid var(--border-color);
   transition: box-shadow 0.25s, transform 0.25s, border-color 0.25s;
 }
-.ct-type-card:hover { box-shadow: 0 8px 28px rgba(3,17,252,0.1); transform: translateY(-4px); border-color: var(--primary-blue); }
+.ct-type-card:hover { box-shadow: 0 8px 28px rgba(133,140,248,0.15); transform: translateY(-4px); border-color: var(--ui-accent); }
 
 .ct-type-card__icon {
   width: 52px; height: 52px; border-radius: 14px;
-  background: #eef0ff; display: flex; align-items: center; justify-content: center;
+  background: rgba(133,140,248,0.12); display: flex; align-items: center; justify-content: center;
   margin-bottom: 1.1rem;
 }
-.ct-type-card__icon i     { font-size: 1.4rem; color: var(--primary-blue); }
-.ct-type-card__title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.225rem; color: var(--primary-dark); margin-bottom: 0.6rem; }
-.ct-type-card__body  { font-size: 1.055rem; color: #6c757d; line-height: 1.7; margin: 0; }
+.ct-type-card__icon i     { font-size: 1.4rem; color: var(--ui-accent); }
+.ct-type-card__title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.225rem; color: var(--text-color); margin-bottom: 0.6rem; }
+.ct-type-card__body  { font-size: 1.055rem; color: var(--text-muted); line-height: 1.7; margin: 0; }
 
 /* ── CTA section ───────────────────────────────────────────────── */
 .ct-cta-section {
   padding: 3rem 0;
-  background: #fff;
-  border-top: 1px solid #e8ecf4;
+  background: var(--bg-color);
+  border-top: 1px solid var(--border-color);
 }
 .ct-cta-section .ct-section-title { margin-bottom: 0.75rem; }
 .ct-cta-section .ct-section-sub   { margin-bottom: 0; }

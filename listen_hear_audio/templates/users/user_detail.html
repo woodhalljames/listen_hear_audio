@@ -3,20 +3,16 @@
 {% load static %}
 
 {% block title %}
-  {% if object.is_builder %}Builder Dashboard{% else %}My Profile{% endif %} - {{ object.name|default:object.email }}
+  {% if object.is_builder %}Builder Dashboard{% else %}My Account{% endif %} - {{ object.name|default:object.email }}
 {% endblock title %}
 
 {% block content %}
   <div class="container-fluid px-4 py-4">
-    <!-- Page Title -->
+    <!-- Page Header -->
     <div class="row mb-4">
       <div class="col-12">
-        <h1 class="mb-2">
-          {% if object.is_builder %}
-            Builder Dashboard
-          {% else %}
-            My Account
-          {% endif %}
+        <h1 class="mb-1">
+          {% if object.is_builder %}Builder Dashboard{% else %}My Account{% endif %}
         </h1>
         <p class="text-muted">Welcome back, {{ object.name|default:object.email }}</p>
       </div>
@@ -24,33 +20,34 @@
 
     {% if object == request.user %}
       <div class="row g-4">
-        <!-- Account Details - Right Side -->
+
+        <!-- Account Details sidebar -->
         <div class="col-lg-4 order-lg-2">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-header bg-white border-bottom">
-              <h5 class="mb-0" style="color: var(--primary-blue);">
+          <div class="card h-100" style="border-color: var(--border-color);">
+            <div class="card-header border-bottom" style="background: var(--card-bg-elevated); border-color: var(--border-color) !important;">
+              <h5 class="mb-0" style="color: var(--ui-accent);">
                 <i class="bi bi-person-circle me-2"></i>Account Details
               </h5>
             </div>
             <div class="card-body p-4">
-           
-              <div class="mb-3 pb-3 border-bottom">
+
+              <div class="mb-3 pb-3 border-bottom" style="border-color: var(--border-color) !important;">
                 <label class="text-muted small mb-1">Name</label>
                 <p class="mb-0 fw-semibold">{{ object.name|default:"Not provided" }}</p>
               </div>
 
-              <div class="mb-3 pb-3 border-bottom">
+              <div class="mb-3 pb-3 border-bottom" style="border-color: var(--border-color) !important;">
                 <label class="text-muted small mb-1">Email</label>
                 <p class="mb-0 fw-semibold">{{ object.email }}</p>
               </div>
 
-              <div class="mb-3 pb-3 border-bottom">
+              <div class="mb-3 pb-3 border-bottom" style="border-color: var(--border-color) !important;">
                 <label class="text-muted small mb-1">Account Type</label>
                 <p class="mb-0">
                   {% if object.is_builder %}
-                    <span class="badge" style="background-color: var(--primary-blue); color: white;">Builder Account</span>
+                    <span class="badge" style="background: var(--primary-yellow); color: #111;">Builder Account</span>
                   {% else %}
-                    <span class="badge bg-secondary">Customer Account</span>
+                    <span class="badge" style="background: var(--card-bg-elevated); color: var(--text-muted); border: 1px solid var(--border-color);">Customer Account</span>
                   {% endif %}
                 </p>
               </div>
@@ -79,13 +76,14 @@
           </div>
         </div>
 
-        <!-- Main Content - Left Side -->
+        <!-- Main Content -->
         <div class="col-lg-8 order-lg-1">
-          <!-- Builder Properties (if builder) -->
+
+          <!-- Builder Properties -->
           {% if object.is_builder %}
-            <div class="card border-0 shadow-sm mb-4">
-              <div class="card-header bg-white border-bottom">
-                <h5 class="mb-0" style="color: var(--primary-blue);">
+            <div class="card mb-4" style="border-color: var(--border-color);">
+              <div class="card-header border-bottom" style="background: var(--card-bg-elevated); border-color: var(--border-color) !important;">
+                <h5 class="mb-0" style="color: var(--ui-accent);">
                   <i class="bi bi-building me-2"></i>My Properties
                 </h5>
               </div>
@@ -94,32 +92,30 @@
                   <div class="row row-cols-1 row-cols-md-2 g-4">
                     {% for property in properties %}
                       <div class="col">
-                        <div class="card h-100 border shadow-sm hover-lift">
+                        <div class="card h-100" style="border-color: var(--border-color);">
                           <div class="card-body">
-                            <h5 class="card-title mb-3" style="color: var(--primary-blue);">{{ property.name }}</h5>
-                            <p class="card-text text-muted mb-3">
+                            <h5 class="card-title mb-2" style="color: var(--ui-accent);">{{ property.name }}</h5>
+                            <p class="card-text text-muted small mb-3">
                               <i class="bi bi-geo-alt me-1"></i>{{ property.address|truncatewords:10 }}
                             </p>
 
                             {% with summary=property.get_dashboard_summary %}
-                              <div class="mb-3 p-3 bg-light rounded">
-                                <div class="row row-cols-2 g-2 text-center">
-                                  <div class="col">
-                                    <small class="text-muted d-block">Installs to Request</small>
-                                    <span class="fw-bold" style="color: var(--primary-blue);">{{ summary.installs_to_request }}</span>
-                                  </div>
-                                  <div class="col">
-                                    <small class="text-muted d-block">Installs Scheduled</small>
-                                    <span class="fw-bold" style="color: var(--primary-blue);">{{ summary.installs_scheduled }}</span>
-                                  </div>
-                                  <div class="col">
-                                    <small class="text-muted d-block">Next Install Date</small>
-                                    <span class="fw-bold small">{% if summary.next_scheduled_date %}{{ summary.next_scheduled_date|date:"M d, Y" }}{% else %}—{% endif %}</span>
-                                  </div>
-                                  <div class="col">
-                                    <small class="text-muted d-block">Packages Installed</small>
-                                    <span class="fw-bold" style="color: var(--primary-blue);">{{ summary.packages_installed }}</span>
-                                  </div>
+                              <div class="row row-cols-2 g-2 text-center mb-3 p-2 rounded" style="background: var(--bg-color);">
+                                <div class="col">
+                                  <small class="text-muted d-block">Installs to Request</small>
+                                  <span class="fw-bold" style="color: var(--ui-accent);">{{ summary.installs_to_request }}</span>
+                                </div>
+                                <div class="col">
+                                  <small class="text-muted d-block">Installs Scheduled</small>
+                                  <span class="fw-bold" style="color: var(--ui-accent);">{{ summary.installs_scheduled }}</span>
+                                </div>
+                                <div class="col">
+                                  <small class="text-muted d-block">Next Install</small>
+                                  <span class="fw-bold small">{% if summary.next_scheduled_date %}{{ summary.next_scheduled_date|date:"M d, Y" }}{% else %}—{% endif %}</span>
+                                </div>
+                                <div class="col">
+                                  <small class="text-muted d-block">Installed</small>
+                                  <span class="fw-bold" style="color: var(--ui-accent);">{{ summary.packages_installed }}</span>
                                 </div>
                               </div>
                             {% endwith %}
@@ -128,8 +124,8 @@
                               <i class="bi bi-clock me-1"></i>Updated {{ property.updated_at|date:"M d, Y" }}
                             </p>
                           </div>
-                          <div class="card-footer bg-white border-top">
-                            <a href="{{ property.get_absolute_url }}" class="btn w-100" style="background-color: var(--primary-blue); color: white;">
+                          <div class="card-footer border-top" style="background: var(--card-bg-elevated); border-color: var(--border-color) !important;">
+                            <a href="{{ property.get_absolute_url }}" class="btn btn-primary w-100">
                               View Details <i class="bi bi-arrow-right ms-1"></i>
                             </a>
                           </div>
@@ -138,13 +134,11 @@
                     {% endfor %}
                   </div>
                 {% else %}
-                  <div class="alert alert-light border" role="alert">
-                    <div class="d-flex align-items-center">
-                      <i class="bi bi-info-circle me-3" style="font-size: 1.5rem; color: var(--primary-blue);"></i>
-                      <div>
-                        <strong>No Properties Yet</strong>
-                        <p class="mb-0 text-muted">You don't have any properties assigned. Contact Listen Hear if you believe this is an error.</p>
-                      </div>
+                  <div class="d-flex align-items-center gap-3 p-3 rounded" style="background: var(--bg-color); border: 1px solid var(--border-color);">
+                    <i class="bi bi-info-circle fs-4" style="color: var(--ui-accent);"></i>
+                    <div>
+                      <strong>No Properties Yet</strong>
+                      <p class="mb-0 text-muted small">You don't have any properties assigned. Contact Listen Hear if you believe this is an error.</p>
                     </div>
                   </div>
                 {% endif %}
@@ -153,9 +147,9 @@
           {% endif %}
 
           <!-- Quote History -->
-          <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white border-bottom">
-              <h5 class="mb-0" style="color: var(--primary-blue);">
+          <div class="card" style="border-color: var(--border-color);">
+            <div class="card-header border-bottom" style="background: var(--card-bg-elevated); border-color: var(--border-color) !important;">
+              <h5 class="mb-0" style="color: var(--ui-accent);">
                 <i class="bi bi-clock-history me-2"></i>Quote History
               </h5>
             </div>
@@ -164,9 +158,9 @@
                 <div class="row row-cols-1 row-cols-md-2 g-4">
                   {% for quote in object.quote_requests.all %}
                     <div class="col">
-                      <div class="card h-100 border shadow-sm hover-lift">
+                      <div class="card h-100" style="border-color: var(--border-color);">
                         <div class="card-body">
-                          <h6 class="fw-bold mb-3" style="color: var(--primary-blue);">{{ quote.quote_number }}</h6>
+                          <h6 class="fw-bold mb-3" style="color: var(--ui-accent);">{{ quote.quote_number }}</h6>
                           <div class="d-flex justify-content-between mb-2">
                             <small class="text-muted">Requested</small>
                             <span class="small fw-semibold">{{ quote.created_at|date:"M d, Y" }}</span>
@@ -176,12 +170,11 @@
                             <span class="small fw-semibold">{{ quote.get_total_items }}</span>
                           </div>
                           {% if quote.pdf_path %}
-                            <a href="{% url 'quotes:download_pdf' quote.quote_number %}"
-                               class="btn btn-sm w-100" style="background-color: var(--primary-blue); color: white;">
+                            <a href="{% url 'quotes:download_pdf' quote.quote_number %}" class="btn btn-primary btn-sm w-100">
                               <i class="bi bi-file-pdf me-1"></i>Download Quote
                             </a>
                           {% else %}
-                            <button class="btn btn-secondary btn-sm w-100" disabled>
+                            <button class="btn btn-outline-secondary btn-sm w-100" disabled>
                               <i class="bi bi-hourglass-split me-1"></i>Generating PDF...
                             </button>
                           {% endif %}
@@ -191,18 +184,17 @@
                   {% endfor %}
                 </div>
               {% else %}
-                <div class="alert alert-light border" role="alert">
-                  <div class="d-flex align-items-center">
-                    <i class="bi bi-info-circle me-3" style="font-size: 1.5rem; color: var(--primary-blue);"></i>
-                    <div>
-                      <strong>No Quotes Yet</strong>
-                      <p class="mb-0 text-muted">You haven't requested any quotes yet. <a href="{% url 'products:catalog' %}" style="color: var(--primary-blue);">Browse our packages</a> to get started!</p>
-                    </div>
+                <div class="d-flex align-items-center gap-3 p-3 rounded" style="background: var(--bg-color); border: 1px solid var(--border-color);">
+                  <i class="bi bi-info-circle fs-4" style="color: var(--ui-accent);"></i>
+                  <div>
+                    <strong>No Quotes Yet</strong>
+                    <p class="mb-0 text-muted small">You haven't requested any quotes yet. <a href="{% url 'products:catalog' %}" style="color: var(--ui-accent);">Browse our solutions</a> to get started!</p>
                   </div>
                 </div>
               {% endif %}
             </div>
           </div>
+
         </div>
       </div>
     {% endif %}

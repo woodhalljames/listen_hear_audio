@@ -9,7 +9,7 @@
     {% csrf_token %}
 
     <!-- Sticky Progress Navigation -->
-    <div class="progress-nav sticky-top bg-white border-bottom shadow-sm">
+    <div class="progress-nav sticky-top border-bottom shadow-sm" style="background: var(--card-bg);">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center py-3">
                 <!-- Previous Button -->
@@ -112,7 +112,7 @@
                                     {% if package.image %}
                                     <img src="{{ package.image.url }}" class="card-img-top package-image" alt="{{ package.name }}" loading="lazy" decoding="async">
                                     {% else %}
-                                    <div class="card-img-top package-image bg-light d-flex align-items-center justify-content-center">
+                                    <div class="card-img-top package-image d-flex align-items-center justify-content-center" style="background: var(--card-bg-elevated);">
                                         <i class="bi bi-box-seam text-muted" style="font-size: 2rem;"></i>
                                     </div>
                                     {% endif %}
@@ -143,7 +143,7 @@
                                             <i class="bi bi-chevron-down"></i> More Details
                                         </button>
                                         <div class="collapse mt-2" id="details-{{ package.id }}">
-                                            <div class="package-description-full p-2 bg-light rounded small">
+                                            <div class="package-description-full p-2 rounded small" style="background: var(--card-bg-elevated);">
                                                 {{ package.description|linebreaks }}
                                             </div>
                                         </div>

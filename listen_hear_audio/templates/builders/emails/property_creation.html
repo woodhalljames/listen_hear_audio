@@ -125,12 +125,7 @@
                 <span class="info-label">Address:</span>
                 <span class="info-value">{{ property.address }}</span>
             </div>
-            {% if property.property_type %}
-            <div class="info-row">
-                <span class="info-label">Property Type:</span>
-                <span class="info-value">{{ property.property_type }}</span>
-            </div>
-            {% endif %}
+
             <div class="info-row">
                 <span class="info-label">Created:</span>
                 <span class="info-value">{{ property.created_at|date:"F d, Y" }}</span>
@@ -156,7 +151,7 @@
             <a href="{{ config.website }}/builders/property/{{ property.id }}/" class="cta-button">View Property Details</a>
         </div>
 
-        <div style="background-color: #e7f3ff; padding: 15px; border-left: 4px solid #0066cc; border-radius: 4px; margin: 20px 0;">
+        <div style="background-color: #e7f3ff; padding: 15px; border-left: 4px solid #0341FC; border-radius: 4px; margin: 20px 0;">
             <strong>Next Steps:</strong>
             <ul style="margin: 10px 0 0 0; padding-left: 20px;">
                 <li>Review the assigned packages</li>

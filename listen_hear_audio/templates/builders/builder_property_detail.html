@@ -18,12 +18,12 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title" style="color: var(--primary-blue);">
+                    <h5 class="card-title" style="color: var(--ui-accent);">
                         <i class="bi bi-bar-chart-fill"></i> Installation Progress
                     </h5>
                     <div class="row text-center">
                         <div class="col-6 col-md-2 mb-3 mb-md-0">
-                            <div class="h3 mb-0" style="color: var(--primary-blue);">{{ phase_summary.total }}</div>
+                            <div class="h3 mb-0" style="color: var(--ui-accent);">{{ phase_summary.total }}</div>
                             <small class="text-muted">Total Phases</small>
                         </div>
                         <div class="col-6 col-md-2 mb-3 mb-md-0">
@@ -49,7 +49,7 @@
                     </div>
                     {% if property.quote_request and property.quote_request.pdf_path %}
                     <div class="mt-3">
-                        <a href="{{ property.quote_request.pdf_path.url }}" target="_blank" class="btn btn-sm" style="background-color: var(--primary-blue); color: white;">
+                        <a href="{{ property.quote_request.pdf_path.url }}" target="_blank" class="btn btn-primary btn-sm">
                             <i class="bi bi-file-earmark-pdf me-1"></i>View Quote PDF
                         </a>
                     </div>
@@ -62,15 +62,15 @@
     <!-- Installation Phases -->
     <div class="row mb-4">
         <div class="col-12">
-            <h3 class="mb-3" style="color: var(--primary-blue);">
+            <h3 class="mb-3" style="color: var(--ui-accent);">
                 <i class="bi bi-layers"></i> Installation Phases
             </h3>
 
             {% for phase in phases %}
             <div class="card mb-3 border-0 shadow-sm">
-                <div class="card-header bg-white border-bottom">
+                <div class="card-header border-bottom" style="background: var(--card-bg-elevated); border-color: var(--border-color) !important;">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0" style="color: var(--primary-blue);">
+                        <h5 class="mb-0" style="color: var(--ui-accent);">
                             <i class="{{ phase.icon }} me-2"></i>{{ phase.label }}
                             <span class="badge ms-2
                                 {% if phase.installation.status == 'pending' %}bg-secondary
@@ -84,7 +84,7 @@
                         </h5>
 
                         {% if phase.installation.status == 'pending' %}
-                        <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#scheduleModal-{{ phase.key }}">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#scheduleModal-{{ phase.key }}">
                             <i class="bi bi-calendar-plus me-1"></i>Request Install Date
                         </button>
                         {% endif %}
@@ -96,7 +96,7 @@
                         <strong class="text-muted small">Packages:</strong>
                         {% for package in phase.packages %}
                         <div class="ms-3 mt-2">
-                            <i class="bi bi-check2 me-1" style="color: var(--primary-blue);"></i>
+                            <i class="bi bi-check2 me-1" style="color: var(--ui-accent);"></i>
                             <strong>{{ package.category_snapshot }}</strong>: {{ package.package_name }}
                             {% if package.quantity > 1 %}<span class="text-muted">(x{{ package.quantity }})</span>{% endif %}
                         </div>
@@ -153,7 +153,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" style="color: var(--primary-blue);">
+                            <h5 class="modal-title" style="color: var(--ui-accent);">
                                 <i class="{{ phase.icon }} me-2"></i>Request {{ phase.label }} Install
                             </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -164,10 +164,10 @@
                                 <!-- Packages summary -->
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Packages in this phase:</label>
-                                    <div class="border rounded p-3 bg-light">
+                                    <div class="border rounded p-3" style="background: var(--bg-color); border-color: var(--border-color) !important;">
                                         {% for package in phase.packages %}
                                         <div class="mb-1">
-                                            <i class="bi bi-check2 me-1" style="color: var(--primary-blue);"></i>
+                                            <i class="bi bi-check2 me-1" style="color: var(--ui-accent);"></i>
                                             {{ package.category_snapshot }}: {{ package.package_name }}
                                         </div>
                                         {% endfor %}
@@ -183,7 +183,7 @@
                                             <input type="date" class="form-control" name="preferred_dates" required>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-sm btn-outline-success add-date-btn" data-phase="{{ phase.key }}">
+                                    <button type="button" class="btn btn-sm btn-outline-primary add-date-btn" data-phase="{{ phase.key }}">
                                         <i class="bi bi-plus-circle me-1"></i>Add Alternate Date
                                     </button>
                                 </div>
@@ -196,7 +196,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-success">
+                                <button type="submit" class="btn btn-primary">
                                     <i class="bi bi-send me-1"></i>Submit Request
                                 </button>
                             </div>
@@ -206,8 +206,9 @@
             </div>
             {% endif %}
             {% empty %}
-            <div class="alert alert-light border">
-                <i class="bi bi-info-circle me-2" style="color: var(--primary-blue);"></i>No packages assigned to this property yet.
+            <div class="d-flex align-items-center gap-3 p-3 rounded" style="background: var(--bg-color); border: 1px solid var(--border-color);">
+                <i class="bi bi-info-circle fs-5" style="color: var(--ui-accent);"></i>
+                <span class="text-muted">No packages assigned to this property yet.</span>
             </div>
             {% endfor %}
         </div>
@@ -217,7 +218,7 @@
     {% if timeline %}
     <div class="row">
         <div class="col-12">
-            <h3 class="mb-3" style="color: var(--primary-blue);">
+            <h3 class="mb-3" style="color: var(--ui-accent);">
                 <i class="bi bi-clock-history"></i> Activity
             </h3>
             <div class="card">
@@ -247,7 +248,7 @@
                             <p class="mb-1" style="color: #fd7e14;"><small><i class="bi bi-chat-left-text me-1"></i>{{ item.builder_notes }}</small></p>
                             {% endif %}
                             {% if item.company_notes %}
-                            <p class="mb-1" style="color: var(--primary-blue);"><small><i class="bi bi-chat-left-text me-1"></i>{{ item.company_notes }}</small></p>
+                            <p class="mb-1" style="color: var(--ui-accent);"><small><i class="bi bi-chat-left-text me-1"></i>{{ item.company_notes }}</small></p>
                             {% endif %}
                           
                         </div>

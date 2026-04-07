@@ -187,4 +187,5 @@ dependencies = [
     "pillow>=10.0",
     "django-taggit",
     "django-summernote",
+    "django-storages[s3]>=1.14",
 ]

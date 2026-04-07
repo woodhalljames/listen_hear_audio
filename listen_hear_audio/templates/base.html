@@ -8,7 +8,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>
       {% block title %}
-      Listen Hear! - Pittsburgh's Premiere Smart Home, Audio & Video.
+      LISTEN HEAR! - Pittsburgh's Premiere Smart Home, Audio & Video.
     {% endblock title %}
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -70,7 +70,7 @@
     <div class="container-fluid">
       <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
         <img src="{% static 'images/listenhear.png' %}" alt="Listen Hear Smart Homes" class="navbar-logo me-2">
-        Listen Hear!
+        LISTEN HEAR!
       </a>
       
       <button class="navbar-toggler" 
@@ -133,7 +133,7 @@
                 <a class="nav-link" href="{% url 'home' %}">Home</a>
               </li>
               <li class="nav-item nav-catalog">
-                <a class="nav-link" href="{% url 'products:catalog' %}">Catalog <i class="bi bi-chevron-down nav-catalog__caret"></i></a>
+                <a class="nav-link" href="{% url 'products:catalog' %}">Solutions <i class="bi bi-chevron-down nav-catalog__caret"></i></a>
                 <ul class="nav-catalog__menu">
                   {% for category in nav_categories %}
                     <li><a class="dropdown-item" href="{% url 'products:category_detail' slug=category.slug %}">{{ category.name }}</a></li>
@@ -195,7 +195,7 @@
             {% endif %}
           {% else %}
             <li class="nav-item nav-catalog">
-              <a class="nav-link" href="{% url 'products:catalog' %}">Catalog <i class="bi bi-chevron-down nav-catalog__caret"></i></a>
+              <a class="nav-link" href="{% url 'products:catalog' %}">Solutions <i class="bi bi-chevron-down nav-catalog__caret"></i></a>
               <ul class="nav-catalog__menu">
                 {% for category in nav_categories %}
                   <li><a class="dropdown-item" href="{% url 'products:category_detail' slug=category.slug %}">{{ category.name }}</a></li>
@@ -272,7 +272,7 @@
         <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
           <a href="{% url 'home' %}" class="footer-logo d-flex align-items-center mb-3 text-decoration-none">
             <img src="{% static 'images/listenhear.png' %}" alt="Listen Hear Smart Homes" class="footer-logo-image me-2">
-            <span class="footer-logo-text">Listen Hear!</span>
+            <span class="footer-logo-text">LISTEN HEAR!</span>
           </a>
           <p>Professional smart home, audio and video installation services for residential, and commercial properties.</p>
 
@@ -307,7 +307,7 @@
         <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
           <h5>Explore</h5>
           <ul class="footer-links">
-            <li><a href="{% url 'products:catalog' %}">Browse Catalog</a></li>
+            <li><a href="{% url 'products:catalog' %}">Browse Solutions</a></li>
             <li><a href="{% url 'quotes:cart' %}">View Cart</a></li>
             <li><a href="{% url 'gallery:gallery' %}">Gallery</a></li>
             <li><a href="{% url 'blog:post_list' %}">Blog</a></li>
@@ -344,7 +344,7 @@
           {% endif %}
           <p class="mb-1 small"><strong>Hours:</strong></p>
           <p class="small mb-0">Mon-Fri: {{ business_info.monday_hours }}</p>
-          <p class="small mb-0">Sun: {{ business_info.saturday_hours }}</p>
+          <p class="small mb-0">Sat: {{ business_info.saturday_hours }}</p>
               <p class="small mb-0">Sun: {{ business_info.sunday_hours }}</p>
       
         </div>
@@ -372,7 +372,7 @@
       <!-- Footer Bottom -->
       <div class="footer-bottom">
         <p class="mb-0">
-          &copy; {% now "Y" %} Listen Hear! All rights reserved.
+          &copy; {% now "Y" %} LISTEN HEAR! All rights reserved.
         </p>
       </div>
     </div>
@@ -380,25 +380,22 @@
   
   {% endblock body %}
 
-  <!-- Floating Cart Badge (global, updated via JS) -->
+  <!-- Floating Cart -->
   {% if cart_count > 0 %}
   <div id="floating-cart" class="floating-cart-badge">
-    <a href="{% url 'quotes:cart' %}" class="btn btn-success btn-lg shadow-lg">
-      <i class="bi bi-cart-check-fill"></i>
-      <span class="badge bg-light text-dark ms-2">{{ cart_count }}</span>
+    <a href="{% url 'quotes:cart' %}" class="btn btn-success btn-lg shadow-lg text-white">
+      <i class="bi bi-cart-check-fill"></i> {{ cart_count }}
     </a>
   </div>
   {% endif %}
 
   <script>
-    // Global cart update — updates navbar badge + floating cart on every page
+    // Global cart update — updates navbar badge + floating cart
     function updateCartCount(count) {
-      // Update all navbar cart badges
+      // Navbar badges
       document.querySelectorAll('.cart-badge').forEach(function(badge) {
-        badge.textContent = count;
+        if (count > 0) { badge.textContent = count; } else { badge.remove(); }
       });
-
-      // Create navbar badges if they don't exist yet
       if (count > 0) {
         document.querySelectorAll('a[href*="cart"] .bi-cart3').forEach(function(icon) {
           var link = icon.closest('a');
@@ -409,28 +406,18 @@
             link.appendChild(badge);
           }
         });
-      } else {
-        document.querySelectorAll('.cart-badge').forEach(function(badge) {
-          badge.remove();
-        });
       }
-
-      // Floating cart badge
+      // Floating cart
       var floatingCart = document.getElementById('floating-cart');
       if (count > 0) {
         if (!floatingCart) {
           floatingCart = document.createElement('div');
           floatingCart.id = 'floating-cart';
           floatingCart.className = 'floating-cart-badge';
-          floatingCart.innerHTML =
-            '<a href="{% url "quotes:cart" %}" class="btn btn-success btn-lg shadow-lg">' +
-            '<i class="bi bi-cart-check-fill"></i>' +
-            '<span class="badge bg-light text-dark ms-2">' + count + '</span>' +
-            '</a>';
+          floatingCart.innerHTML = '<a href="{% url "quotes:cart" %}" class="btn btn-success btn-lg shadow-lg text-white"><i class="bi bi-cart-check-fill"></i> ' + count + '</a>';
           document.body.appendChild(floatingCart);
         } else {
-          var badge = floatingCart.querySelector('.badge');
-          if (badge) badge.textContent = count;
+          floatingCart.querySelector('a').innerHTML = '<i class="bi bi-cart-check-fill"></i> ' + count;
         }
       } else if (floatingCart) {
         floatingCart.remove();

@@ -37,9 +37,9 @@
 
       <!-- Application Form Column -->
       <div class="col-lg-5">
-        <div class="card shadow-sm sticky-top" style="top: 20px;">
-          <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Apply for this Position</h5>
+        <div class="card sticky-top" style="top: 20px; border-color: var(--border-color);">
+          <div class="card-header border-bottom" style="background: var(--card-bg-elevated); border-color: var(--border-color) !important;">
+            <h5 class="mb-0" style="color: var(--ui-accent);"><i class="bi bi-send me-2"></i>Apply for this Position</h5>
           </div>
           <div class="card-body">
             <form method="post" action="{% url 'careers:apply' job.slug %}" enctype="multipart/form-data">

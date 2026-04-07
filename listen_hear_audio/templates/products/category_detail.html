@@ -18,7 +18,7 @@
     <div class="container pt-4">
         <nav aria-label="breadcrumb" class="mb-3">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'products:catalog' %}">Catalog</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'products:catalog' %}">Solutions</a></li>
               <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
             </ol>
         </nav>
@@ -130,7 +130,7 @@
         <div class="container">
             <div class="mb-4">
                 <h2 class="fw-bold mb-0">
-                    <i class="bi bi-grid-3x3-gap text-primary"></i> Available Packages
+                    <i class="bi bi-grid-3x3-gap" style="color: var(--ui-accent);"></i> Available Solutions
                 </h2>
             </div>
 
@@ -214,10 +214,10 @@
     <div class="container py-5">
         <div class="category-cta-section text-center">
             <h3 class="fw-bold mb-3">Explore More</h3>
-            <p class="text-muted mb-4">Browse our full catalog or see how these packages fit into a new build.</p>
+            <p class="text-muted mb-4">Browse our full solutions or see how these solutions fit into a new build.</p>
             <div class="d-flex justify-content-center">
                 <a href="{% url 'products:catalog' %}#category-{{ category.slug }}" class="btn btn-primary btn-lg px-4">
-                    <i class="bi bi-grid-3x3-gap"></i> View in Catalog
+                    <i class="bi bi-grid-3x3-gap"></i> View All Solutions
                 </a>
             </div>
         </div>
