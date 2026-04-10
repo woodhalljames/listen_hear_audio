@@ -57,7 +57,7 @@
             {% if category.video %}
             <div class="category-video-primary mb-4">
                 <div class="ratio ratio-16x9 rounded shadow-sm overflow-hidden">
-                    <video controls class="rounded" controlsList="nodownload">
+                    <video autoplay muted playsinline controls class="rounded" controlsList="nodownload">
                         <source src="{{ category.video.url }}" type="video/mp4">
                         <source src="{{ category.video.url }}" type="video/webm">
                         Your browser does not support the video tag.
@@ -73,7 +73,7 @@
             <div class="category-video-primary mb-4">
                 <div class="ratio ratio-16x9 rounded shadow-sm overflow-hidden">
                     <iframe
-                        src="https://www.youtube.com/embed/{{ embed_id }}"
+                        src="https://www.youtube.com/embed/{{ embed_id }}?autoplay=1&mute=1"
                         title="{{ category.name }}"
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

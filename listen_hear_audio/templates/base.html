@@ -143,6 +143,9 @@
                 </ul>
               </li>
               <li class="nav-item">
+                <a class="nav-link" href="{% url 'builders:showroom' %}">Showroom</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link" href="{% url 'contact' %}">Contact</a>
               </li>
               <li class="nav-item">
@@ -203,6 +206,9 @@
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{% url 'products:catalog' %}"><i class="bi bi-grid-3x3-gap me-1"></i> View All</a></li>
               </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'builders:showroom' %}">Showroom</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'contact' %}">Contact</a>
@@ -308,6 +314,7 @@
           <h5>Explore</h5>
           <ul class="footer-links">
             <li><a href="{% url 'products:catalog' %}">Browse Solutions</a></li>
+            <li><a href="{% url 'builders:showroom' %}">Showroom</a></li>
             <li><a href="{% url 'quotes:cart' %}">View Cart</a></li>
             <li><a href="{% url 'gallery:gallery' %}">Gallery</a></li>
             <li><a href="{% url 'blog:post_list' %}">Blog</a></li>

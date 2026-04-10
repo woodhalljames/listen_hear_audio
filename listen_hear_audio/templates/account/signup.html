@@ -6,7 +6,25 @@
 
 {% block main_wrapper %}
 <div class="auth-page">
-  <div class="auth-page__inner">
+  <div class="auth-page__inner signup-layout">
+
+    <div class="signup-reasons">
+      <h2 class="signup-reasons__title">Reasons to sign up</h2>
+      <ul class="signup-reasons__list">
+        <li class="signup-reasons__item">
+          <i class="bi bi-check-circle-fill"></i>
+          <span>Conveniently Request Service 24/7</span>
+        </li>
+        <li class="signup-reasons__item">
+          <i class="bi bi-check-circle-fill"></i>
+          <span>Access New Construction Showroom</span>
+        </li>
+        <li class="signup-reasons__item">
+          <i class="bi bi-check-circle-fill"></i>
+          <span>Notified of the latest and greatest home technologies</span>
+        </li>
+      </ul>
+    </div>
 
     <div class="auth-card">
 
@@ -54,7 +72,7 @@
 
         <button type="submit" class="auth-btn">Create Account</button>
 
-        <div class="auth-divider"><span>Builder or Contractor?</span></div>
+        <div class="auth-divider"><span>Request Builder Access</span></div>
 
         <div class="auth-check">
           {{ form.is_builder }}

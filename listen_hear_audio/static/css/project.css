@@ -107,7 +107,7 @@ h1, h2, h3, h4, h5, h6 {
 .navbar-custom .navbar-brand {
   color: var(--primary-yellow) !important;
   font-weight: 700;
-  font-size: 1.75rem;
+  font-size: 1.9rem;
   transition: color 0.3s ease;
 }
 
@@ -116,7 +116,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar-logo {
-  height: 70px;
+  height: 84px;
   width: auto;
   object-fit: contain;
 }
@@ -273,6 +273,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer-logo-text {
   color: var(--primary-yellow);
+  font-size: 1.6rem;
+  font-weight: 700;
   transition: color 0.3s ease;
 }
 
@@ -281,7 +283,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .footer-logo-image {
-  height: 70px;
+  height: 84px;
   width: auto;
   object-fit: contain;
 }

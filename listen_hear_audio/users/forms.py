@@ -46,14 +46,14 @@ class UserSignupForm(SignupForm):
     is_builder = BooleanField(
         label=_("I am a Builder / Contractor / Designer"),
         required=False,
-        help_text=_("Check this box if you are registering as a builder.")
+        help_text=_("Check this box to request builder access. A member of our team will review and approve your account.")
     )
 
     company_name = CharField(
         max_length=255,
         label=_("Company Name"),
         required=False,
-        help_text=_("Required if you are a builder/contractor/designer.")
+        help_text=_("Required if requesting builder/contractor/designer access.")
     )
 
     def clean(self):
@@ -69,7 +69,8 @@ class UserSignupForm(SignupForm):
     def save(self, request):
         user = super().save(request)
         user.subscribe_to_newsletter = self.cleaned_data.get('subscribe_to_newsletter', False)
-        user.is_builder = self.cleaned_data.get('is_builder', False)
+        # is_builder is NOT set from the form — admin must grant builder status manually.
+        # company_name is saved so admin can identify pending builder requests.
         user.company_name = self.cleaned_data.get('company_name', '')
         user.save()
         return user
