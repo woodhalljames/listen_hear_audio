@@ -72,7 +72,9 @@ class UserSignupForm(SignupForm):
         # is_builder is NOT set from the form — admin must grant builder status manually.
         # company_name is saved so admin can identify pending builder requests.
         user.company_name = self.cleaned_data.get('company_name', '')
-        user.save()
+        # Use update_fields so the post_save signal knows exactly what changed,
+        # preventing it from firing a duplicate sync on the allauth creation save.
+        user.save(update_fields=['subscribe_to_newsletter', 'company_name'])
         return user
 
 
