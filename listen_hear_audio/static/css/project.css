@@ -1356,8 +1356,8 @@ h1, h2, h3, h4, h5, h6 {
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background-color: var(--card-bg-elevated);
-  color: var(--text-muted);
+  background-color: var(--ui-accent);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1369,19 +1369,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .showroom-guided-container .step-dot:hover {
-  background-color: var(--card-bg);
+  background-color: var(--primary-blue);
   transform: scale(1.1);
 }
 
 .showroom-guided-container .step-indicator.active .step-dot {
   background: var(--primary-blue);
-  color: white;
+  color: #fff;
   box-shadow: 0 4px 8px rgba(3, 65, 252, 0.4);
 }
 
 .showroom-guided-container .step-indicator.completed .step-dot {
   background-color: var(--primary-blue);
-  color: white;
+  color: #fff;
 }
 
 .showroom-guided-container .step-house {
@@ -1677,10 +1677,10 @@ h1, h2, h3, h4, h5, h6 {
 hr                    { border-color: var(--border-color); opacity: 1; }
 
 /* --- Links (outside nav/footer/branded zones) --- */
-a:not(.btn):not(.nav-link):not(.navbar-brand):not(.dropdown-item):not(.footer a):not([class*="lhx"]):not([class*="ct-"]):not([class*="ab-"]) {
+a:not(.btn):not(.nav-link):not(.navbar-brand):not(.dropdown-item):not(.footer a):not([class*="lhx"]):not([class*="ct-"]):not([class*="ab-"]):not(.step-dot) {
   color: var(--ui-accent);
 }
-a:not(.btn):not(.nav-link):not(.navbar-brand):not(.dropdown-item):not(.footer a):not([class*="lhx"]):not([class*="ct-"]):not([class*="ab-"]):hover {
+a:not(.btn):not(.nav-link):not(.navbar-brand):not(.dropdown-item):not(.footer a):not([class*="lhx"]):not([class*="ct-"]):not([class*="ab-"]):not(.step-dot):hover {
   color: var(--ui-highlight);
 }
 
@@ -1853,11 +1853,6 @@ a:not(.btn):not(.nav-link):not(.navbar-brand):not(.dropdown-item):not(.footer a)
   background-color: var(--card-bg-elevated) !important;
   border-bottom-color: var(--border-color) !important;
 }
-.showroom-guided-container .step-dot {
-  background-color: var(--card-bg-elevated);
-  color: #fff;
-}
-.showroom-guided-container .step-dot:hover { background-color: var(--border-color); }
 .showroom-guided-container .step-line { background-color: var(--border-color); }
 .showroom-guided-container .package-features-list .features-list li { color: var(--text-muted); }
 .showroom-guided-container .package-description-full { background-color: var(--card-bg-elevated) !important; color: var(--text-muted); }
@@ -1993,6 +1988,16 @@ a:not(.btn):not(.nav-link):not(.navbar-brand):not(.dropdown-item):not(.footer a)
 .si-btn--primary:hover {
   background: #fff; color: var(--primary-dark);
   transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,255,0,0.3);
+}
+/* In modals (light bg) — flip to dark on hover so button stays visible */
+.modal .si-btn--primary {
+  background: var(--primary-yellow); color: var(--primary-dark);
+  border-color: var(--primary-yellow);
+}
+.modal .si-btn--primary:hover {
+  background: var(--primary-dark); color: var(--primary-yellow);
+  border-color: var(--primary-dark);
+  box-shadow: 0 6px 20px rgba(3,17,252,0.25);
 }
 /* In regular (non-hero/CTA) sections, use accent blue */
 .si-section .si-btn--primary {
