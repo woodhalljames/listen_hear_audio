@@ -34,7 +34,7 @@
       {% endif %}
 
       <!-- Title -->
-      <h1 class="mb-3" style="color: var(--primary-blue);">{{ post.title }}</h1>
+      <h1 class="mb-3" style="color: var(--ui-accent);">{{ post.title }}</h1>
 
       <!-- Author, Date, and Tags -->
       <div class="d-flex flex-wrap align-items-center mb-4 text-muted">
@@ -60,7 +60,7 @@
           <span class="d-flex align-items-center flex-wrap">
             <i class="bi bi-tags me-2"></i>
             {% for tag in post.tags.all %}
-              <a href="{% url 'blog:post_list' %}?tag={{ tag.slug }}" class="badge me-1 text-decoration-none" style="background-color: var(--primary-blue);">{{ tag.name }}</a>
+              <a href="{% url 'blog:post_list' %}?tag={{ tag.slug }}" class="text-decoration-none me-1" style="font-family: 'DM Sans', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: var(--card-bg-elevated); color: var(--ui-accent); border: 1px solid var(--border-color); padding: 0.2rem 0.55rem; border-radius: 20px; display: inline-block;">{{ tag.name }}</a>
             {% endfor %}
           </span>
         {% endif %}
