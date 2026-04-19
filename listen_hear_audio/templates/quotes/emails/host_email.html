@@ -253,12 +253,11 @@
       <!-- Action Buttons -->
       <div style="text-align: center; margin: 30px 0;">
         <a href="{{ site_url }}/shadycorvette/quotes/quoterequest/{{ quote_request.id }}/change/"
-           class="action-button">
+           style="display: inline-block; padding: 15px 30px; background-color: #0341FC; color: #ffffff; text-decoration: none; border-radius: 4px; margin: 10px; font-weight: bold; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
           View in Admin Panel
         </a>
         <a href="mailto:{{ quote_request.email }}?subject=RE: Quote Request {{ quote_request.quote_number }}"
-           class="action-button"
-           style="background-color: #28a745;">
+           style="display: inline-block; padding: 15px 30px; background-color: #28a745; color: #ffffff; text-decoration: none; border-radius: 4px; margin: 10px; font-weight: bold; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
           Reply to Customer
         </a>
       </div>

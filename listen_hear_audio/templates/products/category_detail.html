@@ -9,6 +9,35 @@
 {% block og_image %}{% if category.image %}{{ category.image.url }}{% else %}{% load static %}{% static 'images/listenhear.png' %}{% endif %}{% endblock %}
 {% block twitter_image %}{% if category.image %}{{ category.image.url }}{% else %}{% load static %}{% static 'images/listenhear.png' %}{% endif %}{% endblock %}
 
+{% block meta %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://listenhearsmarthomes.com"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Solutions",
+      "item": "https://listenhearsmarthomes.com{% url 'products:catalog' %}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ category.name }}",
+      "item": "https://listenhearsmarthomes.com{{ category.get_absolute_url }}"
+    }
+  ]
+}
+</script>
+{% endblock meta %}
+
 {% block content %}
 <!-- Hidden CSRF token for AJAX requests -->
 {% csrf_token %}

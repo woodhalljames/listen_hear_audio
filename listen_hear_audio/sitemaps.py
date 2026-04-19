@@ -2,7 +2,7 @@ from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
 
 from listen_hear_audio.blog.models import BlogPost
-from listen_hear_audio.products.models import Category, Package
+from listen_hear_audio.products.models import Category
 
 
 class StaticViewSitemap(Sitemap):
@@ -32,20 +32,14 @@ class CategorySitemap(Sitemap):
     changefreq = "weekly"
 
     def items(self):
-        return Category.objects.filter(is_active=True)
+        return Category.objects.filter(is_active=True, show_in_catalog=True)
 
-
-class PackageSitemap(Sitemap):
-    priority = 0.5
-    changefreq = "weekly"
-
-    def items(self):
-        return Package.objects.filter(is_active=True)
+    def lastmod(self, obj):
+        return obj.updated_at
 
 
 sitemaps = {
     "static": StaticViewSitemap,
     "blog": BlogSitemap,
     "categories": CategorySitemap,
-    "packages": PackageSitemap,
 }

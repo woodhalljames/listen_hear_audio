@@ -8,6 +8,36 @@
 {% block og_description %}Custom smart home design, audio & video installation, and intelligent automation, expertly integrated for residential, commercial, and new construction in Pittsburgh PA.{% endblock %}
 {% block meta %}
   <meta name="keywords" content="smart home installation Pittsburgh, home automation Pittsburgh PA, home audio installation, home theater installation, security camera installation, Control4 dealer Pittsburgh, whole home audio, motorized shades, pre-wire networking, smart home builder, residential AV installer">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    "name": "{{ business_info.business_name }}",
+    "url": "https://listenhearsmarthomes.com",
+    "logo": "https://listenhearsmarthomes.com{% static 'images/listenhear.png' %}",
+    "image": "https://listenhearsmarthomes.com{% static 'images/listenhear.png' %}",
+    "description": "Pittsburgh's premier smart home installation company. Custom home audio, video, home theater, security, surveillance, networking, motorized shades, and whole-home automation.",
+    {% if business_info.phone %}"telephone": "{{ business_info.phone }}",{% endif %}
+    {% if business_info.email %}"email": "{{ business_info.email }}",{% endif %}
+    {% if business_info.street_address %}
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ business_info.street_address }}",
+      "addressLocality": "{{ business_info.city }}",
+      "addressRegion": "{{ business_info.state }}",
+      "postalCode": "{{ business_info.zip_code }}",
+      "addressCountry": "US"
+    },
+    {% endif %}
+    "areaServed": {
+      "@type": "City",
+      "name": "Pittsburgh",
+      "sameAs": "https://www.wikidata.org/wiki/Q44412"
+    },
+    "priceRange": "$$",
+    "sameAs": []
+  }
+  </script>
 {% endblock meta %}
 
 {% block main_wrapper %}
