@@ -10,6 +10,7 @@ entryPoints:
       redirections:
         entryPoint:
           to: web-secure
+          scheme: https
 
   web-secure:
     # https
@@ -30,8 +31,18 @@ certificatesResolvers:
 
 http:
   routers:
+    www-redirect-router:
+      rule: 'Host(`www.listenhearsmarthomes.com`)'
+      entryPoints:
+        - web-secure
+      middlewares:
+        - www-redirect
+      service: django
+      tls:
+        certResolver: letsencrypt
+
     web-secure-router:
-      rule: 'Host(`listenhearsmarthomes.com`) || Host(`www.listenhearsmarthomes.com`) || Host(`listenhearsmarthomes.cloud`) || Host(`www.listenhearsmarthomes.cloud`)'
+      rule: 'Host(`listenhearsmarthomes.com`)'
       entryPoints:
         - web-secure
       middlewares:
@@ -42,7 +53,7 @@ http:
         certResolver: letsencrypt
 
     flower-secure-router:
-      rule: 'Host(`listenhearsmarthomes.com`) || Host(`listenhearsmarthomes.cloud`)'
+      rule: 'Host(`listenhearsmarthomes.com`)'
       entryPoints:
         - flower
       service: flower
@@ -51,7 +62,7 @@ http:
         certResolver: letsencrypt
 
     web-media-router:
-      rule: '(Host(`listenhearsmarthomes.com`) || Host(`www.listenhearsmarthomes.com`) || Host(`listenhearsmarthomes.cloud`) || Host(`www.listenhearsmarthomes.cloud`)) && PathPrefix(`/media/`)'
+      rule: 'Host(`listenhearsmarthomes.com`) && PathPrefix(`/media/`)'
       entryPoints:
         - web-secure
       middlewares:
@@ -60,7 +71,8 @@ http:
       tls:
         certResolver: letsencrypt
 
-  middlewares:
+  
+
     csrf:
       # https://doc.traefik.io/traefik/master/middlewares/http/headers/#hostsproxyheaders
       # https://docs.djangoproject.com/en/dev/ref/csrf/#ajax

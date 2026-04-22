@@ -3,9 +3,9 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import include
-from django.urls import path
+from django.urls import path, re_path
 from django.views import defaults as default_views
-from django.views.generic import TemplateView
+from django.views.generic import RedirectView, TemplateView
 
 from listen_hear_audio.core.views import AboutView, ContactView, HomeView
 from listen_hear_audio.sitemaps import sitemaps
@@ -15,7 +15,26 @@ admin.site.site_header = "Listen Hear Administration"
 admin.site.site_title = "Listen Hear Admin"
 admin.site.index_title = "Welcome to Listen Hear Administration"
 
+shopify_redirects = [
+    # Static pages
+    path("pages/contact/", RedirectView.as_view(url="/contact/", permanent=True)),
+    path("pages/contact", RedirectView.as_view(url="/contact/", permanent=True)),
+    path("pages/about/", RedirectView.as_view(url="/about/", permanent=True)),
+    path("pages/about", RedirectView.as_view(url="/about/", permanent=True)),
+    path("pages/about-us/", RedirectView.as_view(url="/about/", permanent=True)),
+    path("pages/about-us", RedirectView.as_view(url="/about/", permanent=True)),
+    # Collections → catalog
+    path("collections/all/", RedirectView.as_view(url="/catalog/", permanent=True)),
+    path("collections/all", RedirectView.as_view(url="/catalog/", permanent=True)),
+    re_path(r"^collections/.*$", RedirectView.as_view(url="/catalog/", permanent=True)),
+    # Products → catalog (no 1:1 slug match assumed)
+    re_path(r"^products/.*$", RedirectView.as_view(url="/catalog/", permanent=True)),
+    # Catch-all for any other /pages/
+    re_path(r"^pages/.*$", RedirectView.as_view(url="/", permanent=True)),
+]
+
 urlpatterns = [
+    *shopify_redirects,
     path("", HomeView.as_view(), name="home"),
     path("about/", AboutView.as_view(), name="about"),
     path("contact/", ContactView.as_view(), name="contact"),
