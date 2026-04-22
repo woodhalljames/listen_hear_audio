@@ -20,11 +20,11 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="{% block og_title %}Listen Hear! - Pittsburgh's Premier Smart Home Installation{% endblock %}" />
   <meta property="og:description" content="{% block og_description %}Professional smart home audio and video installation services in Pittsburgh PA. Custom packages for residential and commercial properties.{% endblock %}" />
-  <meta property="og:image" content="{% block og_image %}{% static 'images/listenhear.png' %}{% endblock %}" />
+  <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/listenhear.png' %}{% endblock %}" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/listenhear.png' %}{% endblock %}" />
+  <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/listenhear.png' %}{% endblock %}" />
   {% block meta %}{% endblock meta %}
   <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}" />
   
