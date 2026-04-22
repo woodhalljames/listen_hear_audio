@@ -118,6 +118,34 @@ wheels = [
 ]
 
 [[package]]
+name = "boto3"
+version = "1.42.94"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "botocore" },
+    { name = "jmespath" },
+    { name = "s3transfer" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6a/6a/95302333208830de932ad1d0b69599ee13e936349a44981fb72632507861/boto3-1.42.94.tar.gz", hash = "sha256:5b6056a661c19e974aaea3cb97690ddbe30d10c31e4f887df3bff06574f34510", size = 113211, upload-time = "2026-04-22T20:36:19.167Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c4/6f/4e175604f3168befcb413c95bf45eada67d12042f92f76a9305d6a817ea9/boto3-1.42.94-py3-none-any.whl", hash = "sha256:56d53bce75629cc7c78a32da8b62de74cee3e2a3d54a2b60ba1a65f9f1b129da", size = 140555, upload-time = "2026-04-22T20:36:16.182Z" },
+]
+
+[[package]]
+name = "botocore"
+version = "1.42.94"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "jmespath" },
+    { name = "python-dateutil" },
+    { name = "urllib3" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b7/90/1a4d0e81b325d38e37f81d907ceacac3b8f509ad38b495bb95086ecb609d/botocore-1.42.94.tar.gz", hash = "sha256:41c6b3b11b073221a41f52b222ba387be34459fb77cdc506e8b74cdaf24bdcce", size = 15260901, upload-time = "2026-04-22T20:36:00.853Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/61/73/313af9ee02ac0155247bcf3f04fcf54fcae2e33250bb437528c18aeefd81/botocore-1.42.94-py3-none-any.whl", hash = "sha256:a2143742132ed0f6cdb90204d667b89d0301068b1045e8bc099efa267bf1b348", size = 14942938, upload-time = "2026-04-22T20:35:55.663Z" },
+]
+
+[[package]]
 name = "brotli"
 version = "1.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -589,6 +617,23 @@ wheels = [
 ]
 
 [[package]]
+name = "django-storages"
+version = "1.14.6"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ff/d6/2e50e378fff0408d558f36c4acffc090f9a641fd6e084af9e54d45307efa/django_storages-1.14.6.tar.gz", hash = "sha256:7a25ce8f4214f69ac9c7ce87e2603887f7ae99326c316bc8d2d75375e09341c9", size = 87587, upload-time = "2025-04-02T02:34:55.103Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1f/21/3cedee63417bc5553eed0c204be478071c9ab208e5e259e97287590194f1/django_storages-1.14.6-py3-none-any.whl", hash = "sha256:11b7b6200e1cb5ffcd9962bd3673a39c7d6a6109e8096f0e03d46fab3d3aabd9", size = 33095, upload-time = "2025-04-02T02:34:53.291Z" },
+]
+
+[package.optional-dependencies]
+s3 = [
+    { name = "boto3" },
+]
+
+[[package]]
 name = "django-stubs"
 version = "5.2.7"
 source = { registry = "https://pypi.org/simple" }
@@ -949,6 +994,15 @@ wheels = [
 ]
 
 [[package]]
+name = "jmespath"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d3/59/322338183ecda247fb5d1763a6cbe46eff7222eaeebafd9fa65d4bf5cb11/jmespath-1.1.0.tar.gz", hash = "sha256:472c87d80f36026ae83c6ddd0f1d05d4e510134ed462851fd5f754c8c3cbb88d", size = 27377, upload-time = "2026-01-22T16:35:26.279Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/14/2f/967ba146e6d58cf6a652da73885f52fc68001525b4197effc174321d70b4/jmespath-1.1.0-py3-none-any.whl", hash = "sha256:a5663118de4908c91729bea0acadca56526eb2698e83de10cd116ae0f4e97c64", size = 20419, upload-time = "2026-01-22T16:35:24.919Z" },
+]
+
+[[package]]
 name = "jsbeautifier"
 version = "1.15.4"
 source = { registry = "https://pypi.org/simple" }
@@ -991,6 +1045,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "argon2-cffi" },
+    { name = "boto3" },
     { name = "celery" },
     { name = "crispy-bootstrap5" },
     { name = "django" },
@@ -1001,6 +1056,7 @@ dependencies = [
     { name = "django-environ" },
     { name = "django-model-utils" },
     { name = "django-redis" },
+    { name = "django-storages", extra = ["s3"] },
     { name = "django-summernote" },
     { name = "django-taggit" },
     { name = "flower" },
@@ -1041,6 +1097,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "argon2-cffi", specifier = "==25.1.0" },
+    { name = "boto3" },
     { name = "celery", specifier = "==5.5.3" },
     { name = "crispy-bootstrap5", specifier = "==2025.6" },
     { name = "django", specifier = "==5.2.8" },
@@ -1051,6 +1108,7 @@ requires-dist = [
     { name = "django-environ", specifier = "==0.12.0" },
     { name = "django-model-utils", specifier = "==5.0.0" },
     { name = "django-redis", specifier = "==6.0.0" },
+    { name = "django-storages", extras = ["s3"] },
     { name = "django-summernote" },
     { name = "django-taggit" },
     { name = "flower", specifier = "==2.0.1" },
@@ -1579,6 +1637,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/cc/f1/7119e42aa1d3bf036ffc9478885c2e248812b7de9abea4eae89163d2929d/ruff-0.14.5-py3-none-win32.whl", hash = "sha256:c83642e6fccfb6dea8b785eb9f456800dcd6a63f362238af5fc0c83d027dd08b", size = 12925808, upload-time = "2025-11-13T19:58:42.779Z" },
     { url = "https://files.pythonhosted.org/packages/3b/9d/7c0a255d21e0912114784e4a96bf62af0618e2190cae468cd82b13625ad2/ruff-0.14.5-py3-none-win_amd64.whl", hash = "sha256:9d55d7af7166f143c94eae1db3312f9ea8f95a4defef1979ed516dbb38c27621", size = 14331546, upload-time = "2025-11-13T19:58:45.691Z" },
     { url = "https://files.pythonhosted.org/packages/e5/80/69756670caedcf3b9be597a6e12276a6cf6197076eb62aad0c608f8efce0/ruff-0.14.5-py3-none-win_arm64.whl", hash = "sha256:4b700459d4649e2594b31f20a9de33bc7c19976d4746d8d0798ad959621d64a4", size = 13433331, upload-time = "2025-11-13T19:58:48.434Z" },
+]
+
+[[package]]
+name = "s3transfer"
+version = "0.16.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "botocore" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/46/29/af14f4ef3c11a50435308660e2cc68761c9a7742475e0585cd4396b91777/s3transfer-0.16.1.tar.gz", hash = "sha256:8e424355754b9ccb32467bdc568edf55be82692ef2002d934b1311dbb3b9e524", size = 154801, upload-time = "2026-04-22T20:36:06.475Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/03/19/90d7d4ed51932c022d53f1d02d564b62d10e272692a1f9b76425c1ad2a02/s3transfer-0.16.1-py3-none-any.whl", hash = "sha256:61bcd00ccb83b21a0fe7e91a553fff9729d46c83b4e0106e7c314a733891f7c2", size = 86825, upload-time = "2026-04-22T20:36:04.992Z" },
 ]
 
 [[package]]
