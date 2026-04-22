@@ -58,7 +58,6 @@ http:
         - flower
       service: flower
       tls:
-        # https://doc.traefik.io/traefik/master/routing/routers/#certresolver
         certResolver: letsencrypt
 
     web-media-router:
@@ -71,7 +70,12 @@ http:
       tls:
         certResolver: letsencrypt
 
-  
+  middlewares:
+    www-redirect:
+      redirectRegex:
+        regex: '^https://www\.listenhearsmarthomes\.com(.*)'
+        replacement: 'https://listenhearsmarthomes.com${1}'
+        permanent: true
 
     csrf:
       # https://doc.traefik.io/traefik/master/middlewares/http/headers/#hostsproxyheaders
