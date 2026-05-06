@@ -10,6 +10,7 @@ from datetime import datetime
 
 from .models import Property, PhaseInstallation, PurchasedPackage, PropertyNote
 from .tasks import send_date_request_email
+from django.db.models import Prefetch
 from listen_hear_audio.products.models import Package, Category
 
 
@@ -243,26 +244,26 @@ def builder_showroom(request, step=1):
     cart = get_or_create_cart(request)
     cart_package_ids = list(cart.items.values_list('package_id', flat=True))
 
+    showroom_packages = Package.objects.filter(
+        is_active=True,
+        visibility__in=['both', 'showroom'],
+    ).order_by('display_order', 'name')
+
     all_sections = []
     for section_value, section_label in Category.BUILDER_SECTION_CHOICES:
         categories = Category.objects.filter(
             builder_section=section_value,
-            is_active=True
-        ).prefetch_related('packages', 'subcategories__packages').order_by('display_order', 'name')
-
-        packages = Package.objects.filter(
-            category__builder_section=section_value,
-            category__is_active=True,
             is_active=True,
-            visibility__in=['both', 'showroom'],
-        ).select_related('category', 'subcategory').order_by('display_order', 'name')
+        ).prefetch_related(
+            Prefetch('packages', queryset=showroom_packages),
+            Prefetch('subcategories__packages', queryset=showroom_packages),
+        ).order_by('display_order', 'name')
 
-        if categories.exists() or packages.exists():
+        if categories.exists():
             all_sections.append({
                 'key': section_value,
                 'label': section_label,
                 'categories': categories,
-                'packages': packages,
                 'icon': _get_section_icon(section_value)
             })
 
